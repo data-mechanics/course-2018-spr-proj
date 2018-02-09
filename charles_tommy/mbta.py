@@ -64,7 +64,7 @@ class mbta(dml.Algorithm):
         doc.wasAssociatedWith(get_stops, this_script)
         doc.usage(get_stops, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=mbta+stops&$select=type,latitude,longitude,OPEN_DT'
+                  'ont:Query':'?api_key=,api_key,&format=json'
                   }
                   )
 

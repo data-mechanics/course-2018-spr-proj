@@ -1,5 +1,6 @@
 import urllib.request
 import json
+import geojson
 import dml
 import prov.model
 import datetime
@@ -8,7 +9,7 @@ import uuid
 class example(dml.Algorithm):
     contributor = 'cwsonn_levyjr'
     reads = []
-    writes = ['cwsonn_levyjr.lost', 'cwsonn_levyjr.found']
+    writes = ['cwsonn_levyjr.openspace']
 
     @staticmethod
     def execute(trial = False):
@@ -20,23 +21,19 @@ class example(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cwsonn_levyjr', 'cwsonn_levyjr')
 
-        url = 'http://cs-people.bu.edu/lapets/591/examples/lost.json'
+        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/2868d370c55d4d458d4ae2224ef8cddd_7.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("lost")
-        repo.createCollection("lost")
-        repo['cwsonn_levyjr.lost'].insert_many(r)
-        repo['cwsonn_levyjr.lost'].metadata({'complete':True})
-        print(repo['cwsonn_levyjr.lost'].metadata())
 
-        url = 'http://cs-people.bu.edu/lapets/591/examples/found.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("found")
-        repo.createCollection("found")
-        repo['cwsonn_levyjr.found'].insert_many(r)
+        repo.dropCollection("cwsonn_levyjr.openspace")
+        repo.createCollection("cwsonn_levyjr.openspace")
+
+        repo["cwsonn_levyjr.openspace"].insert_many(r["features"])
+
+#repo['cwsonn_levyjr.openspace'].metadata({'complete':True})
+
+#print(repo['cwsonn_levyjr.openspace'].metadata())
 
         repo.logout()
 

@@ -1,6 +1,9 @@
 # Directories.
 data/
 
+# API Keys
+auth.json
+
 # Common operating system files.
 .DS_Store
 .Rhistory

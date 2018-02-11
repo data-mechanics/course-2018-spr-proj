@@ -36,11 +36,12 @@ class hubway(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cma4_tsuen', 'cma4_tsuen')
 
-        url = 'https://secure.thehubway.com/data/stations.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
-        stations = r["stations"]
-        s = json.dumps(r, sort_keys=True, indent=2)
+        dataSet = []
+
+        collection = repo['cma4_tsuen.entertainment']
+
+        dataSet = 
+
         repo.dropCollection("cma4_tsuen.hubway")
         repo.createCollection("cma4_tsuen.hubway")
         repo['cma4_tsuen.hubway'].insert_many(stations)

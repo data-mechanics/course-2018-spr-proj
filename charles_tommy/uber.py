@@ -22,19 +22,19 @@ class uber(dml.Algorithm):
         repo.authenticate('charles_tommy', 'charles_tommy')
 
         csvfile = open("./../data/boston-censustracts-2017-3-WeeklyAggregate (1).csv", 'r')
-        jsonfile = open("./../data/uber.json", 'w')
+        jsonfile = open("./../data/uber.json", 'r')
 
+        """
         fieldnames = ["sourceid", "dstid", 'dow', 'mean_travel_time', 'standard_deviation_travel_time', 'geometric_mean_travel_time', 'geometric_standard_deviation_travel_time']
         reader = csv.DictReader(csvfile, fieldnames)
-        count = 0
+        l = []
         for row in reader:
-            print(count)
-            count += 1
-            json.dump(row, jsonfile)
-            jsonfile.write('\n')
+            l.append(row)
+        json.dump(l, jsonfile)
+        """
 
-        r = json.loads(jsonfile)
-        s = json.dumps(r, sort_keys=True, indent=2)
+        r = json.load(jsonfile)
+        #s = json.dump(r, sort_keys=True, indent=2)
         repo.dropCollection("charles_tommy.uber")
         repo.createCollection("charles_tommy.uber")
         repo['charles_tommy.uber'].insert_many(r)

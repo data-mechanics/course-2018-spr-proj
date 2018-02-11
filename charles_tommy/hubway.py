@@ -20,13 +20,14 @@ class hubway(dml.Algorithm):
         repo = client.repo
         repo.authenticate('charles_tommy', 'charles_tommy')
 
-        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/ee7474e2a0aa45cbbdfe0b747a5eb032_0.geojson'
+        url = 'https://secure.thehubway.com/data/stations.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
+        stations = r["stations"]
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("charles_tommy.hubway")
         repo.createCollection("charles_tommy.hubway")
-        repo['charles_tommy.hubway'].insert_many(r)
+        repo['charles_tommy.hubway'].insert_many(stations)
         repo['charles_tommy.hubway'].metadata({'complete':True})
         print(repo['charles_tommy.hubway'].metadata())
 

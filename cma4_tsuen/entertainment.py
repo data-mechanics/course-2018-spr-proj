@@ -6,9 +6,9 @@ import datetime
 import uuid
 
 class entertainment(dml.Algorithm):
-    contributor = 'charles_tommy'
+    contributor = 'cma4_tsuen'
     reads = []
-    writes = ['charles_tommy.entertainment']
+    writes = ['cma4_tsuen.entertainment']
 
     @staticmethod
     def execute(trial = False):
@@ -18,7 +18,7 @@ class entertainment(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('charles_tommy', 'charles_tommy')
+        repo.authenticate('cma4_tsuen', 'cma4_tsuen')
 
         
 
@@ -26,11 +26,11 @@ class entertainment(dml.Algorithm):
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("charles_tommy.entertainment")
-        repo.createCollection("charles_tommy.entertainment")
-        repo['charles_tommy.entertainment'].insert_many(r)
-        repo['charles_tommy.entertainment'].metadata({'complete':True})
-        print(repo['charles_tommy.entertainment'].metadata())
+        repo.dropCollection("cma4_tsuen.entertainment")
+        repo.createCollection("cma4_tsuen.entertainment")
+        repo['cma4_tsuen.entertainment'].insert_many(r)
+        repo['cma4_tsuen.entertainment'].metadata({'complete':True})
+        print(repo['cma4_tsuen.entertainment'].metadata())
 
         repo.logout()
 
@@ -49,14 +49,14 @@ class entertainment(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('charles_tommy', 'charles_tommy')
+        repo.authenticate('cma4_tsuen', 'cma4_tsuen')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('entertainment', 'https://data.boston.gov/export/792/0c5/7920c501-b410-4a9c-85ab-51338c9b34af.json')
 
-        this_script = doc.agent('alg:charles_tommy#entertainment', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:cma4_tsuen#entertainment', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_stops = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_stops, this_script)
@@ -65,7 +65,7 @@ class entertainment(dml.Algorithm):
                   }
                   )
 
-        lost = doc.entity('dat:charles_tommy#entertainment', {prov.model.PROV_LABEL:'Bus Stops', prov.model.PROV_TYPE:'ont:DataSet'})
+        lost = doc.entity('dat:cma4_tsuen#entertainment', {prov.model.PROV_LABEL:'Bus Stops', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(entertainment, this_script)
         doc.wasGeneratedBy(entertainment, get_stops, endTime)
         doc.wasDerivedFrom(entertainment, resource, get_stops, get_stops, get_stops)

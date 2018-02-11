@@ -9,7 +9,7 @@ import uuid
 class example(dml.Algorithm):
     contributor = 'cwsonn_levyjr'
     reads = []
-    writes = ['cwsonn_levyjr.lost', 'cwsonn_levyjr.found']
+    writes = ['cwsonn_levyjr.bikepath']
 
     @staticmethod
     def execute(trial = False):
@@ -21,18 +21,19 @@ class example(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cwsonn_levyjr', 'cwsonn_levyjr')
 
-        url = 'https://data.boston.gov/export/bd8/dd4/bd8dd4bb-867e-4ca2-b6c7-6c3bd9e6c290.json'
+        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/d02c9d2003af455fbc37f550cc53d3a4_0.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(Trees.geojson)
+        r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
 
-        repo.dropCollection("gas")
-        repo.createCollection("gas")
+        repo.dropCollection("cwsonn_levyjr.bikepath")
+        repo.createCollection("cwsonn_levyjr.bikepath")
 
-        repo['cwsonn_levyjr.trees'].insert_many(r)
-        repo['cwsonn_levyjr.trees'].metadata({'complete':True})
+        repo["cwsonn_levyjr.bikepath"].insert_many(r["features"])
 
-        print(repo['cwsonn_levyjr.trees'].metadata())
+#repo['cwsonn_levyjr.openspace'].metadata({'complete':True})
+
+#print(repo['cwsonn_levyjr.openspace'].metadata())
 
         repo.logout()
 

@@ -7,8 +7,8 @@ import uuid
 
 class gasTransform(dml.Algorithm):
     contributor = 'cwsonn_levyjr'
-    reads = ['cwsonn_levyjr.gas']
-    writes = ['cwsonn_levyjr.gasTransform']
+    reads = ['cwsonn_levyjr.Copenspace', 'cwsonn_levyjr.openspace']
+    writes = ['cwsonn_levyjr.openSpaceComparison']
 
     @staticmethod
     def execute(trial = False):
@@ -20,9 +20,19 @@ class gasTransform(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cwsonn_levyjr', 'cwsonn_levyjr')
 
-        gas = repo['cwsonn_levyjr.gas'].find()
+        BopenSpace = repo['cwsonn_levyjr.openspace'].find()
 
-        openspace = repo['cwsonn_levyjr.openspace'].find()
+        parkAreas = []
+        for b in BopenSpace:
+            area = b["features"]["properties"]["ShapeSTArea"]
+            parkAreas.append(area)
+            #print(b)
+            #area =
+            #parkAreas.append(area)
+
+        print(parkAreas)
+
+        CopenSpace = repo['cwsonn_levyjr.Copenspace'].find()
 
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):

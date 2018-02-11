@@ -20,9 +20,10 @@ class food(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cma4_tsuen', 'cma4_tsuen')            
 
-        url = 'https://data.boston.gov/export/458/2be/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
+        #url = 'https://data.boston.gov/export/458/2be/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c.json'
+        jsonfile = open("./../data/food.json", 'r')
+        #response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.load(jsonfile)
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("cma4_tsuen.food")
         repo.createCollection("cma4_tsuen.food")

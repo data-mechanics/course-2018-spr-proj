@@ -22,7 +22,7 @@ class entertainment(dml.Algorithm):
 
         
 
-        url = 'https://data.boston.gov/export/792/0c5/7920c501-b410-4a9c-85ab-51338c9b34af.json'
+        #url = 'https://data.boston.gov/export/792/0c5/7920c501-b410-4a9c-85ab-51338c9b34af.json'
         jsonfile = open("./../data/entertainment.json", 'r')
         
         r = json.load(jsonfile)

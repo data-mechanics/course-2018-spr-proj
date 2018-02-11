@@ -7,9 +7,9 @@ import uuid
 import csv
 
 class uber(dml.Algorithm):
-    contributor = 'charles_tommy'
+    contributor = 'cma4_tsuen'
     reads = []
-    writes = ['charles_tommy.uber']
+    writes = ['cma4_tsuen.uber']
 
     @staticmethod
     def execute(trial = False):
@@ -19,7 +19,7 @@ class uber(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('charles_tommy', 'charles_tommy')
+        repo.authenticate('cma4_tsuen', 'cma4_tsuen')
 
         csvfile = open("./../data/boston-censustracts-2017-3-WeeklyAggregate (1).csv", 'r')
         jsonfile = open("./../data/uber.json", 'r')
@@ -35,11 +35,11 @@ class uber(dml.Algorithm):
 
         r = json.load(jsonfile)
         s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("charles_tommy.uber")
-        repo.createCollection("charles_tommy.uber")
-        repo['charles_tommy.uber'].insert_many(r)
-        repo['charles_tommy.uber'].metadata({'complete':True})
-        print(repo['charles_tommy.uber'].metadata())
+        repo.dropCollection("cma4_tsuen.uber")
+        repo.createCollection("cma4_tsuen.uber")
+        repo['cma4_tsuen.uber'].insert_many(r)
+        repo['cma4_tsuen.uber'].metadata({'complete':True})
+        print(repo['cma4_tsuen.uber'].metadata())
 
         repo.logout()
 
@@ -58,14 +58,14 @@ class uber(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('charles_tommy', 'charles_tommy')
+        repo.authenticate('cma4_tsuen', 'cma4_tsuen')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('uber', 'https://data.boston.gov/export/792/0c5/7920c501-b410-4a9c-85ab-51338c9b34af.json')
 
-        this_script = doc.agent('alg:charles_tommy#uber', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:cma4_tsuen#uber', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_stops = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_stops, this_script)
@@ -74,7 +74,7 @@ class uber(dml.Algorithm):
                   }
                   )
 
-        lost = doc.entity('dat:charles_tommy#uber', {prov.model.PROV_LABEL:'Bus Stops', prov.model.PROV_TYPE:'ont:DataSet'})
+        lost = doc.entity('dat:cma4_tsuen#uber', {prov.model.PROV_LABEL:'Bus Stops', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(uber, this_script)
         doc.wasGeneratedBy(uber, get_stops, endTime)
         doc.wasDerivedFrom(uber, resource, get_stops, get_stops, get_stops)

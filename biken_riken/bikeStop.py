@@ -78,22 +78,22 @@ class bikeStop(dml.Algorithm):
         doc.usage(get_found, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval',
                   'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'})
             
-                  doc.usage(get_lost, resource, startTime, None,
+        doc.usage(get_lost, resource, startTime, None,
                             {prov.model.PROV_TYPE:'ont:Retrieval',
                             'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
                             })
                   
-                  lost = doc.entity('dat:biken_riken#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-                  doc.wasAttributedTo(lost, this_script)
-                  doc.wasGeneratedBy(lost, get_lost, endTime)
-                  doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
+        lost = doc.entity('dat:biken_riken#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(lost, this_script)
+        doc.wasGeneratedBy(lost, get_lost, endTime)
+        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
                   
-                  found = doc.entity('dat:biken_riken#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-                  doc.wasAttributedTo(found, this_script)
-                  doc.wasGeneratedBy(found, get_found, endTime)
-                  doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        found = doc.entity('dat:biken_riken#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(found, this_script)
+        doc.wasGeneratedBy(found, get_found, endTime)
+        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
                   
-                  repo.logout()
+        repo.logout()
                   
         return doc
 

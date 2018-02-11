@@ -4,6 +4,7 @@ import dml
 import prov.model
 import datetime
 import uuid
+import csv
 
 class uber(dml.Algorithm):
     contributor = 'charles_tommy'
@@ -20,11 +21,19 @@ class uber(dml.Algorithm):
         repo = client.repo
         repo.authenticate('charles_tommy', 'charles_tommy')
 
-        
+        csvfile = open("./../data/boston-censustracts-2017-3-WeeklyAggregate (1).csv", 'r')
+        jsonfile = open("./../data/uber.json", 'w')
 
-        url = 'https://data.boston.gov/export/792/0c5/7920c501-b410-4a9c-85ab-51338c9b34af.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
+        fieldnames = ["sourceid", "dstid", 'dow', 'mean_travel_time', 'standard_deviation_travel_time', 'geometric_mean_travel_time', 'geometric_standard_deviation_travel_time']
+        reader = csv.DictReader(csvfile, fieldnames)
+        count = 0
+        for row in reader:
+            print(count)
+            count += 1
+            json.dump(row, jsonfile)
+            jsonfile.write('\n')
+
+        r = json.loads(jsonfile)
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("charles_tommy.uber")
         repo.createCollection("charles_tommy.uber")
@@ -61,8 +70,7 @@ class uber(dml.Algorithm):
         get_stops = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_stops, this_script)
         doc.usage(get_stops, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
 
@@ -75,8 +83,8 @@ class uber(dml.Algorithm):
                   
         return doc
 
-example.execute()
-doc = example.provenance()
+uber.execute()
+doc = uber.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

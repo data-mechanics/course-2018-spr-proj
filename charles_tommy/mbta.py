@@ -77,8 +77,8 @@ class mbta(dml.Algorithm):
                   
         return doc
 
-example.execute()
-doc = example.provenance()
+mbta.execute()
+doc = mbta.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

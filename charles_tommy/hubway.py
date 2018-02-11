@@ -59,8 +59,7 @@ class hubway(dml.Algorithm):
         get_stations = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_stations, this_script)
         doc.usage(get_stations, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=hubway+station&$select=type,latitude,longitude,OPEN_DT'
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
 
@@ -73,8 +72,8 @@ class hubway(dml.Algorithm):
                   
         return doc
 
-example.execute()
-doc = example.provenance()
+hubway.execute()
+doc = hubway.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

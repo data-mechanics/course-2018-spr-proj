@@ -61,8 +61,7 @@ class entertainment(dml.Algorithm):
         get_stops = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_stops, this_script)
         doc.usage(get_stops, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
 
@@ -75,8 +74,8 @@ class entertainment(dml.Algorithm):
                   
         return doc
 
-example.execute()
-doc = example.provenance()
+entertainment.execute()
+doc = entertainment.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

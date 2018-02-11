@@ -18,10 +18,7 @@ class food(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('charles_tommy', 'charles_tommy')
-
-        with open('auth.json') as json_file:
-            
+        repo.authenticate('charles_tommy', 'charles_tommy')            
 
         url = 'https://data.boston.gov/export/458/2be/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
@@ -62,8 +59,7 @@ class food(dml.Algorithm):
         get_stops = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_stops, this_script)
         doc.usage(get_stops, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
 
@@ -76,8 +72,8 @@ class food(dml.Algorithm):
                   
         return doc
 
-example.execute()
-doc = example.provenance()
+food.execute()
+doc = food.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

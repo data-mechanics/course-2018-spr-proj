@@ -4,12 +4,27 @@ import dml
 import prov.model
 import datetime
 import uuid
-import csv
 
-class uber(dml.Algorithm):
+class hubway(dml.Algorithm):
     contributor = 'charles_tommy'
-    reads = []
-    writes = ['charles_tommy.uber']
+    reads = ['charles_tommy.entertainment', 'charles_tommy.hubway']
+    writes = ['charles_tommy.']
+
+    def dist(p, q):
+        (x1,y1) = p
+        (x2,y2) = q
+        return (x1-x2)**2 + (y1-y2)**2
+
+    def plus(args):
+        p = [0,0]
+        for (x,y) in args:
+            p[0] += x
+            p[1] += y
+        return tuple(p)
+
+    def scale(p, c):
+        (x,y) = p
+        return (x/c, y/c)
 
     @staticmethod
     def execute(trial = False):
@@ -21,25 +36,16 @@ class uber(dml.Algorithm):
         repo = client.repo
         repo.authenticate('charles_tommy', 'charles_tommy')
 
-        csvfile = open("./../data/boston-censustracts-2017-3-WeeklyAggregate (1).csv", 'r')
-        jsonfile = open("./../data/uber.json", 'r')
-
-        """
-        fieldnames = ["sourceid", "dstid", 'dow', 'mean_travel_time', 'standard_deviation_travel_time', 'geometric_mean_travel_time', 'geometric_standard_deviation_travel_time']
-        reader = csv.DictReader(csvfile, fieldnames)
-        l = []
-        for row in reader:
-            l.append(row)
-        json.dump(l, jsonfile)
-        """
-
-        r = json.load(jsonfile)
-        #s = json.dump(r, sort_keys=True, indent=2)
-        repo.dropCollection("charles_tommy.uber")
-        repo.createCollection("charles_tommy.uber")
-        repo['charles_tommy.uber'].insert_many(r)
-        repo['charles_tommy.uber'].metadata({'complete':True})
-        print(repo['charles_tommy.uber'].metadata())
+        url = 'https://secure.thehubway.com/data/stations.json'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
+        stations = r["stations"]
+        s = json.dumps(r, sort_keys=True, indent=2)
+        repo.dropCollection("charles_tommy.hubway")
+        repo.createCollection("charles_tommy.hubway")
+        repo['charles_tommy.hubway'].insert_many(stations)
+        repo['charles_tommy.hubway'].metadata({'complete':True})
+        print(repo['charles_tommy.hubway'].metadata())
 
         repo.logout()
 
@@ -63,28 +69,28 @@ class uber(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('uber', 'https://data.boston.gov/export/792/0c5/7920c501-b410-4a9c-85ab-51338c9b34af.json')
+        doc.add_namespace('hubway', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/')
 
-        this_script = doc.agent('alg:charles_tommy#uber', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:charles_tommy#hubway', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_stops = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_stops, this_script)
-        doc.usage(get_stops, resource, startTime, None,
+        get_stations = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_stations, this_script)
+        doc.usage(get_stations, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
 
-        lost = doc.entity('dat:charles_tommy#uber', {prov.model.PROV_LABEL:'Bus Stops', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(uber, this_script)
-        doc.wasGeneratedBy(uber, get_stops, endTime)
-        doc.wasDerivedFrom(uber, resource, get_stops, get_stops, get_stops)
+        lost = doc.entity('dat:charles_tommy#hubway', {prov.model.PROV_LABEL:'Hubway Stations', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(hubway, this_script)
+        doc.wasGeneratedBy(hubway, get_stations, endTime)
+        doc.wasDerivedFrom(hubway, resource, get_stations, get_stations, get_stations)
 
         repo.logout()
                   
         return doc
 
-uber.execute()
-doc = uber.provenance()
+hubway.execute()
+doc = hubway.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

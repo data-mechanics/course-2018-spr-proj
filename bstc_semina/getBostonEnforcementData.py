@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Feb 11 00:55:17 2018
+Created on Sun Feb 11 00:57:53 2018
 
 @author: Alexander
+- Building code violations in Boston
 """
 
 
@@ -13,11 +14,11 @@ import prov.model
 import datetime
 import uuid
 
-class getInspectionData(dml.Algorithm):
+class getBostonEnforcementData(dml.Algorithm):
     
     contributor = "bstc_semina"
     reads = []
-    writes = ['bstc_semina.getInspectionData']
+    writes = ['bstc_semina.getBostonEnforcementData']
     
     @staticmethod
     def execute(trial = False):
@@ -27,7 +28,7 @@ class getInspectionData(dml.Algorithm):
         repo = client.repo
         repo.authenticate('bstc_semina', 'bstc_semina')
 
-        url ='https://data.boston.gov/export/458/2be/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c.json'
+        url ='https://data.boston.gov/export/90e/d38/90ed3816-5e70-443c-803d-9a71f44470be.json'
         response = urllib.request.urlopen(url).read().decode()
         response = response.replace("]", "")
         response = response.replace("[", "")
@@ -35,12 +36,12 @@ class getInspectionData(dml.Algorithm):
         r = json.loads(response)
         #print(len(r))
         s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection('getInspectionData')
-        repo.createCollection('getInspectionData')
-        repo['bstc_semina.getInspectionData'].insert_many(r)
+        repo.dropCollection('getBostonEnforcementData')
+        repo.createCollection('getBostonEnforcementData')
+        repo['bstc_semina.getBostonEnforcementData'].insert_many(r)
         #print(type(repo['bstc_semina.ApiTest']))
-        repo['bstc_semina.getInspectionData'].metadata({'complete':True})
-        print(repo['bstc_semina.getInspectionData'].metadata())
+        repo['bstc_semina.getBostonEnforcementData'].metadata({'complete':True})
+        print(repo['bstc_semina.getBostonEnforcementData'].metadata())
         
         repo.logout()
         
@@ -65,28 +66,26 @@ class getInspectionData(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:bstc_semina#getInspectionData', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'Health Inspections, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_inspect = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_inspect, this_script)
-        doc.usage(get_inspect, resource, startTime, None,
+        this_script = doc.agent('alg:bstc_semina#getBostonEnforcementData', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'Building Code Violations, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_enforce = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_enforce, this_script)
+        doc.usage(get_enforce, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Health+Inspections&$select=businessName,DBAName,LegalOwner,NameLast,NameFirst,LICENSENO,ISSDTTM,EXPDTTM,LICSTATUS,LICENSECAT,DESCRIPT,RESULT,RESULTDTTM,Violation,ViolLevel,ViolDesc,VIOLDTTM,ViolStatus,StatusDate,Comments,Address,CITY,STATE,ZIP,Property_ID,Location'
+                  'ont:Query':'?type=Building+Violations&$select=Ticket_No,Status_DTTM,Status,Code,Value,Description,StNo,StHigh,Street,Suffix,City,State,Zip,Property_ID,Latitude,Longitude,Location'
                   }
                   )
 
-
-        inspection = doc.entity('dat:bstc_semina#getInspectionData', {prov.model.PROV_LABEL:'Health Inspections', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(inspection, this_script)
-        doc.wasGeneratedBy(inspection, get_inspect, endTime)
-        doc.wasDerivedFrom(inspection, resource, get_inspect, get_inspect, get_inspect)
-
+        enforcement = doc.entity('dat:bstc_semina#getBostonEnforcementData', {prov.model.PROV_LABEL:'Building Code Violations', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(enforcement, this_script)
+        doc.wasGeneratedBy(enforcement, get_enforce, endTime)
+        doc.wasDerivedFrom(enforcement, resource, get_enforce, get_enforce, get_enforce)
 
         repo.logout()
                   
         return doc
     
-getInspectionData.execute()
-doc = getInspectionData.provenance()
+getBostonEnforcementData.execute()
+doc = getBostonEnforcementData.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))

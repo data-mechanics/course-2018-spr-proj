@@ -168,7 +168,3 @@ def main():
                 error.read(),
             )
         )
-
-
-if __name__ == '__main__':
-    main()

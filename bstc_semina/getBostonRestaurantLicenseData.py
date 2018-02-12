@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Feb 11 00:57:53 2018
+Created on Sun Feb 11 02:27:20 2018
 
 @author: Alexander
 """
+
 
 
 import urllib.request
@@ -13,11 +14,11 @@ import prov.model
 import datetime
 import uuid
 
-class getEnforcementData(dml.Algorithm):
+class getBostonRestaurantLicenseData(dml.Algorithm):
     
     contributor = "bstc_semina"
     reads = []
-    writes = ['bstc_semina.getEnforcementData']
+    writes = ['bstc_semina.getBostonRestaurantLicenseData']
     
     @staticmethod
     def execute(trial = False):
@@ -27,7 +28,7 @@ class getEnforcementData(dml.Algorithm):
         repo = client.repo
         repo.authenticate('bstc_semina', 'bstc_semina')
 
-        url ='https://data.boston.gov/export/90e/d38/90ed3816-5e70-443c-803d-9a71f44470be.json'
+        url ='https://data.boston.gov/export/f1e/137/f1e13724-284d-478c-b8bc-ef042aa5b70b.json'
         response = urllib.request.urlopen(url).read().decode()
         response = response.replace("]", "")
         response = response.replace("[", "")
@@ -35,12 +36,12 @@ class getEnforcementData(dml.Algorithm):
         r = json.loads(response)
         #print(len(r))
         s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection('getEnforcementData')
-        repo.createCollection('getEnforcementData')
-        repo['bstc_semina.getEnforcementData'].insert_many(r)
+        repo.dropCollection('getBostonRestaurantLicenseData')
+        repo.createCollection('getBostonRestaurantLicenseData')
+        repo['bstc_semina.getBostonRestaurantLicenseData'].insert_many(r)
         #print(type(repo['bstc_semina.ApiTest']))
-        repo['bstc_semina.getEnforcementData'].metadata({'complete':True})
-        print(repo['bstc_semina.getEnforcementData'].metadata())
+        repo['bstc_semina.getBostonRestaurantLicenseData'].metadata({'complete':True})
+        print(repo['bstc_semina.getBostonRestaurantLicenseData'].metadata())
         
         repo.logout()
         
@@ -65,26 +66,28 @@ class getEnforcementData(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:bstc_semina#getEnforcementData', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'Building Code Violations, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_enforce = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_enforce, this_script)
-        doc.usage(get_enforce, resource, startTime, None,
+        this_script = doc.agent('alg:bstc_semina#getBostonRestaurantLicenseData', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'Restaurants, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_rest = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_rest, this_script)
+        doc.usage(get_rest, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Building+Violations&$select=Ticket_No,Status_DTTM,Status,Code,Value,Description,StNo,StHigh,Street,Suffix,City,State,Zip,Property_ID,Latitude,Longitude,Location'
+                  'ont:Query':'?type=Boston+Restaurants&$select=businessName,DBAName,Address,CITY,STATE,ZIP,LICSTATUS,LICENSECAT,DESCRIPT,licenseadddttm,dayphn,Property_ID,Location'
                   }
                   )
 
-        enforcement = doc.entity('dat:bstc_semina#getEnforcementData', {prov.model.PROV_LABEL:'Building Code Violations', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(enforcement, this_script)
-        doc.wasGeneratedBy(enforcement, get_enforce, endTime)
-        doc.wasDerivedFrom(enforcement, resource, get_enforce, get_enforce, get_enforce)
+
+        restaurant = doc.entity('dat:bstc_semina#getBostonRestaurantLicenseData', {prov.model.PROV_LABEL:'Restaurants', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(restaurant, this_script)
+        doc.wasGeneratedBy(restaurant, get_rest, endTime)
+        doc.wasDerivedFrom(restaurant, resource, get_rest, get_rest, get_rest)
+
 
         repo.logout()
                   
         return doc
     
-getEnforcementData.execute()
-doc = getEnforcementData.provenance()
+getBostonRestaurantLicenseData.execute()
+doc = getBostonRestaurantLicenseData.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))

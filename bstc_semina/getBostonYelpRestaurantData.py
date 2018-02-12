@@ -15,11 +15,11 @@ import uuid
 from time import sleep
 import sample
 
-class yelpTest(dml.Algorithm):
+class getBostonYelpRestaurantData(dml.Algorithm):
     
     contributor = "bstc_semina"
     reads = []
-    writes = ['bstc_semina.yelpTest']
+    writes = ['bstc_semina.getBostonYelpRestaurantData']
     
     @staticmethod
     def execute(trial = False):
@@ -31,13 +31,13 @@ class yelpTest(dml.Algorithm):
         
         collection = repo.bstc_semina.getRestaurantData
         cursor = collection.find({})
-        repo.dropCollection('yelpTest')
-        repo.createCollection('yelpTest')
+        repo.dropCollection('getBostonYelpRestaurantData')
+        repo.createCollection('getBostonYelpRestaurantData')
         for i in cursor:
             name = i["businessName"]
             address = i["Address"] + " " + i["CITY"]
             r = sample.search(key,name,address)
-            repo['bstc_semina.yelpTest'].insert_one(r)
+            repo['bstc_semina.getBostonYelpRestaurantData'].insert_one(r)
         #url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+boston&key=' + key
         #response = urllib.request.urlopen(url).read().decode()
 #        response = response.replace("]", "")
@@ -49,7 +49,7 @@ class yelpTest(dml.Algorithm):
         #r = r["results"]
         #s = json.dumps(r, sort_keys=True, indent=2)
         #print(type(repo['bstc_semina.ApiTest']))
-        repo['bstc_semina.yelpTest'].metadata({'complete':True})
+        repo['bstc_semina.getBostonYelpRestaurantData'].metadata({'complete':True})
         #print(repo['bstc_semina.googleTest'].metadata())
         
         repo.logout()
@@ -106,7 +106,7 @@ class yelpTest(dml.Algorithm):
                   
         return doc
     
-yelpTest.execute()
-doc = yelpTest.provenance()
+getBostonYelpRestaurantData.execute()
+doc = getBostonYelpRestaurantData.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

@@ -33,12 +33,15 @@ class projectDestinationData(dml.Algorithm):
 
         collection2 = repo['cma4_tsuen.food'].find()
 
-        dataSet.append({
-        	'name': row['businessName'],
-        	'coords': row['Location']
-        	} for row in collection2
-            )
+        food_data = []
+        #filtered food.py
+        food_data = [{"Business Name": field['businessName'], "Coords": field['Location']}
+            for field in collection2]
+        
+        for i in range(len(food_data)):
+            dataSet.append(food_data[i])
 
+        
         final = []
         for entry in dataSet:
             if entry not in final:

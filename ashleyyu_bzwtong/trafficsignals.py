@@ -12,7 +12,7 @@ class trafficsignals(dml.Algorithm):
 
     @staticmethod
     def execute(trial = False):
-        '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
+        '''City of Boston traffic signals. Maintained by the Boston Transportation Department (BTD)'''
         startTime = datetime.datetime.now()
 
         # Set up the database connection.

@@ -24,11 +24,12 @@ class foursquare_retrieve(dml.Algorithm):
 		CLIENT_ID = 'OBXTQASYLDVZVYFNR4HIKVSHWXV1VT0CZYLHFJVSG0D4ANGX'
 		CATEGORY_ID = '4bf58dd8d48988d124941735' # 'Offices' category
 		api_version = '20180201' # use Feb 1, 2018
-		radius = 2000# 
+		radius = 1500 # in meters 
 		coords = foursquare_retrieve.get_coords(city)
 		all_data = {}
 		for coord in coords: 
 			coords = '{0},{1}'.format(coord[0], coord[1])
+			print(coords)
 			url = (
 				"https://api.foursquare.com/v2/venues/search"
 				"?client_id={0}"
@@ -67,35 +68,48 @@ class foursquare_retrieve(dml.Algorithm):
 		repo = client.repo
 		repo.authenticate('agoncharova_lmckone', 'agoncharova_lmckone')
 		
-		# get SF business data from Foursquare and save to DB
+		# get business data from Foursquare and save to DB collections {sf_businesses, boston_businesses}
 		response = foursquare_retrieve.get_data_by_city("SF")
-		print("Got the following number of data:")
+		print("Got the following number of businesses in SF:")
 		print(len(response))
 		repo.dropCollection( sf_coll )
 		repo.createCollection( sf_coll )
 		repo[ sf_coll ].insert_many(response)
 		repo[ sf_coll ].metadata( {'complete':True} )
 		print(repo[ sf_coll ].metadata())
+		
+		response = foursquare_retrieve.get_data_by_city("Boston")
+		print("Got the following number of businesses in Boston:")
+		print(len(response))
+		repo.dropCollection( boston_coll )
+		repo.createCollection( boston_coll )
+		repo[ boston_coll ].insert_many(response)
+		repo[ boston_coll ].metadata( {'complete':True} )
+		print(repo[ boston_coll ].metadata())
+		
 
 	def get_coords(city):
 		'''
 		Returns a set of long and lat coords for use with 
-		the Foursquare API, since there is a 50 item limit per query
+		the Foursquare API, since there is a 50 item limit per query.
+		Used by get_data_by_city that actually queries the API.
 		'''
 		coords = []
 		if(city == 'SF'):
 			coords = [[37.80, -122.51], [37.70, -122.51], [37.80, -122.40], [37.70, -122.40]]
-			for lon in range(1, 10):	
-				for lat in range(1, 11):			
+			for lon in range(0, 12):	
+				for lat in range(0, 11):			
 					y = 37.70 + (lat/100.0)
 					x = -122.51 + (lon/100.0)
 					coords.append([float("{0:.2f}".format(y)), float("{0:.2f}".format(x))])
 		if(city == 'Boston'):
-			coords = [[37.80, -122.51], [37.70, -122.51], [37.80, -122.40], [37.70, -122.40]]
+			coords = [[42.40, -71.19], [42.30, -71.19], [42.40, -71.02], [42.30, -71.02]]
+			for lon in range(0, 11):	
+				for lat in range(0, 18):			
+					y = 42.30 + (lat/100.0)
+					x = -71.19 + (lon/100.0)
+					coords.append([float("{0:.2f}".format(y)), float("{0:.2f}".format(x))])
 		return coords
-
-
-
 
 	@staticmethod
 	def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):

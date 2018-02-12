@@ -67,7 +67,7 @@ class trafficsignals(dml.Algorithm):
         signals = doc.entity('dat:ashleyyu_bzwtong#signals', {prov.model.PROV_LABEL:'Traffic Signals', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(signals, this_script)
         doc.wasGeneratedBy(signals, get_signal, endTime)
-        doc.wasDerivedFrom(lost, resource, get_signal, get_signal, get_signal)
+        doc.wasDerivedFrom(signals, resource, get_signal, get_signal, get_signal)
 
         repo.logout()
                   

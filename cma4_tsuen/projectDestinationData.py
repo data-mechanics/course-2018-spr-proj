@@ -36,7 +36,7 @@ class projectDestinationData(dml.Algorithm):
         food_data = []
         #filtered food.py
         food_data = [{"Business Name": field['businessName'], "Coords": field['Location']}
-            for field in collection2]
+            for field in collection2 if field["RESULT"] is not "HE_Fail"]
         
         for i in range(len(food_data)):
             dataSet.append(food_data[i])

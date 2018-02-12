@@ -36,17 +36,25 @@ class hubway(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cma4_tsuen', 'cma4_tsuen')
 
+        
+
         dataSet = []
 
         collection = repo['cma4_tsuen.entertainment']
 
-        dataSet = 
+        # projection
+        dataSet = [
+        	{'coords': row["Location"]}
+        	for row in collection
+        ]
 
-        repo.dropCollection("cma4_tsuen.hubway")
-        repo.createCollection("cma4_tsuen.hubway")
-        repo['cma4_tsuen.hubway'].insert_many(stations)
-        repo['cma4_tsuen.hubway'].metadata({'complete':True})
-        print(repo['cma4_tsuen.hubway'].metadata())
+        repo.dropCollection("cma4_tsuen.entertainmentProjected")
+        repo.createCollection("cma4_tsuen.entertainmentProjected")
+        repo['cma4_tsuen.entertainmentProjected'].insert_many(dataset)
+        repo['cma4_tsuen.entertainmentProjected'].metadata({'complete':True})
+        print(repo['cma4_tsuen.entertainmentProjected'].metadata())
+
+
 
         repo.logout()
 

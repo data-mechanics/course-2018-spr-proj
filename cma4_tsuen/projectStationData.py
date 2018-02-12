@@ -77,18 +77,32 @@ class projectDestinationData(dml.Algorithm):
         doc.add_namespace('stations', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/')
 
         this_script = doc.agent('alg:cma4_tsuen#stations', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('stations:mbta+hubway', {'prov:label':'Stations\' Names and Coords Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_stations = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_stations, this_script)
-        doc.usage(get_stations, resource, startTime, None,
+        
+        resource = doc.entity('dat:mbta', {'prov:label':'MBTA Station Names and Coords Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_mbta_stations = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_mbta_stations, this_script)
+        doc.usage(get_mbta_stations, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
 
-        stations = doc.entity('dat:cma4_tsuen#stations', {prov.model.PROV_LABEL:'Hubway Stations', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(stations, this_script)
-        doc.wasGeneratedBy(stations, get_stations, endTime)
-        doc.wasDerivedFrom(stations, resource, get_stations, get_stations, get_stations)
+        mbta_stations = doc.entity('dat:cma4_tsuen#mbta', {prov.model.PROV_LABEL:'MBTA Stations', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(mbta_stations, this_script)
+        doc.wasGeneratedBy(mbta_stations, get_mbta_stations, endTime)
+        doc.wasDerivedFrom(mbta_stations, resource, get_mbta_stations, get_mbta_stations, get_mbta_stations)
+
+        resource2 = doc.entity('dat:hubway', {'prov:label':'Hubway Stations Names and Coords Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_hubway_stations = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_hubway_stations, this_script)
+        doc.usage(get_hubway_stations, resource2, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
+                  }
+                  )
+
+        hubway_stations = doc.entity('dat:cma4_tsuen#hubway', {prov.model.PROV_LABEL:'Hubway Stations', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(hubway_stations, this_script)
+        doc.wasGeneratedBy(hubway_stations, get_hubway_stations, endTime)
+        doc.wasDerivedFrom(hubway_stations, resource, get_hubway_stations, get_hubway_stations, get_hubway_stations)
 
         repo.logout()
                   

@@ -108,7 +108,7 @@ class projectDestinationData(dml.Algorithm):
                   
         return doc
 
-#projectDestinationData.execute()
+projectDestinationData.execute()
 doc = projectDestinationData.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))

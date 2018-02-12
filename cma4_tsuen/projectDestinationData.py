@@ -27,7 +27,7 @@ class projectDestinationData(dml.Algorithm):
         # projection
         dataSet = [
         	{'name': row["BUSINESSNAME"],
-        	'coords': row["Location"]}
+        	'Coords': row["Location"]}
         	for row in collection
         ]
 
@@ -45,7 +45,8 @@ class projectDestinationData(dml.Algorithm):
         final = []
         for entry in dataSet:
             if entry not in final:
-                final.append(entry)
+                if entry['Coords'] != '':
+                    final.append(entry)
 
         print(final)
 

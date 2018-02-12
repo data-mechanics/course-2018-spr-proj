@@ -31,7 +31,7 @@ class projectDestinationData(dml.Algorithm):
         	for row in collection
         ]
 
-        collection2 = repo['cma4_tsuen.food']
+        collection2 = repo['cma4_tsuen.food'].find()
 
         dataSet.append({
         	'name': row['businessName'],

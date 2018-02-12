@@ -25,7 +25,7 @@ class food(dml.Algorithm):
         #response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.load(jsonfile)
         food_data = []
-        
+        #filtered food.py
         food_data = [{"Business Name": field['businessName'], "Coords": field['Location']}
             for field in r]
         

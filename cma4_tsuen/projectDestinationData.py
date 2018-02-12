@@ -80,25 +80,35 @@ class projectDestinationData(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('destinations', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/')
 
-        this_script = doc.agent('alg:cma4_tsuen#destinations', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dests:ent+food', {'prov:label':'Destinations\' Name and Coords Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        this_script = doc.agent('alg:cma4_tsuen#projectDestinationData', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('dat:entertainment', {'prov:label':'Destinations Entertainment Name and Coords', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource2 = doc.entity('dat:food', {'prov:label':'Destinations Food Name and Data', prov.model.PROV_TYPE:'ont:DataSet'})
         get_dests = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_dests, this_script)
         doc.usage(get_dests, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
+        doc.usage(get_dests, resource2, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Computation'
+                  }
+                  )
 
-        dests = doc.entity('dat:cma4_tsuen#dests', {prov.model.PROV_LABEL:'Destinations', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(dests, this_script)
-        doc.wasGeneratedBy(dests, get_dests, endTime)
-        doc.wasDerivedFrom(dests, resource, get_dests, get_dests, get_dests)
+        entertainment = doc.entity('dat:cma4_tsuen#entertainment', {prov.model.PROV_LABEL:'Filtered Entertainment Dests', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(entertainment, this_script)
+        doc.wasGeneratedBy(entertainment, get_dests, endTime)
+        doc.wasDerivedFrom(entertainment, resource, get_dests, get_dests, get_dests)
+
+        food = doc.entity('dat:cma4_tsuen#food', {prov.model.PROV_LABEL:'Filtered Food Dests', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(food, this_script)
+        doc.wasGeneratedBy(food, get_dests, endTime)
+        doc.wasDerivedFrom(food, resource, get_dests, get_dests, get_dests)
 
         repo.logout()
                   
         return doc
 
-projectDestinationData.execute()
+#projectDestinationData.execute()
 doc = projectDestinationData.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))

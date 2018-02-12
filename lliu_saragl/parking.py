@@ -26,7 +26,7 @@ class parking(dml.Algorithm):
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropPermanent("parking")
         repo.createPermanent("parking")
-        repo['lliu_saragl.parking'].insert_many(r['features'])
+        repo['lliu_saragl.parking'].insert_many(r)
 
         repo.logout()
 

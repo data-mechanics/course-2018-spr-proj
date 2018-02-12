@@ -21,7 +21,7 @@ class uber(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cma4_tsuen', 'cma4_tsuen')
 
-        csvfile = open("./../data/boston-censustracts-2017-3-WeeklyAggregate (1).csv", 'r')
+        #csvfile = open("./../data/boston-censustracts-2017-3-WeeklyAggregate (1).csv", 'r')
         jsonfile = open("./../data/uber.json", 'r')
 
         """
@@ -63,21 +63,21 @@ class uber(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('uber', 'https://data.boston.gov/export/792/0c5/7920c501-b410-4a9c-85ab-51338c9b34af.json')
+        doc.add_namespace('uber', 'https://movement.uber.com/curated/boston?lang=en-US')
 
         this_script = doc.agent('alg:cma4_tsuen#uber', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_stops = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_stops, this_script)
-        doc.usage(get_stops, resource, startTime, None,
+        resource = doc.entity('uber:travelTimes', {'prov:label':'Uber Travel Times Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_times = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_times, this_script)
+        doc.usage(get_times, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
 
-        lost = doc.entity('dat:cma4_tsuen#uber', {prov.model.PROV_LABEL:'Bus Stops', prov.model.PROV_TYPE:'ont:DataSet'})
+        uber = doc.entity('dat:cma4_tsuen#uber', {prov.model.PROV_LABEL:'Bus Stops', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(uber, this_script)
-        doc.wasGeneratedBy(uber, get_stops, endTime)
-        doc.wasDerivedFrom(uber, resource, get_stops, get_stops, get_stops)
+        doc.wasGeneratedBy(uber, get_times, endTime)
+        doc.wasDerivedFrom(uber, resource, get_times, get_times, get_times)
 
         repo.logout()
                   

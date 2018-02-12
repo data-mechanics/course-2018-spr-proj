@@ -4,6 +4,7 @@ import dml
 import prov.model
 import datetime
 import uuid
+import json
 
 class getSidewalks(dml.Algorithm):
     contributor = 'ferrys'
@@ -22,9 +23,7 @@ class getSidewalks(dml.Algorithm):
         url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/6aa3bdc3ff5443a98d506812825c250a_0.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         sidewalk_dict = dict(geojson.loads(response))['features']
-        
-        print(sidewalk_dict)
-        
+                
         repo.dropCollection("sidewalks")
         repo.createCollection("sidewalks")
         repo['ferrys.sidewalks'].insert_many(sidewalk_dict)
@@ -38,56 +37,43 @@ class getSidewalks(dml.Algorithm):
     
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-        pass
-#        '''
-#            Create the provenance document describing everything happening
-#            in this script. Each run of the script will generate a new
-#            document describing that invocation event.
-#            '''
-#
-#        # Set up the database connection.
-#        client = dml.pymongo.MongoClient()
-#        repo = client.repo
-#        repo.authenticate('alice_bob', 'alice_bob')
-#        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-#        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-#        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-#        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-#        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
-#
-#        this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-#        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-#        get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-#        get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-#        doc.wasAssociatedWith(get_found, this_script)
-#        doc.wasAssociatedWith(get_lost, this_script)
-#        doc.usage(get_found, resource, startTime, None,
-#                  {prov.model.PROV_TYPE:'ont:Retrieval',
-#                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-#                  }
-#                  )
-#        doc.usage(get_lost, resource, startTime, None,
-#                  {prov.model.PROV_TYPE:'ont:Retrieval',
-#                  'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-#                  }
-#                  )
-#
-#        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-#        doc.wasAttributedTo(lost, this_script)
-#        doc.wasGeneratedBy(lost, get_lost, endTime)
-#        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-#
-#        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-#        doc.wasAttributedTo(found, this_script)
-#        doc.wasGeneratedBy(found, get_found, endTime)
-#        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
-#
-#        repo.logout()
-#                  
-#        return doc
+        '''
+        Create the provenance document describing everything happening
+        in this script. Each run of the script will generate a new
+        document describing that invocation event.
+        '''
 
-getSidewalks.execute()
-#doc = example.provenance()
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('ferrys', 'ferrys')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('bod', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/')
+
+        this_script = doc.agent('alg:ferrys#getSidewalks', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('bod:sidewalks', {'prov:label':'Sidewalk Location Geo Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'geojson'})
+        get_sidewalks = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_sidewalks, this_script)
+        doc.usage(get_sidewalks, resource, startTime, None,
+                  {
+                    prov.model.PROV_TYPE:'ont:Retrieval'
+                  })
+
+
+        sidewalk_locations = doc.entity('dat:ferrys#sidewalks', {prov.model.PROV_LABEL:'sidewalks', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(sidewalk_locations, this_script)
+        doc.wasGeneratedBy(sidewalk_locations, get_sidewalks, endTime)
+        doc.wasDerivedFrom(sidewalk_locations, resource, get_sidewalks, get_sidewalks, get_sidewalks)
+
+        repo.logout()
+                  
+        return doc
+
+#getSidewalks.execute()
+#doc = getSidewalks.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))
 

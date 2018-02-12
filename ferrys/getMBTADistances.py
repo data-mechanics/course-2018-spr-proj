@@ -30,6 +30,9 @@ class getMBTADistances(dml.Algorithm):
         alc = repo.ferrys.alc_licenses.find()
         projected_alc = getMBTADistances.project(alc, lambda t: (t['Street Number'] + ' ' + t['Street Name'] + ' ' +  str(t['Suffix']) + ' ' + t['City']))
 
+        if trial:
+            projected_mbta = projected_mbta[:10]
+            projected_alc = projected_alc[:10]
 
         cache = {}
         mbta_dist = []
@@ -64,8 +67,8 @@ class getMBTADistances(dml.Algorithm):
         repo['ferrys.mbtadistance'].metadata({'complete':True})
         print(repo['ferrys.mbtadistance'].metadata())
         
-        with open("../datasets/MBTA_Uber_Distances.json", 'w') as file:
-                json.dump(mbta_dist_cp, file)
+#        with open("../datasets/MBTA_Uber_Distances.json", 'w') as file:
+#                json.dump(mbta_dist_cp, file)
         
         repo.logout()
         endTime = datetime.datetime.now()
@@ -74,53 +77,47 @@ class getMBTADistances(dml.Algorithm):
     
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-        pass
-#        '''
-#            Create the provenance document describing everything happening
-#            in this script. Each run of the script will generate a new
-#            document describing that invocation event.
-#            '''
-#
-#        # Set up the database connection.
-#        client = dml.pymongo.MongoClient()
-#        repo = client.repo
-#        repo.authenticate('alice_bob', 'alice_bob')
-#        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-#        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-#        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-#        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-#        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
-#
-#        this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-#        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-#        get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-#        get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-#        doc.wasAssociatedWith(get_found, this_script)
-#        doc.wasAssociatedWith(get_lost, this_script)
-#        doc.usage(get_found, resource, startTime, None,
-#                  {prov.model.PROV_TYPE:'ont:Retrieval',
-#                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-#                  }
-#                  )
-#        doc.usage(get_lost, resource, startTime, None,
-#                  {prov.model.PROV_TYPE:'ont:Retrieval',
-#                  'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-#                  }
-#                  )
-#
-#        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-#        doc.wasAttributedTo(lost, this_script)
-#        doc.wasGeneratedBy(lost, get_lost, endTime)
-#        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-#
-#        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-#        doc.wasAttributedTo(found, this_script)
-#        doc.wasGeneratedBy(found, get_found, endTime)
-#        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
-#
-#        repo.logout()
-#                  
-#        return doc
+        '''
+        Create the provenance document describing everything happening
+        in this script. Each run of the script will generate a new
+        document describing that invocation event.
+        '''
+
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('ferrys', 'ferrys')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('maps', 'https://maps.googleapis.com/maps/api/')
+
+        this_script = doc.agent('alg:ferrys#getMBTADistances', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+
+        licenses = doc.entity('dat:ferrys#alc_licenses', {prov.model.PROV_LABEL:'alc_licenses', prov.model.PROV_TYPE:'ont:DataSet'})
+        mbta_stops= doc.entity('dat:ferrys#mbta', {prov.model.PROV_LABEL:'mbta', prov.model.PROV_TYPE:'ont:DataSet'})
+        geocode_locations = doc.entity('maps:geocode', {'prov:label':'Google Geocode API', prov.model.PROV_TYPE:'ont:DataResource'})
+
+
+        get_mbta_dist = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+
+        doc.wasAssociatedWith(get_mbta_dist, this_script)
+
+        doc.usage(get_mbta_dist, licenses, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
+        doc.usage(get_mbta_dist, mbta_stops, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
+        doc.usage(get_mbta_dist, geocode_locations, startTime, None, 
+                  {prov.model.PROV_TYPE:'ont:Retrieval', 'ont:Query':'?address=$&key=$'})
+
+        mbta_dist = doc.entity('dat:ferrys#mbtadistance', {prov.model.PROV_LABEL: 'Alcohol Licenses and MBTA Stop Locations', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(mbta_dist, this_script)
+        doc.wasGeneratedBy(mbta_dist, get_mbta_dist, endTime)
+        doc.wasDerivedFrom(mbta_dist, licenses, get_mbta_dist, get_mbta_dist, get_mbta_dist)
+        doc.wasDerivedFrom(mbta_dist, mbta_stops, get_mbta_dist, get_mbta_dist, get_mbta_dist)
+        doc.wasDerivedFrom(mbta_dist, geocode_locations, get_mbta_dist, get_mbta_dist, get_mbta_dist)
+
+        repo.logout()
+        return doc
 
     def union(R, S):
         return R + S
@@ -136,8 +133,8 @@ class getMBTADistances(dml.Algorithm):
     def project(R, p):
         return [p(t) for t in R]
 
-getMBTADistances.execute()
-#doc = example.provenance()
+#getMBTADistances.execute(True)
+#doc = getMBTADistances.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))
 

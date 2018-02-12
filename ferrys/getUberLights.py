@@ -29,6 +29,9 @@ class getUberLights(dml.Algorithm):
         streetlights = repo.ferrys.streetlights.find()
         projected_streetlights = getUberLights.project(streetlights, lambda t: [float(x) for x in t['the_geom'].replace(')', ' ').replace('(', ' ').split()[1:]])
         
+        if trial:
+            projected_uber = projected_uber[:10]
+            projected_streetlights = projected_streetlights[:10]
         cache = {}
         uber_light = []
         for uber in projected_uber:
@@ -66,8 +69,8 @@ class getUberLights(dml.Algorithm):
         print(repo['ferrys.uberlights'].metadata())
 
 
-        with open("../datasets/Uber_Destinations_With_Streetlights.json", 'w') as file:
-                json.dump(uber_light_cp, file)
+#        with open("../datasets/Uber_Destinations_With_Streetlights.json", 'w') as file:
+#                json.dump(uber_light_cp, file)
                 
         repo.logout()
         endTime = datetime.datetime.now()
@@ -75,54 +78,47 @@ class getUberLights(dml.Algorithm):
         return {"start":startTime, "end":endTime}
     
     @staticmethod
-    def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-        pass
-#        '''
-#            Create the provenance document describing everything happening
-#            in this script. Each run of the script will generate a new
-#            document describing that invocation event.
-#            '''
-#
-#        # Set up the database connection.
-#        client = dml.pymongo.MongoClient()
-#        repo = client.repo
-#        repo.authenticate('alice_bob', 'alice_bob')
-#        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-#        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-#        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-#        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-#        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
-#
-#        this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-#        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-#        get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-#        get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-#        doc.wasAssociatedWith(get_found, this_script)
-#        doc.wasAssociatedWith(get_lost, this_script)
-#        doc.usage(get_found, resource, startTime, None,
-#                  {prov.model.PROV_TYPE:'ont:Retrieval',
-#                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-#                  }
-#                  )
-#        doc.usage(get_lost, resource, startTime, None,
-#                  {prov.model.PROV_TYPE:'ont:Retrieval',
-#                  'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-#                  }
-#                  )
-#
-#        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-#        doc.wasAttributedTo(lost, this_script)
-#        doc.wasGeneratedBy(lost, get_lost, endTime)
-#        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-#
-#        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-#        doc.wasAttributedTo(found, this_script)
-#        doc.wasGeneratedBy(found, get_found, endTime)
-#        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
-#
-#        repo.logout()
-#                  
-#        return doc
+    def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):     
+        '''
+        Create the provenance document describing everything happening
+        in this script. Each run of the script will generate a new
+        document describing that invocation event.
+        '''
+
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('ferrys', 'ferrys')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('maps', 'https://maps.googleapis.com/maps/api/')
+
+        this_script = doc.agent('alg:ferrys#getUberLights', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+
+        uber_travel = doc.entity('dat:ferrys#uber', {prov.model.PROV_LABEL:'uber', prov.model.PROV_TYPE:'ont:DataSet'})
+        streetlight_locations = doc.entity('dat:ferrys#streetlights', {prov.model.PROV_LABEL:'streetlights', prov.model.PROV_TYPE:'ont:DataSet'})
+        geocode_locations = doc.entity('maps:geocode', {'prov:label':'Google Geocode API', prov.model.PROV_TYPE:'ont:DataResource'})
+        
+        get_uber_lights = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+
+        doc.wasAssociatedWith(get_uber_lights, this_script)
+
+        doc.usage(get_uber_lights, geocode_locations, startTime, None, 
+                  {prov.model.PROV_TYPE:'ont:Retrieval', 'ont:Query':'?address=$&key=$'})
+        doc.usage(get_uber_lights, uber_travel, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
+        doc.usage(get_uber_lights, streetlight_locations, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
+
+        uber_lights = doc.entity('dat:ferrys#uberlights', {prov.model.PROV_LABEL: 'Uber Destinations with Streetlights', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(uber_lights, this_script)
+        doc.wasGeneratedBy(uber_lights, get_uber_lights, endTime)
+        doc.wasDerivedFrom(uber_lights, uber_travel, get_uber_lights, get_uber_lights, get_uber_lights)
+        doc.wasDerivedFrom(uber_lights, streetlight_locations, get_uber_lights, get_uber_lights, get_uber_lights)
+        doc.wasDerivedFrom(uber_lights, geocode_locations, get_uber_lights, get_uber_lights, get_uber_lights)
+
+        repo.logout()
+        return doc
 
     def union(R, S):
         return R + S
@@ -142,9 +138,9 @@ class getUberLights(dml.Algorithm):
         return abs(uber_dropoff[0] - streetlight_coordinate[0]) < .0001 and abs(uber_dropoff[1] - streetlight_coordinate[1]) < .0001
 
 
-    
-getUberLights.execute()
-#doc = example.provenance()
+#    
+#getUberLights.execute(True)
+#doc = getUberLights.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))
 

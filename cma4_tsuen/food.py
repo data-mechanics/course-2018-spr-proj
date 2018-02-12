@@ -24,10 +24,15 @@ class food(dml.Algorithm):
         jsonfile = open("./../data/food.json", 'r')
         #response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.load(jsonfile)
+        food_data = []
+        
+        food_data = [{"Business Name": field['businessName'], "Coords": field['Location']}
+            for field in r]
+        
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("cma4_tsuen.food")
         repo.createCollection("cma4_tsuen.food")
-        repo['cma4_tsuen.food'].insert_many(r)
+        repo['cma4_tsuen.food'].insert_many(food_data)
         repo['cma4_tsuen.food'].metadata({'complete':True})
         print(repo['cma4_tsuen.food'].metadata())
 

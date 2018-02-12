@@ -4,7 +4,6 @@ import dml
 import prov.model
 import datetime
 import uuid
-from collections import OrderedDict
 
 class projectDestinationData(dml.Algorithm):
     contributor = 'cma4_tsuen'
@@ -27,7 +26,7 @@ class projectDestinationData(dml.Algorithm):
 
         # projection
         dataSet = [
-        	{'name': row["BUSINESSNAME"]
+        	{'name': row["BUSINESSNAME"],
         	'coords': row["Location"]}
         	for row in collection
         ]
@@ -35,16 +34,21 @@ class projectDestinationData(dml.Algorithm):
         collection2 = repo['cma4_tsuen.food']
 
         dataSet.append({
-        	'name': row['businessName']
+        	'name': row['businessName'],
         	'coords': row['Location']
-        	for row in collection2
-        	})
+        	} for row in collection2
+            )
 
-        dataSet = list(OrderedDict.fromKeys(dataSet))
+        final = []
+        for entry in dataSet:
+            if entry not in final:
+                final.append(entry)
+
+        print(final)
 
         repo.dropCollection("cma4_tsuen.destinationsProjected")
         repo.createCollection("cma4_tsuen.destinationsProjected")
-        repo['cma4_tsuen.destinationsProjected'].insert_many(dataSet)
+        repo['cma4_tsuen.destinationsProjected'].insert_many(final)
         repo['cma4_tsuen.destinationsProjected'].metadata({'complete':True})
         print(repo['cma4_tsuen.destinationsProjected'].metadata())
 
@@ -90,8 +94,8 @@ class projectDestinationData(dml.Algorithm):
                   
         return doc
 
-hubway.execute()
-doc = hubway.provenance()
+projectDestinationData.execute()
+doc = projectDestinationData.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

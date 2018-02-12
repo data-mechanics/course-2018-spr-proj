@@ -63,7 +63,7 @@ class hubway(dml.Algorithm):
                   {prov.model.PROV_TYPE:'ont:Retrieval'}
                   )
 
-        hubway = doc.entity('dat:alanbur_jcaluag#hubway', {prov.model.PROV_LABEL:'Hubway Locations', prov.model.PROV_TYPE:'ont:DataSet'})
+        hubway = doc.entity('dat:cma4_tsuen#hubway', {prov.model.PROV_LABEL:'Hubway Locations', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(hubway, this_script)
         doc.wasGeneratedBy(hubway, get_stations, endTime)
         doc.wasDerivedFrom(hubway, resource, get_stations, get_stations, get_stations)

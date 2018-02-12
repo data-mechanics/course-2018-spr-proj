@@ -61,18 +61,18 @@ class food(dml.Algorithm):
         doc.add_namespace('food', 'https://data.boston.gov/export/458/2be/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c.json')
 
         this_script = doc.agent('alg:cma4_tsuen#food', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_stops = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_stops, this_script)
-        doc.usage(get_stops, resource, startTime, None,
+        resource = doc.entity('food:places', {'prov:label':'Food Locations Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_places = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_places, this_script)
+        doc.usage(get_places, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
 
-        lost = doc.entity('dat:cma4_tsuen#food', {prov.model.PROV_LABEL:'Bus Stops', prov.model.PROV_TYPE:'ont:DataSet'})
+        food = doc.entity('dat:cma4_tsuen#food', {prov.model.PROV_LABEL:'Food Places', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(food, this_script)
-        doc.wasGeneratedBy(food, get_stops, endTime)
-        doc.wasDerivedFrom(food, resource, get_stops, get_stops, get_stops)
+        doc.wasGeneratedBy(food, get_places, endTime)
+        doc.wasDerivedFrom(food, resource, get_places, get_places, get_places)
 
         repo.logout()
                   

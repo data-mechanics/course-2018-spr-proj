@@ -99,15 +99,6 @@ class weatherParking(dml.Algorithm):
                 emissions_dict[i].pop(j, 'None')
         emissions_dict = emissions_dict
 
-        # def product(R, S):
-        #     return [(t, u) for t in R for u in S]
-        #
-        # def select(R, s):
-        #     return [t for t in R if s(t)]
-        #
-        # def project(R, p):
-        #     return [p(t) for t in R]
-
         X = final_climate_dict.items()
         Y = carsparked.items()
         parking_weather = weatherParking.project(weatherParking.select(weatherParking.product(X,Y), lambda t: t[0][0] == t[1][0]), lambda t: (t[0][0], t[0][1], t[1][1]))

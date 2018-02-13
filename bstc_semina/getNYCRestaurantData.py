@@ -15,15 +15,17 @@ import datetime
 import uuid
 
 class getNYCRestaurantData(dml.Algorithm):
-    
+
     contributor = "bstc_semina"
     reads = []
     writes = ['bstc_semina.getNYCRestaurantData']
-    
+
     @staticmethod
     def execute(trial = False):
+        app_token = '$$app_token=sJibzWywA3jOXgTyVqn38680H&$limit=50000'
+
         startTime = datetime.datetime.now()
-        
+
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('bstc_semina', 'bstc_semina')
@@ -41,7 +43,7 @@ class getNYCRestaurantData(dml.Algorithm):
         repo['bstc_semina.getNYCRestaurantData'].insert_many(r)
         #print(type(repo['bstc_semina.ApiTest']))
         for i in range(5):
-            url ='https://data.cityofnewyork.us/resource/mphz-k8gq.json?$$app_token=sJibzWywA3jOXgTyVqn38680H&$limit=50000&$offset=' + str(50000 * i)
+            url ='https://data.cityofnewyork.us/resource/mphz-k8gq.json?' + app_token + '&$offset=' + str(50000 * i)
             response = urllib.request.urlopen(url).read().decode()
             r = json.loads(response)
             repo['bstc_semina.getNYCRestaurantData'].insert_many(r)
@@ -49,9 +51,9 @@ class getNYCRestaurantData(dml.Algorithm):
         #print(repo['bstc_semina.getNYCRestaurantData'].metadata())
 
         repo.logout()
-        
+
         endTime = datetime.datetime.now()
-        
+
         return ({'start':startTime, 'end':endTime})
 
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
@@ -89,9 +91,9 @@ class getNYCRestaurantData(dml.Algorithm):
 
 
         repo.logout()
-                  
+
         return doc
-    
+
 getNYCRestaurantData.execute()
 doc = getNYCRestaurantData.provenance()
 #print(doc.get_provn())

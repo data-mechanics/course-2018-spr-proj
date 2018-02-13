@@ -22,6 +22,8 @@ class getNYCInspectionData(dml.Algorithm):
     
     @staticmethod
     def execute(trial = False):
+        app_token = "$$app_token=sJibzWywA3jOXgTyVqn38680H&$limit=50000"
+        
         startTime = datetime.datetime.now()
         
         client = dml.pymongo.MongoClient()
@@ -41,7 +43,7 @@ class getNYCInspectionData(dml.Algorithm):
         repo['bstc_semina.getNYCInspectionData'].insert_many(r)
         #print(type(repo['bstc_semina.ApiTest']))
         for i in range(8):
-            url ='https://data.cityofnewyork.us/resource/xx67-kt59.json?$$app_token=sJibzWywA3jOXgTyVqn38680H&$limit=50000&$offset=' + str(50000 * i)
+            url ='https://data.cityofnewyork.us/resource/xx67-kt59.json?' + app_token + '&$offset=' + str(50000 * i)
             response = urllib.request.urlopen(url).read().decode()
             r = json.loads(response)
             repo['bstc_semina.getNYCInspectionData'].insert_many(r)

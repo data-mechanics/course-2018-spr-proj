@@ -45,7 +45,7 @@ except ImportError:
 # It now uses private keys to authenticate requests (API Key)
 # You can find it on
 # https://www.yelp.com/developers/v3/manage_app
-API_KEY= None 
+API_KEY= None
 
 
 # API constants, you shouldn't have to change these.
@@ -81,7 +81,7 @@ def request(host, path, api_key, url_params=None):
         'Authorization': 'Bearer %s' % api_key,
     }
 
-    print(u'Querying {0} ...'.format(url))
+    # print(u'Querying {0} ...'.format(url))
 
     response = requests.request('GET', url, headers=headers, params=url_params)
 

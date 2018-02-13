@@ -1,60 +1,85 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Feb 11 16:32:25 2018
-
-@author: Alexander
-"""
-
-
-import urllib.request
 import json
 import dml
 import prov.model
 import datetime
 import uuid
-from time import sleep
-import sample
+import bson.code
+import pymongo
 
-class getBostonYelpRestaurantData(dml.Algorithm):
+class RestaurantRatingsAndInspections_Boston(dml.Algorithm):
 
     contributor = "bstc_semina"
     reads = []
-    writes = ['bstc_semina.getBostonYelpRestaurantData']
+    writes = ['bstc_semina.RestaurantRatingsAndInspections_Boston']
 
     @staticmethod
     def execute(trial = False):
-        key = "vgf2PftKCvQ3wzi0PTNxwHumm78OW6fF05yIJff56VvV5KXIIYhPWAaB-ngRAFMjHcx-0jsvGLieIwCmN5wxn6O_WYc5y76CJTGBLvQSdhXsCNmVAMEkBetM_LSAWnYx"
-
         startTime = datetime.datetime.now()
+        new_collection_name = 'RestaurantRatingsAndInspections_Boston'
 
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('bstc_semina', 'bstc_semina')
 
-        collection = repo.bstc_semina.getBostonRestaurantLicenseData
-        cursor = collection.find({})
-        repo.dropCollection('getBostonYelpRestaurantData')
-        repo.createCollection('getBostonYelpRestaurantData')
-        for i in cursor:
-            name = i["businessName"]
-            address = i["Address"] + " " + i["CITY"]
+        repo.dropCollection('bstc_semina.'+new_collection_name)
+        repo.createCollection('bstc_semina.'+new_collection_name)
 
-            print('searching for', name, address, '...')
-            r = sample.search(key,name,address)
-            repo['bstc_semina.getBostonYelpRestaurantData'].insert_one(r)
-        #url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+boston&key=' + key
-        #response = urllib.request.urlopen(url).read().decode()
-#        response = response.replace("]", "")
-#        response = response.replace("[", "")
-#        response = "[" + response + "]"
-        #r = json.loads(response)
-        #pagetoken = r["next_page_token"]
-        #print(len(r))
-        #r = r["results"]
-        #s = json.dumps(r, sort_keys=True, indent=2)
-        #print(type(repo['bstc_semina.ApiTest']))
-        repo['bstc_semina.getBostonYelpRestaurantData'].metadata({'complete':True})
-        #print(repo['bstc_semina.googleTest'].metadata())
+        collection_yelp = repo.bstc_semina.getBostonYelpRestaurantData
+        cursor_yelp = collection_yelp.find({})
+        collection_inspections = repo.bstc_semina.getBostonRestaurantLicenseData
+        cursor_inspections = collection_inspections.find({})
+
+        mapperInspections = bson.code.Code("""
+            function() {
+                var vs = {
+                    violation_level: this.ViolLevel,
+                    num_violations: 1
+                };
+                emit(this.businessName, vs);
+            }
+            """)
+        reducer = bson.code.Code("""
+            function(k, vs) {
+                var total = 0;
+                var num_violations = 0;
+
+                for (var i = 0; i < vs.length; i++) {
+                    //total += vs[i].violation_level.length;
+                    num_violations += 5;                        // for some reason this isn't working, reducer doesn't seem to be called.
+                }
+                return {num_violations: num_violations, total_violation_severity: total};
+            }
+            """)
+        finalizer = bson.code.Code("""
+            function(k, reduced_v) {
+                reduced_v.ave_violation_severity = reduced_v.num_violations;
+                return reduced_v;
+            }
+            """)
+
+        repo.bstc_semina.getBostonRestaurantLicenseData.map_reduce(mapperInspections, reducer, 'bstc_semina.'+new_collection_name, finalize = finalizer)
+
+        # # merge on restaurant name
+        # mapperYelp = bson.code.Code("""
+        #     function() {
+        #         var vs = {
+        #             ratings: this.ratings,
+        #             review_count: this.review_count,
+        #             categories: this.categories,
+        #             location: this.location,
+        #             coordinates: this.coordinates
+        #         };
+        #         emit(this.businesses[0].name, vs)
+        #     }
+        #     """)
+        # mapperInspections = bson.code.Code("""
+        #     function() {
+        #         var vs = {
+        #             violation_level: this.ave_violation,
+        #
+        #         };
+        #     }
+        #     """)
 
         repo.logout()
 
@@ -110,7 +135,4 @@ class getBostonYelpRestaurantData(dml.Algorithm):
 
         return doc
 
-getBostonYelpRestaurantData.execute()
-doc = getBostonYelpRestaurantData.provenance()
-#print(doc.get_provn())
-#print(json.dumps(json.loads(doc.serialize()), indent=4))
+RestaurantRatingsAndInspections_Boston.execute()

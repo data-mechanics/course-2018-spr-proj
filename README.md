@@ -1,3 +1,25 @@
+
+# Project 1
+
+
+Question: What kinds of opportunities does Boston provide to help its population maintain active, healthy lifestyles? Does it provide those opportunities equally for the whole population? Particularly for parts of the population where obesity is more prevalent, how accessibe are these opportunities?
+
+Our first two datasets look into the Boston population. The first provides demographic data-- specifically income, while the second provides information on the incidence of obesity within the city's population. With our next three datasets we explored three different avenues Boston offers to help people to maintain active, healthy lifestyles (Bike Paths, Open Space, Gyms and Health Clubs). By analyzing the locations of businesses and public spaces that promote healthy lifestyles, we hope to be able to assess their accessibility to people in areas where obesity and other exercise related health issues are most prevalent.
+
+Datasets:
+(1) Open Space (Analyze Boston)
+(2) Fitness Related Business in Boston (downloaded from Boston City Clerk's 'Doing Business As' database)
+(3) Existing Bike Network (Analyze Boston)
+(4) Income (American Community Survey via census.gov)
+(5) Obesity in Massachusetts (CDC)
+
+Transformations:
+(1) transformOpenSpace: find average size of a park in acres for each district.
+(2) transformFitBusiness: Aggregates various data about Open Space to district level, joins with information about fitness related businesses on zipcode
+
+
+
+
 # course-2018-spr-proj
 Joint repository for the collection of student course projects in the Spring 2018 iteration of the Data Mechanics course at Boston University.
 

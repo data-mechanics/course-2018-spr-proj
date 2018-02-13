@@ -13,7 +13,7 @@ import xmltodict
 class Retrieve(dml.Algorithm):
     contributor = 'bemullen_dharmesh'
     reads = []
-    writes = ['bemullen_dharmesh.cityscore', 'bemullen_dharmesh.lost', 'bemullen_dharmesh.found']
+    writes = ['bemullen_dharmesh.cityscore', 'bemullen_dharmesh.universities']
 
     @staticmethod
     def execute(trial = False):
@@ -33,11 +33,18 @@ class Retrieve(dml.Algorithm):
         repo.dropCollection("cityscore")
         repo.createCollection("cityscore")
         repo['bemullen_dharmesh.cityscore'].insert_many(r)
-        repo['bemullen_dharmesh.cityscore'].metadata({'complete':True})
-        print(repo['bemullen_dharmesh.cityscore'].metadata())
+        # print(repo['bemullen_dharmesh.cityscore'].metadata())
+
+        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/cbf14bb032ef4bd38e20429f71acb61a_2.geojson'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)['features']
+        s = json.dumps(r, sort_keys=True, indent=2)
+        repo.dropCollection("universities")
+        repo.createCollection("universities")
+        repo['bemullen_dharmesh.universities'].insert_many(r)
+        # print(repo['bemullen_dharmesh.universities'].metadata())
 
         repo.logout()
-
         endTime = datetime.datetime.now()
 
         return {"start":startTime, "end":endTime}
@@ -61,24 +68,47 @@ class Retrieve(dml.Algorithm):
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
         doc.add_namespace('bdpm', 'https://data.boston.gov/datastore/odata3.0/')
+        doc.add_namespace('bgis', 'https://bostonopendata-boston.opendata.arcgis.com/datasets/')
 
         this_script = doc.agent('alg:bemullen_dharmesh#retrieve', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdpm:5bce8e71-5192-48c0-ab13-8faff8fef4d7', {'prov:label':'CityScore', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_cityscore = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        resource_cityscore = doc.entity('bdpm:5bce8e71-5192-48c0-ab13-8faff8fef4d7', {'prov:label':'CityScore', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_cityscore = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime, 
+            {'prov:label': 'Retrieve City Score metrics'})
         doc.wasAssociatedWith(get_cityscore, this_script)
-        doc.usage(get_cityscore, resource, startTime, None,
+        doc.usage(get_cityscore, resource_cityscore, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
                   'ont:Query':'?$format=json'
                   }
                   )
 
+        resource_universities = doc.entity('bgis:cbf14bb032ef4bd38e20429f71acb61a_2',
+            {'prov:label':'Coordinates of Universities in Boston',
+            prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'geojson'})
+
+        get_universities = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime,
+            {'prov:label': 'Retrieve coordinates of Universities in Boston'})
+
+        doc.wasAssociatedWith(get_universities, this_script)
+
+        doc.usage(get_universities, resource_universities, startTime, None,
+            {prov.model.PROV_TYPE:'ont:Retrieval'}
+            )
+
+        cityscore = doc.entity('dat:bemullen_dharmesh#cityscore', {prov.model.PROV_LABEL:'CityScore Metrics', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(cityscore, this_script)
+        doc.wasGeneratedBy(cityscore, get_cityscore, endTime)
+
+        universities = doc.entity('dat:bemullen_dharmesh#universities', {prov.model.PROV_LABEL:'Coordinates of Universities in Boston', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(universities, this_script)
+        doc.wasGeneratedBy(universities, get_universities, endTime)
+
         repo.logout()
                   
         return doc
 
-# Retrieve.execute()
-# doc = Retrieve.provenance()
-# print(doc.get_provn())
-# print(json.dumps(json.loads(doc.serialize()), indent=4))
+Retrieve.execute()
+doc = Retrieve.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

@@ -6,10 +6,10 @@ import datetime
 import uuid
 import pandas as pd 
 
-class bostonClimate(dml.Algorithm):
+class weatherParking(dml.Algorithm):
     contributor = 'aoconno8_dmak1112'
-    reads = []
-    writes = ['aoconno8_dmak1112.bostonClimate']
+    reads = ['aoconno8_dmak1112.bostonClimate', 'aoconno8_dmak1112.parkingData']
+    writes = ['aoconno8_dmak1112.weatherParking']
 
     @staticmethod
     def execute(trial = False):
@@ -21,24 +21,34 @@ class bostonClimate(dml.Algorithm):
         repo = client.repo
         repo.authenticate('aoconno8_dmak1112', 'aoconno8_dmak1112')
 
-        url = 'http://datamechanics.io/data/aoconno8_dmak1112/boston_climate_2015-2016.csv'
-        df = pd.read_csv(url)
-        new_df = df.filter(['DATE', 'REPORTTPYE', 'HOURLYDRYBULBTEMPF', 'HOURLYSKYCONDITIONS', 'HOURLYRelativeHumidity', 'HOURLYWindSpeed', 'HOURLYWindDirection', \
-                        'HOURLYPrecip', 'DAILYMximumDryBulbTemp', 'DAILYMinimumDryBulbTemp', 'DAILYAverageDryBulbTemp', 'DAILYPrecip', 'DAILYWeather', \
-                        'DAILYSnowfall','MonthlyMeanTemp', 'MonthlyTotalSnowfall','MonthlyTotalLiquidPrecip','MonthlyDaysWithLT32Temp',\
-                        'MonthlyDaysWithLT0Temp'], axis=1)
-        climate_dict = new_df.to_dict(orient='records')
-        new_dict = {}
-        for i in climate_dict:
-            date = i['DATE']
-            new_dict[date] = i
+        parking = list(repo.aoconno8_dmak1112.parkingData.find())
 
-        final_dict = [new_dict]
-        repo.dropCollection("bostonClimate")
-        repo.createCollection("bostonClimate")
-        repo['aoconno8_dmak1112.bostonClimate'].insert_many(final_dict)
-        repo['aoconno8_dmak1112.bostonClimate'].metadata({'complete':True})
-        print(repo['aoconno8_dmak1112.bostonClimate'].metadata())
+        bad_list = ['_id', 'GT by Zone', 'Zone Name', '#']
+        month_list = []
+        for i in parking[0]['result']['records']:
+            temp = i.items()
+            not_clean = weatherParking.select(temp, lambda t: t[0] not in bad_list)
+            for j in range(len(not_clean)):
+                if not_clean[j][1] is None:
+                    temp_lst = [not_clean[j][0], not_clean[j][1]]
+                    temp_lst[1] = 0
+                    not_clean[j] = (temp_lst[0], temp_lst[1])
+                elif not_clean[j][1] == '':
+                    temp_lst = [not_clean[j][0], not_clean[j][1]]
+                    temp_lst[1] = 0
+                    not_clean[j] = (temp_lst[0], temp_lst[1])
+                else:
+                    temp_lst = [not_clean[j][0], not_clean[j][1]]
+                    temp_lst[1] = int(temp_lst[1])
+                    not_clean[j] = (temp_lst[0], temp_lst[1])
+            month_list += not_clean
+        all_months = [dict(weatherParking.aggregate(month_list, sum))]
+        print(all_months)
+        repo.dropCollection("weatherParking")
+        repo.createCollection("weatherParking")
+        repo['aoconno8_dmak1112.weatherParking'].insert_many(all_months)
+        repo['aoconno8_dmak1112.weatherParking'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112.weatherParking'].metadata())
 
         repo.logout()
 
@@ -96,7 +106,28 @@ class bostonClimate(dml.Algorithm):
                   
         # return doc
 
-bostonClimate.execute()
+    def union(R, S):
+        return R + S
+
+    def difference(R, S):
+        return [t for t in R if t not in S]
+
+    def intersect(R, S):
+        return [t for t in R if t in S]
+
+    def project(R, p):
+        return [p(t) for t in R]
+
+    def select(R, s):
+        return [t for t in R if s(t)]
+     
+    def product(R, S):
+        return [(t,u) for t in R for u in S]
+
+    def aggregate(R, f):
+        keys = {r[0] for r in R}
+        return [(key, f([v for (k,v) in R if k == key])) for key in keys]
+weatherParking.execute()
 # doc = example.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

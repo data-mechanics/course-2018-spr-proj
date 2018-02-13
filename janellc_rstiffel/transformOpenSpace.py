@@ -16,12 +16,10 @@ Finds average number of acres of open space for each Boston district.
     - Projects at the same time so key is zip code, value is #acres and district name.
 
 """
-
-
 class transformOpenSpace(dml.Algorithm):
     contributor = 'janellc_rstiffel'
     reads = ['janellc_rstiffel.openSpace', 'janellc_rstiffel.zipCodes']
-    writes = []
+    writes = ['janellc_rstiffel.districtAvgAcres']
 
     @staticmethod
     def execute(trial = False):
@@ -131,7 +129,7 @@ class transformOpenSpace(dml.Algorithm):
                   
         return doc
 
-transformOpenSpace.execute()
+# transformOpenSpace.execute()
 # doc = transformOpenSpace.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

@@ -8,7 +8,7 @@ import pandas as pd
 
 class weatherParking(dml.Algorithm):
     contributor = 'aoconno8_dmak1112'
-    reads = ['aoconno8_dmak1112.bostonClimate', 'aoconno8_dmak1112.parkingData']
+    reads = ['aoconno8_dmak1112.bostonClimate', 'aoconno8_dmak1112.parkingData', 'aoconno8_dmak1112.yearlyEmissions']
     writes = ['aoconno8_dmak1112.weatherParking']
 
     @staticmethod
@@ -23,13 +23,15 @@ class weatherParking(dml.Algorithm):
 
         parking = list(repo.aoconno8_dmak1112.parkingData.find())
         climate = list(repo.aoconno8_dmak1112.bostonClimate.find())
+        emissions = list(repo.aoconno8_dmak1112.yearlyEmissions.find())
 
         eom_days = ['2015-01-31', '2015-02-28', '2015-03-31', '2015-04-30', '2015-05-31', '2015-06-30', '2015-07-31',\
                 '2015-08-31', '2015-09-30', '2015-10-31', '2015-11-30', '2015-12-31']
         months = ['January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August', 'September',\
                 'October', 'November', 'December']
 
-        bad_list = ['_id', 'GT by Zone', 'Zone Name', '#']
+        carsparked = {}
+        bad_list = ['_id', 'GT by Zone', 'Zone Name', '#','August','September','October','November','December']
         month_list = []
         for i in parking[0]['result']['records']:
             temp = i.items()
@@ -48,8 +50,14 @@ class weatherParking(dml.Algorithm):
                     temp_lst[1] = int(temp_lst[1])
                     not_clean[j] = (temp_lst[0], temp_lst[1])
             month_list += not_clean
-        all_months = [dict(weatherParking.aggregate(month_list, sum))]
-        
+        all_months = dict(weatherParking.aggregate(month_list, sum))
+        for i in all_months:
+            temp_key = i
+            temp_val = all_months[i]
+            temp_dict = {}
+            temp_dict['Cars Parked'] = temp_val
+            carsparked[temp_key] = temp_dict
+
         
 
 
@@ -74,12 +82,79 @@ class weatherParking(dml.Algorithm):
             y = slim_dict[i].items()
             final_climate_dict[i] = dict(weatherParking.select(y,weatherParking.monthly_equals))
 
-        print(final_climate_dict)
+        final_climate_dict = final_climate_dict
+
+
+        emissions_dict = {}
+        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=bd8dd4bb-867e-4ca2-b6c7-6c3bd9e6c290&limit=176'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        emissions_json = json.loads(response)
+        final_list = []
+        transport = []
+        temp = emissions[0]['result']['records']
+        var = ''
+        for i in temp:
+            if "Transportation" == i["Sector"] and "2015" == i["Year (Calendar Year)"]:
+                # transport.append(i)
+                var = i["Source"]
+                emissions_dict[var] = i
+
+        bad_list = ['Protocol', '_id', 'Source']
+        for i in emissions_dict:
+            for j in bad_list:
+                emissions_dict[i].pop(j, 'None')
+        emissions_dict = emissions_dict
+
+        def product(R, S):
+            return [(t, u) for t in R for u in S]
+
+        def select(R, s):
+            return [t for t in R if s(t)]
+
+        def project(R, p):
+            return [p(t) for t in R]
+
+        X = final_climate_dict.items()
+        Y = carsparked.items()
+        parking_weather = project(select(product(X,Y), lambda t: t[0][0] == t[1][0]), lambda t: (t[0][0], t[0][1], t[1][1]))
+
+        for i in range(len(parking_weather)):
+            weatherdict = (parking_weather[i][1])
+            parkingdict = (parking_weather[i][2])
+            weatherdict.update(parkingdict)
+            parking_weather[i] = list(parking_weather[i])
+            parking_weather[i] = parking_weather[i][:-1]
+            parking_weather[i] = tuple(parking_weather[i])
+        parking_weather = dict(parking_weather)
+        fancy_list = [0,0]
+        fancy_list[1] = emissions_dict
+        fancy_list[0] = parking_weather
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         repo.dropCollection("weatherParking")
         repo.createCollection("weatherParking")
-        repo['aoconno8_dmak1112.weatherParking'].insert_many(all_months)
+        repo['aoconno8_dmak1112.weatherParking'].insert_many(fancy_list)
+
+
         repo['aoconno8_dmak1112.weatherParking'].metadata({'complete':True})
         print(repo['aoconno8_dmak1112.weatherParking'].metadata())
 

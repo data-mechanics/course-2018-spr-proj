@@ -23,7 +23,7 @@ class collegesandunis(dml.Algorithm):
         url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/cbf14bb032ef4bd38e20429f71acb61a_2.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         schools_json = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
+        s = json.dumps(schools_json, sort_keys=True, indent=2)
         repo.dropCollection("collegesanduni")
         repo.createCollection("collegesanduni")
         repo['ashleyyu_bzwtong'].insert_many(schools_json)

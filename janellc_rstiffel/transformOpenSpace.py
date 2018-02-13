@@ -61,15 +61,20 @@ class transformOpenSpace(dml.Algorithm):
         for key,value in districts.items():
             zip_districts[zipCodeData[key]] = {'District':key, 'Acres':value}
         
-        #print(zip_districts)
+
+
         # Store in districtAvgAcres.json
         with open("./transformed_datasets/districtAvgAcres.json", 'w') as outfile:
             json.dump(zip_districts, outfile)
 
+
         # Store in DB
         repo.dropCollection("districtAvgAcres")
         repo.createCollection("districtAvgAcres")
-        repo['janellc_rstiffel.districtAvgAcres'].insert(zip_districts)
+
+        for key,value in zip_districts.items():
+            #print({key:value})
+            repo['janellc_rstiffel.districtAvgAcres'].insert({key:value})
         repo['janellc_rstiffel.districtAvgAcres'].metadata({'complete':True})
         print(repo['janellc_rstiffel.districtAvgAcres'].metadata())
 
@@ -126,7 +131,7 @@ class transformOpenSpace(dml.Algorithm):
                   
         return doc
 
-# transformOpenSpace.execute()
+transformOpenSpace.execute()
 # doc = transformOpenSpace.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

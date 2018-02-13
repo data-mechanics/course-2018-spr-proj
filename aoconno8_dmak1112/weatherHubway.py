@@ -5,6 +5,8 @@ import prov.model
 import datetime
 import uuid
 import pandas as pd 
+from dateutil.parser import parse
+import numpy as np
 
 class weatherHubway(dml.Algorithm):
     contributor = 'aoconno8_dmak1112'
@@ -21,10 +23,86 @@ class weatherHubway(dml.Algorithm):
         repo = client.repo
         repo.authenticate('aoconno8_dmak1112', 'aoconno8_dmak1112')
 
-        parking = list(repo.aoconno8_dmak1112.hubwayTravel.find())
+        hubway = list(repo.aoconno8_dmak1112.hubwayTravel.find())
         climate = list(repo.aoconno8_dmak1112.bostonClimate.find())
         emissions = list(repo.aoconno8_dmak1112.yearlyEmissions.find())
 
+
+
+
+
+
+        ###############   HUBWAY  ###################
+
+
+        
+        holding_list = []
+        is_unique = []
+        gender_count = 0 
+        for i in hubway:
+            date_split = i['starttime'].split()
+            try:
+                year = int(i['birth year'])
+            except:
+                year = 1979
+            if i['gender'] == 0:
+                if gender_count %2 == 0:
+                    gender = 1
+                else:
+                    gender = 2
+            else:
+                gender = i['gender']
+            for_counting = 1
+            readable = parse(date_split[0])
+            date = readable.isoformat()
+            tuples = tuple((date, i['tripduration'],year, gender, for_counting))
+            holding_list.append(tuples)
+            gender_count += 1
+
+
+
+
+        avg_duration = weatherHubway.aggregate(weatherHubway.project(holding_list, lambda t: (t[0], t[1])), weatherHubway.mean )
+
+        avg_year = weatherHubway.aggregate(weatherHubway.project(holding_list, lambda t: (t[0], t[2])), weatherHubway.mean)
+
+        avg_gender = weatherHubway.aggregate(weatherHubway.project(holding_list, lambda t: (t[0], t[3])), weatherHubway.mean)
+
+        total_daily_rides = weatherHubway.aggregate(weatherHubway.project(holding_list, lambda t: (t[0], t[4])), sum)
+
+
+        hubway_dict = {}
+        for i in range(len(avg_duration)):
+            inner_dict = {}
+            key = avg_duration[i][0]
+            value = avg_duration[i][1]
+            inner_dict['Average Duration'] = value
+            hubway_dict[key] = inner_dict
+
+
+        for i in hubway_dict:
+            for j in range(len(avg_year)):
+                if avg_year[j][0] == i:
+                    hubway_dict[i]['Average Birth Year'] = avg_year[j][1]
+                    break
+            for k in range(len(avg_gender)):
+                if avg_gender[k][0] == i:
+                    hubway_dict[i]['Average Gender'] = avg_gender[k][1]
+                    break
+            for h in range(len(total_daily_rides)):
+                if total_daily_rides[h][0] == i:
+                    hubway_dict[i]['Total Number of Rides'] = total_daily_rides[h][1]
+                    break
+
+        print(len(hubway_dict))
+
+        #############   HUBWAY  #####################
+
+
+
+        
+        
+        #############   WEATHER  #####################
 
         slim_dict = {}
         new_dict = climate[0]
@@ -37,14 +115,18 @@ class weatherHubway(dml.Algorithm):
 
             if new_dict[i]['REPORTTPYE'] == 'SOD' and date[:4] == '2015':
                 var = new_dict[i]['DATE'][:10]
+                readable = parse(var)
+                var = readable.isoformat()
                 slim_dict[var] = new_dict[i]
         final_climate_dict = {}
         for i in slim_dict:
             y = slim_dict[i].items()
             final_climate_dict[i] = dict(weatherHubway.select(y,weatherHubway.daily_equals))
-        print(len(final_climate_dict))
-        final_climate_dict = [final_climate_dict]
 
+        #############   WEATHER  #####################
+
+
+        #############   EMISSIONS  #####################
 
         emissions_dict = {}
         temp = emissions[0]['result']['records']
@@ -58,45 +140,30 @@ class weatherHubway(dml.Algorithm):
         for i in emissions_dict:
             for j in bad_list:
                 emissions_dict[i].pop(j, 'None')
-        emissions_dict = [emissions_dict]
 
-        # def product(R, S):
-        #     return [(t, u) for t in R for u in S]
-
-        # def select(R, s):
-        #     return [t for t in R if s(t)]
-
-        # def project(R, p):
-        #     return [p(t) for t in R]
-
-        # X = final_climate_dict.items()
-        # parking_weather = project(select(product(X,Y), lambda t: t[0][0] == t[1][0]), lambda t: (t[0][0], t[0][1], t[1][1]))
-
-        # for i in range(len(parking_weather)):
-        #     weatherdict = (parking_weather[i][1])
-        #     parkingdict = (parking_weather[i][2])
-        #     weatherdict.update(parkingdict)
-        #     parking_weather[i] = list(parking_weather[i])
-        #     parking_weather[i] = parking_weather[i][:-1]
-        #     parking_weather[i] = tuple(parking_weather[i])
-        # parking_weather = dict(parking_weather)
-        # fancy_list = [0,0]
-        # fancy_list[1] = emissions_dict
-        # fancy_list[0] = parking_weather
+        #############   EMISSIONS  #####################
 
 
 
 
+        #############   COMBINE ALL DATA  #####################
 
+        X = final_climate_dict.items()
+        Y = hubway_dict.items()
+        hubway_weather = weatherHubway.project(weatherHubway.select(weatherHubway.product(X,Y), lambda t: t[0][0] == t[1][0]), lambda t: (t[0][0], t[0][1], t[1][1]))
 
-
-
-
-
-
-
-
-
+  
+        for i in range(len(hubway_weather)):
+            weatherdict = (hubway_weather[i][1])
+            hubwaydict = (hubway_weather[i][2])
+            weatherdict.update(hubwaydict)
+            hubway_weather[i] = list(hubway_weather[i])
+            hubway_weather[i] = hubway_weather[i][:-1]
+            hubway_weather[i] = tuple(hubway_weather[i])
+        hubway_weather = dict(hubway_weather)
+        fancy_list = [0,0]
+        fancy_list[1] = emissions_dict
+        fancy_list[0] = hubway_weather
 
 
 
@@ -106,7 +173,7 @@ class weatherHubway(dml.Algorithm):
 
         repo.dropCollection("weatherHubway")
         repo.createCollection("weatherHubway")
-        repo['aoconno8_dmak1112.weatherHubway'].insert_many(final_climate_dict)
+        repo['aoconno8_dmak1112.weatherHubway'].insert_many(fancy_list)
 
 
         repo['aoconno8_dmak1112.weatherHubway'].metadata({'complete':True})
@@ -168,6 +235,10 @@ class weatherHubway(dml.Algorithm):
                   
         # return doc
 
+
+    #############   FOR TRANSFORMATIONS  #####################
+
+
     def union(R, S):
         return R + S
 
@@ -192,6 +263,11 @@ class weatherHubway(dml.Algorithm):
     def aggregate(R, f):
         keys = {r[0] for r in R}
         return [(key, f([v for (k,v) in R if k == key])) for key in keys]
+
+    def mean(x):
+        return np.mean(x)
+
+    #############   FOR TRANSFORMATIONS  #####################
 weatherHubway.execute()
 # doc = example.provenance()
 # print(doc.get_provn())

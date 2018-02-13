@@ -5,6 +5,12 @@ import prov.model
 import datetime
 import uuid
 
+"""
+Finds number of fitness related businesses in each zip code (aggregation)
+Joins with district name and average size of park on zip code
+
+"""
+
 class transformfitBusiness(dml.Algorithm):
     contributor = 'janellc_rstiffel'
     reads = ['janellc_rstiffel.obesityData', 'janellc_rstiffel.fitBusinesses']
@@ -21,29 +27,47 @@ class transformfitBusiness(dml.Algorithm):
         repo.authenticate('janellc_rstiffel', 'janellc_rstiffel')
 
         # load collections
-        NB = repo['janellc_rstiffel.businessZips'].find({}, {'properties.PD': 1, 'geometry.coordinates': 1, 'properties.Longitude': 1})
+        NB = repo['janellc_rstiffel.Neighborhoods'].find({}, {'properties.PD': 1, 'geometry.coordinates': 1, 'properties.Longitude': 1})
         FB = repo['janellc_rstiffel.fitBusinesses'].find()
+        hi = repo['janellc_rstiffel.zipCodes'].find()
+        data = repo['janellc_rstiffel.districtAvgAcres'].find()
+
 
 
         businesses = {}
         for b in FB:
+            # print(b)
             zip = '0' + b['Zipcode\r'] #fix zipcode
+            #print(b['Zipcode\r'])
             if zip not in businesses:  # if zipcode not in dictionary add it
                 businesses[zip] = {'count': 1}
             else:                               # if its already in dictionary increase count
                 businesses[zip]['count'] += 1
 
-        repo.dropCollection('janellc_rstiffel.businessZips')
-        repo.createCollection('janellc_rstiffel.businessZips')
+
+        new = {}
+        for row in data:
+            for key,value in row.items():
+                if key=="_id":
+                    continue
+                for keyb, valueb in businesses.items():
+                    if key==keyb:
+                        new[key]={'District': value['District'], 'AvgParkSize': value['Acres'], 'fitBusinessCount': valueb['count']}
 
 
-        for entry in businesses.items():
-            toAdd = {}
-            key = entry[0]
-            toAdd[key] = entry[1]
 
-            repo['janellc_rstiffel.businessZips'].insert(toAdd)
-            repo['janellc_rstiffel.businessZips'].metadata({'complete': True})
+        with open("./transformed_datasets/zipBusinessPark.json", 'w') as outfile:
+            json.dump(new, outfile)
+
+        repo.dropCollection('janellc_rstiffel.zipBusinessPark')
+        repo.createCollection('janellc_rstiffel.zipBusinessPark')
+
+
+        for key,value in new.items():
+            repo['janellc_rstiffel.zipBusinessPark'].insert({key:value})
+            repo['janellc_rstiffel.zipBusinessPark'].metadata({'complete': True})
+
+
 
 
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):

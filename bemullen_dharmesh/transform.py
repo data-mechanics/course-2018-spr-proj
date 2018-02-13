@@ -8,7 +8,7 @@ import prov.model
 import datetime
 import uuid
 
-class transform(dml.Algorithm):
+class Transform(dml.Algorithm):
     contributor = 'bemullen_dharmesh'
     reads = []
     writes = []

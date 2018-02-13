@@ -26,14 +26,17 @@ class Retrieve(dml.Algorithm):
         repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
 
         # url = 'http://datamechanics.io/data/bemullen_dharmesh/data/311ServiceCalls.json'
-        url = 'https://data.boston.gov/datastore/odata3.0/5bce8e71-5192-48c0-ab13-8faff8fef4d7?$format=json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)['value']
-        s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("cityscore")
-        repo.createCollection("cityscore")
-        repo['bemullen_dharmesh.cityscore'].insert_many(r)
-        # print(repo['bemullen_dharmesh.cityscore'].metadata())
+        urls = {'cityscore': 'https://data.boston.gov/datastore/odata3.0/5bce8e71-5192-48c0-ab13-8faff8fef4d7?$format=json',
+        'universities':'https://data.boston.gov/datastore/odata3.0/90ed3816-5e70-443c-803d-9a71f44470be?$format=json',
+        'code_enforcements': 'https://data.boston.gov/datastore/odata3.0/90ed3816-5e70-443c-803d-9a71f44470be?$format=json'}
+
+        for (key, url) in urls.items():
+            response = urllib.request.urlopen(url).read().decode("utf-8")
+            r = json.loads(response)['value']
+            s = json.dumps(r, sort_keys=True, indent=2)
+            repo.dropCollection(key)
+            repo.createCollection(key)
+            repo['bemullen_dharmesh.' + key].insert_many(r) 
 
         url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/cbf14bb032ef4bd38e20429f71acb61a_2.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
@@ -70,37 +73,62 @@ class Retrieve(dml.Algorithm):
         doc.add_namespace('bdpm', 'https://data.boston.gov/datastore/odata3.0/')
         doc.add_namespace('bgis', 'https://bostonopendata-boston.opendata.arcgis.com/datasets/')
 
-        this_script = doc.agent('alg:bemullen_dharmesh#retrieve', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource_cityscore = doc.entity('bdpm:5bce8e71-5192-48c0-ab13-8faff8fef4d7', {'prov:label':'CityScore', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        this_script = doc.agent('alg:bemullen_dharmesh#Retrieve', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+
+        # TODO: Refactor
+        resource_cityscore = doc.entity('bdpm:5bce8e71-5192-48c0-ab13-8faff8fef4d7',
+            {'prov:label':'CityScore', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_cityscore = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime, 
             {'prov:label': 'Retrieve City Score metrics'})
         doc.wasAssociatedWith(get_cityscore, this_script)
         doc.usage(get_cityscore, resource_cityscore, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
                   'ont:Query':'?$format=json'
-                  }
-                  )
+                  })
 
         resource_universities = doc.entity('bgis:cbf14bb032ef4bd38e20429f71acb61a_2',
             {'prov:label':'Coordinates of Universities in Boston',
             prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'geojson'})
-
         get_universities = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime,
             {'prov:label': 'Retrieve coordinates of Universities in Boston'})
-
         doc.wasAssociatedWith(get_universities, this_script)
-
         doc.usage(get_universities, resource_universities, startTime, None,
-            {prov.model.PROV_TYPE:'ont:Retrieval'}
-            )
+            {prov.model.PROV_TYPE:'ont:Retrieval'})
 
-        cityscore = doc.entity('dat:bemullen_dharmesh#cityscore', {prov.model.PROV_LABEL:'CityScore Metrics', prov.model.PROV_TYPE:'ont:DataSet'})
+        resource_code_enforcements = doc.entity('bdpm:0ed3816-5e70-443c-803d-9a71f44470be',
+            {'prov:label':'Code Enforcement - Building and Property', prov.model.PROV_TYPE:'ont:DataResource',
+            'ont:Extension':'json'})
+        get_code_enforcements = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime, 
+            {'prov:label': 'Get Code Enforcement Data'})
+        doc.wasAssociatedWith(get_code_enforcements, this_script)
+        doc.usage(get_code_enforcements, resource_code_enforcements, startTime, None,
+            {prov.model.PROV_TYPE:'ont:Retrieval',
+            'ont:Query':'?$format=json'
+            })
+
+        cityscore = doc.entity('dat:bemullen_dharmesh#cityscore', {prov.model.PROV_LABEL:'CityScore Metrics',
+            prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(cityscore, this_script)
         doc.wasGeneratedBy(cityscore, get_cityscore, endTime)
+        doc.wasDerivedFrom(cityscore, resource_cityscore, get_cityscore,
+            get_cityscore, get_cityscore)
 
-        universities = doc.entity('dat:bemullen_dharmesh#universities', {prov.model.PROV_LABEL:'Coordinates of Universities in Boston', prov.model.PROV_TYPE:'ont:DataSet'})
+        universities = doc.entity('dat:bemullen_dharmesh#universities',
+            {prov.model.PROV_LABEL:'Coordinates of Universities in Boston',
+            prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(universities, this_script)
         doc.wasGeneratedBy(universities, get_universities, endTime)
+        doc.wasDerivedFrom(universities, resource_universities, get_universities,
+            get_universities, get_universities)
+
+        code_enforcements = doc.entity('dat:bemullen_dharmesh#code_enforcements',
+            {prov.model.PROV_LABEL:'Code Enforcement - Building and Property',
+            prov.model.PROV_TYPE:'ont:DataSet'
+            })
+        doc.wasAttributedTo(code_enforcements, this_script)
+        doc.wasGeneratedBy(code_enforcements, get_code_enforcements, endTime)
+        doc.wasDerivedFrom(code_enforcements, resource_code_enforcements, get_code_enforcements,
+            get_code_enforcements, get_code_enforcements)
 
         repo.logout()
                   

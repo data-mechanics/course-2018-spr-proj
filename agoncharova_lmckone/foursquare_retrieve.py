@@ -171,7 +171,7 @@ class foursquare_retrieve(dml.Algorithm):
 
 		this_script = doc.agent('alg:agoncharova_lmckone#foursquare_retrieve', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
 		# TODO: Is the value after bdp below a random id?
-		resource = doc.entity('bdp:40e2-897e', {'prov:label':'Foursquare, Office Data for Boston and SF', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+		resource = doc.entity('4sq:40e2-897e', {'prov:label':'Foursquare, Office Data for Boston and SF', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
 
 		#	separate by SF and Boston data
 		get_sf = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
@@ -199,7 +199,7 @@ class foursquare_retrieve(dml.Algorithm):
 		doc.wasGeneratedBy(sf_businesses, get_sf, endTime)
 		doc.wasDerivedFrom(sf_businesses, resource, get_sf, get_sf, get_sf)
 
-		boston_businesses = doc.entity('dat:alice_bob#boston_businesses', {prov.model.PROV_LABEL:'Boston Businesses', prov.model.PROV_TYPE:'ont:DataSet'})
+		boston_businesses = doc.entity('dat:agoncharova_lmckone#boston_businesses', {prov.model.PROV_LABEL:'Boston Businesses', prov.model.PROV_TYPE:'ont:DataSet'})
 		doc.wasAttributedTo(boston_businesses, this_script)
 		doc.wasGeneratedBy(boston_businesses, get_boston, endTime)
 		doc.wasDerivedFrom(boston_businesses, resource, get_boston, get_boston, get_boston)

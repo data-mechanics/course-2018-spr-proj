@@ -7,6 +7,7 @@ import uuid
 
 
 
+# method to convert csv into json, returns dictionary
 def csv_to_json(url):
     file = urllib.request.urlopen(url).read().decode("utf-8")  # retrieve file from datamechanics.io
     dict_values = []
@@ -14,21 +15,19 @@ def csv_to_json(url):
 
     # print(entries[0])
     keys = entries[0].split(',')  # retrieve column names for keys
-    print(keys)
 
     for row in entries[1:-1]:
         values = row.split(',')
         values[-1] = values[-1][:-1]
         dictionary = dict([(keys[i], values[i]) for i in range(len(keys))])
         dict_values.append(dictionary)
-
     return dict_values
 
 
 class Businesses (dml.Algorithm):
     contributor = 'janellc_rstiffel'
     reads = []
-    writes = ['janellc_rstiffel.medianIncome', 'janellc_rstiffel.bostonTracts']
+    writes = ['janellc_rstiffel.fitBusinesses']
 
 
     @staticmethod
@@ -41,14 +40,11 @@ class Businesses (dml.Algorithm):
         repo = client.repo
         repo.authenticate('janellc_rstiffel', 'janellc_rstiffel')
 
-        # get csv files associated with income data
-        #
-
-
+        # get csv files from datamechanics.io -- downloaded originally from boston city clerk
         url = 'http://datamechanics.io/data/DBABoston.csv'
         # response = urllib.request.urlopen(url).read().decode("utf-8")
         values = csv_to_json(url)
-        print(values[3])
+
         repo.dropCollection("fitBusinesses")
         repo.createCollection("fitBusinesses")
         repo['janellc_rstiffel.fitBusinesses'].insert_many(values)
@@ -83,29 +79,21 @@ class Businesses (dml.Algorithm):
         this_script = doc.agent('alg:janellc_rstiffel#getBusinesses',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-        resource = doc.entity('dba: ', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_fitBusinesses = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_fitBusinesses, this_script)
-
-
-        # lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-        # doc.wasAttributedTo(lost, this_script)
-        # doc.wasGeneratedBy(lost, get_lost, endTime)
-        # doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-        #
-        # found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-        # doc.wasAttributedTo(found, this_script)
-        # doc.wasGeneratedBy(found, get_found, endTime)
-        # doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        resource = doc.entity('dba: ', {'prov:label':'Doing Business As - City Clerk', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        fitBusinesses = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(fitBusinesses, this_script)
+        doc.wasAttributedTo(fitBusinesses, this_script)
+        doc.wasGeneratedBy(resource, fitBusinesses, endTime)
+        doc.wasDerivedFrom(resource, fitBusinesses, fitBusinesses)
 
         repo.logout()
                   
         return doc
 
-# Delete for submission
-Businesses.execute()
-doc = Businesses.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+#Delete for submission
+# Businesses.execute()
+# doc = Businesses.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

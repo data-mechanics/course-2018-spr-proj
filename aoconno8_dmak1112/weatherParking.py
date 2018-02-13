@@ -86,16 +86,10 @@ class weatherParking(dml.Algorithm):
 
 
         emissions_dict = {}
-        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=bd8dd4bb-867e-4ca2-b6c7-6c3bd9e6c290&limit=176'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        emissions_json = json.loads(response)
-        final_list = []
-        transport = []
         temp = emissions[0]['result']['records']
         var = ''
         for i in temp:
             if "Transportation" == i["Sector"] and "2015" == i["Year (Calendar Year)"]:
-                # transport.append(i)
                 var = i["Source"]
                 emissions_dict[var] = i
 

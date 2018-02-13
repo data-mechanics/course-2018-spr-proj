@@ -105,10 +105,11 @@ class payroll(dml.Algorithm):
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('dbd', 'https://data.boston.gov/dataset/')
+        doc.add_namespace('rc', 'employee-earnings-report-2016')
 
         this_script = doc.agent('alg:kaidb_vilin#payroll', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
 
-        resource = doc.entity('dbd:wc8w-nujj', {'prov:label':'employee-earnings-report-2016', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        resource = doc.entity('dbd:rc', {'prov:label':'rc', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         get_payroll = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_payroll, this_script)
         

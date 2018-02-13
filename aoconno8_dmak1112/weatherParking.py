@@ -22,6 +22,12 @@ class weatherParking(dml.Algorithm):
         repo.authenticate('aoconno8_dmak1112', 'aoconno8_dmak1112')
 
         parking = list(repo.aoconno8_dmak1112.parkingData.find())
+        climate = list(repo.aoconno8_dmak1112.bostonClimate.find())
+
+        eom_days = ['2015-01-31', '2015-02-28', '2015-03-31', '2015-04-30', '2015-05-31', '2015-06-30', '2015-07-31',\
+                '2015-08-31', '2015-09-30', '2015-10-31', '2015-11-30', '2015-12-31']
+        months = ['January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August', 'September',\
+                'October', 'November', 'December']
 
         bad_list = ['_id', 'GT by Zone', 'Zone Name', '#']
         month_list = []
@@ -43,7 +49,34 @@ class weatherParking(dml.Algorithm):
                     not_clean[j] = (temp_lst[0], temp_lst[1])
             month_list += not_clean
         all_months = [dict(weatherParking.aggregate(month_list, sum))]
-        print(all_months)
+        
+        
+
+
+        slim_dict = {}
+        new_dict = climate[0]
+        count = 0 
+        for i in new_dict:
+            if count == 0:
+                count+=1
+                continue
+            date = i
+
+            var = ''
+            if new_dict[i]['REPORTTPYE'] == 'SOD' and date[:10] in eom_days:
+                for j in range(len(eom_days)):
+                    if date[:10] == eom_days[j]:
+                        var = months[j]
+                        break
+                slim_dict[var] = new_dict[i]
+        final_climate_dict = {}
+        for i in slim_dict:
+            y = slim_dict[i].items()
+            final_climate_dict[i] = dict(weatherParking.select(y,weatherParking.monthly_equals))
+
+        print(final_climate_dict)
+
+
         repo.dropCollection("weatherParking")
         repo.createCollection("weatherParking")
         repo['aoconno8_dmak1112.weatherParking'].insert_many(all_months)
@@ -123,7 +156,10 @@ class weatherParking(dml.Algorithm):
      
     def product(R, S):
         return [(t,u) for t in R for u in S]
-
+    
+    def monthly_equals(x):
+        return ('Monthly' in x[0])
+    
     def aggregate(R, f):
         keys = {r[0] for r in R}
         return [(key, f([v for (k,v) in R if k == key])) for key in keys]

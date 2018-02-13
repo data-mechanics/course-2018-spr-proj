@@ -7,6 +7,8 @@ import datetime
 import uuid
 
 class foursquare_retrieve(dml.Algorithm):
+
+	# TODO: Is is imperative to add @staticmethod annotations to the methods?
 	
 	pp = pprint.PrettyPrinter(indent=2)
 	contributor = 'agoncharova_lmckone'
@@ -30,7 +32,7 @@ class foursquare_retrieve(dml.Algorithm):
 		"&radius={5}"
 		"&limit=100"
 	)
-
+	@staticmethod
 	def get_coords(city):
 		'''
 		Returns a set of long and lat coords for use with 
@@ -54,7 +56,7 @@ class foursquare_retrieve(dml.Algorithm):
 					coords.append([float("{0:.2f}".format(y)), float("{0:.2f}".format(x))])
 		return coords
 
-
+	@staticmethod
 	def construct_set_of_queries(city):
 		'''
 		Returns an arrary of string URL queries, where
@@ -106,6 +108,7 @@ class foursquare_retrieve(dml.Algorithm):
 	def execute(trial = False):
 		''' 
 		Retrives business data using the Foursquare API for Boston and SF
+		and saves to a database
 		'''
 		fr = foursquare_retrieve
 		pp = fr.pp
@@ -205,7 +208,6 @@ class foursquare_retrieve(dml.Algorithm):
 		        
 		return doc
 
-
-
 # foursquare_retrieve.execute()
-foursquare_retrieve.provenance()
+# foursquare_retrieve.provenance()
+

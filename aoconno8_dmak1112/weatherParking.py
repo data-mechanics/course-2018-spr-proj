@@ -13,7 +13,6 @@ class weatherParking(dml.Algorithm):
 
     @staticmethod
     def execute(trial = False):
-        '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
@@ -29,6 +28,9 @@ class weatherParking(dml.Algorithm):
                 '2015-08-31', '2015-09-30', '2015-10-31', '2015-11-30', '2015-12-31']
         months = ['January', 'Feburary', 'March', 'April', 'May', 'June', 'July', 'August', 'September',\
                 'October', 'November', 'December']
+
+
+        # Parse the parking data to give us the total amount of cars parked in each zone for each month
 
         carsparked = {}
         bad_list = ['_id', 'GT by Zone', 'Zone Name', '#','August','September','October','November','December']
@@ -50,6 +52,9 @@ class weatherParking(dml.Algorithm):
                     temp_lst[1] = int(temp_lst[1])
                     not_clean[j] = (temp_lst[0], temp_lst[1])
             month_list += not_clean
+
+
+        #Aggregate the parking data to get the total amount of cars parked for each month
         all_months = dict(weatherParking.aggregate(month_list, sum))
         for i in all_months:
             temp_key = i
@@ -58,12 +63,12 @@ class weatherParking(dml.Algorithm):
             temp_dict['Cars Parked'] = temp_val
             carsparked[temp_key] = temp_dict
 
-        
 
 
+        #Parse the weather data to get the monthly temperature averages
         slim_dict = {}
         new_dict = climate[0]
-        count = 0 
+        count = 0
         for i in new_dict:
             if count == 0:
                 count+=1
@@ -84,6 +89,7 @@ class weatherParking(dml.Algorithm):
 
         final_climate_dict = final_climate_dict
 
+        #Parse the weather data to get the vehicle emissions for 2015
 
         emissions_dict = {}
         temp = emissions[0]['result']['records']
@@ -99,6 +105,11 @@ class weatherParking(dml.Algorithm):
                 emissions_dict[i].pop(j, 'None')
         emissions_dict = emissions_dict
 
+
+
+        #Combine the weather data and the parking data on the month so that we will have a key for the month,
+        #and in that key we will have the monthly averages and the total number of cars parked for that month
+
         X = final_climate_dict.items()
         Y = carsparked.items()
         parking_weather = weatherParking.project(weatherParking.select(weatherParking.product(X,Y), lambda t: t[0][0] == t[1][0]), lambda t: (t[0][0], t[0][1], t[1][1]))
@@ -111,44 +122,24 @@ class weatherParking(dml.Algorithm):
             parking_weather[i] = parking_weather[i][:-1]
             parking_weather[i] = tuple(parking_weather[i])
         parking_weather = dict(parking_weather)
+
+        #Combine the monthly weather/parking data with the emissions data into one list so we can insert it into MongoDB
         fancy_list = [0,0]
         fancy_list[1] = emissions_dict
         fancy_list[0] = parking_weather
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         repo.dropCollection("weatherParking")
         repo.createCollection("weatherParking")
         repo['aoconno8_dmak1112.weatherParking'].insert_many(fancy_list)
-
-
         repo['aoconno8_dmak1112.weatherParking'].metadata({'complete':True})
         print(repo['aoconno8_dmak1112.weatherParking'].metadata())
-
         repo.logout()
 
         endTime = datetime.datetime.now()
 
         return {"start":startTime, "end":endTime}
-    
+
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''

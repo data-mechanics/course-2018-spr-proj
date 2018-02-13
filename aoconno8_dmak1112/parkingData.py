@@ -23,10 +23,10 @@ class parkingData(dml.Algorithm):
 
         url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=8d38cc9d-8c58-462e-b2df-b793e9c05612&limit=572'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        emissions_json = [json.loads(response)]
+        parking_json = [json.loads(response)]
         repo.dropCollection("parkingData")
         repo.createCollection("parkingData")
-        repo['aoconno8_dmak1112.parkingData'].insert_many(emissions_json)
+        repo['aoconno8_dmak1112.parkingData'].insert_many(parking_json)
         repo['aoconno8_dmak1112.parkingData'].metadata({'complete': True})
         print(repo['aoconno8_dmak1112.parkingData'].metadata())
 

@@ -9,7 +9,7 @@ import uuid
 class yearlyEmissions(dml.Algorithm):
     contributor = 'aoconno8_dmak1112'
     reads = []
-    writes = ['aoconno8_dmak1112', 'aoconno8_dmak1112']
+    writes = ['aoconno8_dmak1112.yearlyEmissions']
 
     @staticmethod
     def execute(trial=False):

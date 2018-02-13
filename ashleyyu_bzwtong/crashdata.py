@@ -5,7 +5,7 @@ import prov.model
 import datetime
 import uuid
 
-class trafficsignals(dml.Algorithm):
+class crashdata(dml.Algorithm):
     contributor = 'ashleyyu_bzwtong'
     reads = []
     writes = ['ashleyyu_bzwtong', 'ashleyyu_bzwtong']
@@ -23,7 +23,6 @@ class trafficsignals(dml.Algorithm):
         url = 'http://datamechanics.io/data/crash.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         crash_json = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("crashdata")
         repo.createCollection("crashdata")
         repo['ashleyyu_bzwtong'].insert_many(crash_json)
@@ -54,7 +53,7 @@ class trafficsignals(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:ashleyyu_bzwtong#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:ashleyyu_bzwtong#crashdata', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_crash = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_crash, this_script)
@@ -64,7 +63,7 @@ class trafficsignals(dml.Algorithm):
                   }
                   )
 
-        crash = doc.entity('dat:ashleyyu_bzwtong#signals', {prov.model.PROV_LABEL:'Crash Data', prov.model.PROV_TYPE:'ont:DataSet'})
+        crash = doc.entity('dat:ashleyyu_bzwtong#crashdata', {prov.model.PROV_LABEL:'Crash Data', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(crash, this_script)
         doc.wasGeneratedBy(crash, get_crash, endTime)
         doc.wasDerivedFrom(crash, resource, get_crash, get_crash, get_crash)
@@ -73,8 +72,8 @@ class trafficsignals(dml.Algorithm):
                   
         return doc
 
-example.execute()
-doc = example.provenance()
+crashdata.execute()
+doc = crashdata.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

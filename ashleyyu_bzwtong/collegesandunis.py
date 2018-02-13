@@ -73,8 +73,8 @@ class collegesandunis(dml.Algorithm):
                   
         return doc
 
-example.execute()
-doc = example.provenance()
+collegesandunis.execute()
+doc = collegesandunis.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

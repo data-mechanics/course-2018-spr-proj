@@ -32,11 +32,14 @@ class getUberLights(dml.Algorithm):
         if trial:
             projected_uber = projected_uber[:10]
             projected_streetlights = projected_streetlights[:10]
+            
         cache = {}
         uber_light = []
         for uber in projected_uber:
             lights = []
             for streetlight in projected_streetlights:
+                streetlight_lat = streetlight[1]
+                streetlight_long = streetlight[0]
                 if uber in cache:
                     uber_lat = cache[uber][0]
                     uber_long = cache[uber][1]
@@ -53,24 +56,20 @@ class getUberLights(dml.Algorithm):
                         uber_lat = 0
                         uber_long = 0
                         cache[uber] = (uber_lat,uber_long)
-                if getUberLights.is_close([uber_lat, uber_long], streetlight):
-                    print("lit")
-                    lights += [streetlight]
+                    
+                if getUberLights.is_close([uber_lat, uber_long], [streetlight_lat,streetlight_long]):
+                    lights += [(streetlight_lat,streetlight_long)]
             uber_light.append({
                     "uber_destination":(uber_lat, uber_long),
-                    "lights":(lights)
+                    "lights":(len(lights))
                     })
-        uber_light_cp = copy.deepcopy(uber_light)
-        
+    
         repo.dropCollection("uberlights")
         repo.createCollection("uberlights")
         repo['ferrys.uberlights'].insert_many(uber_light)
         repo['ferrys.uberlights'].metadata({'complete':True})
         print(repo['ferrys.uberlights'].metadata())
 
-
-#        with open("../datasets/Uber_Destinations_With_Streetlights.json", 'w') as file:
-#                json.dump(uber_light_cp, file)
                 
         repo.logout()
         endTime = datetime.datetime.now()
@@ -89,17 +88,17 @@ class getUberLights(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('ferrys', 'ferrys')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/ferrys/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/ferrys/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('maps', 'https://maps.googleapis.com/maps/api/')
+        doc.add_namespace('geocode', 'https://maps.googleapis.com/maps/api/geocode')
 
         this_script = doc.agent('alg:ferrys#getUberLights', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
         uber_travel = doc.entity('dat:ferrys#uber', {prov.model.PROV_LABEL:'uber', prov.model.PROV_TYPE:'ont:DataSet'})
         streetlight_locations = doc.entity('dat:ferrys#streetlights', {prov.model.PROV_LABEL:'streetlights', prov.model.PROV_TYPE:'ont:DataSet'})
-        geocode_locations = doc.entity('maps:geocode', {'prov:label':'Google Geocode API', prov.model.PROV_TYPE:'ont:DataResource'})
+        geocode_locations = doc.entity('geocode:json', {'prov:label':'Google Geocode API', prov.model.PROV_TYPE:'ont:DataResource'})
         
         get_uber_lights = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
@@ -139,7 +138,7 @@ class getUberLights(dml.Algorithm):
 
 
 #    
-#getUberLights.execute(True)
+getUberLights.execute(True)
 #doc = getUberLights.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

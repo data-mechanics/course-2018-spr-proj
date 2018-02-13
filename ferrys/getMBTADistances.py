@@ -7,6 +7,9 @@ import uuid
 import copy
 
 class getMBTADistances(dml.Algorithm):
+    '''
+    Returns the number of MBTA stops near a specific alcohol license
+    '''
     contributor = 'ferrys'
     reads = ['ferrys.mbta', 'ferrys.alc_licenses']
     writes = ['ferrys.mbtadistance']
@@ -28,7 +31,7 @@ class getMBTADistances(dml.Algorithm):
 
         # alc
         alc = repo.ferrys.alc_licenses.find()
-        projected_alc = getMBTADistances.project(alc, lambda t: (t['Street Number'] + ' ' + t['Street Name'] + ' ' +  str(t['Suffix']) + ' ' + t['City']))
+        projected_alc = getMBTADistances.project(alc, lambda t: (t['License Number'], t['Street Number'] + ' ' + t['Street Name'] + ' ' +  str(t['Suffix']) + ' ' + t['City']))
 
         if trial:
             projected_mbta = projected_mbta[:10]
@@ -38,7 +41,7 @@ class getMBTADistances(dml.Algorithm):
         mbta_dist = []
         for alc_entry in projected_alc:
             for mbta_entry in projected_mbta:
-                alc_address = alc_entry.replace(' ',  '+')
+                alc_address = alc_entry[1].replace(' ',  '+')
                 if alc_address in cache:
                     alc_lat = cache[alc_address][0]
                     alc_long = cache[alc_address][1]
@@ -55,20 +58,21 @@ class getMBTADistances(dml.Algorithm):
                         alc_lat = 0
                         alc_long = 0
                         cache[alc_address] = (alc_lat,alc_long)
-
+                
                 mbta_dist.append({
+                            "alc_license": alc_entry[0],
                             "alc_coord":(alc_lat, alc_long),
                             "mbta_coord":(mbta_entry[0], mbta_entry[1])
                         })
-        mbta_dist_cp = copy.deepcopy(mbta_dist)
+
+        close_points = getMBTADistances.select(mbta_dist, lambda x: getMBTADistances.is_close((x['alc_coord'][0], x['alc_coord'][1]), (x['mbta_coord'][0], x['mbta_coord'][1])))
+        num_mbta_near = getMBTADistances.aggregate_mbta(close_points, lambda x: sum([1 for x in x]))
+        print(num_mbta_near)
         repo.dropCollection('mbtadistance')
         repo.createCollection('mbtadistance')
-        repo['ferrys.mbtadistance'].insert_many(mbta_dist)
+        repo['ferrys.mbtadistance'].insert_many(num_mbta_near)
         repo['ferrys.mbtadistance'].metadata({'complete':True})
         print(repo['ferrys.mbtadistance'].metadata())
-        
-#        with open("../datasets/MBTA_Uber_Distances.json", 'w') as file:
-#                json.dump(mbta_dist_cp, file)
         
         repo.logout()
         endTime = datetime.datetime.now()
@@ -87,17 +91,17 @@ class getMBTADistances(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('ferrys', 'ferrys')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/ferrys/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/ferrys/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('maps', 'https://maps.googleapis.com/maps/api/')
+        doc.add_namespace('geocode', 'https://maps.googleapis.com/maps/api/geocode')
 
         this_script = doc.agent('alg:ferrys#getMBTADistances', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
         licenses = doc.entity('dat:ferrys#alc_licenses', {prov.model.PROV_LABEL:'alc_licenses', prov.model.PROV_TYPE:'ont:DataSet'})
         mbta_stops= doc.entity('dat:ferrys#mbta', {prov.model.PROV_LABEL:'mbta', prov.model.PROV_TYPE:'ont:DataSet'})
-        geocode_locations = doc.entity('maps:geocode', {'prov:label':'Google Geocode API', prov.model.PROV_TYPE:'ont:DataResource'})
+        geocode_locations = doc.entity('geocode:json', {'prov:label':'Google Geocode API', prov.model.PROV_TYPE:'ont:DataResource'})
 
 
         get_mbta_dist = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
@@ -127,11 +131,18 @@ class getMBTADistances(dml.Algorithm):
         return [(t,u) for t in R for u in S]
     def select(R, s):
         return [t for t in R if s(t)]
-    def aggregate(R):
+    def aggregate(R, f):
         keys = {r[0] for r in R}
-        return [(key, [v for (k,v) in R if k == key]) for key in keys]
+        return [(key, f([v for (k,v) in R if k == key])) for key in keys]
+    def aggregate_mbta(R, f):
+        keys = {r['alc_license'] for r in R}
+        return [{key: f([v for v in R if v['alc_license'] == key])} for key in keys]
     def project(R, p):
         return [p(t) for t in R]
+    def is_close(mbta_stop, alc_license):
+        # around 1.5 miles apart
+        return abs(mbta_stop[0] - alc_license[0]) < .015 and abs(mbta_stop[1] - alc_license[1]) < .015
+
 
 #getMBTADistances.execute(True)
 #doc = getMBTADistances.provenance()

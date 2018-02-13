@@ -48,21 +48,18 @@ class getMBTAStops(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('ferrys', 'ferrys')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/ferrys/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/ferrys/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('mbta', 'https://api-v3.mbta.com/stops')
+        doc.add_namespace('mbta', 'https://api-v3.mbta.com/')
 
         this_script = doc.agent('alg:ferrys#getMBTAStops', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('mbta:stops', {'prov:label':'MBTA Developer Portal', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_mbta_stops = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_mbta_stops, this_script)
-        doc.usage(get_mbta_stops, resource, startTime, None,
-                  {
-                    prov.model.PROV_TYPE:'ont:Retrieval'
-                  })
-
+        doc.usage(get_mbta_stops, resource, startTime, None, 
+                  { prov.model.PROV_TYPE:'ont:Retrieval', 'ont:Query':'?api_key=$' })
 
         mbta_stops= doc.entity('dat:ferrys#mbta', {prov.model.PROV_LABEL:'mbta', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(mbta_stops, this_script)

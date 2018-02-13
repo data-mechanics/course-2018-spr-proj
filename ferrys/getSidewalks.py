@@ -47,14 +47,14 @@ class getSidewalks(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('ferrys', 'ferrys')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/ferrys/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/ferrys/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bod', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/')
 
         this_script = doc.agent('alg:ferrys#getSidewalks', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bod:sidewalks', {'prov:label':'Sidewalk Location Geo Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'geojson'})
+        resource = doc.entity('bod:6aa3bdc3ff5443a98d506812825c250a_0', {'prov:label':'Sidewalk Location Geo Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'geojson'})
         get_sidewalks = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_sidewalks, this_script)
         doc.usage(get_sidewalks, resource, startTime, None,

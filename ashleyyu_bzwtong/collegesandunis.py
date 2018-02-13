@@ -23,7 +23,6 @@ class collegesandunis(dml.Algorithm):
         url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/cbf14bb032ef4bd38e20429f71acb61a_2.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         schools_json = json.loads(response)
-        s = json.dumps(schools_json, sort_keys=True, indent=2)
         repo.dropCollection("collegesanduni")
         repo.createCollection("collegesanduni")
         repo['ashleyyu_bzwtong'].insert_many(schools_json)
@@ -54,7 +53,7 @@ class collegesandunis(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:ashleyyu_bzwtong#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:ashleyyu_bzwtong#signals', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_school = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_school, this_script)

@@ -14,7 +14,8 @@ class Retrieve(dml.Algorithm):
     contributor = 'bemullen_dharmesh'
     reads = []
     writes = ['bemullen_dharmesh.cityscore', 'bemullen_dharmesh.universities',
-    'bemullen_dharmesh.code_enforcements', 'bemullen_dharmesh.service_requests']
+    'bemullen_dharmesh.code_enforcements', 'bemullen_dharmesh.service_requests',
+    'bemullen_dharmesh.mbta_red_dwells', 'bemullen_dharmesh.mbta_green_dwells']
 
     @staticmethod
     def execute(trial = False):
@@ -26,27 +27,32 @@ class Retrieve(dml.Algorithm):
         repo = client.repo
         repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
 
-        # url = 'http://datamechanics.io/data/bemullen_dharmesh/data/311ServiceCalls.json'
         urls = {'cityscore': 'https://data.boston.gov/datastore/odata3.0/5bce8e71-5192-48c0-ab13-8faff8fef4d7?$format=json',
         'code_enforcements': 'https://data.boston.gov/datastore/odata3.0/90ed3816-5e70-443c-803d-9a71f44470be?$format=json',
-        'service_requests': 'https://data.boston.gov/datastore/odata3.0/2968e2c0-d479-49ba-a884-4ef523ada3c0?$format=json'}
+        'service_requests': 'https://data.boston.gov/datastore/odata3.0/2968e2c0-d479-49ba-a884-4ef523ada3c0?$format=json',
+        'mbta_red_dwells': 'http://datamechanics.io/data/bemullen_dharmesh/data/mbta_red_dwells.json',
+        'mbta_green_dwells': 'http://datamechanics.io/data/bemullen_dharmesh/data/mbta_green_dwells.json'}
 
         for (key, url) in urls.items():
             response = urllib.request.urlopen(url).read().decode("utf-8")
-            r = json.loads(response)['value']
-            s = json.dumps(r, sort_keys=True, indent=2)
-            repo.dropCollection(key)
-            repo.createCollection(key)
-            repo['bemullen_dharmesh.' + key].insert_many(r) 
+            if key.startswith("mbta"):
+                r = json.loads(response)[key]
+                repo.dropCollection(key)
+                repo.createCollection(key)
+                repo['bemullen_dharmesh.' + key].insert_many(r)
+            else:
+                r = json.loads(response)['value']
+                repo.dropCollection(key)
+                repo.createCollection(key)
+                repo['bemullen_dharmesh.' + key].insert_many(r)
+
 
         url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/cbf14bb032ef4bd38e20429f71acb61a_2.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)['features']
-        s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("universities")
         repo.createCollection("universities")
         repo['bemullen_dharmesh.universities'].insert_many(r)
-        # print(repo['bemullen_dharmesh.universities'].metadata())
 
         repo.logout()
         endTime = datetime.datetime.now()
@@ -73,6 +79,7 @@ class Retrieve(dml.Algorithm):
 
         doc.add_namespace('bdpm', 'https://data.boston.gov/datastore/odata3.0/')
         doc.add_namespace('bgis', 'https://bostonopendata-boston.opendata.arcgis.com/datasets/')
+        doc.add_namespace('datp', 'http://datamechanics.io/data/bemullen_dharmesh/data/')
 
         this_script = doc.agent('alg:bemullen_dharmesh#Retrieve', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
 
@@ -117,6 +124,24 @@ class Retrieve(dml.Algorithm):
             {prov.model.PROV_TYPE:'ont:Retrieval',
             'ont:Query':'?$format=json'})
 
+        resource_mbta_red_dwells = doc.entity('datp:mbta_red_dwells',
+            {'prov:label':'MBTA Red Line Dwell Values', prov.model.PROV_TYPE:'ont:DataResource',
+            'ont:Extension': 'json'})
+        get_mbta_red_dwells = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime,
+            {'prov:label': 'Get List of Time Spent waiting at each station (Red line)'})
+        doc.wasAssociatedWith(get_mbta_red_dwells, this_script)
+        doc.usage(get_mbta_red_dwells, resource_mbta_red_dwells, startTime, None,
+            {prov.model.PROV_TYPE:'ont:Retrieval'})
+
+        resource_mbta_green_dwells = doc.entity('datp:mbta_green_dwells',
+            {'prov:label':'MBTA Green Line Dwell Values', prov.model.PROV_TYPE:'ont:DataResource',
+            'ont:Extension': 'json'})
+        get_mbta_green_dwells = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime,
+            {'prov:label': 'Get List of Time Spent waiting at each station (Green line)'})
+        doc.wasAssociatedWith(get_mbta_green_dwells, this_script)
+        doc.usage(get_mbta_green_dwells, resource_mbta_green_dwells, startTime, None,
+            {prov.model.PROV_TYPE:'ont:Retrieval'})
+
         cityscore = doc.entity('dat:bemullen_dharmesh#cityscore', {prov.model.PROV_LABEL:'CityScore Metrics',
             prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(cityscore, this_script)
@@ -150,6 +175,23 @@ class Retrieve(dml.Algorithm):
         doc.wasDerivedFrom(service_requests, resource_service_requests, get_service_requests,
             get_service_requests, get_service_requests)
 
+        mbta_red_dwells = doc.entity('dat:bemullen_dharmesh#mbta_red_dwells',
+            {prov.model.PROV_LABEL:'MBTA Red Line Dwell Intervals',
+            prov.model.PROV_TYPE:'ont:DataSet'
+            })
+        doc.wasAttributedTo(mbta_red_dwells, this_script)
+        doc.wasGeneratedBy(mbta_red_dwells, get_mbta_red_dwells, endTime)
+        doc.wasDerivedFrom(mbta_red_dwells, resource_mbta_red_dwells, get_mbta_red_dwells,
+            get_mbta_red_dwells, get_mbta_red_dwells)
+
+        mbta_green_dwells = doc.entity('dat:bemullen_dharmesh#mbta_green_dwells',
+            {prov.model.PROV_LABEL:'MBTA Green Line Dwell Intervals',
+            prov.model.PROV_TYPE:'ont:DataSet'
+            })
+        doc.wasAttributedTo(mbta_green_dwells, this_script)
+        doc.wasGeneratedBy(mbta_green_dwells, get_mbta_green_dwells, endTime)
+        doc.wasDerivedFrom(mbta_green_dwells, resource_mbta_green_dwells, get_mbta_green_dwells,
+            get_mbta_green_dwells, get_mbta_green_dwells)
 
         repo.logout()
                   

@@ -21,7 +21,7 @@ class collegeanduni(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
 
-        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=8d38cc9d-8c58-462e-b2df-b793e9c05612&limit=572'
+        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/cbf14bb032ef4bd38e20429f71acb61a_2'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         schools_json = [json.loads(response)]
         repo.dropCollection("collegeanduni")

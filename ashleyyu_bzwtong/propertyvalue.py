@@ -23,6 +23,7 @@ class propertyvalue(dml.Algorithm):
         url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=cecdf003-9348-4ddb-94e1-673b63940bb8&limit=20000'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         propvalue_json = [json.loads(response)]
+        s = json.dumps(propvalue_json, sort_keys=True, indent=2)
         repo.dropCollection("propertyvalue")
         repo.createCollection("propertyvalue")
         repo['ashleyyu_bzwtong.propertyvalue'].insert_many(propvalue_json)
@@ -49,6 +50,7 @@ class propertyvalue(dml.Algorithm):
         url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=cecdf003-9348-4ddb-94e1-673b63940bb8&limit=20000'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         propvalue_json = [json.loads(response)]
+        s = json.dumps(propvalue_json, sort_keys=True, indent=2)
         repo.dropCollection("propertyvalue")
         repo.createCollection("propertyvalue")
         repo['ashleyyu_bzwtong.propertyvalue'].insert_many(propvalue_json["result"]["records"])

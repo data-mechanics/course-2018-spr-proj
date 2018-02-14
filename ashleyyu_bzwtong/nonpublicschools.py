@@ -20,7 +20,7 @@ class nonpublicschools(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
 
-        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/0046426a3e4340a6b025ad52b41be70a_1'
+        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/0046426a3e4340a6b025ad52b41be70a_1.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         schools_json = json.loads(response)
         repo.dropCollection("nonpublicschools")

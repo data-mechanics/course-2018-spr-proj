@@ -23,7 +23,6 @@ class trafficsignals(dml.Algorithm):
         url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/de08c6fe69c942509089e6db98c716a3_0.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         signals_json = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("trafficsignals")
         repo.createCollection("trafficsignals")
         repo['ashleyyu_bzwtong'].insert_many(signals_json)
@@ -54,7 +53,7 @@ class trafficsignals(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:ashleyyu_bzwtong#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:ashleyyu_bzwtong#signals', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_signal = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_signal, this_script)
@@ -73,8 +72,8 @@ class trafficsignals(dml.Algorithm):
                   
         return doc
 
-example.execute()
-doc = example.provenance()
+trafficsignals.execute()
+doc = trafficsignals.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

@@ -14,7 +14,7 @@ def csv_to_json(url):
 
     # print(entries[0])
     keys = entries[0].split(',')  # retrieve column names for keys
-    print(keys)
+    #print(keys)
 
     for row in entries[1:-1]:
         values = row.split(',')
@@ -24,10 +24,10 @@ def csv_to_json(url):
     return dict_values
 
 
-class Income (dml.Algorithm):
+class getIncome (dml.Algorithm):
     contributor = 'janellc_rstiffel'
     reads = []
-    writes = ['janellc_rstiffel.medianIncome', 'janellc_rstiffel.bostonTracts']
+    writes = ['janellc_rstiffel.Income', 'janellc_rstiffel.bostonTracts']
 
 
     @staticmethod
@@ -101,7 +101,7 @@ class Income (dml.Algorithm):
 
         doc.usage(get_bostonTracts, tractResource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-'ont:Query':''
+                  'ont:Query':''
                   }
                   )
         doc.usage(get_Income, incomeResource, startTime, None,
@@ -111,13 +111,23 @@ class Income (dml.Algorithm):
                   )
 
 
+        Income = doc.entity('dat:janellc_rstiffel#Income', {prov.model.PROV_LABEL:'Income', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(Income, this_script)
+        doc.wasGeneratedBy(Income, get_Income, endTime)
+        doc.wasDerivedFrom(Income, incomeResource, get_Income, get_Income, get_Income)
+
+        bostonTracts = doc.entity('dat:janellc_rstiffel#bostonTracts', {prov.model.PROV_LABEL:'Boston Tracts', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(bostonTracts, this_script)
+        doc.wasGeneratedBy(bostonTracts, get_bostonTracts, endTime)
+        doc.wasDerivedFrom(bostonTracts, tractResource, get_bostonTracts, get_bostonTracts, get_bostonTracts)
+
         repo.logout()
                   
         return doc
 
 # # TAKE THIS OUT IN SUBMISSION
-# Income.execute()
-# doc = Income.provenance()
+# getIncome.execute()
+# doc = getIncome.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))
 #

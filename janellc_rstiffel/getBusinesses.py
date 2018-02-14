@@ -24,7 +24,7 @@ def csv_to_json(url):
     return dict_values
 
 
-class Businesses (dml.Algorithm):
+class getBusinesses (dml.Algorithm):
     contributor = 'janellc_rstiffel'
     reads = []
     writes = ['janellc_rstiffel.fitBusinesses']
@@ -48,6 +48,7 @@ class Businesses (dml.Algorithm):
         repo.dropCollection("fitBusinesses")
         repo.createCollection("fitBusinesses")
         repo['janellc_rstiffel.fitBusinesses'].insert_many(values)
+        repo['janellc_rstiffel.fitBusinesses'].metadata({'complete':True})
         print(repo['janellc_rstiffel.fitBusinesses'].metadata())
 
         repo.logout()
@@ -80,20 +81,30 @@ class Businesses (dml.Algorithm):
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
         resource = doc.entity('dba: ', {'prov:label':'Doing Business As - City Clerk', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        fitBusinesses = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(fitBusinesses, this_script)
+        get_fitBusinesses = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_fitBusinesses, this_script)
+        
+        doc.usage(get_fitBusinesses, resource, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval',
+                  'ont:Query':''
+                  }
+                  )
+
+
+        fitBusinesses = doc.entity('dat:janellc_rstiffel#fitBusinesses', {prov.model.PROV_LABEL:'Fit Businesses', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(fitBusinesses, this_script)
-        doc.wasGeneratedBy(resource, fitBusinesses, endTime)
-        doc.wasDerivedFrom(resource, fitBusinesses, fitBusinesses)
+        doc.wasGeneratedBy(fitBusinesses, get_fitBusinesses, endTime)
+        doc.wasDerivedFrom(fitBusinesses, resource, get_fitBusinesses, get_fitBusinesses, get_fitBusinesses)
+
 
         repo.logout()
                   
         return doc
 
 #Delete for submission
-# Businesses.execute()
-# doc = Businesses.provenance()
-# print(doc.get_provn())
+#getBusinesses.execute()
+#doc = getBusinesses.provenance()
+#print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

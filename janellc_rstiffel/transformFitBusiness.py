@@ -13,9 +13,9 @@ Joins on district name,
 
 """
 
-class transformfitBusiness(dml.Algorithm):
+class transformFitBusiness(dml.Algorithm):
     contributor = 'janellc_rstiffel'
-    reads = ['janellc_rstiffel.districtAvgAcres', 'janellc_rstiffel.fitBusinesses']
+    reads = ['janellc_rstiffel.districtAvgAcres', 'janellc_rstiffel.fitBusinesses', 'janellc_rstiffel.openSpace']
     writes = ['janellc_rstiffel.zipBusinessPark']
 
     @staticmethod
@@ -79,8 +79,8 @@ class transformfitBusiness(dml.Algorithm):
               if key2==dis:
                   new[key]['totalParkAcres']=value2['totalAcres']
 
-        # with open("./transformed_datasets/zipBusinessPark.json", 'w') as outfile:
-        #     json.dump(new, outfile)
+        with open("./janellc_rstiffel/transformed_datasets/zipBusinessPark.json", 'w') as outfile:
+            json.dump(new, outfile)
 
         repo.dropCollection('janellc_rstiffel.zipBusinessPark')
         repo.createCollection('janellc_rstiffel.zipBusinessPark')
@@ -88,8 +88,9 @@ class transformfitBusiness(dml.Algorithm):
 
         for key,value in new.items():
             repo['janellc_rstiffel.zipBusinessPark'].insert({key:value})
-            repo['janellc_rstiffel.zipBusinessPark'].metadata({'complete': True})
-
+        
+        repo['janellc_rstiffel.zipBusinessPark'].metadata({'complete': True})
+        print(repo['janellc_rstiffel.zipBusinessPark'].metadata())
 
 
 
@@ -126,26 +127,39 @@ class transformfitBusiness(dml.Algorithm):
                                {'prov:label': 'Fitness Businesses', prov.model.PROV_TYPE: 'ont:DataResource',
                                 'ont:Extension': 'json'})
 
-        zipBusinessPark = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        transformFitBusiness = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
         doc.wasAssociatedWith(transformFitBusiness, this_script)
-        doc.usage(transformFitBusiness, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
+        doc.usage(transformFitBusiness, resource1, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Calculation',
+                   'ont:Query': ''
+                   }
+                  )
+        doc.usage(transformFitBusiness, resource2, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Calculation',
+                   'ont:Query': ''
+                   }
+                  )
+        doc.usage(transformFitBusiness, resource3, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Calculation',
                    'ont:Query': ''
                    }
                   )
         zipBusinessPark = doc.entity('dat:janellc_rstiffel#zipBusinessPark',
                                    {prov.model.PROV_LABEL: 'park and business data ny zip', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(zipBusinessPark, this_script)
-        doc.wasGeneratedBy(zipBusinessPark, endTime)
-        doc.wasDerivedFrom(resource1, resource2, resource3, zipBusinessPark)
+        doc.wasGeneratedBy(zipBusinessPark, transformFitBusiness, endTime)
+        doc.wasDerivedFrom(zipBusinessPark, resource1, transformFitBusiness, transformFitBusiness, transformFitBusiness)
+        doc.wasDerivedFrom(zipBusinessPark, resource2, transformFitBusiness, transformFitBusiness, transformFitBusiness)
+        doc.wasDerivedFrom(zipBusinessPark, resource3, transformFitBusiness, transformFitBusiness, transformFitBusiness)
+        
 
         repo.logout()
 
         return doc
 
-# transformfitBusiness.execute()
-# doc = getOpenSpace.provenance()
+# transformFitBusiness.execute()
+# doc = transformFitBusiness.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))
 

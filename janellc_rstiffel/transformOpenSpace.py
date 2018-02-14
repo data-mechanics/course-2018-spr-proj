@@ -62,7 +62,7 @@ class transformOpenSpace(dml.Algorithm):
 
 
         # Store in districtAvgAcres.json
-        with open("./transformed_datasets/districtAvgAcres.json", 'w') as outfile:
+        with open("./janellc_rstiffel/transformed_datasets/districtAvgAcres.json", 'w') as outfile:
             json.dump(zip_districts, outfile)
 
 

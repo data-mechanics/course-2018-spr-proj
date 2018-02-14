@@ -55,50 +55,41 @@ class hubwayTravel(dml.Algorithm):
             '''
 
         # Set up the database connection.
-        pass
-        # client = dml.pymongo.MongoClient()
-        # repo = client.repo
-        # repo.authenticate('alice_bob', 'alice_bob')
-        # doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        # doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-        # doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-        # doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        # doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('aoconno8_dmak1112', 'aoconno8_dmak1112')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/aoconno8_dmak1112') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/aoconno8_dmak1112') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
-        # this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        # resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        # get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        # get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        # doc.wasAssociatedWith(get_found, this_script)
-        # doc.wasAssociatedWith(get_lost, this_script)
-        # doc.usage(get_found, resource, startTime, None,
-        #           {prov.model.PROV_TYPE:'ont:Retrieval',
-        #           'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-        #           }
-        #           )
-        # doc.usage(get_lost, resource, startTime, None,
-        #           {prov.model.PROV_TYPE:'ont:Retrieval',
-        #           'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-        #           }
-        #           )
+        this_script = doc.agent('alg:aoconno8_dmak1112#hubwayTravel', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        jan_oct = doc.entity('dat:hubway_travel_Jan-Oct', {'prov:label':'Hubway Travel Data January-October 2015', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        nov_dec = doc.entity('dat:hubway_travel_Nov-Dec', {'prov:label':'Hubway Travel Data November-December 2015', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        get_hubwayTravel = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_hubwayTravel, this_script)
+        doc.usage(get_hubwayTravel, jan_oct, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Computation'
+                  }
+                  )
+        doc.usage(get_hubwayTravel, nov_dec, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Computation'
+                  }
+                  )
 
-        # lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-        # doc.wasAttributedTo(lost, this_script)
-        # doc.wasGeneratedBy(lost, get_lost, endTime)
-        # doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
+        hubwayTravel = doc.entity('dat:aoconno8_dmak1112#hubwayTravel', {prov.model.PROV_LABEL:'Hubway Daily Travel Data 2015', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(hubwayTravel, this_script)
+        doc.wasGeneratedBy(hubwayTravel, get_hubwayTravel, endTime)
+        doc.wasDerivedFrom(hubwayTravel, jan_oct, get_hubwayTravel, get_hubwayTravel, get_hubwayTravel)
+        doc.wasDerivedFrom(hubwayTravel, nov_dec, get_hubwayTravel, get_hubwayTravel, get_hubwayTravel)
 
-        # found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-        # doc.wasAttributedTo(found, this_script)
-        # doc.wasGeneratedBy(found, get_found, endTime)
-        # doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
-
-        # repo.logout()
+        repo.logout()
                   
-        # return doc
+        return doc
 
 hubwayTravel.execute()
-# doc = example.provenance()
-# print(doc.get_provn())
-# print(json.dumps(json.loads(doc.serialize()), indent=4))
+doc = hubwayTravel.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

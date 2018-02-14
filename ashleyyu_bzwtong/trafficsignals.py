@@ -8,7 +8,7 @@ import uuid
 class trafficsignals(dml.Algorithm):
     contributor = 'ashleyyu_bzwtong'
     reads = []
-    writes = ['ashleyyu_bzwtong', 'ashleyyu_bzwtong']
+    writes = ['ashleyyu_bzwtong.trafficsignals']
 
     @staticmethod
     def execute(trial = False):
@@ -25,9 +25,9 @@ class trafficsignals(dml.Algorithm):
         signals_json = json.loads(response)
         repo.dropCollection("trafficsignals")
         repo.createCollection("trafficsignals")
-        repo['ashleyyu_bzwtong'].insert_many(signals_json)
-        repo['ashleyyu_bzwtong'].metadata({'complete':True})
-        print(repo['ashleyyu_bzwtong'].metadata())
+        repo['ashleyyu_bzwtong.trafficsignals'].insert_many(signals_json)
+        repo['ashleyyu_bzwtong.trafficsignals'].metadata({'complete':True})
+        print(repo['ashleyyu_bzwtong.trafficsignals'].metadata())
 
         repo.logout()
 
@@ -47,19 +47,20 @@ class trafficsignals(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/ashleyyu_bzwtong') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/ashleyyu_bzwtong') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
         this_script = doc.agent('alg:ashleyyu_bzwtong#signals', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('dat:Traffic Signals in Boston',
+                              {'prov:label': 'Traffic Signals Data', prov.model.PROV_TYPE: 'ont:DataResource',
+                               'ont:Extension': 'csv'})
         get_signal = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_signal, this_script)
         doc.usage(get_signal, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Traffic+Signal&$select=type,latitude,longitude,OPEN_DT'
                   }
                   )
 

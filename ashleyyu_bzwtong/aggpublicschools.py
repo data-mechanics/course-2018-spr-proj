@@ -14,7 +14,7 @@ class aggpublicschools(dml.Algorithm):
     
     @staticmethod
     def execute(trial = False):
-        '''Find number of schools within each zipcode'''
+        '''Find number of public schools within each zipcode'''
         startTime = datetime.datetime.now()
 
         # Set up the database connection.

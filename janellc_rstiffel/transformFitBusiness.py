@@ -79,8 +79,8 @@ class transformfitBusiness(dml.Algorithm):
               if key2==dis:
                   new[key]['totalParkAcres']=value2['totalAcres']
 
-        with open("./transformed_datasets/zipBusinessPark.json", 'w') as outfile:
-            json.dump(new, outfile)
+        # with open("./transformed_datasets/zipBusinessPark.json", 'w') as outfile:
+        #     json.dump(new, outfile)
 
         repo.dropCollection('janellc_rstiffel.zipBusinessPark')
         repo.createCollection('janellc_rstiffel.zipBusinessPark')

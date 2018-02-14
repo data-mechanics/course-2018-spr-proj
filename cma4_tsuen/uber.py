@@ -21,19 +21,9 @@ class uber(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cma4_tsuen', 'cma4_tsuen')
 
-        #csvfile = open("./../data/boston-censustracts-2017-3-WeeklyAggregate (1).csv", 'r')
-        jsonfile = open("./../data/uber.json", 'r')
-
-        """
-        fieldnames = ["sourceid", "dstid", 'dow', 'mean_travel_time', 'standard_deviation_travel_time', 'geometric_mean_travel_time', 'geometric_standard_deviation_travel_time']
-        reader = csv.DictReader(csvfile, fieldnames)
-        l = []
-        for row in reader:
-            l.append(row)
-        json.dump(l, jsonfile)
-        """
-
-        r = json.load(jsonfile)
+        url = 'http://datamechanics.io/?prefix=cma4_tsuen/uber.json'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.load(response)
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("cma4_tsuen.uber")
         repo.createCollection("cma4_tsuen.uber")

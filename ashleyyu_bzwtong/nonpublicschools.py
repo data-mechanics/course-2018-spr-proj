@@ -72,9 +72,9 @@ class nonpublicschools(dml.Algorithm):
                   
         return doc
 
-nonpublicschools.execute()
-doc = nonpublicschools.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+#nonpublicschools.execute()
+#doc = nonpublicschools.provenance()
+#print(doc.get_provn())
+#print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

@@ -28,8 +28,8 @@ class aggpublicschools(dml.Algorithm):
         zipCount= []
         for entry in repo.ashleyyu_bzwtong.publicschools.find():
             if "zipcode" in entry:
-                zip = entry["zipcode"]
-                zipCount += [(zip, 1)]
+                zipcd = entry["zipcode"]
+                zipCount += [(zipcd, 1)]
                 
                 
         keys = {k[0] for k in zipCount}

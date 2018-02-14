@@ -6,11 +6,10 @@ import datetime
 import uuid
 import numpy as np
 
-
-class openSpaceComparison(dml.Algorithm):
+class bikeComparison(dml.Algorithm):
     contributor = 'cwsonn_levyjr'
-    reads = ['cwsonn_levyjr.Copenspace', 'cwsonn_levyjr.openspace']
-    writes = ['cwsonn_levyjr.openSpaceComparison']
+    reads = ['cwsonn_levyjr.Cbikepath', 'cwsonn_levyjr.bikepath']
+    writes = ['cwsonn_levyjr.bikeLengthComparison']
     
     def intersect(R, S):
         return [t for t in R if t in S]
@@ -25,58 +24,40 @@ class openSpaceComparison(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cwsonn_levyjr', 'cwsonn_levyjr')
 
-        BopenSpace = repo['cwsonn_levyjr.openspace'].find()
+        Bbikepath = repo['cwsonn_levyjr.bikepath'].find()
 
-        #Get Boston open space areas
-        parkAreasBos = []
-        for b in BopenSpace:
-            area = b["properties"]["ShapeSTArea"]
-            parkAreasBos.append(area)
-
-        CopenSpace = repo['cwsonn_levyjr.Copenspace'].find()
-
-        #Get Cambridge open space areas
-        CamAreaTotal = 0
-        parkAreasCam = []
-        for c in CopenSpace:
-            area = c["shape_area"]
-            parkAreasCam.append(area)
-
-        #Combine Data
-        repo.dropCollection("cwsonn_levyjr.openSpaceComparison")
-        repo.createCollection("cwsonn_levyjr.openSpaceComparison")
-
-        park_dict = {'BosOpenSpaces': parkAreasBos, 'CamOpenSpaces': parkAreasCam}
-        repo['cwsonn_levyjr.openSpaceComparison'].insert_one(park_dict)
+        #Get Boston bike path lengths
+        bikeLenBos = []
+        for b in Bbikepath:
+            len = b["properties"]["Shape_Leng"]
+            bikeLenBos.append(len)
         
-        combinedData = repo['cwsonn_levyjr.openSpaceComparison'].find()
+        BosBikeTotal = 0
+        for i in bikeLenBos:
+            BosBikeTotal += i
 
-        BosAreaTotal = 0
-        CamAreaTotal = 0
-        for b in combinedData:
-            areaB = b["BosOpenSpaces"]
-            areaC = b["CamOpenSpaces"]
-            x = np.array(areaC)
-            areaC = x.astype(np.float)
-            
-            for i in range(len(areaB)):
-                BosAreaTotal += areaB[i]
-            for j in range(len(areaC)):
-                CamAreaTotal += areaC[j]
-    
-        areaCount = 0
-        for i in range(len(areaB)):
-            for j in range(len(areaC)):
-                if(areaC[j] - 10 <= areaB[i] <= areaC[j] + 10):
-                    areaCount += 1
+        Cbikepath = repo['cwsonn_levyjr.Cbikepath'].find()
 
-        bikeAreaTotals = {'BosOpenSpaceAreaTotal': BosAreaTotal, 'CamOpenSpaceAreaTotal': CamAreaTotal}
-        bikeIntersectionsTotals = {'IntersectionTotals': areaCount}
+        #Get Cambridge bike path lengths
+        bikeLenCam = []
+        for c in Cbikepath:
+            len = c["properties"]["LENGTH"]
+            bikeLenCam.append(len)
 
-        repo['cwsonn_levyjr.openSpaceComparison'].insert_one(bikeAreaTotals)
-        repo['cwsonn_levyjr.openSpaceComparison'].insert_one(bikeIntersectionsTotals)
+        CamBikeTotal = 0
+        for i in bikeLenCam:
+            CamBikeTotal += i
+        
+        bikeCompTotals = {'BosBikePathLengthTotal': BosBikeTotal, 'CamBikePathLengthTotal': CamBikeTotal}
 
+        #Combine Data and Create new collection
+        bike_lengths = []
+        repo.dropCollection("cwsonn_levyjr.bikeLengthComparison")
+        repo.createCollection("cwsonn_levyjr.bikeLengthComparison")
 
+        bike_length_dict = {'BosBikePath': bikeLenBos, 'CamBikePath': bikeLenCam, 'pathTotals': bikeCompTotals}
+        repo['cwsonn_levyjr.bikeLengthComparison'].insert_one(bike_length_dict)
+        
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''
@@ -126,8 +107,8 @@ class openSpaceComparison(dml.Algorithm):
                   
         return doc
 
-openSpaceComparison.execute()
-doc = openSpaceComparison.provenance()
+bikeComparison.execute()
+doc = bikeComparison.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

@@ -1,19 +1,15 @@
 import urllib.request
 import json
+import geojson
 import dml
 import prov.model
 import datetime
 import uuid
-import numpy as np
 
-
-class openSpaceComparison(dml.Algorithm):
+class example(dml.Algorithm):
     contributor = 'cwsonn_levyjr'
-    reads = ['cwsonn_levyjr.Copenspace', 'cwsonn_levyjr.openspace']
-    writes = ['cwsonn_levyjr.openSpaceComparison']
-    
-    def intersect(R, S):
-        return [t for t in R if t in S]
+    reads = []
+    writes = ['cwsonn_levyjr.bikerack']
 
     @staticmethod
     def execute(trial = False):
@@ -25,65 +21,29 @@ class openSpaceComparison(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cwsonn_levyjr', 'cwsonn_levyjr')
 
-        BopenSpace = repo['cwsonn_levyjr.openspace'].find()
+        url = 'https://raw.githubusercontent.com/cambridgegis/cambridgegis_data/master/Recreation/Bike_Racks/RECREATION_BikeRacks.geojson'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
+        s = json.dumps(r, sort_keys=True, indent=2)
 
-        #Get Boston open space areas
-        parkAreasBos = []
-        for b in BopenSpace:
-            area = b["properties"]["ShapeSTArea"]
-            parkAreasBos.append(area)
+        repo.dropCollection("cwsonn_levyjr.bikerack")
+        repo.createCollection("cwsonn_levyjr.bikerack")
 
-        CopenSpace = repo['cwsonn_levyjr.Copenspace'].find()
+        repo["cwsonn_levyjr.bikerack"].insert_many(r["features"])
 
-        #Get Cambridge open space areas
-        CamAreaTotal = 0
-        parkAreasCam = []
-        for c in CopenSpace:
-            area = c["shape_area"]
-            parkAreasCam.append(area)
+        repo.logout()
 
-        #Combine Data
-        repo.dropCollection("cwsonn_levyjr.openSpaceComparison")
-        repo.createCollection("cwsonn_levyjr.openSpaceComparison")
+        endTime = datetime.datetime.now()
 
-        park_dict = {'BosOpenSpaces': parkAreasBos, 'CamOpenSpaces': parkAreasCam}
-        repo['cwsonn_levyjr.openSpaceComparison'].insert_one(park_dict)
-        
-        combinedData = repo['cwsonn_levyjr.openSpaceComparison'].find()
-
-        BosAreaTotal = 0
-        CamAreaTotal = 0
-        for b in combinedData:
-            areaB = b["BosOpenSpaces"]
-            areaC = b["CamOpenSpaces"]
-            x = np.array(areaC)
-            areaC = x.astype(np.float)
-            
-            for i in range(len(areaB)):
-                BosAreaTotal += areaB[i]
-            for j in range(len(areaC)):
-                CamAreaTotal += areaC[j]
+        return {"start":startTime, "end":endTime}
     
-        areaCount = 0
-        for i in range(len(areaB)):
-            for j in range(len(areaC)):
-                if(areaC[j] - 10 <= areaB[i] <= areaC[j] + 10):
-                    areaCount += 1
-
-        bikeAreaTotals = {'BosOpenSpaceAreaTotal': BosAreaTotal, 'CamOpenSpaceAreaTotal': CamAreaTotal}
-        bikeIntersectionsTotals = {'IntersectionTotals': areaCount}
-
-        repo['cwsonn_levyjr.openSpaceComparison'].insert_one(bikeAreaTotals)
-        repo['cwsonn_levyjr.openSpaceComparison'].insert_one(bikeIntersectionsTotals)
-
-
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''
             Create the provenance document describing everything happening
             in this script. Each run of the script will generate a new
             document describing that invocation event.
-        '''
+            '''
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
@@ -126,8 +86,9 @@ class openSpaceComparison(dml.Algorithm):
                   
         return doc
 
-openSpaceComparison.execute()
-doc = openSpaceComparison.provenance()
+example.execute()
+doc = example.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 
+## eof

@@ -6,15 +6,11 @@ import datetime
 import uuid
 import numpy as np
 
-
-class openSpaceComparison(dml.Algorithm):
+class bikeComparisonCam(dml.Algorithm):
     contributor = 'cwsonn_levyjr'
-    reads = ['cwsonn_levyjr.Copenspace', 'cwsonn_levyjr.openspace']
-    writes = ['cwsonn_levyjr.openSpaceComparison']
+    reads = ['cwsonn_levyjr.Cbikepath', 'cwsonn_levyjr.bikerack']
+    writes = ['cwsonn_levyjr.bikeComparisonCam']
     
-    def intersect(R, S):
-        return [t for t in R if t in S]
-
     @staticmethod
     def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
@@ -25,58 +21,34 @@ class openSpaceComparison(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cwsonn_levyjr', 'cwsonn_levyjr')
 
-        BopenSpace = repo['cwsonn_levyjr.openspace'].find()
+        Cbikepath = repo['cwsonn_levyjr.Cbikepath'].find()
 
-        #Get Boston open space areas
-        parkAreasBos = []
-        for b in BopenSpace:
-            area = b["properties"]["ShapeSTArea"]
-            parkAreasBos.append(area)
+        #Get Cambridge bike path coordinates
+        bikePathCoords = []
+        for c in Cbikepath:
+            pathCoords = c["geometry"]["coordinates"]
+            bikePathCoords.append(pathCoords)
+        print(bikePathCoords)
 
-        CopenSpace = repo['cwsonn_levyjr.Copenspace'].find()
+        #Get Cambridge bike rack locations
+        bikeracks = repo['cwsonn_levyjr.bikerack'].find()
+        bikeRackCoords = []
+        for c in bikeracks:
+            coords = c["geometry"]["coordinates"]
+            bikeRackCoords.append(coords)
+        print(bikeRackCoords)
 
-        #Get Cambridge open space areas
-        CamAreaTotal = 0
-        parkAreasCam = []
-        for c in CopenSpace:
-            area = c["shape_area"]
-            parkAreasCam.append(area)
-
-        #Combine Data
-        repo.dropCollection("cwsonn_levyjr.openSpaceComparison")
-        repo.createCollection("cwsonn_levyjr.openSpaceComparison")
-
-        park_dict = {'BosOpenSpaces': parkAreasBos, 'CamOpenSpaces': parkAreasCam}
-        repo['cwsonn_levyjr.openSpaceComparison'].insert_one(park_dict)
+        #Combine Data and Create new collection
         
-        combinedData = repo['cwsonn_levyjr.openSpaceComparison'].find()
+        bike_lengths = []
+        repo.dropCollection("cwsonn_levyjr.bikeComparisonCam")
+        repo.createCollection("cwsonn_levyjr.bikeComparisonCam")
 
-        BosAreaTotal = 0
-        CamAreaTotal = 0
-        for b in combinedData:
-            areaB = b["BosOpenSpaces"]
-            areaC = b["CamOpenSpaces"]
-            x = np.array(areaC)
-            areaC = x.astype(np.float)
-            
-            for i in range(len(areaB)):
-                BosAreaTotal += areaB[i]
-            for j in range(len(areaC)):
-                CamAreaTotal += areaC[j]
-    
-        areaCount = 0
-        for i in range(len(areaB)):
-            for j in range(len(areaC)):
-                if(areaC[j] - 10 <= areaB[i] <= areaC[j] + 10):
-                    areaCount += 1
-
-        bikeAreaTotals = {'BosOpenSpaceAreaTotal': BosAreaTotal, 'CamOpenSpaceAreaTotal': CamAreaTotal}
-        bikeIntersectionsTotals = {'IntersectionTotals': areaCount}
-
-        repo['cwsonn_levyjr.openSpaceComparison'].insert_one(bikeAreaTotals)
-        repo['cwsonn_levyjr.openSpaceComparison'].insert_one(bikeIntersectionsTotals)
-
-
+        bike_coord_dict = {'bikePathCoords': bikePathCoords, 'bikeRackCoords': bikeRackCoords}
+        repo['cwsonn_levyjr.bikeComparisonCam'].insert_one(bike_coord_dict)
+        
+        combinedData = repo['cwsonn_levyjr.bikeComparisonCam'].find()
+        
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''
@@ -126,8 +98,8 @@ class openSpaceComparison(dml.Algorithm):
                   
         return doc
 
-openSpaceComparison.execute()
-doc = openSpaceComparison.provenance()
+bikeComparisonCam.execute()
+doc = bikeComparisonCam.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

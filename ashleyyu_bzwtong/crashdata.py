@@ -8,7 +8,7 @@ import uuid
 class crashdata(dml.Algorithm):
     contributor = 'ashleyyu_bzwtong'
     reads = []
-    writes = ['ashleyyu_bzwtong', 'ashleyyu_bzwtong']
+    writes = ['ashleyyu_bzwtong.crashdata']
 
     @staticmethod
     def execute(trial = False):
@@ -22,12 +22,12 @@ class crashdata(dml.Algorithm):
 
         url = 'http://datamechanics.io/data/crash.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        crash_json = json.loads(response)
+        crash_json = [json.loads(response)]
         repo.dropCollection("crashdata")
         repo.createCollection("crashdata")
-        repo['ashleyyu_bzwtong'].insert_many(crash_json)
-        repo['ashleyyu_bzwtong'].metadata({'complete':True})
-        print(repo['ashleyyu_bzwtong'].metadata())
+        repo['ashleyyu_bzwtong.crashdata'].insert_many(crash_json)
+        repo['ashleyyu_bzwtong.crashdata'].metadata({'complete':True})
+        print(repo['ashleyyu_bzwtong.crashdata'].metadata())
 
         repo.logout()
 
@@ -54,12 +54,13 @@ class crashdata(dml.Algorithm):
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
         this_script = doc.agent('alg:ashleyyu_bzwtong#crashdata', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('dat:Crash Data in Boston',
+                              {'prov:label': 'Crash Data', prov.model.PROV_TYPE: 'ont:DataResource',
+                               'ont:Extension': 'csv'})
         get_crash = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_crash, this_script)
         doc.usage(get_crash, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Crash+Data&$select=type,latitude,longitude,OPEN_DT'
                   }
                   )
 

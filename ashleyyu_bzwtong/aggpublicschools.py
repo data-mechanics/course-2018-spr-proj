@@ -4,7 +4,7 @@ import dml
 import prov.model
 import datetime
 import uuid
-#import numpy as np
+import numpy as np
 
 class aggpublicschools(dml.Algorithm):
     contributor = 'ashleyyu_bzwtong'

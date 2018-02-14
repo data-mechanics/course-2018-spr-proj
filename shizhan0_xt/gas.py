@@ -59,7 +59,7 @@ class gas(dml.Algorithm):
         return doc
 
 
-#gas.execute()
-#doc = gas.provenance()
-#print(doc.get_provn())
-#print(json.dumps(json.loads(doc.serialize()), indent=4))
+# gas.execute()
+# doc = gas.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))

@@ -80,6 +80,7 @@ class cityEcon(dml.Algorithm):
                               {prov.model.PROV_LABEL: 'cityEcon', prov.model.PROV_TYPE: 'ont:DataSet'})
 
         doc.wasAttributedTo(cityEcon, this_script)
+
         doc.wasGeneratedBy(cityEcon, get_cityEcon, endTime)
 
         doc.wasDerivedFrom(cityEcon, pcpi, get_cityEcon, get_cityEcon, get_cityEcon)

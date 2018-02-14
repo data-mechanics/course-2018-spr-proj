@@ -77,7 +77,7 @@ class citycrime(dml.Algorithm):
 
 
 
-#citycrime.execute()
-#doc = citycrime.provenance()
-#print(doc.get_provn())
-#print(json.dumps(json.loads(doc.serialize()), indent=4))
+# citycrime.execute()
+# doc = citycrime.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))

@@ -60,7 +60,7 @@ class gdpUS(dml.Algorithm):
         return doc
 
 
-#gdpUS.execute()
-#doc = gdpUS.provenance()
-#print(doc.get_provn())
-#print(json.dumps(json.loads(doc.serialize()), indent=4))
+# gdpUS.execute()
+# doc = gdpUS.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))

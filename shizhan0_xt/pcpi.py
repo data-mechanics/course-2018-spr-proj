@@ -59,7 +59,7 @@ class pcpi(dml.Algorithm):
         return doc
 
 
-#pcpi.execute()
-#doc = pcpi.provenance()
-#print(doc.get_provn())
-#print(json.dumps(json.loads(doc.serialize()), indent=4))
+# pcpi.execute()
+# doc = pcpi.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))

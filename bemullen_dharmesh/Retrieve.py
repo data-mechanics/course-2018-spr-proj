@@ -13,7 +13,8 @@ import xmltodict
 class Retrieve(dml.Algorithm):
     contributor = 'bemullen_dharmesh'
     reads = []
-    writes = ['bemullen_dharmesh.cityscore', 'bemullen_dharmesh.universities']
+    writes = ['bemullen_dharmesh.cityscore', 'bemullen_dharmesh.universities',
+    'bemullen_dharmesh.code_enforcements', 'bemullen_dharmesh.service_requests']
 
     @staticmethod
     def execute(trial = False):
@@ -27,8 +28,8 @@ class Retrieve(dml.Algorithm):
 
         # url = 'http://datamechanics.io/data/bemullen_dharmesh/data/311ServiceCalls.json'
         urls = {'cityscore': 'https://data.boston.gov/datastore/odata3.0/5bce8e71-5192-48c0-ab13-8faff8fef4d7?$format=json',
-        'universities':'https://data.boston.gov/datastore/odata3.0/90ed3816-5e70-443c-803d-9a71f44470be?$format=json',
-        'code_enforcements': 'https://data.boston.gov/datastore/odata3.0/90ed3816-5e70-443c-803d-9a71f44470be?$format=json'}
+        'code_enforcements': 'https://data.boston.gov/datastore/odata3.0/90ed3816-5e70-443c-803d-9a71f44470be?$format=json',
+        'service_requests': 'https://data.boston.gov/datastore/odata3.0/2968e2c0-d479-49ba-a884-4ef523ada3c0?$format=json'}
 
         for (key, url) in urls.items():
             response = urllib.request.urlopen(url).read().decode("utf-8")
@@ -95,7 +96,7 @@ class Retrieve(dml.Algorithm):
         doc.usage(get_universities, resource_universities, startTime, None,
             {prov.model.PROV_TYPE:'ont:Retrieval'})
 
-        resource_code_enforcements = doc.entity('bdpm:0ed3816-5e70-443c-803d-9a71f44470be',
+        resource_code_enforcements = doc.entity('bdpm:90ed3816-5e70-443c-803d-9a71f44470be',
             {'prov:label':'Code Enforcement - Building and Property', prov.model.PROV_TYPE:'ont:DataResource',
             'ont:Extension':'json'})
         get_code_enforcements = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime, 
@@ -105,6 +106,16 @@ class Retrieve(dml.Algorithm):
             {prov.model.PROV_TYPE:'ont:Retrieval',
             'ont:Query':'?$format=json'
             })
+
+        resource_service_requests = doc.entity('bdpm:2968e2c0-d479-49ba-a884-4ef523ada3c0',
+            {'prov:label':'311 Service Requests', prov.model.PROV_TYPE:'ont:DataResource',
+            'ont:Extension': 'json'})
+        get_service_requests = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime,
+            {'prov:label': 'Get List of Boston\'s 311 Service Requests'})
+        doc.wasAssociatedWith(get_service_requests, this_script)
+        doc.usage(get_service_requests, resource_service_requests, startTime, None,
+            {prov.model.PROV_TYPE:'ont:Retrieval',
+            'ont:Query':'?$format=json'})
 
         cityscore = doc.entity('dat:bemullen_dharmesh#cityscore', {prov.model.PROV_LABEL:'CityScore Metrics',
             prov.model.PROV_TYPE:'ont:DataSet'})
@@ -129,6 +140,16 @@ class Retrieve(dml.Algorithm):
         doc.wasGeneratedBy(code_enforcements, get_code_enforcements, endTime)
         doc.wasDerivedFrom(code_enforcements, resource_code_enforcements, get_code_enforcements,
             get_code_enforcements, get_code_enforcements)
+
+        service_requests = doc.entity('dat:bemullen_dharmesh#service_requests',
+            {prov.model.PROV_LABEL:'311 Service Requests',
+            prov.model.PROV_TYPE:'ont:DataSet'
+            })
+        doc.wasAttributedTo(service_requests, this_script)
+        doc.wasGeneratedBy(service_requests, get_service_requests, endTime)
+        doc.wasDerivedFrom(service_requests, resource_service_requests, get_service_requests,
+            get_service_requests, get_service_requests)
+
 
         repo.logout()
                   

@@ -73,9 +73,9 @@ class parkingData(dml.Algorithm):
         return doc
 
 
-parkingData.execute()
-doc = parkingData.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
-
+# parkingData.execute()
+# doc = parkingData.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
+#
 ## eof

@@ -81,9 +81,9 @@ class bostonClimate(dml.Algorithm):
                   
         return doc
 
-bostonClimate.execute()
-doc = bostonClimate.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+# bostonClimate.execute()
+# doc = bostonClimate.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

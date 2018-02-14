@@ -268,9 +268,9 @@ class weatherHubway(dml.Algorithm):
         return np.mean(x)
 
     #############   FOR TRANSFORMATIONS  #####################
-weatherHubway.execute()
-doc = weatherHubway.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+# weatherHubway.execute()
+# doc = weatherHubway.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

@@ -216,9 +216,9 @@ class weatherParking(dml.Algorithm):
     def aggregate(R, f):
         keys = {r[0] for r in R}
         return [(key, f([v for (k,v) in R if k == key])) for key in keys]
-weatherParking.execute()
-doc = weatherParking.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+# weatherParking.execute()
+# doc = weatherParking.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

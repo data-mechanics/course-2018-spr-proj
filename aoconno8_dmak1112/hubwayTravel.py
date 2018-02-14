@@ -87,9 +87,9 @@ class hubwayTravel(dml.Algorithm):
                   
         return doc
 
-hubwayTravel.execute()
-doc = hubwayTravel.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+# hubwayTravel.execute()
+# doc = hubwayTravel.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

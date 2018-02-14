@@ -174,9 +174,9 @@ class weatherUber(dml.Algorithm):
         return [(key, f([v for (k, v) in R if k == key])) for key in keys]
 
 
-weatherUber.execute()
-doc = weatherUber.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+# weatherUber.execute()
+# doc = weatherUber.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

@@ -70,9 +70,9 @@ class yearlyEmissions(dml.Algorithm):
 
         return doc
 
-yearlyEmissions.execute()
-doc = yearlyEmissions.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+# yearlyEmissions.execute()
+# doc = yearlyEmissions.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

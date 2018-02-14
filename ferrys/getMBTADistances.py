@@ -68,7 +68,7 @@ class getMBTADistances(dml.Algorithm):
 
         close_points = getMBTADistances.select(mbta_dist, lambda x: getMBTADistances.is_close((x['alc_coord'][0], x['alc_coord'][1]), (x['mbta_coord'][0], x['mbta_coord'][1])))
         num_mbta_near = getMBTADistances.aggregate_mbta(close_points, lambda x: sum([1 for x in x]))
-        print(num_mbta_near)
+
         repo.dropCollection('mbtadistance')
         repo.createCollection('mbtadistance')
         repo['ferrys.mbtadistance'].insert_many(num_mbta_near)
@@ -92,8 +92,8 @@ class getMBTADistances(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('ferrys', 'ferrys')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/ferrys/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/ferrys/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('geocode', 'https://maps.googleapis.com/maps/api/geocode')

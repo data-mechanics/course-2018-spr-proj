@@ -102,6 +102,10 @@ class propertyvalue(dml.Algorithm):
         repo.logout()
 
         return doc
-        
+    
+    
+doc = crashdata.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

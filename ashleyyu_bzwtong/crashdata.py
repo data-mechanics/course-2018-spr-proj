@@ -73,7 +73,7 @@ class crashdata(dml.Algorithm):
                   
         return doc
 
-crashdata.execute()
+#crashdata.execute()
 doc = crashdata.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))

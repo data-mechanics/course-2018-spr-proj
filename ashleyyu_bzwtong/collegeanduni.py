@@ -21,7 +21,7 @@ class collegeanduni(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
 
-        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/cbf14bb032ef4bd38e20429f71acb61a_2'
+        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/cbf14bb032ef4bd38e20429f71acb61a_2.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         print(response)
         schools_json = [json.loads(response)]

@@ -15,7 +15,7 @@ class foursquare_api_retrieve(dml.Algorithm):
 	writes = ['agoncharova_lmckone.foursquare_boston', 'agoncharova_lmckone.foursquare_sf']
 
 	# request data
-	CLIENT_SECRET = 'BI1UF1MR2D5LFJPZT35BABSEU5JQNDGNMMZEBZDKZ4D4ZFNM'
+	CLIENT_SECRET = 'S2HYJCNAKQ5S5RBUPUWHPSLN5CZ2FHXB3NUHHWXPBU45GXDP'
 	CLIENT_ID = 'OBXTQASYLDVZVYFNR4HIKVSHWXV1VT0CZYLHFJVSG0D4ANGX'
 	CATEGORY_ID = '4bf58dd8d48988d124941735' # 'Offices' category
 	api_version = '20180201' # use Feb 1, 2018
@@ -170,7 +170,6 @@ class foursquare_api_retrieve(dml.Algorithm):
 		doc.add_namespace('sfdp', 'https://datasf.org/opendata/')
 
 		this_script = doc.agent('alg:agoncharova_lmckone#foursquare_api_retrieve', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-		# TODO: Is the value after bdp below a random id?
 		resource = doc.entity('4sq:40e2-897e', {'prov:label':'Foursquare, Office Data for Boston and SF', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
 
 		#	separate by SF and Boston data
@@ -178,7 +177,6 @@ class foursquare_api_retrieve(dml.Algorithm):
 		get_boston = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 		doc.wasAssociatedWith(get_sf, this_script)
 		doc.wasAssociatedWith(get_boston, this_script)
-		# TODO: How do we format the complex set of queries to the API?
 		# SF query
 		sf_queries = fr.construct_set_of_queries("SF")
 		doc.usage(get_sf, resource, startTime, None,
@@ -208,5 +206,5 @@ class foursquare_api_retrieve(dml.Algorithm):
 		        
 		return doc
 
-# foursquare_api_retrieve.execute()
-# foursquare_api_retrieve.provenance()
+foursquare_api_retrieve.execute()
+foursquare_api_retrieve.provenance()

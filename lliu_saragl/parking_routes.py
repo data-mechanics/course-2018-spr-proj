@@ -30,21 +30,29 @@ class parking_routes(dml.Algorithm):
 
         r = getData('routes')
 
-        lstOfParking = {'result':[]}
+        lstOfParking = {}
         for i in p:
-            if i['properties']['Address'] not in lstOfParking:
-                lstOfParking['result'].append(i['properties']['Address'])
-                
+            l = i['properties']['Address']
+            if l not in lstOfParking:
+                l = l.replace(".","")
+                lstOfParking[l] = {
+                    "Spaces":i['properties']['Spaces'],
+                    "Fees":i['properties']['Fee']
+                    }
 
-        lstOfRoutes = {'result':[]}
+        lstOfRoutes = {}
         for i in r:
-            if i['properties']['FULL_NAME'] not in lstOfRoutes:
-                lstOfRoutes['result'].append(i['properties']['FULL_NAME'])
+            temp = i['properties']['FULL_NAME']
+            if temp not in lstOfRoutes:
+                temp = temp.replace(".","")
+                lstOfRoutes[temp] = {}
 
-        u = {**lstOfParking, **lstOfRoutes}
-
-        repo['lliu_saragl.parking_routes'].insert_one(u)
         
+        u = {**lstOfParking, **lstOfRoutes}
+        
+        print(u)
+        
+        repo['lliu_saragl.parking_routes'].insert_one(u)
         endTime = datetime.datetime.now()
         return {"start":startTime, "end":endTime}
 

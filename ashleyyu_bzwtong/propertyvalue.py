@@ -35,6 +35,33 @@ class propertyvalue(dml.Algorithm):
 
         return {"start":startTime, "end":endTime}
     
+    
+@staticmethod
+    def execute(trial = False):
+        '''Retrieve Property Value Data from Analyze Boston .'''
+        startTime = datetime.datetime.now()
+        
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
+
+        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=cecdf003-9348-4ddb-94e1-673b63940bb8&limit=20000'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        propvalue_json = [json.loads(response)]
+        repo.dropCollection("propertyvalue")
+        repo.createCollection("propertyvalue")
+        repo['ashleyyu_bzwtong.propertyvalue'].insert_many(propvalue_json["result"]["records"])
+        repo['ashleyyu_bzwtong.propertyvalue'].metadata({'complete':True})
+        print(repo['ashleyyu_bzwtong.propertyvalue'].metadata())
+        
+        repo.logout()
+        
+        endTime = datetime.datetime.now()
+
+        return {"start":startTime, "end":endTime}
+    
+    
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''

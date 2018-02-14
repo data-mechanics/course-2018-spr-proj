@@ -22,7 +22,7 @@ class entertainment(dml.Algorithm):
 
         url = 'http://datamechanics.io/?prefix=cma4_tsuen/entertainment.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(jsonfile)
+        r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("cma4_tsuen.entertainment")
         repo.createCollection("cma4_tsuen.entertainment")

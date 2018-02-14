@@ -23,7 +23,7 @@ class uber(dml.Algorithm):
 
         url = 'http://datamechanics.io/?prefix=cma4_tsuen/uber.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.load(jsonfile)
+        r = json.load(response)
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("cma4_tsuen.uber")
         repo.createCollection("cma4_tsuen.uber")

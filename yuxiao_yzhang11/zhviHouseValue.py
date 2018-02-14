@@ -6,35 +6,34 @@ import datetime
 import uuid
 import csv
 
+def csvConvert():
+    url = "http://datamechanics.io/data/boston_Zip_Zhvi_Summary_AllHomes.csv"
+
+    csvfile = urllib.request.urlopen(url).read().decode("utf-8")
+
+    dict_values = []
+
+    entries = csvfile.split('\n')
+    dot_keys = entries[0].split(',')
+    dot_keys[-1] = dot_keys[-1][:-1]
+
+    # keys = [key.replace('.', '_') for key in dot_keys]
+
+    for row in entries[1:-1]:
+        values = row.split(',')
+        values[-1] = values[-1][:-1]
+        dictionary = dict([(dot_keys[i], values[i]) for i in range(len(dot_keys))])
+        dict_values.append(dictionary)
+
+    return dict_values
 
 
 
-# def csvConvert():
-#
-#     url = "https://data.boston.gov/dataset/ac9e373a-1303-4563-b28e-29070229fdfe/resource/76771c63-2d95-4095-bf3d-5f22844350d8/download/2013-bostonfireincidentopendata.csv"
-#     csvfile = urllib.request.urlopen(url).read().decode("utf-8")
-#
-#     dict_values = []
-#
-#     entries = csvfile.split('\n')
-#     dot_keys = entries[0].split(',')
-#     # dot_keys[-1] = dot_keys[-1][:-1]
-#
-#     keys = [key.replace('\"', '') for key in dot_keys]
-#
-#     for row in entries[1:-1]:
-#         values = row.split(',')
-#         dictionary = dict([(keys[i], values[i].replace('\"','')) for i in range(len(keys))])
-#         dict_values.append(dictionary)
-#
-#     return dict_values
 
-
-
-class fire(dml.Algorithm):
+class zhviHouseValue(dml.Algorithm):
     contributor = 'yuxiao_yzhang11'
     reads = []
-    writes = ['yuxiao_yzhang11.fire']
+    writes = ['yuxiao_yzhang11.zhvi']
 
     @staticmethod
     def execute(trial=False):
@@ -46,26 +45,13 @@ class fire(dml.Algorithm):
         repo = client.repo
         repo.authenticate('yuxiao_yzhang11', 'yuxiao_yzhang11')
 
-        url2013 = 'http://datamechanics.io/data/2013fireincident_anabos2.json'
-        response2013 = urllib.request.urlopen(url2013).read().decode("utf-8")
-        fire2013 = json.loads(response2013)
-
-        url2014 = 'http://datamechanics.io/data/2014fireincident_anabos2.json'
-        response2014 = urllib.request.urlopen(url2014).read().decode("utf-8")
-        fire2014 = json.loads(response2014)
-
-        url2015 = 'http://datamechanics.io/data/2015fireincident_anabos2.json'
-        response2015 = urllib.request.urlopen(url2015).read().decode("utf-8")
-        fire2015 = json.loads(response2015)
-
+        dict_values = csvConvert()
 
         # dict_values = csvConvert()
 
-        repo.dropCollection("fire")
-        repo.createCollection("fire")
-        repo['yuxiao_yzhang11.fire'].insert_many(fire2013)
-        repo['yuxiao_yzhang11.fire'].insert_many(fire2014)
-        repo['yuxiao_yzhang11.fire'].insert_many(fire2015)
+        repo.dropCollection("zhvi")
+        repo.createCollection("zhvi")
+        repo['yuxiao_yzhang11.zhvi'].insert_many(dict_values)
 
         endTime = datetime.datetime.now()
 
@@ -88,22 +74,22 @@ class fire(dml.Algorithm):
         doc.add_namespace('ont',
                           'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('bdp', 'https://data.boston.gov/export/767/71c/')
+        doc.add_namespace('bdp', 'http://datamechanics.io/data/')
 
 
-        this_script = doc.agent('alg:yuxiao_yzhang11#fire',
+        this_script = doc.agent('alg:yuxiao_yzhang11#zhvi',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-        resource = doc.entity('dat:2013fireincident_anabos2',
+        resource = doc.entity('dat:boston_Zip_Zhvi_Summary_AllHomes',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'json'})
+                               'ont:Extension': 'csv'})
 
         this_run = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
         doc.usage(this_run, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',})
 
-        output =  doc.entity('dat:yuxiao_yzhang11.fire', {prov.model.PROV_LABEL:'fire', prov.model.PROV_TYPE:'ont:DataSet'})
+        output =  doc.entity('dat:yuxiao_yzhang11.zhvi', {prov.model.PROV_LABEL:'zhvi', prov.model.PROV_TYPE:'ont:DataSet'})
 
         # get_lost = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         #
@@ -139,8 +125,8 @@ class fire(dml.Algorithm):
         return doc
 
 
-fire.execute()
-doc = fire.provenance()
+zhviHouseValue.execute()
+doc = zhviHouseValue.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

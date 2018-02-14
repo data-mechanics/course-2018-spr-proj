@@ -10,10 +10,7 @@ import csv
 def csvConvert():
     url = "https://data.boston.gov/dataset/eefad66a-e805-4b35-b170-d26e2028c373/resource/ba5ed0e2-e901-438c-b2e0-4acfc3c452b9/download/crime-incident-reports-july-2012---august-2015-source-legacy-system.csv"
 
-    # url = "https://data.boston.gov/dataset/ac9e373a-1303-4563-b28e-29070229fdfe/resource/8f4f497e-d93c-4f2f-b754-bfc69e2700a0/download/december.2017-bostonfireincidentopendata.csv"
     csvfile = urllib.request.urlopen(url).read().decode("utf-8")
-
-
 
     dict_values = []
 
@@ -36,7 +33,7 @@ def csvConvert():
 class crime(dml.Algorithm):
     contributor = 'yuxiao_yzhang11'
     reads = []
-    writes = ['yuxiao_yzhang11.crime',]
+    writes = ['yuxiao_yzhang11.crime']
 
     @staticmethod
     def execute(trial=False):
@@ -54,18 +51,6 @@ class crime(dml.Algorithm):
         repo.dropCollection("crime")
         repo.createCollection("crime")
         repo['yuxiao_yzhang11.crime'].insert_many(dict_values)
-        # repo['yuxiao_yzhang11'].metadata({'complete': True})
-        # print(repo['alice_bob.lost'].metadata())
-
-        # url = 'http://cs-people.bu.edu/lapets/591/examples/found.json'
-        # response = urllib.request.urlopen(url).read().decode("utf-8")
-        # r = json.loads(response)
-        # s = json.dumps(r, sort_keys=True, indent=2)
-        # repo.dropCollection("found")
-        # repo.createCollection("found")
-        # repo['alice_bob.found'].insert_many(r)
-
-        # repo.logout()
 
         endTime = datetime.datetime.now()
 

@@ -39,14 +39,16 @@ class mbta(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cma4_tsuen', 'cma4_tsuen')
 
-        jsonfile = open("./../data/mbta.json", 'r')
+        url = 'http://datamechanics.io/data/cma4_tsuen/mbta.json'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
 
-        r = json.load(jsonfile)
+        r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("cma4_tsuen.mbta")
         repo.createCollection("cma4_tsuen.mbta")
         repo['cma4_tsuen.mbta'].insert_many(r)
         repo['cma4_tsuen.mbta'].metadata({'complete':True})
+        print(repo['cma4_tsuen.mbta'].find())
         print(repo['cma4_tsuen.mbta'].metadata())
 
         repo.logout()
@@ -91,7 +93,6 @@ class mbta(dml.Algorithm):
                   
         return doc
 
-#mbta.convertTxtToJSON()
 mbta.execute()
 doc = mbta.provenance()
 print(doc.get_provn())

@@ -74,9 +74,9 @@ class publicschools(dml.Algorithm):
         return doc
 
 
-publicschools.execute()
-doc = publicschools.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+#publicschools.execute()
+#doc = publicschools.provenance()
+#print(doc.get_provn())
+#print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

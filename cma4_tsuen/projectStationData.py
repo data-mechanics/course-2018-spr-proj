@@ -26,8 +26,7 @@ class projectDestinationData(dml.Algorithm):
 
         # projection
         dataSet = [
-        	{'type': 'Hubway',
-            'name': row["s"],
+        	{'key': ('hubway', row["s"]),
         	'coords': (row["la"], row["lo"])}
         	for row in collection
         ]
@@ -37,8 +36,7 @@ class projectDestinationData(dml.Algorithm):
         collection2 = repo['cma4_tsuen.mbta']
 
         dataSet.append({
-            'type': 'mbta',
-        	'name': row['businessName'],
+            'key': ('mbta', row['businessName']),
         	'coords': row['Location']
         	} for row in collection2
             )
@@ -78,7 +76,7 @@ class projectDestinationData(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('stations', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/')
+        doc.add_namespace('stations', 'http://datamechanics.io/')
 
         this_script = doc.agent('alg:cma4_tsuen#stations', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         

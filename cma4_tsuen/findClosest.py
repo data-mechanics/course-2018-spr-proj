@@ -5,8 +5,9 @@ import prov.model
 import datetime
 import uuid
 from math import sin, cos, sqrt, atan2, radians
+import sys
 
-class projectDestinationData(dml.Algorithm):
+class findClosest(dml.Algorithm):
     contributor = 'cma4_tsuen'
     reads = ['cma4_tsuen.destinationsProjected', 'cma4_tsuen.stationsProjected']
     writes = ['cma4_tsuen.closest']
@@ -21,21 +22,6 @@ class projectDestinationData(dml.Algorithm):
         c = 2 * atan2(sqrt(a), sqrt(1 - a))
         return 6373 * c
 
-    def plus(args):
-        p = [0,0]
-        for (x,y) in args:
-            p[0] += x
-            p[1] += y
-        return tuple(p)
-
-    def scale(p, c):
-        (x,y) = p
-        return (x/c, y/c)
-
-    def kmeans(destinations, stations):
-        OLD = []
-        
-
     @staticmethod
     def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
@@ -49,13 +35,30 @@ class projectDestinationData(dml.Algorithm):
         destinations = repo['cma4_tsuen.destinationsProjected'].find()
         stations = repo['cma4_tsuen.stationsProjected'].find()
 
-        final = kmeans(destinations, stations)
+        final = []
 
-        repo.dropCollection("cma4_tsuen.destinationsProjected")
-        repo.createCollection("cma4_tsuen.destinationsProjected")
-        repo['cma4_tsuen.destinationsProjected'].insert_many(final)
-        repo['cma4_tsuen.destinationsProjected'].metadata({'complete':True})
-        print(repo['cma4_tsuen.destinationsProjected'].metadata())
+        # finds closest station to each destination
+        for d in destinations:
+            destCoords = d['coords']
+            closestStation = None
+            minDist = sys.maxint
+            minStationCoords = (0, 0)
+            for s in stations:
+                scoords = s['coords']
+                dist = latLongDist(destCoords, scoords)
+                if dist < minDist:
+                    closestStation = s['key']
+                    minDist = dist
+                    minStationCoords = scoords
+            d['closestStation'] = closestStation
+            d['stationCoords'] = minStationCoords
+            final.append(d)
+
+        repo.dropCollection("cma4_tsuen.closest")
+        repo.createCollection("cma4_tsuen.closest")
+        repo['cma4_tsuen.closest'].insert_many(final)
+        repo['cma4_tsuen.closest'].metadata({'complete':True})
+        print(repo['cma4_tsuen.closest'].metadata())
 
         repo.logout()
 
@@ -79,31 +82,32 @@ class projectDestinationData(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('destinations', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/')
+        doc.add_namespace('destinations', 'http://datamechanics.io/')
+        doc.add_namespace('stations', 'http://datamechanics.io/')
 
-        this_script = doc.agent('alg:cma4_tsuen#projectDestinationData', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dat:entertainment', {'prov:label':'Destinations Entertainment Name and Coords', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        resource2 = doc.entity('dat:food', {'prov:label':'Destinations Food Name and Data', prov.model.PROV_TYPE:'ont:DataSet'})
-        get_dests = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_dests, this_script)
-        doc.usage(get_dests, resource, startTime, None,
+        this_script = doc.agent('alg:cma4_tsuen#closest', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('dat:destinationsProjected', {'prov:label':'Destinations Name and Coords', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource2 = doc.entity('dat:stationsProjected', {'prov:label':'Stations Food Name and Data', prov.model.PROV_TYPE:'ont:DataSet', 'ont:Extension':'json'})
+        get_closest = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_closest, this_script)
+        doc.usage(get_closest, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
-        doc.usage(get_dests, resource2, startTime, None,
+        doc.usage(get_closest, resource2, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Computation'
                   }
                   )
 
         entertainment = doc.entity('dat:cma4_tsuen#entertainment', {prov.model.PROV_LABEL:'Filtered Entertainment Dests', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(entertainment, this_script)
-        doc.wasGeneratedBy(entertainment, get_dests, endTime)
-        doc.wasDerivedFrom(entertainment, resource, get_dests, get_dests, get_dests)
+        doc.wasGeneratedBy(entertainment, get_closest, endTime)
+        doc.wasDerivedFrom(entertainment, resource, get_closest, get_closest, get_closest)
 
         food = doc.entity('dat:cma4_tsuen#food', {prov.model.PROV_LABEL:'Filtered Food Dests', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(food, this_script)
-        doc.wasGeneratedBy(food, get_dests, endTime)
-        doc.wasDerivedFrom(food, resource, get_dests, get_dests, get_dests)
+        doc.wasGeneratedBy(food, get_closest, endTime)
+        doc.wasDerivedFrom(food, resource, get_closest, get_closest, get_closest)
 
         repo.logout()
                   

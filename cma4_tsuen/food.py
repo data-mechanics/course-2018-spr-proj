@@ -61,7 +61,7 @@ class food(dml.Algorithm):
         doc.add_namespace('food', 'https://data.boston.gov/export/458/2be/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c.json')
 
         this_script = doc.agent('alg:cma4_tsuen#food', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('food:places', {'prov:label':'Food Locations Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('dat:food', {'prov:label':'Food Locations Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_places = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_places, this_script)
         doc.usage(get_places, resource, startTime, None,

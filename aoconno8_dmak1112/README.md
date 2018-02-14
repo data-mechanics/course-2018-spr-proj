@@ -23,7 +23,11 @@ A final dataset (weatherUber) will combine UberMovement and weather data in 2016
 We could conclude that increase vehicle emissions increases the rate at which global warming occurs, and therefore if there is a correlation between weather and emissions, different weather conditions from year to year in Boston may play a role in increasing the rate of global warming.
 
 --- Requirements ---
+
 Python 3.6
+
 Pandas
+
 dateutil
+
 numpy

@@ -26,10 +26,13 @@ class projectDestinationData(dml.Algorithm):
 
         # projection
         dataSet = [
-        	{'name': row["s"],
+        	{'type': 'Hubway',
+            'name': row["s"],
         	'coords': (row["la"], row["lo"])}
         	for row in collection
         ]
+
+        # the following needs modification
 
         collection2 = repo['cma4_tsuen.mbta']
 

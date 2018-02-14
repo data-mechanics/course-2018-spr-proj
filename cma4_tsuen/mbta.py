@@ -14,7 +14,7 @@ class mbta(dml.Algorithm):
         with open('./../data/MBTA_Stops.txt', 'r') as myfile:
             data=myfile.read().replace('\n', '')
 
-        
+    
 
     @staticmethod
     def execute(trial = False):

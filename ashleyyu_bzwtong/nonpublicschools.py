@@ -22,7 +22,7 @@ class nonpublicschools(dml.Algorithm):
 
         url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/0046426a3e4340a6b025ad52b41be70a_1.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        schools_json = json.loads(response)
+        schools_json = [json.loads(response)]
         repo.dropCollection("nonpublicschools")
         repo.createCollection("nonpublicschools")
         repo['ashleyyu_bzwtong.nonpublicschools'].insert_many(schools_json)

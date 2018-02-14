@@ -12,7 +12,21 @@ class mbta(dml.Algorithm):
 
     def convertTxtToJSON():
         with open('./../data/MBTA_Stops.txt', 'r') as myfile:
-            data=myfile.read().replace('\n', '')
+            mbta_data = []
+            data=myfile.readlines()
+            for x in range(len(data)):
+                line = data[x].split(",")
+                
+                if(line[4] != '""' and line[5] != '""'):
+                    y = {'Stop_Name': line[2], 'Coords:': (float(line[4]),float(line[5]))}
+                mbta_data.append(y)
+            
+
+            
+
+        with open('./../data/mbta.json', 'w') as mbtafile:
+            json.dump(mbta_data, mbtafile)
+            
 
     
 

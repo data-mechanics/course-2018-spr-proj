@@ -36,7 +36,7 @@ class propertyvalue(dml.Algorithm):
         return {"start":startTime, "end":endTime}
     
     
-@staticmethod
+    @staticmethod
     def execute(trial = False):
         '''Retrieve Property Value Data from Analyze Boston .'''
         startTime = datetime.datetime.now()

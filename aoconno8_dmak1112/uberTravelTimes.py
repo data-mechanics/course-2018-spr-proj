@@ -25,8 +25,8 @@ class uberTravelTimes(dml.Algorithm):
 
         repo.dropCollection("uberTravelTimes")
         repo.createCollection("uberTravelTimes")
-        repo['aoconno8_dmak1112.uber'].insert_many(uber_dict)
-        repo['aoconno8_dmak1112.uber'].metadata({'complete': True})
+        repo['aoconno8_dmak1112.uberTravelTimes'].insert_many(uber_dict)
+        repo['aoconno8_dmak1112.uberTravelTimes'].metadata({'complete': True})
         print(repo['aoconno8_dmak1112.uberTravelTimes'].metadata())
         repo.logout()
         endTime = datetime.datetime.now()

@@ -56,7 +56,7 @@ class crashdata(dml.Algorithm):
         this_script = doc.agent('alg:ashleyyu_bzwtong#crashdata', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('dat:Crash Data in Boston',
                               {'prov:label': 'Crash Data', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'csv'})
+                               'ont:Extension': 'json'})
         get_crash = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_crash, this_script)
         doc.usage(get_crash, resource, startTime, None,

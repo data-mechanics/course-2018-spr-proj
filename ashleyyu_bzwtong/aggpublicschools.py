@@ -25,8 +25,10 @@ class aggpublicschools(dml.Algorithm):
         repo.dropPermanent("aggpublicschools")
         repo.createPermanent("aggpublicschools")
 
+        publicschools = list(repo.ashleyyu_bzwtong.publicschools.find())
+        
         zipCount= []
-        for entry in repo.ashleyyu_bzwtong.publicschools.find():
+        for entry in publicschools:
             if "zipcode" in entry:
                 zipcd = entry["zipcode"]
                 zipCount += [(zipcd, 1)]

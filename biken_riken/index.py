@@ -6,14 +6,15 @@ import prov.model
 import datetime
 import uuid
 
-class liquorCrime(dml.Algorithm):
+class index(dml.Algorithm):
     contributor = 'biken_riken'
     reads = []
-    writes = ['biken_riken.liquor-licenses', 'biken_riken.crime-record','biken_riken.liquor-crime']
+    writes = ['biken_riken.trail-index']
     
     @staticmethod
     def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
+        
         startTime = datetime.datetime.now()
         
         # Set up the database connection.
@@ -22,44 +23,51 @@ class liquorCrime(dml.Algorithm):
         repo.authenticate('biken_riken', 'biken_riken')
         
         # Dataset01
-        url = 'https://data.boston.gov/dataset/47d501bf-8bfa-4076-944f-da0aedb60c8a/resource/aab353c1-c797-4053-a3fc-e893f5ccf547/download/liquor-licenses.csv'
-        df = pd.read_csv(url).head(1000)
-        df_new = df[df.Location != '(0.0, 0.0)']
-        columns = ['OPENING','CLOSING','PATRONSOUT','STNOHI','PHONE','STNO','DBANAME','ISSDTTM','EXPDTTM','LICSTATUS','LICCAT','LICCATDESC','PRIMAPPLICANT']
-        df_new = df_new.drop(columns, axis=1)
-        r = json.loads(df_new.to_json(orient='records'))
-        # can store this s
+        url = "http://datamechanics.io/data/bm181354_rikenm/htaindex_data_places_25.csv"
+        
+        Boston_df = pd.read_csv(url)
+        
+        # Transportation cost for regional typical annually
+        arr_transportation = Boston_df['t_cost_ami']
+        # typical monthly housing cost
+        arr_housing = Boston_df['h_cost']
+        # neighborhood index
+        arr_neighbor = Boston_df['compact_ndx']
+        # name of the city of Greater Boston (key)
+        city = Boston_df['name']
+
+
+        # average across all over boston, this will be used for ratio among city as a scale
+        average_transportation_cost = arr_transportation.mean()
+        # applies value/average to all the row of data
+        index_transport = arr_transportation/average_transportation_cost
+
+        # Benchmark and ideal housing cost
+        average_housing = arr_housing.mean()
+        # applies value/average to all the row of data
+        index_house = arr_housing/average_housing
+
+        # combined all the computed data
+        new_df = pd.DataFrame(
+                 {'City': city,
+                 'Housing': arr_housing,
+                 'Housing_index':index_house ,
+                 'Neighbor_index': arr_neighbor,
+                 'Transportation_index':index_transport
+                 
+                 })
+
+        r = json.loads(new_df.to_json( orient='records'))
         s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("liquor-licenses")
-        repo.createCollection("liquor-licenses")
         
-        # stores here
-        repo['biken_riken.liquor-licenses'].insert_many(r)
-        repo['biken_riken.liquor-licenses'].metadata({'complete':True})
-        #print(repo['biken_riken.liquor-licenses'].metadata())
-        
-        # Dataset02
-        url = 'https://data.boston.gov/dataset/6220d948-eae2-4e4b-8723-2dc8e67722a3/resource/12cb3883-56f5-47de-afa5-3b1cf61b257b/download/crime.csv'
-        crime_df = pd.read_csv(url,encoding = "ISO-8859-1").head(1000)
-        columns = ['DISTRICT','REPORTING_AREA','SHOOTING','OCCURRED_ON_DATE','Lat','Long','MONTH']
-        crime_df = crime_df.drop(columns, axis=1)
-        r = json.loads(crime_df.to_json(orient='records'))
-        # can store this s
-        s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("crime-record")
-        repo.createCollection("crime-record")
-        repo['biken_riken.crime-record'].insert_many(r)
-        repo['biken_riken.crime-record'].metadata({'complete':True})
-        #print(repo['biken_riken.crime-record'].metadata())
-        
-        
-        #Union of both the datasets:
-        combined_db = pd.concat([crime_df,df_new])
-        r = json.loads(combined_db.to_json( orient='records'))
-        s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("liquor-crime")
-        repo.createCollection("liquor-crime")
-        repo['biken_riken.liquor-crime'].insert_many(r)
+
+        jup_repo = client.repo
+
+        # clear
+        repo.dropPermanent('trail-index')
+        #repo.create_collection("trail_index")
+        repo.createPermanent('trail-index')
+        repo['trail_index'].insert_many(r)
         
         # logout
         repo.logout()
@@ -83,13 +91,13 @@ class liquorCrime(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp','https://data.boston.gov/dataset/47d501bf-8bfa-4076-944f-da0aedb60c8a/resource/aab353c1-c797-4053-a3fc-e893f5ccf547/download/')
+        doc.add_namespace('bdp','http://datamechanics.io/data/bm181354_rikenm/')
         
         this_script = doc.agent('alg:biken_riken#liquorCrime', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
-        resource = doc.entity('bdp:liquor-licenses', {'prov:label':'dataset of all liquor license in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        resource = doc.entity('bdp:htaindex_data_places_25', {'prov:label':'dataset of all liquor license in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         
-        resource_two = doc.entity('bdp:crime', {'prov:label':'dataset of all criminal record in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        resource_two = doc.entity('bdp:crime', {'prov:label':'dataset of all criminal record in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         
         
         get_crime = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
@@ -115,22 +123,22 @@ class liquorCrime(dml.Algorithm):
         doc.wasDerivedFrom(liquor_license, resource, get_liquor_license, get_liquor_license, get_liquor_license)
                   
         crime = doc.entity('dat:biken_riken#crime-record', {prov.model.PROV_LABEL:'record of all crimes in Boston', prov.model.PROV_TYPE:'ont:DataSet'})
-        
+                  
         doc.wasAttributedTo(crime, this_script)
         doc.wasGeneratedBy(crime, get_crime, endTime)
         doc.wasDerivedFrom(crime, resource_two,  get_crime,  get_crime, get_crime)
-
+                  
         # one more for concatination
         liquor_crime = doc.entity('dat:biken_riken#liquor-crime', {prov.model.PROV_LABEL:'record of all crimes and liquor filtered and unionized', prov.model.PROV_TYPE:'ont:DataSet'})
-        
+                  
         doc.wasAttributedTo(liquor_crime, this_script)
         doc.wasGeneratedBy(liquor_crime,get_crime_liquor, endTime)
-        
+                  
         # this change this
         doc.wasDerivedFrom(liquor_crime, resource_two,  get_crime_liquor,  get_crime, get_liquor_license)
-        
+                  
         repo.logout()
-        
+                  
         return doc
 
 ## eof

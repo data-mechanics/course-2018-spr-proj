@@ -33,10 +33,9 @@ class subwayHubwayDistance(dml.Algorithm):
         subwayStops = repo['debhe_wangdayu.subwayStop'].find()
         bikeStations = repo['debhe_wangdayu.hubwayStation'].find()
 
-        sub_l = subwayStops.count()
-        print(sub_l)
-        b_l = bikeStations.count()
-        print(b_l)
+        #sub_l = subwayStops.count()
+
+        #b_l = bikeStations.count()
 
         # finding the distance between each subway station and its closest hubway bike station
         # using product, projection, and selection
@@ -51,7 +50,7 @@ class subwayHubwayDistance(dml.Algorithm):
             bikeStations_1 = copy.deepcopy(bikeStations)
             if(temp < 400):
                 for row_2 in bikeStations_1:
-                    s = (row_1['stopName'], row_2['station'], (float(row_1['X']) - float(row_2['X']))**2 + ( float(row_1['Y']) - float(row_2['Y']) )**2 )
+                    s = (row_1['stopName'], row_2['station'], (float(row_1['X']) - float(row_2['X']))**2 + ( float(row_1['Y']) - float(row_2['Y']) )**2, row_2['dock_num'] )
                     allDistance.append(s)
             temp += 1
         # We are going to create a list that contains all the busStops that we are going to calculate as keys
@@ -66,13 +65,14 @@ class subwayHubwayDistance(dml.Algorithm):
             minD = float('inf')
             stopName = key
             station = ''
-            for (k, b, v) in allDistance:
+            for (k, b, v, d) in allDistance:
                 if(key == k):
                     if(v < minD):
                         station = b
                         minD = v
+                        num_dock = d
                         #print("Hello")
-            minDistance.append({'stopName': stopName , 'hubwayStation': station, 'Distance': minD})
+            minDistance.append({'stopName': stopName , 'hubwayStation': station, 'Distance': minD, 'numDock': num_dock})
 
         # save the data in the database
         repo.dropCollection("subwayHubwayDistance")

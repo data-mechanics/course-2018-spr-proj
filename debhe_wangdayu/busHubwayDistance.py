@@ -51,9 +51,7 @@ class busHubwayDistance(dml.Algorithm):
             bikeStations_1 = copy.deepcopy(bikeStations)
             if(temp < 1000):
                 for row_2 in bikeStations_1:
-                    s = (row_1['stopName'], row_2['station'], (float(row_1['X']) - float(row_2['X']))**2 + ( float(row_1['Y']) - float(row_2['Y']) )**2 )
-                    #s = (row_1['properties']['STOP_NAME'], row_2['station'], (float(row_1['geometry']['coordinates'][0]) - float(row_2['X']))**2 + ( float(row_1['geometry']['coordinates'][1]) - float(row_2['Y']) )**2 )
-                    #print((float(row_1['geometry']['coordinates'][0]) - float(row_2['X']))**2 + ( float(row_1['geometry']['coordinates'][1]) - float(row_2['Y']) )**2 )
+                    s = (row_1['stopName'], row_2['station'], (float(row_1['X']) - float(row_2['X']))**2 + ( float(row_1['Y']) - float(row_2['Y']) )**2, row_2['dock_num'])
                     allDistance.append(s)
             temp += 1
                 
@@ -63,8 +61,6 @@ class busHubwayDistance(dml.Algorithm):
         for row in busStops_2:
             if(temp < 1000):
                 keys.append(row['stopName'])
-                #print(row_1['properties']['STOP_NAME'])
-                #keys.append(row['properties']['STOP_NAME'])
             temp += 1
 
         # Find the closest pair between busStop and hubwayStation and record them
@@ -74,12 +70,13 @@ class busHubwayDistance(dml.Algorithm):
             minD = float('inf')
             stopName = key
             station = ''
-            for (k, b, v) in allDistance:
+            for (k, b, v, d) in allDistance:
                 if(key == k):
                     if(v < minD):
                         station = b
                         minD = v
-            minDistance.append({'stopName': stopName , 'hubwayStation': station, 'Distance': minD})
+                        num_dock = d
+            minDistance.append({'stopName': stopName , 'hubwayStation': station, 'Distance': minD, 'numDock': num_dock})
 
         # We are going to create a table and save the records that we just calculated.
         repo.dropCollection("busHubwayDistance")

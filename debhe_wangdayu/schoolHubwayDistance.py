@@ -45,7 +45,7 @@ class schoolHubwayDistance(dml.Algorithm):
         for row_1 in schools_1:
             bikeStations_1 = copy.deepcopy(bikeStations)
             for row_2 in bikeStations_1:
-                s = (row_1['schoolName'], row_2['station'], (float(row_1['X']) - float(row_2['X']))**2 + ( float(row_1['Y']) - float(row_2['Y']) )**2 )
+                s = (row_1['schoolName'], row_2['station'], (float(row_1['X']) - float(row_2['X']))**2 + ( float(row_1['Y']) - float(row_2['Y']) )**2, row_2['dock_num'])
                 allDistance.append(s)
         
         # Need to school name for all the school as the key for further transformation
@@ -57,12 +57,13 @@ class schoolHubwayDistance(dml.Algorithm):
             minD = float('inf')
             school = key
             station = ''
-            for (k, b, v) in allDistance:
+            for (k, b, v, d) in allDistance:
                 if(key == k):
                     if(v < minD):
                         station = b
                         minD = v
-            minDistance.append({'schoolName': school , 'hubwayStation': station, 'Distance': minD})
+                        num_dock = d
+            minDistance.append({'schoolName': school , 'hubwayStation': station, 'Distance': minD, 'numDock': num_dock})
 
         # save the information to the database
         repo.dropCollection("schoolHubwayDistance")

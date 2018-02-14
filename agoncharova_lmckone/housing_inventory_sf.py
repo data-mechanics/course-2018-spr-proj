@@ -15,7 +15,7 @@ class housing_inventory_sf(dml.Algorithm):
 	
 	contributor = 'agoncharova_lmckone'
 	reads = []
-	writes = []
+	writes = ['agoncharova_lmckone.sf_housing_inventory']
 
 	# urls for the json data
 	_2011 = 'https://data.sfgov.org/resource/pwiv-ej3p.json'
@@ -85,7 +85,6 @@ class housing_inventory_sf(dml.Algorithm):
 			response = urllib.request.urlretrieve(url, fn_exl)
 			data = housing_inventory_sf.convert_xlsx_to_csv(fn, sheet_name)		
 		return data
-
 
 
 	def save_to_db(data, coll_name):

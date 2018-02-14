@@ -8,7 +8,7 @@ import uuid
 class boston_permits(dml.Algorithm):
     contributor = 'agoncharova_lmckone'
     reads = []
-    writes = ['agoncharova_lmckone.boston-permits']
+    writes = ['agoncharova_lmckone.boston_permits']
 
     @staticmethod
     def execute(trial = False):
@@ -23,12 +23,12 @@ class boston_permits(dml.Algorithm):
         repo.dropCollection("boston_permits")
         repo.createCollection("boston_permits")
 
-        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=6ddcd912-32a0-43df-9908-63574f8c7e77'  
+        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=6ddcd912-32a0-43df-9908-63574f8c7e77&limit=105750'
         response = ur.urlopen(url)
         data = json.load(response)
         r = data['result']['records']
 
-
+        print("About to insert " + str(len(r)) + " data points that were fetched")
         repo['agoncharova_lmckone.boston_permits'].insert_many(r)
         repo['agoncharova_lmckone.boston_permits'].metadata({'complete':True})
         print(repo['agoncharova_lmckone.boston_permits'].metadata())
@@ -74,5 +74,7 @@ class boston_permits(dml.Algorithm):
                   
         return doc
 
+
+boston_permits.execute()
 
 ## eof

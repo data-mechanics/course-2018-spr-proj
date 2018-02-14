@@ -10,6 +10,26 @@ class food(dml.Algorithm):
     reads = []
     writes = ['cma4_tsuen.food']
 
+    # def PartToParts():
+    #     with open('./../data/food.json', 'r') as myfile:
+            
+    #         data=myfile.readlines()
+            
+    #         total = round(len(data) / 10)
+    #         print(total)
+    #         part_data = []
+    #         current = 0
+    #         for x in range(10):
+    #             name = "part" + str(x+1)
+    #             with open('./../data/food_' + name +'.json', 'w') as partfile:
+    #                 for y in range(current + 1, len(data)+1):
+    #                     if(y % total == 0):
+    #                         partfile.write(data[y])
+    #                         current = y
+    #                         break
+    #                     partfile.write(data[y])
+                     
+
     @staticmethod
     def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
@@ -21,7 +41,7 @@ class food(dml.Algorithm):
         repo.authenticate('cma4_tsuen', 'cma4_tsuen')            
 
         #url = 'https://data.boston.gov/export/458/2be/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c.json'
-        jsonfile = open("./../data/food.json", 'r')
+        jsonfile = open("./../data/food.json", 'r') 
         #response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.load(jsonfile)
         food_data = []
@@ -77,10 +97,10 @@ class food(dml.Algorithm):
         repo.logout()
                   
         return doc
-
-food.execute()
-doc = food.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+food.PartToParts()
+#food.execute()
+#doc = food.provenance()
+#print(doc.get_provn())
+#print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

@@ -26,7 +26,24 @@ class mbta(dml.Algorithm):
         with open('./../data/mbta.json', 'w') as mbtafile:
           json.dump(mbta_data, mbtafile)
             
-
+    def PartToParts():
+        with open('./../data/food.json', 'r') as myfile:
+            
+            data=myfile.readlines()
+            
+            total = round(len(data) / 10)
+            print(total)
+            part_data = []
+            current = 0
+            for x in range(10):
+                name = "part" + str(x+1)
+                with open('./../data/food_' + name +'.json', 'w') as partfile:
+                    for y in range(current + 1, len(data)+1):
+                        if(y % total == 0):
+                            partfile.write(data[y])
+                            current = y
+                            break
+                        partfile.write(data[y])
     
 
     @staticmethod
@@ -91,10 +108,10 @@ class mbta(dml.Algorithm):
         repo.logout()
                   
         return doc
-
-mbta.execute()
-doc = mbta.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+mbta.PartToParts()
+#mbta.execute()
+#doc = mbta.provenance()
+#print(doc.get_provn())
+#print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

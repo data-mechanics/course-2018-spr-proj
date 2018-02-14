@@ -10,6 +10,24 @@ class uber(dml.Algorithm):
     contributor = 'cma4_tsuen'
     reads = []
     writes = ['cma4_tsuen.uber']
+    def PartToParts():
+        with open('./../data/Master_uber.json', 'r') as myfile:
+            
+            data=myfile.readlines()
+            
+            total = round(len(data) / 10)
+            print(total)
+            part_data = []
+            current = 0
+            for x in range(10):
+                name = "part" + str(x+1)
+                with open('./../data/uber_' + name +'.json', 'w') as partfile:
+                    for y in range(current + 1, len(data)+1):
+                        if(y % total == 0):
+                            partfile.write(data[y])
+                            current = y
+                            break
+                        partfile.write(data[y])
 
     @staticmethod
     def execute(trial = False):
@@ -73,9 +91,10 @@ class uber(dml.Algorithm):
                   
         return doc
 
-uber.execute()
-doc = uber.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+uber.PartToParts()
+#uber.execute()
+#doc = uber.provenance()
+#print(doc.get_provn())
+#print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

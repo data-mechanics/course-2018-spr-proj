@@ -25,7 +25,7 @@ class propertyvalue(dml.Algorithm):
         propvalue_json = [json.loads(response)]
         repo.dropCollection("propertyvalue")
         repo.createCollection("propertyvalue")
-        repo['ashleyyu_bzwtong.propertyvalue'].insert_many(r)
+        repo['ashleyyu_bzwtong.propertyvalue'].insert_many(propvalue_json)
         repo['ashleyyu_bzwtong.propertyvalue'].metadata({'complete':True})
         print(repo['ashleyyu_bzwtong.propertyvalue'].metadata())
         

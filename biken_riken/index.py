@@ -9,7 +9,7 @@ import uuid
 class index(dml.Algorithm):
     contributor = 'biken_riken'
     reads = []
-    writes = ['biken_riken.trail-index']
+    writes = ['biken_riken.indexdb']
     
     @staticmethod
     def execute(trial = False):
@@ -64,10 +64,10 @@ class index(dml.Algorithm):
         jup_repo = client.repo
 
         # clear
-        repo.dropPermanent('trail-index')
+        repo.dropPermanent('indexdb')
         #repo.create_collection("trail_index")
-        repo.createPermanent('trail-index')
-        repo['trail_index'].insert_many(r)
+        repo.createPermanent('indexdb')
+        repo['indexdb'].insert_many(r)
         
         # logout
         repo.logout()
@@ -93,52 +93,26 @@ class index(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp','http://datamechanics.io/data/bm181354_rikenm/')
         
-        this_script = doc.agent('alg:biken_riken#liquorCrime', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:biken_riken#index', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         resource = doc.entity('bdp:htaindex_data_places_25', {'prov:label':'dataset of all liquor license in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         
-        resource_two = doc.entity('bdp:crime', {'prov:label':'dataset of all criminal record in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_index = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         
+        doc.wasAssociatedWith(get_index, this_script)
         
-        get_crime = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        
-        get_liquor_license = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        
-        get_crime_liquor = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        
-        doc.wasAssociatedWith(get_crime, this_script)
-        doc.wasAssociatedWith(get_liquor_license, this_script)
-        
-        #
-        doc.usage(get_crime, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval',
+        #change
+        doc.usage(get_index, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval',
                   'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'})
-        doc.usage(get_liquor_license, resource_two, startTime, None,
-                            {prov.model.PROV_TYPE:'ont:Retrieval',
-                            'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-                            })
-                  
-        liquor_license = doc.entity('dat:biken_riken#liquor-licenses', {prov.model.PROV_LABEL:'liquor license', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(liquor_license, this_script)
-        doc.wasGeneratedBy(liquor_license, get_liquor_license, endTime)
-        doc.wasDerivedFrom(liquor_license, resource, get_liquor_license, get_liquor_license, get_liquor_license)
-                  
-        crime = doc.entity('dat:biken_riken#crime-record', {prov.model.PROV_LABEL:'record of all crimes in Boston', prov.model.PROV_TYPE:'ont:DataSet'})
-                  
-        doc.wasAttributedTo(crime, this_script)
-        doc.wasGeneratedBy(crime, get_crime, endTime)
-        doc.wasDerivedFrom(crime, resource_two,  get_crime,  get_crime, get_crime)
-                  
-        # one more for concatination
-        liquor_crime = doc.entity('dat:biken_riken#liquor-crime', {prov.model.PROV_LABEL:'record of all crimes and liquor filtered and unionized', prov.model.PROV_TYPE:'ont:DataSet'})
-                  
-        doc.wasAttributedTo(liquor_crime, this_script)
-        doc.wasGeneratedBy(liquor_crime,get_crime_liquor, endTime)
-                  
-        # this change this
-        doc.wasDerivedFrom(liquor_crime, resource_two,  get_crime_liquor,  get_crime, get_liquor_license)
-                  
+        
+        index = doc.entity('dat:biken_riken#indexdb', {prov.model.PROV_LABEL:'index  of transportation, housing', prov.model.PROV_TYPE:'ont:DataSet'})
+        
+        doc.wasAttributedTo(index, this_script)
+        doc.wasGeneratedBy(index, get_index, endTime)
+        doc.wasDerivedFrom(index, resource, index, index, index)
+        
         repo.logout()
-                  
+        print("indexGOOD")
         return doc
 
 ## eof

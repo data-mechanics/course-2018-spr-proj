@@ -26,15 +26,11 @@ class bikeStop(dml.Algorithm):
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
-        print(1)
-        print(s)
+
         repo.dropCollection("lost")
         repo.createCollection("lost")
-        print(2)
         repo['biken_riken.lost'].insert_many(r['stations'])
-        print(3)
         repo['biken_riken.lost'].metadata({'complete':True})
-        print(repo['biken_riken.lost'].metadata())
         
         url = 'https://secure.thehubway.com/data/stations.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
@@ -84,17 +80,19 @@ class bikeStop(dml.Algorithm):
                             })
                   
         lost = doc.entity('dat:biken_riken#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
+        ####
         doc.wasAttributedTo(lost, this_script)
         doc.wasGeneratedBy(lost, get_lost, endTime)
         doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
                   
         found = doc.entity('dat:biken_riken#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
+        ####
         doc.wasAttributedTo(found, this_script)
         doc.wasGeneratedBy(found, get_found, endTime)
         doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
                   
         repo.logout()
-                  
+        print("GOOD1")
         return doc
 
 #bikeStop.execute()

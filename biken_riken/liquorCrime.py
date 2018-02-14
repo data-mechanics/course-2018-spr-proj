@@ -101,7 +101,7 @@ class liquorCrime(dml.Algorithm):
         doc.wasAssociatedWith(get_crime, this_script)
         doc.wasAssociatedWith(get_liquor_license, this_script)
         
-        #
+        # change here
         doc.usage(get_crime, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval',
                   'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'})
         doc.usage(get_liquor_license, resource_two, startTime, None,
@@ -116,7 +116,9 @@ class liquorCrime(dml.Algorithm):
                   
         crime = doc.entity('dat:biken_riken#crime-record', {prov.model.PROV_LABEL:'record of all crimes in Boston', prov.model.PROV_TYPE:'ont:DataSet'})
         
+        ######
         doc.wasAttributedTo(crime, this_script)
+        
         doc.wasGeneratedBy(crime, get_crime, endTime)
         doc.wasDerivedFrom(crime, resource_two,  get_crime,  get_crime, get_crime)
 
@@ -124,12 +126,14 @@ class liquorCrime(dml.Algorithm):
         liquor_crime = doc.entity('dat:biken_riken#liquor-crime', {prov.model.PROV_LABEL:'record of all crimes and liquor filtered and unionized', prov.model.PROV_TYPE:'ont:DataSet'})
         
         doc.wasAttributedTo(liquor_crime, this_script)
+        
         doc.wasGeneratedBy(liquor_crime,get_crime_liquor, endTime)
         
         # this change this
-        doc.wasDerivedFrom(liquor_crime, resource_two,  get_crime_liquor,  get_crime, get_liquor_license)
+        doc.wasDerivedFrom(liquor_crime, resource_two,  get_crime_liquor, get_crime_liquor, get_liquor_license)
         
-        repo.logout()
+        #repo.logout()
+        print("good")
         
         return doc
 

@@ -7,9 +7,9 @@ import uuid
 
 
 class parkingData(dml.Algorithm):
-    contributor = 'aoconno8_dmak1112'
+    contributor = 'ashleyyu_bzwtong'
     reads = []
-    writes = ['aoconno8_dmak1112.parkingData']
+    writes = ['ashleyyu_bzwtong.parkingData']
 
     @staticmethod
     def execute(trial=False):
@@ -19,16 +19,16 @@ class parkingData(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('aoconno8_dmak1112', 'aoconno8_dmak1112')
+        repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
 
         url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=8d38cc9d-8c58-462e-b2df-b793e9c05612&limit=572'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         parking_json = [json.loads(response)]
         repo.dropCollection("parkingData")
         repo.createCollection("parkingData")
-        repo['aoconno8_dmak1112.parkingData'].insert_many(parking_json)
-        repo['aoconno8_dmak1112.parkingData'].metadata({'complete': True})
-        print(repo['aoconno8_dmak1112.parkingData'].metadata())
+        repo['ashleyyu_bzwtong.parkingData'].insert_many(parking_json)
+        repo['ashleyyu_bzwtong.parkingData'].metadata({'complete': True})
+        print(repo['ashleyyu_bzwtong.parkingData'].metadata())
 
         repo.logout()
 
@@ -47,13 +47,13 @@ class parkingData(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('aoconno8_dmak1112', 'aoconno8_dmak1112')
+        repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/aoconno8_dmak1112')  # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/aoconno8_dmak1112')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
 
-        this_script = doc.agent('alg:aoconno8_dmak1112#parkingData', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+        this_script = doc.agent('alg:ashleyyu_bzwtong#parkingData', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('dat:Cars Parked Across All Zones - 2015',
                               {'prov:label': '2015 Parking Data', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'csv'})
@@ -63,7 +63,7 @@ class parkingData(dml.Algorithm):
                   {prov.model.PROV_TYPE: 'ont:Retrieval'
                    }
                   )
-        parkingData = doc.entity('dat:aoconno8_dmak1112#parkingData',
+        parkingData = doc.entity('dat:ashleyyu_bzwtong#parkingData',
                                    {prov.model.PROV_LABEL: 'Parking Data', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(parkingData, this_script)
         doc.wasGeneratedBy(parkingData, get_parkingData, endTime)

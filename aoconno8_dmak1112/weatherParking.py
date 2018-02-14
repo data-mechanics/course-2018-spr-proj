@@ -159,7 +159,7 @@ class weatherParking(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
         this_script = doc.agent('alg:aoconno8_dmak1112#weatherParking', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        parking = doc.entity('dat:aoconno8_dmak1112#parkingData', {prov.model.PROV_LABEL:'Hubway Daily Travel Data 2015', prov.model.PROV_TYPE:'ont:DataSet'})
+        parking = doc.entity('dat:aoconno8_dmak1112#parkingData', {prov.model.PROV_LABEL:'Boston Parking Monthly 2015', prov.model.PROV_TYPE:'ont:DataSet'})
         weather = doc.entity('dat:aoconno8_dmak1112#bostonClimate', {prov.model.PROV_LABEL:'Boston Climate', prov.model.PROV_TYPE:'ont:DataSet'})
         emissions = doc.entity('dat:aoconno8_dmak1112#yearlyEmissions', {prov.model.PROV_LABEL:'Yearly Emissions Data', prov.model.PROV_TYPE:'ont:DataSet'})
 

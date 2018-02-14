@@ -94,7 +94,6 @@ class weatherHubway(dml.Algorithm):
                     hubway_dict[i]['Total Number of Rides'] = total_daily_rides[h][1]
                     break
 
-        print(len(hubway_dict))
 
         #############   HUBWAY  #####################
 

@@ -8,7 +8,8 @@ import copy
 
 class getMBTADistances(dml.Algorithm):
     '''
-    Returns the number of MBTA stops near a specific alcohol license
+        Returns the number of MBTA stops near a specific alcohol license
+        Easily extended to also return which MBTA stops are near and where they are
     '''
     contributor = 'ferrys'
     reads = ['ferrys.mbta', 'ferrys.alc_licenses']

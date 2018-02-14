@@ -23,4 +23,6 @@ Our first two datasets look into the Boston population. The first provides demog
 
 **How to obtain new transformed datasets:**
 
-First, run the get files (getOpenSpace, getBikeNetwork, getIncome, getBusinesses, getObesityData, and getNeighborhoods) python files. Then, run the three transformation files (transformOpenSpace, transformBikeNetwork, transformFitBusiness) python files. The output json files will be written automatically into the folder transformed_datasets after running the transform files.
+* cd into janellc_rstiffel
+* python execute.py janellc_rstiffel
+* This will create 3 json files in janellc_rstiffel/transformed_datasets

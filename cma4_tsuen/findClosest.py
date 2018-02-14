@@ -41,11 +41,11 @@ class findClosest(dml.Algorithm):
         for d in destinations:
             destCoords = d['coords']
             closestStation = None
-            minDist = sys.maxint
+            minDist = sys.maxsize
             minStationCoords = (0, 0)
             for s in stations:
                 scoords = s['coords']
-                dist = latLongDist(destCoords, scoords)
+                dist = findClosest.latLongDist(destCoords, scoords)
                 if dist < minDist:
                     closestStation = s['key']
                     minDist = dist

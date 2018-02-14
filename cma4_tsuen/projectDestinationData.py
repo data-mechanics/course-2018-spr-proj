@@ -4,6 +4,7 @@ import dml
 import prov.model
 import datetime
 import uuid
+from ast import literal_eval
 
 class projectDestinationData(dml.Algorithm):
     contributor = 'cma4_tsuen'
@@ -35,7 +36,7 @@ class projectDestinationData(dml.Algorithm):
 
         food_data = []
         #filtered food.py
-        food_data = [{"name": field['businessName'], "coords": field['Location']}
+        food_data = [{"name": field['businessName'], "coords": field['Location']} 
             for field in collection2 if field["RESULT"] is not "HE_Fail"]
         
         for i in range(len(food_data)):
@@ -46,6 +47,7 @@ class projectDestinationData(dml.Algorithm):
         for entry in dataSet:
             if entry not in final:
                 if entry['coords'] != '':
+                    entry['coords'] = literal_eval(entry['coords'])
                     final.append(entry)
 
         print(final)

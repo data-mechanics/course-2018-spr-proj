@@ -15,12 +15,10 @@ class yearlyEmissions(dml.Algorithm):
     def execute(trial=False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
-
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('aoconno8_dmak1112', 'aoconno8_dmak1112')
-
         url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=bd8dd4bb-867e-4ca2-b6c7-6c3bd9e6c290&limit=176'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         emissions_json = [json.loads(response)]
@@ -48,12 +46,9 @@ class yearlyEmissions(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('aoconno8_dmak1112', 'aoconno8_dmak1112')
-        doc.add_namespace('alg',
-                          'http://datamechanics.io/algorithm/aoconno8_dmak1112')  # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat',
-                          'http://datamechanics.io/data/aoconno8_dmak1112')  # The data sets are in <user>#<collection> format.
-        doc.add_namespace('ont',
-                          'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('alg','http://datamechanics.io/algorithm/aoconno8_dmak1112')  # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat','http://datamechanics.io/data/aoconno8_dmak1112')  # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont','http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('databg', 'https://data.boston.gov/api')  # The event log.
 

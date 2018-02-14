@@ -23,11 +23,11 @@ class uberTravelTimes(dml.Algorithm):
         url = 'http://datamechanics.io/data/aoconno8_dmak1112/Uber_Travel_Times_Daily.csv'
         uber_dict = pd.read_csv(url).to_dict(orient='records')
 
-        repo.dropCollection("uber")
-        repo.createCollection("uber")
+        repo.dropCollection("uberTravelTimes")
+        repo.createCollection("uberTravelTimes")
         repo['aoconno8_dmak1112.uber'].insert_many(uber_dict)
         repo['aoconno8_dmak1112.uber'].metadata({'complete': True})
-        print(repo['aoconno8_dmak1112.uber'].metadata())
+        print(repo['aoconno8_dmak1112.uberTravelTimes'].metadata())
         repo.logout()
         endTime = datetime.datetime.now()
 

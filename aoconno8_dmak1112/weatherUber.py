@@ -9,7 +9,7 @@ from dateutil.parser import parse
 
 class weatherUber(dml.Algorithm):
     contributor = 'aoconno8_dmak1112'
-    reads = ['aoconno8_dmak1112.bostonClimate', 'aoconno8_dmak1112.uber']
+    reads = ['aoconno8_dmak1112.bostonClimate', 'aoconno8_dmak1112.uberTravelTimes']
     writes = ['aoconno8_dmak1112.weatherUber']
 
     @staticmethod
@@ -21,7 +21,7 @@ class weatherUber(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('aoconno8_dmak1112', 'aoconno8_dmak1112')
-        uber = list(repo.aoconno8_dmak1112.uber.find())
+        uber = list(repo.aoconno8_dmak1112.uberTravelTimes.find())
         climate = list(repo.aoconno8_dmak1112.bostonClimate.find())
 
         # Parse the uber data to only give us the date and the daily mean travel time

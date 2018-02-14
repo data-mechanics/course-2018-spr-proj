@@ -25,7 +25,9 @@ class liquorCrime(dml.Algorithm):
         url = 'https://data.boston.gov/dataset/47d501bf-8bfa-4076-944f-da0aedb60c8a/resource/aab353c1-c797-4053-a3fc-e893f5ccf547/download/liquor-licenses.csv'
         df = pd.read_csv(url).head(1000)
         df_new = df[df.Location != '(0.0, 0.0)']
+        
         columns = ['OPENING','CLOSING','PATRONSOUT','STNOHI','PHONE','STNO','DBANAME','ISSDTTM','EXPDTTM','LICSTATUS','LICCAT','LICCATDESC','PRIMAPPLICANT']
+        
         df_new = df_new.drop(columns, axis=1)
         r = json.loads(df_new.to_json(orient='records'))
         # can store this s
@@ -132,9 +134,7 @@ class liquorCrime(dml.Algorithm):
         # this change this
         doc.wasDerivedFrom(liquor_crime, resource_two,  get_crime_liquor, get_crime_liquor, get_liquor_license)
         
-        #repo.logout()
-        print("good")
-        
+        repo.logout()
         return doc
 
 ## eof

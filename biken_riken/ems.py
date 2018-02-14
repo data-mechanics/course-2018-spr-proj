@@ -104,7 +104,6 @@ class ems(dml.Algorithm):
         
                   
         repo.logout()
-        print("GOODEMS")
         return doc
 
 ## eof

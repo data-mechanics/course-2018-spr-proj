@@ -101,10 +101,11 @@ class index(dml.Algorithm):
         
         doc.wasAssociatedWith(get_index, this_script)
         
-        #change
+        #change this
         doc.usage(get_index, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval',
                   'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'})
         
+        # change this
         index = doc.entity('dat:biken_riken#indexdb', {prov.model.PROV_LABEL:'index  of transportation, housing', prov.model.PROV_TYPE:'ont:DataSet'})
         
         doc.wasAttributedTo(index, this_script)
@@ -112,7 +113,6 @@ class index(dml.Algorithm):
         doc.wasDerivedFrom(index, resource, index, index, index)
         
         repo.logout()
-        print("indexGOOD")
         return doc
 
 ## eof

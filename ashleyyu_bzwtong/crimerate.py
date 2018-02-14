@@ -21,9 +21,9 @@ class crimerate(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
 
-        url = 'https://data.boston.gov/export/12c/b38/12cb3883-56f5-47de-afa5-3b1cf61b257b.json'
+        url = 'https://data.boston.gov/dataset/6220d948-eae2-4e4b-8723-2dc8e67722a3/resource/12cb3883-56f5-47de-afa5-3b1cf61b257b/download/crime.csv'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        crime_json = json.loads(response)
+        crime_json = [json.loads(response)]
         repo.dropCollection("crimerate")
         repo.createCollection("crimerate")
         repo['ashleyyu_bzwtong.crimerate'].insert_many(crime_json)

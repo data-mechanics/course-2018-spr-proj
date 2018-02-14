@@ -1,7 +1,7 @@
 
 # Project 1
 
-## Hypotheses:
+## Hypothesis:
 
 
 Filtering and obtaining datasets from Transportation department, Housing department, market value ,crime rate and so forth of datasets of the Greater Boston area.

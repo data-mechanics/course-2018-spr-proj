@@ -87,7 +87,6 @@ class housing_inventory_sf(dml.Algorithm):
 		return data
 
 
-
 	def save_to_db(data, coll_name):
 		db_name = 'agoncharova_lmckone'
 		coll_name = db_name + "." + coll_name

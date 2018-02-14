@@ -37,7 +37,7 @@ class projectDestinationData(dml.Algorithm):
 
         dataSet.append({
             'key': ('mbta', row['Stop_Name']),
-        	'coords': row['Coords']
+        	'coords': (row['Coords'][0], row['Coords'][1])
         	} for row in collection2
             )
 

@@ -4,16 +4,22 @@ import dml
 import prov.model
 import datetime
 import uuid
+from math import sin, cos, sqrt, atan2, radians
 
 class projectDestinationData(dml.Algorithm):
     contributor = 'cma4_tsuen'
     reads = ['cma4_tsuen.destinationsProjected', 'cma4_tsuen.stationsProjected']
     writes = ['cma4_tsuen.closest']
 
-    def dist(p, q):
-        (x1,y1) = p
-        (x2,y2) = q
-        return (x1-x2)**2 + (y1-y2)**2
+    def latLongDist(p, q):
+        p = (radians(p[0]), radians(p[1]))
+        q = (radians(q[0]), radians(q[1]))
+        dlon = q[1] - p[1]
+        dlat = q[0] - p[0]
+
+        a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+        c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        return 6373 * c
 
     def plus(args):
         p = [0,0]
@@ -26,6 +32,10 @@ class projectDestinationData(dml.Algorithm):
         (x,y) = p
         return (x/c, y/c)
 
+    def kmeans(destinations, stations):
+        OLD = []
+        
+
     @staticmethod
     def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
@@ -36,35 +46,10 @@ class projectDestinationData(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cma4_tsuen', 'cma4_tsuen')
 
-        dataSet = []
+        destinations = repo['cma4_tsuen.destinationsProjected'].find()
+        stations = repo['cma4_tsuen.stationsProjected'].find()
 
-        collection = repo['cma4_tsuen.entertainment'].find()
-
-        # projection
-        dataSet = [
-        	{'name': row["BUSINESSNAME"],
-        	'Coords': row["Location"]}
-        	for row in collection
-        ]
-
-        collection2 = repo['cma4_tsuen.food'].find()
-
-        food_data = []
-        #filtered food.py
-        food_data = [{"Business Name": field['businessName'], "Coords": field['Location']}
-            for field in collection2 if field["RESULT"] is not "HE_Fail"]
-        
-        for i in range(len(food_data)):
-            dataSet.append(food_data[i])
-
-        
-        final = []
-        for entry in dataSet:
-            if entry not in final:
-                if entry['Coords'] != '':
-                    final.append(entry)
-
-        print(final)
+        final = kmeans(destinations, stations)
 
         repo.dropCollection("cma4_tsuen.destinationsProjected")
         repo.createCollection("cma4_tsuen.destinationsProjected")

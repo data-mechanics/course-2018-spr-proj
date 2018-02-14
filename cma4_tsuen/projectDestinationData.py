@@ -27,7 +27,7 @@ class projectDestinationData(dml.Algorithm):
         # projection
         dataSet = [
         	{'name': row["BUSINESSNAME"],
-        	'Coords': row["Location"]}
+        	'coords': row["Location"]}
         	for row in collection
         ]
 
@@ -35,7 +35,7 @@ class projectDestinationData(dml.Algorithm):
 
         food_data = []
         #filtered food.py
-        food_data = [{"Business Name": field['businessName'], "Coords": field['Location']}
+        food_data = [{"name": field['businessName'], "coords": field['Location']}
             for field in collection2 if field["RESULT"] is not "HE_Fail"]
         
         for i in range(len(food_data)):
@@ -45,7 +45,7 @@ class projectDestinationData(dml.Algorithm):
         final = []
         for entry in dataSet:
             if entry not in final:
-                if entry['Coords'] != '':
+                if entry['coords'] != '':
                     final.append(entry)
 
         print(final)

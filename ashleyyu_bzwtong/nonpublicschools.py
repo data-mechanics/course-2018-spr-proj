@@ -23,7 +23,6 @@ class nonpublicschools(dml.Algorithm):
         url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/0046426a3e4340a6b025ad52b41be70a_1'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         schools_json = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("nonpublicschools")
         repo.createCollection("nonpublicschools")
         repo['ashleyyu_bzwtong'].insert_many(schools_json)
@@ -54,7 +53,7 @@ class nonpublicschools(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:ashleyyu_bzwtong#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:ashleyyu_bzwtong#schools', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_schools = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_schools, this_script)
@@ -73,8 +72,8 @@ class nonpublicschools(dml.Algorithm):
                   
         return doc
 
-example.execute()
-doc = example.provenance()
+nonpublicschools.execute()
+doc = nonpublicschools.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

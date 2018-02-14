@@ -38,8 +38,9 @@ class aggpublicschools(dml.Algorithm):
         final= []
         for entry in agg_val:
             final.append({'publicschoolsZipcode:':entry[0], 'schoolsCount':entry[1]})
+            print(final)
 
-        repo['ashleyyu_bzwtong.aggpublicschools'].insert_many(final)
+        #repo['ashleyyu_bzwtong.aggpublicschools'].insert_many(final)
         
         for entry in repo.ashleyyu_bzwtong.aggpublicschools.find():
              print(entry)

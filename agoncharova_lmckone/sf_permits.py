@@ -6,9 +6,6 @@ import prov.model
 import datetime
 import uuid
 
-# try socrate to download ALL of the data
-
-
 class sf_permits(dml.Algorithm):
     contributor = 'agoncharova_lmckone'
     reads = []
@@ -16,7 +13,7 @@ class sf_permits(dml.Algorithm):
 
     def get_and_insert_by_paging():
         '''
-        Dynamically gets data via setting the page and the offset. 
+        Dynamically gets data via setting the page and the offset.
         '''
         # Set up the database connection.
         client = dml.pymongo.MongoClient()

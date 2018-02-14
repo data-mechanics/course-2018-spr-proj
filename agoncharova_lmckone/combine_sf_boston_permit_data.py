@@ -14,36 +14,6 @@ class combine_sf_boston_permit_data(dml.Algorithm):
 	writes = ['agoncharova_lmckone.boston_sf_permits']
 	
 	pp = pprint.PrettyPrinter(indent=2)
-	# SF Columns
-	# Permit Creation Date, Block, Lot, ,
-	# Unit, Unit Suffix, Current Status Date,
-	# Filed Date, Completed Date, First Construction Document Date,
-	# Structural Notification, Number of Existing Stories, Number of Proposed Stories, 
-	# Voluntary Soft-Story Retrofit, Fire Only Permit
-	# Revised Cost, Existing Units, Proposed Use, Proposed Units,
-	# Plansets, TIDF Compliance, Existing Construction Type, 
-	# Existing Construction Type Description, Proposed Construction Type,
-	# Proposed Construction Type Description, Site Permit, Supervisor District,
-	# Neighborhoods - Analysis Boundaries, Record ID
-
-	# Boston Columns
-	#  Property_ID, Parcel_ID, Location
-
-	# Common columns (SF, Boston): 
-	# source -> ("sf", "boston")
-	# permit_number -> (permit_number, PermitNumber), 
-	# type -> (permit_type -> int, WORKTYPE -> str), 
-	# definition -> (permit_type_definition, PermitTypeDescr),
-	# comments -> (Description, Comments), 
-	# issued_date -> (Issued Date, ISSUED_DATE),
-	# expiration_date -> (Permit Expiration Date, EXPIRATION_DATE),
-	# valuation -> (Estimated Cost, DECLARED_VALUATION), 
-	# status -> (Current Status, STATUS),
-	# current_use -> (Existing Use, OCCUPANCYTYPE),
-	# street -> (combine_columns(Street Number, Street Number Suffix, Street Name, Street Suffix), ADDRESS)
-	# zipcode -> (Zipcode, ZIP)
-	# location -> (Location, Location)
-	# property_id -> (combine_columns(block, lot), Property_ID)
 
 	def combine_columns(arr, delim, data_item):
 		'''
@@ -126,7 +96,7 @@ class combine_sf_boston_permit_data(dml.Algorithm):
 		MongoDB collections and combine it into a single dataset'''
 		cn = combine_sf_boston_permit_data # 'cn' stands for 'classname'
 		startTime = datetime.datetime.now()
-		new_coll_name = "boston_sf_permits"
+		new_coll_name = "agoncharova_lmckone.boston_sf_permits"
 
 		# Set up the database connection.
 		client = dml.pymongo.MongoClient()
@@ -142,16 +112,16 @@ class combine_sf_boston_permit_data(dml.Algorithm):
 		boston_data = boston_permit_coll.find()
 		sf_data = sf_permit_coll.find()
 		
-		print(boston_data.count())
-		print(sf_data.count())
+		print("Boston data items count: " + str(boston_data.count()))
+		print("SF data items count: " + str(sf_data.count()))
 		for item in boston_data:
 			new_item = cn.process_boston_item(item)
-			repo[new_coll_name].insert(item)
+			repo[new_coll_name].insert(new_item)
 		
 		for item in sf_data:
 			new_item = cn.process_sf_item(item)
 			# save to db
-			repo[new_coll_name].insert(item)
+			repo[new_coll_name].insert(new_item)
 			
 		print("After processing, both Boston and SF permits, total number of data is: ")	
 		print(repo[new_coll_name].count())

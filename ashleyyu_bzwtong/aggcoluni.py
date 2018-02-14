@@ -24,9 +24,11 @@ class aggcoluni(dml.Algorithm):
 
         repo.dropPermanent("aggcoluni")
         repo.createPermanent("aggcoluni")
+        
+        collegeuni = list(repo.ashleyyu_bzwtong.collegeanduni.find())
 
         zipCount= []
-        for entry in repo.ashleyyu_bzwtong.collegeanduni.find():
+        for entry in collegeuni:
             if "zipcode" in entry:
                 zipcd = entry["zipcode"]
                 zipCount += [(zipcd, 1)]

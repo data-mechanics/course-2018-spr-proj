@@ -21,7 +21,6 @@ def csv_to_json(url):
         values[-1] = values[-1][:-1]
         dictionary = dict([(keys[i], values[i]) for i in range(len(keys))])
         dict_values.append(dictionary)
-
     return dict_values
 
 
@@ -42,11 +41,9 @@ class Income (dml.Algorithm):
         repo.authenticate('janellc_rstiffel', 'janellc_rstiffel')
 
         # get csv files associated with income data
-        #
 
         url = 'http://datamechanics.io/data/census_tracts_list2.csv'
         values = csv_to_json(url)
-        print(values[8])
         # response = urllib.request.urlopen(url).read().decode("utf-8")
         # r = json.loads(response)
         # s = json.dumps(r, sort_keys=True, indent=2)
@@ -59,7 +56,7 @@ class Income (dml.Algorithm):
         url = 'http://datamechanics.io/data/ACS%2012%20YR%20INCOME%20by%20TRACT.csv'
         # response = urllib.request.urlopen(url).read().decode("utf-8")
         values = csv_to_json(url)
-        print(values[3])
+
         repo.dropCollection("Income")
         repo.createCollection("Income")
         repo['janellc_rstiffel.Income'].insert_many(values)
@@ -113,24 +110,15 @@ class Income (dml.Algorithm):
                   }
                   )
 
-        # lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-        # doc.wasAttributedTo(lost, this_script)
-        # doc.wasGeneratedBy(lost, get_lost, endTime)
-        # doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-        #
-        # found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-        # doc.wasAttributedTo(found, this_script)
-        # doc.wasGeneratedBy(found, get_found, endTime)
-        # doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
 
         repo.logout()
                   
         return doc
 
-# TAKE THIS OUT IN SUBMISSION
-Income.execute()
-doc = Income.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
-
-## eof
+# # TAKE THIS OUT IN SUBMISSION
+# Income.execute()
+# doc = Income.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
+#
+# ## eof

@@ -6,15 +6,17 @@ import datetime
 import uuid
 
 """
-Finds number of fitness related businesses in each zip code (aggregation)
-Joins with district name and average size of park on zip code
+Finds number of fitness related businesses in each zip code,
+Finds total acres of open space in each district,
+Uses existing avg size of park in a district
+Joins on district name,
 
 """
 
 class transformfitBusiness(dml.Algorithm):
     contributor = 'janellc_rstiffel'
-    reads = ['janellc_rstiffel.obesityData', 'janellc_rstiffel.fitBusinesses']
-    writes = ['janellc_rstiffel.obesity_businesses']
+    reads = ['janellc_rstiffel.districtAvgAcres', 'janellc_rstiffel.fitBusinesses']
+    writes = ['janellc_rstiffel.zipBusinessPark']
 
     @staticmethod
     def execute(trial = False):
@@ -27,37 +29,58 @@ class transformfitBusiness(dml.Algorithm):
         repo.authenticate('janellc_rstiffel', 'janellc_rstiffel')
 
         # load collections
-        NB = repo['janellc_rstiffel.Neighborhoods'].find({}, {'properties.PD': 1, 'geometry.coordinates': 1, 'properties.Longitude': 1})
+
+        OS = repo['janellc_rstiffel.openSpace'].find({}, {'properties.DISTRICT': 1, 'properties.ACRES': 1})
         FB = repo['janellc_rstiffel.fitBusinesses'].find()
-        hi = repo['janellc_rstiffel.zipCodes'].find()
         data = repo['janellc_rstiffel.districtAvgAcres'].find()
 
 
-
+        # Create dictionary to count fitness businesses in each zipcode
         businesses = {}
         for b in FB:
-            # print(b)
-            zip = '0' + b['Zipcode\r'] #fix zipcode
-            #print(b['Zipcode\r'])
-            if zip not in businesses:  # if zipcode not in dictionary add it
+            zip = '0' + b['Zipcode\r']  # fix zipcode
+            if zip not in businesses:
                 businesses[zip] = {'count': 1}
-            else:                               # if its already in dictionary increase count
+            else:
                 businesses[zip]['count'] += 1
 
 
+        # calculate total acres of open space per district (aggregate)
+        district_acres = {}
+        for row in OS:
+            key = str(row['properties']['DISTRICT'])
+            value = row['properties']['ACRES']
+            if type(value) != float:
+                break
+            if key not in district_acres:
+                district_acres[key] = {'totalAcres':value}
+            else:
+                district_acres[key]['totalAcres'] += value
+
+        # print(district_acres)
+        # print(businesses)
+
+        # Create final dictionary to join business counts with avg park acres joined on District
         new = {}
         for row in data:
             for key,value in row.items():
                 if key=="_id":
-                    continue
+                     continue
                 for keyb, valueb in businesses.items():
                     if key==keyb:
+                        new[key]={'test': 'hi'}
                         new[key]={'District': value['District'], 'AvgParkSize': value['Acres'], 'fitBusinessCount': valueb['count']}
 
 
+        # join total Acres per district on District name
+        for key,value in new.items():
+          dis = value['District']
+          for key2,value2 in district_acres.items():
+              if key2==dis:
+                  new[key]['totalParkAcres']=value2['totalAcres']
 
-        with open("./transformed_datasets/zipBusinessPark.json", 'w') as outfile:
-            json.dump(new, outfile)
+        # with open("./transformed_datasets/zipBusinessPark.json", 'w') as outfile:
+        #     json.dump(new, outfile)
 
         repo.dropCollection('janellc_rstiffel.zipBusinessPark')
         repo.createCollection('janellc_rstiffel.zipBusinessPark')
@@ -90,26 +113,40 @@ class transformfitBusiness(dml.Algorithm):
 
         this_script = doc.agent('alg:janellc_rstiffel#businessZips',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('bod:a6488cfd737b4955bf55b0342c74575b_0',
-                              {'prov:label': 'Planning Districts', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'geojson'})
-        transformFitBusiness = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(transformFitBusiness, this_script)
 
+        # three resources: openSpace, districtAvgAcres, fitBusinesses
+        resource1 = doc.entity('dat:janellc_rstiffel#openSpace',
+                               {'prov:label': 'Open Space', prov.model.PROV_TYPE: 'ont:DataResource',
+                                'ont:Extension': 'geojson'})
+        resource2 = doc.entity('dat:janellc_rstiffel#districtAvgAcres',
+                               {'prov:label': 'Acres per park by district', prov.model.PROV_TYPE: 'ont:DataResource',
+                                'ont:Extension': 'json'})
+
+        resource3 = doc.entity('dat:janellc_rstiffel#fitBusinesses',
+                               {'prov:label': 'Fitness Businesses', prov.model.PROV_TYPE: 'ont:DataResource',
+                                'ont:Extension': 'json'})
+
+        zipBusinessPark = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+
+        doc.wasAssociatedWith(transformFitBusiness, this_script)
         doc.usage(transformFitBusiness, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
                    'ont:Query': ''
                    }
                   )
-
-        businessZips = doc.entity('dat:janellc_rstiffel#businessZips',
-                                   {prov.model.PROV_LABEL: 'business zips', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(businessZips, this_script)
-        doc.wasGeneratedBy(businessZips, transformFitBusiness, endTime)
-        doc.wasDerivedFrom(businessZips, resource, transformFitBusiness, transformFitBusiness, transformFitBusiness)
+        zipBusinessPark = doc.entity('dat:janellc_rstiffel#zipBusinessPark',
+                                   {prov.model.PROV_LABEL: 'park and business data ny zip', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(zipBusinessPark, this_script)
+        doc.wasGeneratedBy(zipBusinessPark, endTime)
+        doc.wasDerivedFrom(resource1, resource2, resource3, zipBusinessPark)
 
         repo.logout()
 
         return doc
 
-transformfitBusiness.execute()
+# transformfitBusiness.execute()
+# doc = getOpenSpace.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
+
+## eof

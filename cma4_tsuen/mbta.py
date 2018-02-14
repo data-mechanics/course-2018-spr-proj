@@ -10,6 +10,7 @@ class mbta(dml.Algorithm):
     reads = []
     writes = ['cma4_tsuen.mbta']
 
+
     def convertTxtToJSON():
         with open('./../data/MBTA_Stops.txt', 'r') as myfile:
             mbta_data = []
@@ -18,14 +19,12 @@ class mbta(dml.Algorithm):
                 line = data[x].split(",")
                 
                 if(line[4] != '""' and line[5] != '""'):
-                    y = {'Stop_Name': line[2], 'Coords:': (float(line[4]),float(line[5]))}
-                mbta_data.append(y)
-            
-
-            
+                    y = {'Stop_Name': line[2], 'Coords': (float(line[4]),float(line[5]))}
+                mbta_data.append(y)  
+            print(mbta_data)
 
         with open('./../data/mbta.json', 'w') as mbtafile:
-            json.dump(mbta_data, mbtafile)
+          json.dump(mbta_data, mbtafile)
             
 
     
@@ -40,7 +39,9 @@ class mbta(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cma4_tsuen', 'cma4_tsuen')
 
-        r = json.loads(response)
+        jsonfile = open("./../data/mbta.json", 'r')
+
+        r = json.load(jsonfile)
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("cma4_tsuen.mbta")
         repo.createCollection("cma4_tsuen.mbta")
@@ -90,10 +91,10 @@ class mbta(dml.Algorithm):
                   
         return doc
 
-mbta.convertTxtToJSON()
-#mbta.execute()
-#doc = mbta.provenance()
-#print(doc.get_provn())
-#print(json.dumps(json.loads(doc.serialize()), indent=4))
+#mbta.convertTxtToJSON()
+mbta.execute()
+doc = mbta.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

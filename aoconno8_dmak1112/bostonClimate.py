@@ -64,7 +64,7 @@ class bostonClimate(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
         this_script = doc.agent('alg:aoconno8_dmak1112#bostonClimate', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dat:boston_climate_2015_2016', {'prov:label':'Boston Climate Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        resource = doc.entity('dat:boston_climate_2015-2016', {'prov:label':'Boston Climate Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         get_bostonClimate = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_bostonClimate, this_script)
         doc.usage(get_bostonClimate, resource, startTime, None,

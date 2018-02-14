@@ -52,17 +52,16 @@ class parkingData(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/aoconno8_dmak1112')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
+        doc.add_namespace('databg', 'https://data.boston.gov/api')  # The event log.
+
 
         this_script = doc.agent('alg:aoconno8_dmak1112#parkingData', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('dat:Cars Parked Across All Zones - 2015',
-                              {'prov:label': '2015 Parking Data', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'csv'})
+        resource = doc.entity('databg:3/action/datastore_search',
+                              {'prov:label': '2015 Parking Data', prov.model.PROV_TYPE: 'ont:DataResource'})
         get_parkingData = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_parkingData, this_script)
         doc.usage(get_parkingData, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval'
-                   }
-                  )
+                  {prov.model.PROV_TYPE: 'ont:Retrieval', 'ont:Query':'resource_id=$&limit=$'})
         parkingData = doc.entity('dat:aoconno8_dmak1112#parkingData',
                                    {prov.model.PROV_LABEL: 'Parking Data', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(parkingData, this_script)

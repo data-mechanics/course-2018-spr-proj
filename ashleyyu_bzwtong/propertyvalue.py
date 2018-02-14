@@ -104,7 +104,7 @@ class propertyvalue(dml.Algorithm):
         return doc
     
     
-propertyvalue.execute()
+
 doc = propertyvalue.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))

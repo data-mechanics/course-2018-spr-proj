@@ -14,7 +14,7 @@ class aggnonpublicschools(dml.Algorithm):
     
     @staticmethod
     def execute(trial = False):
-        '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
+        '''Find number of non public schools within each zipcode'''
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
@@ -25,9 +25,10 @@ class aggnonpublicschools(dml.Algorithm):
         repo.dropPermanent("aggnonpublicschools")
         repo.createPermanent("aggnonpublicschools")
         
+        nonpublicschool = list(repo.ashleyyu_bzwtong.nonpublicschools.find())
 
         zipCount= []
-        for entry in repo.ashleyyu_bzwtong.nonpublicschools.find():
+        for entry in nonpublicschool:
             if "zipcode" in entry:
                 zipcd = entry["zipcode"]
                 zipCount += [(zipcd, 1)]
@@ -67,6 +68,7 @@ class aggnonpublicschools(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
 
         this_script = doc.agent('alg:ashleyyu_bzwtong#aggnonpublicschools', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
@@ -89,7 +91,7 @@ class aggnonpublicschools(dml.Algorithm):
                   
         return doc
 
-aggnonpublicschools.execute()
-doc = aggnonpublicschools.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+#aggnonpublicschools.execute()
+#doc = aggnonpublicschools.provenance()
+#print(doc.get_provn())
+#print(json.dumps(json.loads(doc.serialize()), indent=4))

@@ -22,7 +22,7 @@ class trafficsignals(dml.Algorithm):
 
         url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/de08c6fe69c942509089e6db98c716a3_0.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        signals_json = json.loads(response)
+        signals_json = [json.loads(response)]
         repo.dropCollection("trafficsignals")
         repo.createCollection("trafficsignals")
         repo['ashleyyu_bzwtong.trafficsignals'].insert_many(signals_json)

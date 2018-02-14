@@ -17,6 +17,6 @@ Our first two datasets look into the Boston population. The first provides demog
 
 **Transformations:**
 
-* transformOpenSpace: find average size of a park in acres for each district.
-*  transformFitBusiness: Aggregates various data about Open Space to district level, joins with information about fitness related businesses on zipcode
-
+* transformOpenSpace: Finds average size of a park in acres for each district/zipcode.
+* transformFitBusiness: Aggregates various data about Open Space to district level, joins with information about fitness related businesses on zipcode
+* transformBikeNetwork: Calculates the number of bike networks within 2 miles per tract district, along with medium income.

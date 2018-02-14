@@ -194,46 +194,47 @@ class weatherHubway(dml.Algorithm):
             '''
 
         # Set up the database connection.
-        pass
-        # client = dml.pymongo.MongoClient()
-        # repo = client.repo
-        # repo.authenticate('alice_bob', 'alice_bob')
-        # doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        # doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-        # doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-        # doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        # doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('aoconno8_dmak1112', 'aoconno8_dmak1112')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/aoconno8_dmak1112') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/aoconno8_dmak1112') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
-        # this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        # resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        # get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        # get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        # doc.wasAssociatedWith(get_found, this_script)
-        # doc.wasAssociatedWith(get_lost, this_script)
-        # doc.usage(get_found, resource, startTime, None,
-        #           {prov.model.PROV_TYPE:'ont:Retrieval',
-        #           'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-        #           }
-        #           )
-        # doc.usage(get_lost, resource, startTime, None,
-        #           {prov.model.PROV_TYPE:'ont:Retrieval',
-        #           'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-        #           }
-        #           )
+        this_script = doc.agent('alg:aoconno8_dmak1112#weatherHubway', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        hubway = doc.entity('dat:aoconno8_dmak1112#hubwayTravel', {prov.model.PROV_LABEL:'Hubway Daily Travel Data 2015', prov.model.PROV_TYPE:'ont:DataSet'})
+        weather = doc.entity('dat:aoconno8_dmak1112#bostonClimate', {prov.model.PROV_LABEL:'Boston Climate', prov.model.PROV_TYPE:'ont:DataSet'})
+        emissions = doc.entity('dat:aoconno8_dmak1112#yearlyEmissions', {prov.model.PROV_LABEL:'Yearly Emissions Data', prov.model.PROV_TYPE:'ont:DataSet'})
 
-        # lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-        # doc.wasAttributedTo(lost, this_script)
-        # doc.wasGeneratedBy(lost, get_lost, endTime)
-        # doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
 
-        # found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-        # doc.wasAttributedTo(found, this_script)
-        # doc.wasGeneratedBy(found, get_found, endTime)
-        # doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
 
-        # repo.logout()
+        get_weatherHubway = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_weatherHubway, this_script)
+
+        doc.usage(get_weatherHubway, hubway, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Computation'
+                  }
+                  )
+        doc.usage(get_weatherHubway, weather, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Computation'
+                  }
+                  )
+        doc.usage(get_weatherHubway, emissions, startTime, None,
+                {prov.model.PROV_TYPE:'ont:Computation'
+                }
+                )
+
+        weatherHubway = doc.entity('dat:aoconno8_dmak1112#weatherHubway', {prov.model.PROV_LABEL:'Daily Hubway with Daily Weather and Emissions', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(weatherHubway, this_script)
+        doc.wasGeneratedBy(weatherHubway, get_weatherHubway, endTime)
+        doc.wasDerivedFrom(weatherHubway, hubway, get_weatherHubway, get_weatherHubway, get_weatherHubway)
+        doc.wasDerivedFrom(weatherHubway, weather, get_weatherHubway, get_weatherHubway, get_weatherHubway)
+        doc.wasDerivedFrom(weatherHubway, emissions, get_weatherHubway, get_weatherHubway, get_weatherHubway)
+
+        repo.logout()
                   
-        # return doc
+        return doc
 
 
     #############   FOR TRANSFORMATIONS  #####################
@@ -269,8 +270,8 @@ class weatherHubway(dml.Algorithm):
 
     #############   FOR TRANSFORMATIONS  #####################
 weatherHubway.execute()
-# doc = example.provenance()
-# print(doc.get_provn())
-# print(json.dumps(json.loads(doc.serialize()), indent=4))
+doc = weatherHubway.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

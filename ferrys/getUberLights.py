@@ -76,14 +76,14 @@ class getUberLights(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('ferrys', 'ferrys')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/ferrys/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/ferrys/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
         this_script = doc.agent('alg:ferrys#getUberLights', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-        uber_boundaries = doc.entity('dat:ferrys#boston_censustracts', {'prov:label':'Uber Boundary Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        uber_boundaries = doc.entity('dat:ferrys#uber_boundaries', {prov.model.PROV_LABEL:'uber_boundaries', prov.model.PROV_TYPE:'ont:DataSet'})
         streetlight_locations = doc.entity('dat:ferrys#streetlights', {prov.model.PROV_LABEL:'streetlights', prov.model.PROV_TYPE:'ont:DataSet'})
         
         get_uber_lights = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)

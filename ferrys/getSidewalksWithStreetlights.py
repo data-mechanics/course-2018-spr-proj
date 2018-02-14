@@ -52,7 +52,6 @@ class getSidewalksWithStreetlights(dml.Algorithm):
                 except TypeError:
                     pass
                 if getSidewalksWithStreetlights.is_close(point, projected_streetlights[nearest]):
-                    print("lit")
                     lights += [projected_streetlights[nearest]]
             side_light.append({
                     'sidewalk': sidewalk,
@@ -83,15 +82,15 @@ class getSidewalksWithStreetlights(dml.Algorithm):
         repo = client.repo
 
         repo.authenticate('ferrys', 'ferrys')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/ferrys/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/ferrys/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bod', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/')
 
         this_script = doc.agent('alg:ferrys#getSidewalksWithStreetlights', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-        sidewalk_locations = doc.entity('bod:6aa3bdc3ff5443a98d506812825c250a_0', {'prov:label':'Sidewalk Location Geo Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'geojson'})
+        sidewalk_locations = doc.entity('dat:ferrys#sidewalks', {prov.model.PROV_LABEL:'sidewalks', prov.model.PROV_TYPE:'ont:DataSet'})
         streetlight_locations = doc.entity('dat:ferrys#streetlights', {prov.model.PROV_LABEL:'streetlights', prov.model.PROV_TYPE:'ont:DataSet'})
         
         get_uber_lights = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)

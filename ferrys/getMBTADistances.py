@@ -4,7 +4,7 @@ import dml
 import prov.model
 import datetime
 import uuid
-import copy
+from tqdm import tqdm
 
 class getMBTADistances(dml.Algorithm):
     '''
@@ -40,7 +40,7 @@ class getMBTADistances(dml.Algorithm):
 
         cache = {}
         mbta_dist = []
-        for alc_entry in projected_alc:
+        for alc_entry in tqdm(projected_alc):
             for mbta_entry in projected_mbta:
                 alc_address = alc_entry[1].replace(' ',  '+')
                 if alc_address in cache:
@@ -101,7 +101,7 @@ class getMBTADistances(dml.Algorithm):
         this_script = doc.agent('alg:ferrys#getMBTADistances', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
         licenses = doc.entity('dat:ferrys#alc_licenses', {prov.model.PROV_LABEL:'alc_licenses', prov.model.PROV_TYPE:'ont:DataSet'})
-        mbta_stops= doc.entity('dat:ferrys#mbta', {prov.model.PROV_LABEL:'mbta', prov.model.PROV_TYPE:'ont:DataSet'})
+        mbta_stops = doc.entity('dat:ferrys#mbta', {prov.model.PROV_LABEL:'mbta', prov.model.PROV_TYPE:'ont:DataSet'})
         geocode_locations = doc.entity('geocode:json', {'prov:label':'Google Geocode API', prov.model.PROV_TYPE:'ont:DataResource'})
 
 

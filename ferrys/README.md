@@ -25,6 +25,7 @@ Going to an establishment that allows alcohol consumption on premises can be fun
     * shapely
     * rtree
     * spatialindex
+    * tqdm
 * [Google Geocode API Key](https://developers.google.com/maps/documentation/geocoding/get-api-key)
     * Credentials are pulled from the auth.json file in the format ['services']['googlegeocoding']['key']
 * [MBTA Developer V3 API Portal Key](https://api-v3.mbta.com)

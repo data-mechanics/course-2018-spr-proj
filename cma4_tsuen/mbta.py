@@ -48,7 +48,6 @@ class mbta(dml.Algorithm):
         repo.createCollection("cma4_tsuen.mbta")
         repo['cma4_tsuen.mbta'].insert_many(r)
         repo['cma4_tsuen.mbta'].metadata({'complete':True})
-        print(repo['cma4_tsuen.mbta'].find())
         print(repo['cma4_tsuen.mbta'].metadata())
 
         repo.logout()

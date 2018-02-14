@@ -10,6 +10,12 @@ class mbta(dml.Algorithm):
     reads = []
     writes = ['cma4_tsuen.mbta']
 
+    def convertTxtToJSON():
+        with open('./../data/MBTA_Stops.txt', 'r') as myfile:
+            data=myfile.read().replace('\n', '')
+
+        
+
     @staticmethod
     def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
@@ -20,12 +26,6 @@ class mbta(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cma4_tsuen', 'cma4_tsuen')
 
-        with open('auth.json') as json_file:
-            key = json.load(json_file)
-        api_key = key['MBTA_API_KEY']
-
-        url = 'http://realtime.mbta.com/developer/api/v2/routes?api_key='+api_key+'&format=json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("cma4_tsuen.mbta")
@@ -76,9 +76,10 @@ class mbta(dml.Algorithm):
                   
         return doc
 
-mbta.execute()
-doc = mbta.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+mbta.convertTxtToJSON()
+#mbta.execute()
+#doc = mbta.provenance()
+#print(doc.get_provn())
+#print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

@@ -23,6 +23,5 @@ Our first two datasets look into the Boston population. The first provides demog
 
 **How to obtain new transformed datasets:**
 
-* cd into janellc_rstiffel
 * python execute.py janellc_rstiffel
 * This will create 3 json files in janellc_rstiffel/transformed_datasets

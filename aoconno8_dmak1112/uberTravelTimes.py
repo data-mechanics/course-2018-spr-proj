@@ -3,6 +3,7 @@ import prov.model
 import datetime
 import uuid
 import pandas as pd
+import json
 
 
 class uberTravelTimes(dml.Algorithm):
@@ -34,7 +35,6 @@ class uberTravelTimes(dml.Algorithm):
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
-        pass
 
 
 # '''
@@ -44,50 +44,35 @@ class uberTravelTimes(dml.Algorithm):
 #            '''
 #
 #        # Set up the database connection.
-#        client = dml.pymongo.MongoClient()
-#        repo = client.repo
-#        repo.authenticate('alice_bob', 'alice_bob')
-#        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-#        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-#        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-#        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-#        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
-#
-#        this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-#        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-#        get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-#        get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-#        doc.wasAssociatedWith(get_found, this_script)
-#        doc.wasAssociatedWith(get_lost, this_script)
-#        doc.usage(get_found, resource, startTime, None,
-#                  {prov.model.PROV_TYPE:'ont:Retrieval',
-#                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-#                  }
-#                  )
-#        doc.usage(get_lost, resource, startTime, None,
-#                  {prov.model.PROV_TYPE:'ont:Retrieval',
-#                  'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-#                  }
-#                  )
-#
-#        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-#        doc.wasAttributedTo(lost, this_script)
-#        doc.wasGeneratedBy(lost, get_lost, endTime)
-#        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-#
-#        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-#        doc.wasAttributedTo(found, this_script)
-#        doc.wasGeneratedBy(found, get_found, endTime)
-#        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
-#
-#        repo.logout()
-#
-#        return doc
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('aoconno8_dmak1112', 'aoconno8_dmak1112')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/aoconno8_dmak1112') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/aoconno8_dmak1112') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+
+        this_script = doc.agent('alg:aoconno8_dmak1112#uberTravelTimes', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('dat:Uber_Travel_Times_Daily', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        get_uberTravelTimes = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_uberTravelTimes, this_script)
+        doc.usage(get_uberTravelTimes, resource, startTime, None,
+                 {prov.model.PROV_TYPE:'ont:Retrieval'                 }
+                 )
+
+        uberTravelTimes = doc.entity('dat:aoconno8_dmak1112#uberTravelTimes', {prov.model.PROV_LABEL:'Daily Uber Travel Times', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(uberTravelTimes, this_script)
+        doc.wasGeneratedBy(uberTravelTimes, get_uberTravelTimes, endTime)
+        doc.wasDerivedFrom(uberTravelTimes, resource, get_uberTravelTimes, get_uberTravelTimes, get_uberTravelTimes)
+
+        repo.logout()
+
+        return doc
 
 uberTravelTimes.execute()
-# doc = example.provenance()
-# print(doc.get_provn())
-# print(json.dumps(json.loads(doc.serialize()), indent=4))
+doc = uberTravelTimes.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof
 

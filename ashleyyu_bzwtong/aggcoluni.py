@@ -14,7 +14,7 @@ class aggcoluni(dml.Algorithm):
     
     @staticmethod
     def execute(trial = False):
-        '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
+        '''Find number of colleges and unis within each zipcode'''
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
@@ -68,6 +68,7 @@ class aggcoluni(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
 
         this_script = doc.agent('alg:ashleyyu_bzwtong#aggcoluni', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
@@ -90,7 +91,7 @@ class aggcoluni(dml.Algorithm):
                   
         return doc
 
-aggcoluni.execute()
-doc = aggcoluni.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+#aggcoluni.execute()
+#doc = aggcoluni.provenance()
+#print(doc.get_provn())
+#print(json.dumps(json.loads(doc.serialize()), indent=4))

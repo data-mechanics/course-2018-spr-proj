@@ -31,7 +31,7 @@ class aggpublicschools(dml.Algorithm):
                 zipcd = entry["zipcode"]
                 zipCount += [(zipcd, 1)]
                 
-                
+        print(zipCount)        
         keys = {k[0] for k in zipCount}
         agg_val= [(key, sum([n for (z,n) in zipCount if z == key])) for key in keys]
 

@@ -22,4 +22,5 @@ Our first two datasets look into the Boston population. The first provides demog
 * transformBikeNetwork: Calculates the number of bike networks within 2 miles per tract district, along with medium income.
 
 **How to obtain new transformed datasets:**
-First, run the get files (getOpenSpace, getBikeNetwork, getIncome, getBusinesses, getObesityData, and getNeighborhoods) python files. Then, run the three transformation files (transformOpenSpace, transformBikeNetwork, transformFitBusiness) python files. The ouput json files will be written automatically into the folder transformed_datasets after running the transform files.
+
+First, run the get files (getOpenSpace, getBikeNetwork, getIncome, getBusinesses, getObesityData, and getNeighborhoods) python files. Then, run the three transformation files (transformOpenSpace, transformBikeNetwork, transformFitBusiness) python files. The output json files will be written automatically into the folder transformed_datasets after running the transform files.

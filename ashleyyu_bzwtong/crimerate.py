@@ -23,7 +23,7 @@ class crimerate(dml.Algorithm):
 
         url = 'https://data.boston.gov/export/12c/b38/12cb3883-56f5-47de-afa5-3b1cf61b257b.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        crime_json = json.loads(response)
+        crime_json = [json.loads(response)]
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("crimerate")
         repo.createCollection("crimerate")

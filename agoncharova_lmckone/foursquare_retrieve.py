@@ -32,6 +32,7 @@ class foursquare_retrieve(dml.Algorithm):
 		"&radius={5}"
 		"&limit=100"
 	)
+
 	@staticmethod
 	def get_coords(city):
 		'''
@@ -49,8 +50,8 @@ class foursquare_retrieve(dml.Algorithm):
 					coords.append([float("{0:.2f}".format(y)), float("{0:.2f}".format(x))])
 		if(city == 'Boston'):
 			coords = [[42.40, -71.19], [42.30, -71.19], [42.40, -71.02], [42.30, -71.02]]
-			for lon in range(0, 11):	
-				for lat in range(0, 18):			
+			for lon in range(0, 11):
+				for lat in range(0, 18):
 					y = 42.30 + (lat/100.0)
 					x = -71.19 + (lon/100.0)
 					coords.append([float("{0:.2f}".format(y)), float("{0:.2f}".format(x))])
@@ -59,7 +60,7 @@ class foursquare_retrieve(dml.Algorithm):
 	@staticmethod
 	def construct_set_of_queries(city):
 		'''
-		Returns an arrary of string URL queries, where
+		Returns an array of string URL queries, where
 		the only difference are the coordinates
 		''' 
 		fr = foursquare_retrieve
@@ -210,4 +211,3 @@ class foursquare_retrieve(dml.Algorithm):
 
 # foursquare_retrieve.execute()
 # foursquare_retrieve.provenance()
-

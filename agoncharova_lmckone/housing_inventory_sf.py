@@ -15,7 +15,7 @@ class housing_inventory_sf(dml.Algorithm):
 	
 	contributor = 'agoncharova_lmckone'
 	reads = []
-	writes = []
+	writes = ['agoncharova_lmckone.sf_housing_inventory']
 
 	# urls for the json data
 	_2011 = 'https://data.sfgov.org/resource/pwiv-ej3p.json'

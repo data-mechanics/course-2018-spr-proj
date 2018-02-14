@@ -39,10 +39,10 @@ class sf_evictions(dml.Algorithm):
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''
-            Create the provenance document describing everything happening
-            in this script. Each run of the script will generate a new
-            document describing that invocation event.
-            '''
+        Create the provenance document describing everything happening
+        in this script. Each run of the script will generate a new
+        document describing that invocation event.
+        '''
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()

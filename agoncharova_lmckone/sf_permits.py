@@ -13,7 +13,7 @@ class sf_permits(dml.Algorithm):
 
     @staticmethod
     def execute(trial = False):
-        '''Retrieve Boston Permit Data from 2014-2017'''
+        '''Retrieve SF Permit Data'''
         startTime = datetime.datetime.now()
 
         # Set up the database connection.

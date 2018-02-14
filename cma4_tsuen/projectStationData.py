@@ -36,8 +36,8 @@ class projectDestinationData(dml.Algorithm):
         collection2 = repo['cma4_tsuen.mbta']
 
         dataSet.append({
-            'key': ('mbta', row['businessName']),
-        	'coords': row['Location']
+            'key': ('mbta', row['Stop_Name']),
+        	'coords': row['Coords']
         	} for row in collection2
             )
 

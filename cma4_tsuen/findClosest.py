@@ -87,7 +87,7 @@ class findClosest(dml.Algorithm):
 
         this_script = doc.agent('alg:cma4_tsuen#closest', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('dat:destinationsProjected', {'prov:label':'Destinations Name and Coords', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        resource2 = doc.entity('dat:stationsProjected', {'prov:label':'Stations Food Name and Data', prov.model.PROV_TYPE:'ont:DataSet', 'ont:Extension':'json'})
+        resource2 = doc.entity('dat:stationsProjected', {'prov:label':'Stations stationsProjected Name and Data', prov.model.PROV_TYPE:'ont:DataSet', 'ont:Extension':'json'})
         get_closest = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_closest, this_script)
         doc.usage(get_closest, resource, startTime, None,
@@ -99,22 +99,22 @@ class findClosest(dml.Algorithm):
                   }
                   )
 
-        entertainment = doc.entity('dat:cma4_tsuen#entertainment', {prov.model.PROV_LABEL:'Filtered Entertainment Dests', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(entertainment, this_script)
-        doc.wasGeneratedBy(entertainment, get_closest, endTime)
-        doc.wasDerivedFrom(entertainment, resource, get_closest, get_closest, get_closest)
+        destinationsProjected = doc.entity('dat:cma4_tsuen#destinationsProjected', {prov.model.PROV_LABEL:'Projected Destinations', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(destinationsProjected, this_script)
+        doc.wasGeneratedBy(destinationsProjected, get_closest, endTime)
+        doc.wasDerivedFrom(destinationsProjected, resource, get_closest, get_closest, get_closest)
 
-        food = doc.entity('dat:cma4_tsuen#food', {prov.model.PROV_LABEL:'Filtered Food Dests', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(food, this_script)
-        doc.wasGeneratedBy(food, get_closest, endTime)
-        doc.wasDerivedFrom(food, resource, get_closest, get_closest, get_closest)
+        stationsProjected = doc.entity('dat:cma4_tsuen#stationsProjected', {prov.model.PROV_LABEL:'Projected Stations', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(stationsProjected, this_script)
+        doc.wasGeneratedBy(stationsProjected, get_closest, endTime)
+        doc.wasDerivedFrom(stationsProjected, resource, get_closest, get_closest, get_closest)
 
         repo.logout()
                   
         return doc
 
-projectDestinationData.execute()
-doc = projectDestinationData.provenance()
+findClosest.execute()
+doc = findClosest.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

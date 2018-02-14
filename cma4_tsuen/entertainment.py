@@ -20,12 +20,9 @@ class entertainment(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cma4_tsuen', 'cma4_tsuen')
 
-        
-
-        #url = 'https://data.boston.gov/export/792/0c5/7920c501-b410-4a9c-85ab-51338c9b34af.json'
-        jsonfile = open("./../data/entertainment.json", 'r')
-        
-        r = json.load(jsonfile)
+        url = 'http://datamechanics.io/?prefix=cma4_tsuen/entertainment.json'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(jsonfile)
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("cma4_tsuen.entertainment")
         repo.createCollection("cma4_tsuen.entertainment")

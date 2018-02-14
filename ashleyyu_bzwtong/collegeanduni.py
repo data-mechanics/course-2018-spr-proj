@@ -23,7 +23,6 @@ class collegeanduni(dml.Algorithm):
 
         url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/cbf14bb032ef4bd38e20429f71acb61a_2.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        print(response)
         schools_json = [json.loads(response)]
         repo.dropCollection("collegeanduni")
         repo.createCollection("collegeanduni")

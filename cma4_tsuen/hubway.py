@@ -56,7 +56,7 @@ class hubway(dml.Algorithm):
         doc.add_namespace('hub', 'https://secure.thehubway.com/data/')
 
         this_script = doc.agent('alg:cma4_tsuen#hubway', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('hub:stations', {'prov:label':'Hubway Station Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('dat:hubway', {'prov:label':'Hubway Station Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_stations = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_stations, this_script)
         doc.usage(get_stations, resource, startTime, None,

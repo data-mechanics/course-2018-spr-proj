@@ -39,8 +39,10 @@ class uber(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cma4_tsuen', 'cma4_tsuen')
 
-        url = 'http://datamechanics.io/?prefix=cma4_tsuen/uber.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
+
+
+        #url = 'http://datamechanics.io/?prefix=cma4_tsuen/uber.json'
+        #response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.load(response)
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("cma4_tsuen.uber")

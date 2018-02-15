@@ -92,7 +92,7 @@ class mbta(dml.Algorithm):
         doc.add_namespace('mbta', 'http://realtime.mbta.com/developer/api/v2/')
 
         this_script = doc.agent('alg:cma4_tsuen#mbta', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('mbta:stops', {'prov:label':'MBTA Stops Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('dat:mbta', {'prov:label':'MBTA Stops Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_stops = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_stops, this_script)
         doc.usage(get_stops, resource, startTime, None,

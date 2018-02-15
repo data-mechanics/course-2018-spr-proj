@@ -5,10 +5,10 @@ import prov.model
 import datetime
 import uuid
 
-class entertainment(dml.Algorithm):
+class crime(dml.Algorithm):
     contributor = 'cma4_tsuen'
     reads = []
-    writes = ['cma4_tsuen.entertainment']
+    writes = ['cma4_tsuen.crime']
 
     @staticmethod
     def execute(trial = False):
@@ -20,15 +20,15 @@ class entertainment(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cma4_tsuen', 'cma4_tsuen')
 
-        url = 'http://datamechanics.io/data/cma4_tsuen/entertainment.json'
+        url = 'http://datamechanics.io/data/20127to20158crimeincident2.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("cma4_tsuen.entertainment")
-        repo.createCollection("cma4_tsuen.entertainment")
-        repo['cma4_tsuen.entertainment'].insert_many(r)
-        repo['cma4_tsuen.entertainment'].metadata({'complete':True})
-        print(repo['cma4_tsuen.entertainment'].metadata())
+        repo.dropCollection("cma4_tsuen.crime")
+        repo.createCollection("cma4_tsuen.crime")
+        repo['cma4_tsuen.crime'].insert_many(stations)
+        repo['cma4_tsuen.crime'].metadata({'complete':True})
+        print(repo['cma4_tsuen.crime'].metadata())
 
         repo.logout()
 
@@ -52,28 +52,27 @@ class entertainment(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('entertainment', 'https://data.boston.gov/export/792/0c5/7920c501-b410-4a9c-85ab-51338c9b34af.json')
+        doc.add_namespace('hub', 'http://datamechanics.io/data/')
 
-        this_script = doc.agent('alg:cma4_tsuen#entertainment', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dat:entertainment', {'prov:label':'Entertainment Locations Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_stops = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_stops, this_script)
-        doc.usage(get_stops, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval'
-                  }
+        this_script = doc.agent('alg:cma4_tsuen#crime', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('dat:crime', {'prov:label':'crime Station Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_crime = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_crime, this_script)
+        doc.usage(get_crime, resource, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'}
                   )
 
-        entertainment = doc.entity('dat:cma4_tsuen#entertainment', {prov.model.PROV_LABEL:'Entertainment Places', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(entertainment, this_script)
-        doc.wasGeneratedBy(entertainment, get_stops, endTime)
-        doc.wasDerivedFrom(entertainment, resource, get_stops, get_stops, get_stops)
+        crime = doc.entity('dat:cma4_tsuen#crime', {prov.model.PROV_LABEL:'crime Locations', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(crime, this_script)
+        doc.wasGeneratedBy(crime, get_crime, endTime)
+        doc.wasDerivedFrom(crime, resource, get_crime, get_crime, get_crime)
 
         repo.logout()
                   
         return doc
 
-entertainment.execute()
-doc = entertainment.provenance()
+crime.execute()
+doc = crime.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

@@ -35,19 +35,25 @@ class projectDestinationData(dml.Algorithm):
         collection2 = repo['cma4_tsuen.food'].find()
 
         food_data = []
-        #filtered food.py
+        # joining food.py while filtering it
         food_data = [{"name": field['businessName'], "coords": field['Location']} 
             for field in collection2 if field["RESULT"] is not "HE_Fail"]
         
         for i in range(len(food_data)):
             dataSet.append(food_data[i])
 
-        
+
         final = []
+        # create tuples out of string coordinates
         for entry in dataSet:
             if entry not in final:
-                if entry['coords'] != '':
-                    entry['coords'] = literal_eval(entry['coords'])
+                if entry['coords'] != "NULL":
+                    stringCoords = entry['coords']
+                    la = stringCoords[1:13]
+                    lo = stringCoords[15:-1]
+                    if la == '' or lo == '':
+                        continue
+                    entry['coords'] = (float(la),float(lo))
                     final.append(entry)
 
         print(final)

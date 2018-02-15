@@ -14,5 +14,4 @@ For my second transformation, combine_public_utilities.py, I decided to merge al
 
 For my third transformation, combine_crime_and_property.py, I merged the crime and property data to create a collection that can represent which types of streets had what types of crimes occured on them and their associated property values.
 
-The outputs of the transformations are found in the json files 
-
+The outputs of the transformations are found in the json files: open_spaces_simplified.json, public_utilities.json, and crime_and_properties.json.

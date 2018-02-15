@@ -26,7 +26,7 @@ After downloading the datasets having run "getdata.py", "combineneighbourhood.py
 "project_coordinates.py" applies a projection operation on the datasets related to trees, Hubway stations, and charging stations in Boston.  We transform the original datasets by storing the type of each asset ("tree"/"charge"/"hubway"), along with its coordinates in a new dataset.
 
 ### Transformation 3
-"open_centroids.py" performs projections to get the coordinates of open spaces and grounds in Boston.  Some of the data are in unfavorable formats and we've taken that into accout to produce a resulting dataset with a uniform format.  A function is applied to find the centroids of each of these neighborhoods.  The resulting singular latitude and longitude is saved in a database with the type field set to "openspace".
+"open_centroids.py" performs projections to get the coordinates of open spaces and grounds in Boston.  Some of the data are in unfavorable formats and we've taken that into account to produce a resulting dataset with a uniform format.  A function is applied to find the centroids of each of these spaces.  The resulting singular latitude and longitude is saved in a database with the type field set to "openspace".
 
 ### Transformation 4
 "combine_data.py" carries out the final major transformation by essentially combining all the datasets.  It uses projected values from every dataset and maps the points of interest (environmentally- friendly assets) to one of the neighborhoods of Boston.  The resulting dataset ("greenneighbourhoods") contains, for every neighborhood in Boston, a list of asset types (e.g.: Hubway stations, charging stations, etc.) as well as their coordinates mapped to a single key value: a Boston neighborhood.

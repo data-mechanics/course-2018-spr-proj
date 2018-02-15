@@ -7,7 +7,7 @@ import uuid
 import csv
 
 def csvConvert():
-    url = "http://datamechanics.io/data/boston_Zip_Zhvi_Summary_AllHomes.csv"
+    url = "http://datamechanics.io/data/boston_Zip_Zhvi_AllHomes.csv"
 
     csvfile = urllib.request.urlopen(url).read().decode("utf-8")
 
@@ -30,10 +30,10 @@ def csvConvert():
 
 
 
-class zhviHouseValue(dml.Algorithm):
+class houseValue(dml.Algorithm):
     contributor = 'yuxiao_yzhang11'
     reads = []
-    writes = ['yuxiao_yzhang11.zhvi']
+    writes = ['yuxiao_yzhang11.houseValue']
 
     @staticmethod
     def execute(trial=False):
@@ -49,9 +49,9 @@ class zhviHouseValue(dml.Algorithm):
 
         # dict_values = csvConvert()
 
-        repo.dropCollection("zhvi")
-        repo.createCollection("zhvi")
-        repo['yuxiao_yzhang11.zhvi'].insert_many(dict_values)
+        repo.dropCollection("houseValue")
+        repo.createCollection("houseValue")
+        repo['yuxiao_yzhang11.houseValue'].insert_many(dict_values)
 
         endTime = datetime.datetime.now()
 
@@ -77,10 +77,10 @@ class zhviHouseValue(dml.Algorithm):
         doc.add_namespace('bdp', 'http://datamechanics.io/data/')
 
 
-        this_script = doc.agent('alg:yuxiao_yzhang11#zhvi',
+        this_script = doc.agent('alg:yuxiao_yzhang11#houseValue',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-        resource = doc.entity('dat:boston_Zip_Zhvi_Summary_AllHomes',
+        resource = doc.entity('dat:boston_Zip_Zhvi_AllHomes',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'csv'})
 
@@ -89,7 +89,7 @@ class zhviHouseValue(dml.Algorithm):
         doc.usage(this_run, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',})
 
-        output =  doc.entity('dat:yuxiao_yzhang11.zhvi', {prov.model.PROV_LABEL:'zhvi', prov.model.PROV_TYPE:'ont:DataSet'})
+        output =  doc.entity('dat:yuxiao_yzhang11.houseValue', {prov.model.PROV_LABEL:'houseValue', prov.model.PROV_TYPE:'ont:DataSet'})
 
         # get_lost = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         #
@@ -125,8 +125,8 @@ class zhviHouseValue(dml.Algorithm):
         return doc
 
 
-zhviHouseValue.execute()
-doc = zhviHouseValue.provenance()
+houseValue.execute()
+doc = houseValue.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

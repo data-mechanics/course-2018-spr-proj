@@ -4,30 +4,7 @@ import dml
 import prov.model
 import datetime
 import uuid
-import csv
-
-
-def csvConvert():
-    url = "https://data.boston.gov/dataset/eefad66a-e805-4b35-b170-d26e2028c373/resource/ba5ed0e2-e901-438c-b2e0-4acfc3c452b9/download/crime-incident-reports-july-2012---august-2015-source-legacy-system.csv"
-
-    csvfile = urllib.request.urlopen(url).read().decode("utf-8")
-
-    dict_values = []
-
-    entries = csvfile.split('\n')
-    dot_keys = entries[0].split(',')
-    dot_keys[-1] = dot_keys[-1][:-1]
-
-    keys = [key.replace('.', '_') for key in dot_keys]
-
-    for row in entries[1:-1]:
-        values = row.split(',')
-        values[-1] = values[-1][:-1]
-        dictionary = dict([(keys[i], values[i]) for i in range(len(keys))])
-        dict_values.append(dictionary)
-
-    return dict_values
-
+from geopy.geocoders import Nominatim
 
 
 class crime(dml.Algorithm):
@@ -45,12 +22,45 @@ class crime(dml.Algorithm):
         repo = client.repo
         repo.authenticate('yuxiao_yzhang11', 'yuxiao_yzhang11')
 
+        url1 = 'http://datamechanics.io/data/20127to20158crimeincident1edit.json'
+        response1 = urllib.request.urlopen(url1).read().decode("utf-8")
+        crime1 = json.loads(response1)
 
-        dict_values = csvConvert()
+        # for i in crime1:
+        #     cor = i['Location'].replace('(', '')
+        #     cor = cor.replace(')', '')
+        #     # print(cor)
+        #     if (cor != "0.0, 0.0"):
+        #         geolocator = Nominatim()
+        #         location = geolocator.reverse(cor, timeout=None)
+        #         try:
+        #             zip = location.raw['address']['postcode']
+        #             i['zip'] = zip
+        #         except KeyError as e:
+        #             print("KeyError at cord: ", cor, ", and zip: ", zip, ", and location: ", location)
+
+        url2 = 'http://datamechanics.io/data/20127to20158crimeincident2.json'
+        response2 = urllib.request.urlopen(url2).read().decode("utf-8")
+        crime2 = json.loads(response2)
+
+        # for i in crime2:
+        #     cor = i['Location'].replace('(', '')
+        #     cor = cor.replace(')', '')
+        #     # print(cor)
+        #     if (cor != "0.0, 0.0"):
+        #         geolocator = Nominatim()
+        #         location = geolocator.reverse(cor, timeout=None)
+        #         try:
+        #             zip = location.raw['address']['postcode']
+        #             i['zip'] = zip
+        #         except KeyError as e:
+        #             print("KeyError at cord: ", cor, ", and zip: ", zip, ", and location: ", location)
 
         repo.dropCollection("crime")
         repo.createCollection("crime")
-        repo['yuxiao_yzhang11.crime'].insert_many(dict_values)
+        repo['yuxiao_yzhang11.crime'].insert_many(crime1)
+        repo['yuxiao_yzhang11.crime'].insert_many(crime2)
+
 
         endTime = datetime.datetime.now()
 
@@ -73,15 +83,15 @@ class crime(dml.Algorithm):
         doc.add_namespace('ont',
                           'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('bdp', 'https://data.boston.gov/dataset/eefad66a-e805-4b35-b170-d26e2028c373/resource/ba5ed0e2-e901-438c-b2e0-4acfc3c452b9/download/')
+        # doc.add_namespace('bdp', 'https://data.boston.gov/dataset/eefad66a-e805-4b35-b170-d26e2028c373/resource/ba5ed0e2-e901-438c-b2e0-4acfc3c452b9/download/')
 
 
         this_script = doc.agent('alg:yuxiao_yzhang11#crime',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-        resource = doc.entity('bdp:crime-incident-reports-july-2012---august-2015-source-legacy-system',
+        resource = doc.entity('dat:20127to20158crimeincident1edit',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'csv'})
+                               'ont:Extension': 'json'})
 
         this_run = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 

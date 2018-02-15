@@ -5,80 +5,71 @@ import prov.model
 import datetime
 import uuid
 import csv
+import pymongo
 
 
-
-
-# def csvConvert():
-#
-#     url = "https://data.boston.gov/dataset/ac9e373a-1303-4563-b28e-29070229fdfe/resource/76771c63-2d95-4095-bf3d-5f22844350d8/download/2013-bostonfireincidentopendata.csv"
-#     csvfile = urllib.request.urlopen(url).read().decode("utf-8")
-#
-#     dict_values = []
-#
-#     entries = csvfile.split('\n')
-#     dot_keys = entries[0].split(',')
-#     # dot_keys[-1] = dot_keys[-1][:-1]
-#
-#     keys = [key.replace('\"', '') for key in dot_keys]
-#
-#     for row in entries[1:-1]:
-#         values = row.split(',')
-#         dictionary = dict([(keys[i], values[i].replace('\"','')) for i in range(len(keys))])
-#         dict_values.append(dictionary)
-#
-#     return dict_values
-
-
-
-class fire(dml.Algorithm):
+class fire_rental(dml.Algorithm):
     contributor = 'yuxiao_yzhang11'
-    reads = []
-    writes = ['yuxiao_yzhang11.fire']
+    reads = ['yuxiao_yzhang11.fire', 'yuxiao_yzhang11.rental']
+    writes = ['yuxiao_yzhang11.fire_rental']
 
     @staticmethod
     def execute(trial=True):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
-
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('yuxiao_yzhang11', 'yuxiao_yzhang11')
 
-        url2013 = 'http://datamechanics.io/data/2013fireincident_anabos2.json'
-        response2013 = urllib.request.urlopen(url2013).read().decode("utf-8")
-        fire2013 = json.loads(response2013)
+        repo.dropCollection("rental_zip_price")
+        repo.createCollection("rental_zip_price")
+        # loads fire data
+        repo.dropCollection("fire_count")
+        repo.createCollection("fire_count")
+        fire = repo['yuxiao_yzhang11.fire']
+        group = {
+            '_id': "$Zip",
+            'count': {'$sum': 1}
+        }
 
-        url2014 = 'http://datamechanics.io/data/2014fireincident_anabos2.json'
-        response2014 = urllib.request.urlopen(url2014).read().decode("utf-8")
-        fire2014 = json.loads(response2014)
+        fireCount = fire.aggregate([
+            {
+                '$group': group
+            }
+        ])
 
-        url2015 = 'http://datamechanics.io/data/2015fireincident_anabos2.json'
-        response2015 = urllib.request.urlopen(url2015).read().decode("utf-8")
-        fire2015 = json.loads(response2015)
+        repo['yuxiao_yzhang11.fire_count'].insert(fireCount)
 
 
-        # dict_values = csvConvert()
 
-        repo.dropCollection("fire")
-        repo.createCollection("fire")
-        repo['yuxiao_yzhang11.fire'].insert_many(fire2013)
-        repo['yuxiao_yzhang11.fire'].insert_many(fire2014)
-        repo['yuxiao_yzhang11.fire'].insert_many(fire2015)
+        # loads rental data
 
+
+        rental = repo['yuxiao_yzhang11.rental'].find()
+        #year_keys= ["2013-03","2013-04","2013-05","2013-06","2013-07","2013-08"]
+        rental_sum = 0
+        for i in rental:
+            rental_zip_price = {}
+            regionZip = i["RegionName"]
+            new_regionZip = "0" + regionZip
+            rental_zip_price["Zip"] = new_regionZip
+            rental_zip_price["Average"] = "2246"
+            print(rental_zip_price)
+
+            repo['yuxiao_yzhang11.rental_zip_price'].insert(rental_zip_price)
+
+
+        repo.logout()
         endTime = datetime.datetime.now()
-
         return {"start": startTime, "end": endTime}
 
     @staticmethod
-    def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
-        '''
-            Create the provenance document describing everything happening
-            in this script. Each run of the script will generate a new
-            document describing that invocation event.
-            '''
 
+    def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
+        '''Create the provenance document describing everything happening
+            in this script. Each run of the script will generate a new
+            document describing that invocation event.'''
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -90,25 +81,30 @@ class fire(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'https://data.boston.gov/export/767/71c/')
 
-
-        this_script = doc.agent('alg:yuxiao_yzhang11#fire',
+        this_script = doc.agent('alg:yuxiao_yzhang11#fire_rental',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-        resource = doc.entity('dat:2013fireincident_anabos2',
-                              {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'json'})
+        resource1 = doc.entity('dat: yuxiao_yzhang11#fire',
+                               {'prov:label': 'Analyze Boston', prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension':'json'})
+        resource2 = doc.entity('dat:yuxiao_yzhang11#rental',
+                               {'prov:label': 'Zillow', prov.model.PROV_TYPE: 'ont:DataResource',
+                                'ont:Extension': 'csv'})
 
         this_run = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
-        doc.usage(this_run, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',})
+        doc.usage(this_run, resource1, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Retrieval', })
+        doc.usage(this_run, resource2, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Retrieval', })
 
-        output =  doc.entity('dat:yuxiao_yzhang11.fire', {prov.model.PROV_LABEL:'fire', prov.model.PROV_TYPE:'ont:DataSet'})
+        output = doc.entity('dat:yuxiao_yzhang11.fire_rental',
+                            {prov.model.PROV_LABEL: 'fire_rental', prov.model.PROV_TYPE: 'ont:DataSet'})
 
         # get_lost = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         #
         doc.wasAssociatedWith(this_run, this_script)
-        doc.used(this_run, resource, startTime)
+        doc.used(this_run, resource1, startTime)
+        doc.used(this_run, resource2, startTime)
         # doc.wasAssociatedWith(get_lost, this_script)
         # doc.usage(get_found, resource, startTime, None,
         #           {prov.model.PROV_TYPE: 'ont:Retrieval',
@@ -132,16 +128,16 @@ class fire(dml.Algorithm):
         #                    {prov.model.PROV_LABEL: 'Animals Found', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(output, this_script)
         doc.wasGeneratedBy(output, this_run, endTime)
-        doc.wasDerivedFrom(output, resource, this_run, this_run, this_run)
+        doc.wasDerivedFrom(output, resource1, this_run, this_run, this_run)
+        doc.wasDerivedFrom(output, resource2, this_run, this_run, this_run)
 
         repo.logout()
 
         return doc
 
-
-fire.execute()
-doc = fire.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+# fire_rental.execute()
+# doc = fire_rental.provenance()
+# print(doc.get_provn())
+# print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

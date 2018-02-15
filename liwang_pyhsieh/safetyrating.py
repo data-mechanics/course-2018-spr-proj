@@ -113,7 +113,7 @@ class safetyrating(dml.Algorithm):
             str_date = dataobj["Crash Date"] + " " + dataobj["Crash Time"]
             dateobj_date = datetime.strptime(str_date, "%d-%b-%Y %I:%M %p")
             if isNighttime(dateobj_date):
-                latitude, longitude = epsg2LonLat(dataobj["X Coordinate"], dataobj["Y Coordinate"])
+                longitude, latitude = epsg2LonLat(dataobj["X Coordinate"], dataobj["Y Coordinate"])
                 dataset_crash.append({
                     "_id": dataobj["Crash Number"],
                     "time": dateobj_date,
@@ -148,8 +148,8 @@ class safetyrating(dml.Algorithm):
         dataset_signals = [
             {
                 "_id": row["properties"]["OBJECTID"],
-                "Lat": row["geometry"]["coordinates"][0],
-                "Long": row["geometry"]["coordinates"][1]
+                "Long": row["geometry"]["coordinates"][0],
+                "Lat": row["geometry"]["coordinates"][1]
             }
             for row in repo['liwang_pyhsieh.traffic_signals'].find()
         ]

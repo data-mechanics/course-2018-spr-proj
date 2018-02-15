@@ -7,10 +7,9 @@ import pandas
 from pyproj import Proj, transform
 from geopy.distance import vincenty
 
-# Note: From (Long, Lat) to (Lat, Long)
 def parseLoc(str):
     locpair = str.split("\n")[-1][1:-1].split(",")
-    return (float(locpair[1]), float(locpair[0]))
+    return (float(locpair[0]), float(locpair[1]))
 
 def Epsg2LonLat(x, y):
     inproj = Proj(init='epsg:26986')  # EPSG for MA
@@ -107,8 +106,8 @@ class nearestfacilitydist(dml.Algorithm):
             dataset_police.append({
                 "_id": dataobj["OBJECTID"],
                 "name": dataobj["NAME"],
-                "lat": dataobj["X"],
-                "long": dataobj["Y"]
+                "lat": dataobj["Y"],
+                "long": dataobj["X"]
             })
 
         prod_crash_hospital = product(dataset_crash, dataset_hospital, "crash", "hos", "_id", "_id")

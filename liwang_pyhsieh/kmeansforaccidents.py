@@ -63,7 +63,7 @@ class kmeansforaccidents(dml.Algorithm):
             str_date = dataobj["Crash Date"] + " " + dataobj["Crash Time"]
             dateobj_date = datetime.strptime(str_date, "%d-%b-%Y %I:%M %p")
             if isNighttime(dateobj_date):
-                latitude, longitude = (dataobj["X Coordinate"], dataobj["Y Coordinate"])
+                latitude, longitude = (dataobj["Y Coordinate"], dataobj["X Coordinate"])
                 dataset_crash.append((
                     dataobj["Crash Number"],
                     (latitude, longitude)
@@ -97,25 +97,22 @@ class kmeansforaccidents(dml.Algorithm):
             medians.sort()
             iter_ct = iter_ct + 1
 
-        # Now, MP records the result
+        # MP records the clustering result with point coordination and cluster subordination
         data_cluster = [
             {
                 "_id": p[0],
                 "cluster_id": m[0],
-                "coordinate": {"Lat": epsg2LonLat(m[1][0], m[1][1])[0], "Long": epsg2LonLat(m[1][0], m[1][1])[1]}
+                "coordinate": {"Lat": epsg2LonLat(m[1][1], m[1][0])[1], "Long": epsg2LonLat(m[1][1], m[1][0])[0]}
             }
             for m, p in MP]
-        for i in range(50):
-            print(data_cluster[i])
 
         # Store the result
         repo.dropCollection("crash_clustering")
         repo.createCollection("crash_clustering")
-        # repo['liwang_pyhsieh.crash_2015'].insert_many(data_lightsignalcount)
         repo['liwang_pyhsieh.crash_clustering'].insert_many(data_cluster)
         repo.logout()
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
         pass
 
-KmeansForAccidentDist.execute()
+kmeansforaccidents.execute()

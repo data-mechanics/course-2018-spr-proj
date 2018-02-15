@@ -15,14 +15,14 @@ class food(dml.Algorithm):
             
     #         data=myfile.readlines()
             
-    #         total = round(len(data) / 10)
+    #         total = round(len(data) / 11)
     #         print(total)
     #         part_data = []
     #         current = 0
-    #         for x in range(10):
+    #         for x in range(11):
     #             name = "part" + str(x+1)
-    #             with open('./../data/food_' + name +'.json', 'w') as partfile:
-    #                 for y in range(current + 1, len(data)+1):
+    #             with open('./../data/food_' + name +'.txt', 'w') as partfile:
+    #                 for y in range(current + 1, len(data)):
     #                     if(y % total == 0):
     #                         partfile.write(data[y])
     #                         current = y
@@ -41,13 +41,45 @@ class food(dml.Algorithm):
         repo.authenticate('cma4_tsuen', 'cma4_tsuen')            
 
         #url = 'https://data.boston.gov/export/458/2be/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c.json'
-        jsonfile = open("./../data/food.json", 'r') 
-        #response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.load(jsonfile)
         food_data = []
+        
+        with open("./../data/food.txt", 'w') as partfile:
+            for i in range(10):
+                # url = 'http://datamechanics.io/data/cma4_tsuen/food_part' + str(i+1)+'.txt'
+                # response = urllib.request.urlopen(url).read().decode("utf-8")
+                
+                # r = json.load(response)
+                # print(r)
+                # for y in range(len(r)):
+                #    partfile.write(r[y])
+        
+                with open("./../data/food_part" + str(i+1) + ".json", 'r') as jsonfile:
+                    data = jsonfile.readlines()
+                    for y in range(len(data)):
+                        partfile.write(data[y])
+            
+
+        with open("./../data/master_food.json", 'w') as finaljson:
+            with open("./../data/food.txt", 'r') as jsonfile:
+                data = jsonfile.readlines()
+                for i in range(len(data)):
+                    finaljson.write(data[i])
+
+        jsonfile = open("./../data/master_food.json", 'r')
+        r = json.load(jsonfile)
+        
+        #r = json.load(jsonfile)
+        #food_data.append([{"Business Name": field['businessName'], "Coords": field['Location']}
+        #for field in r])
+
+
+        #jsonfile = open("./../data/food.json", 'r') 
+        #response = urllib.request.urlopen(url).read().decode("utf-8")
+        #r = json.load(jsonfile)
+        
         #filtered food.py
-        food_data = [{"Business Name": field['businessName'], "Coords": field['Location']}
-            for field in r]
+        
+        print(food_data)
         
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("cma4_tsuen.food")
@@ -97,8 +129,8 @@ class food(dml.Algorithm):
         repo.logout()
                   
         return doc
-food.PartToParts()
-#food.execute()
+#food.PartToParts()
+food.execute()
 #doc = food.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

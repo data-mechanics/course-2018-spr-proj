@@ -10,24 +10,8 @@ class uber(dml.Algorithm):
     contributor = 'cma4_tsuen'
     reads = []
     writes = ['cma4_tsuen.uber']
-    def PartToParts():
-        with open('./../data/Master_uber.json', 'r') as myfile:
-            
-            data=myfile.readlines()
-            
-            total = round(len(data) / 10)
-            print(total)
-            part_data = []
-            current = 0
-            for x in range(10):
-                name = "part" + str(x+1)
-                with open('./../data/uber_' + name +'.json', 'w') as partfile:
-                    for y in range(current + 1, len(data)+1):
-                        if(y % total == 0):
-                            partfile.write(data[y])
-                            current = y
-                            break
-                        partfile.write(data[y])
+        
+         
 
     @staticmethod
     def execute(trial = False):
@@ -38,7 +22,16 @@ class uber(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('cma4_tsuen', 'cma4_tsuen')
-
+        csvfile = open("./../data/boston-censustracts-2017-3-All-MonthlyAggregate.csv", 'r')
+        jsonfile = open("./../data/uber.json", 'w')
+ 
+         
+        fieldnames = ["sourceid", "dstid", 'dow', 'mean_travel_time', 'standard_deviation_travel_time', 'geometric_mean_travel_time', 'geometric_standard_deviation_travel_time']
+        reader = csv.DictReader(csvfile, fieldnames)
+        l = []
+        for row in reader:
+            l.append(row)
+        json.dump(l, jsonfile)
         url = 'http://datamechanics.io/?prefix=cma4_tsuen/uber.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.load(response)
@@ -91,8 +84,8 @@ class uber(dml.Algorithm):
                   
         return doc
 
-uber.PartToParts()
-#uber.execute()
+#uber.PartToParts()
+uber.execute()
 #doc = uber.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

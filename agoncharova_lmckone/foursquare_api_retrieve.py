@@ -196,5 +196,5 @@ class foursquare_api_retrieve(dml.Algorithm):
 		        
 		return doc
 
-foursquare_api_retrieve.execute()
-foursquare_api_retrieve.provenance()
+#foursquare_api_retrieve.execute()
+#foursquare_api_retrieve.provenance()

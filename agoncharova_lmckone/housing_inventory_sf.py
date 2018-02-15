@@ -169,5 +169,5 @@ class housing_inventory_sf(dml.Algorithm):
 		        
 		return doc
 
-housing_inventory_sf.execute()
-housing_inventory_sf.provenance()
+#housing_inventory_sf.execute()
+#housing_inventory_sf.provenance()

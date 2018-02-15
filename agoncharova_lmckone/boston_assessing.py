@@ -142,7 +142,7 @@ class boston_assessing(dml.Algorithm):
                   
         return doc
 
-boston_assessing.execute()
-boston_assessing.provenance()
+#boston_assessing.execute()
+#boston_assessing.provenance()
 
 ## eof

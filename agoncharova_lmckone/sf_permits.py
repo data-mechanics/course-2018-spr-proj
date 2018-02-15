@@ -85,5 +85,5 @@ class sf_permits(dml.Algorithm):
 
         return doc
 
-sf_permits.execute()
-sf_permits.provenance()
+#sf_permits.execute()
+#sf_permits.provenance()

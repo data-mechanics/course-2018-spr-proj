@@ -71,5 +71,5 @@ class sf_evictions(dml.Algorithm):
                   
         return doc
 
-sf_evictions.execute()
-sf_evictions.provenance()
+#sf_evictions.execute()
+#sf_evictions.provenance()

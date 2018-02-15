@@ -205,9 +205,8 @@ class RestaurantScoresAndHealthViolations_NYC(dml.Algorithm):
             return aggregation
 
         restaurants_and_inspection_data = aggregateViolations(restaurants_and_inspection_data)
-        # by this point, data looks like [{'name': '1000 Washington Cafe', 'num_violations': 16, 'ave_violation_severity': 0.875}, ...]
 
-        print(len(restaurants_and_inspection_data), restaurants_and_inspection_data[0])
+        # print(len(restaurants_and_inspection_data), restaurants_and_inspection_data[0])
 
         ## insert into mongodb
         repo['bstc_semina.'+new_collection_name].insert_many(restaurants_and_inspection_data)
@@ -233,7 +232,7 @@ class RestaurantScoresAndHealthViolations_NYC(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/bstc_semina') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        
+
 
         this_script = doc.agent('alg:bstc_semina#RestaurantScoresAndHealthViolations_NYC', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource1 = doc.entity('dat:bstc_semina#dat:getNYCInspectionData', {'prov:label':'Building Code Violations', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
@@ -257,7 +256,7 @@ class RestaurantScoresAndHealthViolations_NYC(dml.Algorithm):
         doc.wasAttributedTo(insp, this_script)
         doc.wasGeneratedBy(insp, get_insp, endTime)
         doc.wasDerivedFrom(insp, resource1, get_insp, get_insp, get_insp)
-        
+
         lic = doc.entity('dat:bstc_semina#dat:getBostonYelpRestaurantData', {prov.model.PROV_LABEL:'Boston Yelp Data', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(lic, this_script)
         doc.wasGeneratedBy(lic, get_lic, endTime)

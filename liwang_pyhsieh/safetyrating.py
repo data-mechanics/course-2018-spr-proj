@@ -91,7 +91,7 @@ def getVDist(lat1, long1, lat2, long2):
 
 # Finding road safety rating by using numbers of
 # surrounding traffic signals and road lights
-class safetyrating(dml.Algorithm):
+class SafetyRating(dml.Algorithm):
     startTime = datetime.now()
 
     contributor = 'liwang_pyhsieh'
@@ -102,6 +102,8 @@ class safetyrating(dml.Algorithm):
 
     @staticmethod
     def execute(trial=False):
+        startTime = datetime.now()
+
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -180,9 +182,54 @@ class safetyrating(dml.Algorithm):
         # repo['liwang_pyhsieh.crash_2015'].insert_many(data_lightsignalcount)
         repo['liwang_pyhsieh.safety_scores'].insert_many(safetyscore)
         repo.logout()
+        endTime = datetime.now()
+
+        return {"start": startTime, "end": endTime}
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
-        pass
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('liwang_pyhsieh', 'liwang_pyhsieh')
 
-safetyrating.execute()
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
+
+        this_script = doc.agent('alg:liwang_pyhsieh#safetyRating', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+
+        crash_2015 = doc.entity('dat:liwang_pyhsieh#crash_2015', {prov.model.PROV_LABEL: '2015 Massachusetts Crash Report', prov.model.PROV_TYPE: 'ont:DataSet'})
+        street_lights = doc.entity('dat:liwang_pyhsieh#street_lights', {prov.model.PROV_LABEL: 'Boston street light locations', prov.model.PROV_TYPE: 'ont:DataSet'})
+        traffic_signals = doc.entity('dat:liwang_pyhsieh#traffic_signals', {prov.model.PROV_LABEL: 'Boston traffic signals locations', prov.model.PROV_TYPE: 'ont:DataSet'})
+
+        get_crash_2015 = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        get_street_lights = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        get_traffic_signals = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+
+        doc.wasAssociatedWith(get_crash_2015, this_script)
+        doc.wasAssociatedWith(get_street_lights, this_script)
+        doc.wasAssociatedWith(get_traffic_signals, this_script)
+
+        doc.usage(get_crash_2015, crash_2015, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
+        doc.usage(get_street_lights, street_lights, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
+        doc.usage(get_traffic_signals, traffic_signals, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
+
+        get_safety_scores = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        safety_scores = doc.entity('dat:liwang_pyhsieh#safety_scores', {prov.model.PROV_LABEL: 'Counts for nearby lights and traffic signals for accidents', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(safety_scores, this_script)
+        doc.wasGeneratedBy(safety_scores, get_safety_scores, endTime)
+        doc.wasDerivedFrom(safety_scores, crash_2015, get_safety_scores, get_safety_scores, get_safety_scores)
+        doc.wasDerivedFrom(safety_scores, street_lights, get_safety_scores, get_safety_scores, get_safety_scores)
+        doc.wasDerivedFrom(safety_scores, traffic_signals, get_safety_scores, get_safety_scores, get_safety_scores)
+
+        repo.logout()
+
+        return doc
+
+if __name__ == "__main__":
+    SafetyRating.execute()
+    doc = SafetyRating.provenance()
+    print(doc.get_provn())
+    print(json.dumps(json.loads(doc.serialize()), indent=4))

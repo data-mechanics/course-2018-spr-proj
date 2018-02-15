@@ -3,9 +3,7 @@ import dml
 import uuid
 import prov.model
 from datetime import datetime
-import pandas
 from pyproj import Proj, transform
-from geopy.distance import vincenty
 from numpy.random import uniform
 
 def str2Datetime(date, time):
@@ -44,13 +42,15 @@ def aggregate(R, f):
 
 # Finding road safety rating by using numbers of
 # surrounding traffic signals and road lights
-class kmeansforaccidents(dml.Algorithm):
+class KMeansForAccidents(dml.Algorithm):
     contributor = 'liwang_pyhsieh'
     reads = ['liwang_pyhsieh.crash_2015']
     writes = ['liwang_pyhsieh.crash_clustering']
 
     @staticmethod
     def execute(trial=False):
+        startTime = datetime.now()
+
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -111,8 +111,44 @@ class kmeansforaccidents(dml.Algorithm):
         repo.createCollection("crash_clustering")
         repo['liwang_pyhsieh.crash_clustering'].insert_many(data_cluster)
         repo.logout()
+        endTime = datetime.now()
+
+        return {"start": startTime, "end": endTime}
+
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
-        pass
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('liwang_pyhsieh', 'liwang_pyhsieh')
 
-kmeansforaccidents.execute()
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
+
+        this_script = doc.agent('alg:liwang_pyhsieh#kMeansForAccidents', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+
+        crash_2015 = doc.entity('dat:liwang_pyhsieh#crash_2015', {prov.model.PROV_LABEL: 'crash_2015', prov.model.PROV_TYPE: 'ont:DataSet'})
+
+        get_crash_2015 = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_crash_2015, this_script)
+
+        doc.usage(get_crash_2015, crash_2015, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
+
+        get_crash_clusters = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        crash_clusters = doc.entity('dat:liwang_pyhsieh#crash_clustering',
+                                     {prov.model.PROV_LABEL: 'Crash accident locations clustering result', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(crash_clusters, this_script)
+        doc.wasGeneratedBy(crash_clusters, get_crash_clusters, endTime)
+        doc.wasDerivedFrom(crash_clusters, crash_2015, get_crash_clusters, get_crash_clusters, get_crash_clusters)
+
+        repo.logout()
+
+        return doc
+
+if __name__ == "__main__":
+    KMeansForAccidents.execute()
+    doc = KMeansForAccidents.provenance()
+    print(doc.get_provn())
+    print(json.dumps(json.loads(doc.serialize()), indent=4))

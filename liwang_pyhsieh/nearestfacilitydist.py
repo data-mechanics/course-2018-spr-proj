@@ -2,27 +2,32 @@ import json
 import dml
 import uuid
 import prov.model
-import datetime
 import pandas
 from pyproj import Proj, transform
 from geopy.distance import vincenty
+from datetime import datetime
 
-def parseLoc(str):
-    locpair = str.split("\n")[-1][1:-1].split(",")
-    return (float(locpair[0]), float(locpair[1]))
+
+def parseLoc(s):
+    locpair = s.split("\n")[-1][1:-1].split(",")
+    return float(locpair[0]), float(locpair[1])
+
 
 def Epsg2LonLat(x, y):
     inproj = Proj(init='epsg:26986')  # EPSG for MA
     outproj = Proj(init="epsg:4326")  # EPSG for world map
     return transform(inproj, outproj, x, y)
 
+
 def getVDist(lat1, long1, lat2, long2):
     return vincenty((lat1, long1), (lat2, long2)).kilometers
+
 
 # Return distance between two points (Latitude, Longitude)
 # The distance is represented in kilometers
 def VDist(p1, p2):
     return vincenty(p1, p2).kilometers
+
 
 def rename(D, colname_old, colname_new):
     for item in D:
@@ -30,6 +35,7 @@ def rename(D, colname_old, colname_new):
             item[colname_new] = item[colname_old]
             del item[colname_old]
     return
+
 
 def product(S, R, s_prefix, r_prefix, idx_s, idx_r):
     result = []
@@ -42,6 +48,7 @@ def product(S, R, s_prefix, r_prefix, idx_s, idx_r):
                 dicttmp[r_prefix + "_" + key_r] = obj_r[key_r]
             result.append(dicttmp)
     return result
+
 
 def join(S, R, s_prefix, r_prefix, s_idx, mcol_s, mcol_r, mcol_new):
     result = []
@@ -62,29 +69,32 @@ def join(S, R, s_prefix, r_prefix, s_idx, mcol_s, mcol_r, mcol_new):
 def group_aggsum(D, idx, g_col, s_col):
     res = pandas.DataFrame.from_records(D, idx).groupby([g_col])[s_col].agg(["sum"])
     idxlist = res.index.values
-    return [ {"_id": idxlist[i], "sum": row["sum"]} for i, row in enumerate(res.to_dict("records"))]
+    return [{"_id": idxlist[i], "sum": row["sum"]} for i, row in enumerate(res.to_dict("records"))]
 
 def group_aggmin(D, idx, g_col, s_col):
     res = pandas.DataFrame.from_records(D, idx).groupby([g_col])[s_col].agg(["min"])
     idxlist = res.index.values
-    return [ {"_id": idxlist[i], "min": row["min"]} for i, row in enumerate(res.to_dict("records"))]
+    return [{"_id": idxlist[i], "min": row["min"]} for i, row in enumerate(res.to_dict("records"))]
 
 def group_aggave(D, idx, g_col, s_col):
     res = pandas.DataFrame.from_records(D, idx).groupby([g_col])[s_col].agg(["mean"])
     idxlist = res.index.values
-    return [ {"_id": idxlist[i], "ave": row["mean"]} for i, row in enumerate(res.to_dict("records"))]
+    return [{"_id": idxlist[i], "ave": row["mean"]} for i, row in enumerate(res.to_dict("records"))]
+
 
 # Finding road safety rating by using numbers of
 # surrounding traffic signals and road lights
-class nearestfacilitydist(dml.Algorithm):
+class NearestFacilityDist(dml.Algorithm):
     contributor = 'liwang_pyhsieh'
     reads = ['liwang_pyhsieh.crash_clustering',
-             'liwang_pyhsieh.hospitals', 'liwang_pyhsieh.police_station']
+             'liwang_pyhsieh.hospitals', 'liwang_pyhsieh.police_stations']
 
     writes = ['liwang_pyhsieh.accidentcluster_averagefacilitydist']
 
     @staticmethod
     def execute(trial=False):
+        startTime = datetime.now()
+
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -102,7 +112,7 @@ class nearestfacilitydist(dml.Algorithm):
                 "long": long
             })
 
-        for dataobj in repo['liwang_pyhsieh.police_station'].find():
+        for dataobj in repo['liwang_pyhsieh.police_stations'].find():
             dataset_police.append({
                 "_id": dataobj["OBJECTID"],
                 "name": dataobj["NAME"],
@@ -145,9 +155,54 @@ class nearestfacilitydist(dml.Algorithm):
         repo.createCollection("accidentcluster_averagefacilitydist")
         repo['liwang_pyhsieh.accidentcluster_averagefacilitydist'].insert_many(nearestfacilityave)
         repo.logout()
+        endTime = datetime.now()
+
+        return {"start": startTime, "end": endTime}
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
-        pass
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('liwang_pyhsieh', 'liwang_pyhsieh')
 
-nearestfacilitydist().execute()
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
+
+        this_script = doc.agent('alg:liwang_pyhsieh#nearestFacilityDist', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+
+        crash_clusters = doc.entity('dat:liwang_pyhsieh#crash_clustering', {prov.model.PROV_LABEL: 'Crash accident locations clustering result', prov.model.PROV_TYPE: 'ont:DataSet'})
+        hospitals = doc.entity('dat:liwang_pyhsieh#hospitals', {prov.model.PROV_LABEL: 'Boston hospital information', prov.model.PROV_TYPE: 'ont:DataSet'})
+        police_stations = doc.entity('dat:liwang_pyhsieh#police_stations', {prov.model.PROV_LABEL: 'Boston police station information', prov.model.PROV_TYPE: 'ont:DataSet'})
+
+        get_crash_clusters = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        get_hospitals = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        get_police_stations = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+
+        doc.wasAssociatedWith(get_crash_clusters, this_script)
+        doc.wasAssociatedWith(get_hospitals, this_script)
+        doc.wasAssociatedWith(get_police_stations, this_script)
+
+        doc.usage(get_crash_clusters, crash_clusters, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
+        doc.usage(get_hospitals, hospitals, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
+        doc.usage(get_police_stations, police_stations, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
+
+        get_facility_avedist = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        facility_avedist = doc.entity('dat:liwang_pyhsieh#accidentcluster_averagefacilitydist', {prov.model.PROV_LABEL: 'Counts for nearby lights and traffic signals for accidents', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(facility_avedist, this_script)
+        doc.wasGeneratedBy(facility_avedist, get_facility_avedist, endTime)
+        doc.wasDerivedFrom(facility_avedist, crash_clusters, get_facility_avedist, get_facility_avedist, get_facility_avedist)
+        doc.wasDerivedFrom(facility_avedist, hospitals, get_facility_avedist, get_facility_avedist, get_facility_avedist)
+        doc.wasDerivedFrom(facility_avedist, police_stations, get_facility_avedist, get_facility_avedist, get_facility_avedist)
+
+        repo.logout()
+
+        return doc
+
+if __name__ == "__main__":
+    NearestFacilityDist.execute()
+    doc = NearestFacilityDist.provenance()
+    print(doc.get_provn())
+    print(json.dumps(json.loads(doc.serialize()), indent=4))

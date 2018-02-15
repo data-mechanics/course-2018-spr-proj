@@ -101,9 +101,9 @@ class simplify_open_space(dml.Algorithm):
 
         this_script = doc.agent('alg:keyanv#simplify_open_space', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bod:2868d370c55d4d458d4ae2224ef8cddd_7', {'prov:label':'Open Space Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_open_spaces_simplified = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime,
+        get_open_spaces_simplified = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime,{
                                                  prov.model.PROV_LABEL: "Simplify the open space data",
-                                                 prov.model.PROV_TYPE: 'ont:Computation')
+                                                 prov.model.PROV_TYPE: 'ont:Computation'})
         doc.wasAssociatedWith(get_open_spaces_simplified, this_script)
         doc.usage(get_open_spaces_simplified, resource, startTime)
         open_spaces_simplified = doc.entity('dat:keyanv#open_spaces_simplified', {prov.model.PROV_LABEL:'Simplified version of Open Space Data', prov.model.PROV_TYPE:'ont:DataSet'})

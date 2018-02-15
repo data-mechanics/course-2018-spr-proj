@@ -26,7 +26,7 @@ class crime(dml.Algorithm):
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("cma4_tsuen.crime")
         repo.createCollection("cma4_tsuen.crime")
-        repo['cma4_tsuen.crime'].insert_many(stations)
+        repo['cma4_tsuen.crime'].insert_many(r)
         repo['cma4_tsuen.crime'].metadata({'complete':True})
         print(repo['cma4_tsuen.crime'].metadata())
 

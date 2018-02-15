@@ -43,27 +43,7 @@ class food(dml.Algorithm):
         #url = 'https://data.boston.gov/export/458/2be/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c.json'
         food_data = []
         
-        with open("./../data/food.txt", 'w') as partfile:
-            for i in range(10):
-                # url = 'http://datamechanics.io/data/cma4_tsuen/food_part' + str(i+1)+'.txt'
-                # response = urllib.request.urlopen(url).read().decode("utf-8")
-                
-                # r = json.load(response)
-                # print(r)
-                # for y in range(len(r)):
-                #    partfile.write(r[y])
         
-                with open("./../data/food_part" + str(i+1) + ".json", 'r') as jsonfile:
-                    data = jsonfile.readlines()
-                    for y in range(len(data)):
-                        partfile.write(data[y])
-            
-
-        with open("./../data/master_food.json", 'w') as finaljson:
-            with open("./../data/food.txt", 'r') as jsonfile:
-                data = jsonfile.readlines()
-                for i in range(len(data)):
-                    finaljson.write(data[i])
 
         jsonfile = open("./../data/master_food.json", 'r')
         r = json.load(jsonfile)

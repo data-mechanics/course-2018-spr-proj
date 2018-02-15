@@ -1,3 +1,7 @@
+/*
+ * A simple utility (sourced from StackOverflow)
+ * to obtain all the keys in a collection.
+ */
 function getKeysForCollection(name) {
     mr = db.runCommand({
         "mapreduce" : "bemullen_dharmesh." + name,

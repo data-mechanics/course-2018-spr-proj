@@ -1,5 +1,9 @@
-# Filename: TransformCityScores.py
+# Filename: TransformServiceRequests.py
 # Author: Dharmesh Tarapore <dharmesh@bu.edu>
+#
+# Filename: TransformCodeEnforcements.py
+# Author: Dharmesh Tarapore <dharmesh@bu.edu>
+#
 import urllib.request
 from urllib.request import quote 
 import json
@@ -10,10 +14,10 @@ import uuid
 import subprocess
 import xmltodict
 
-class TransformCityScores(dml.Algorithm):
+class TransformServiceRequests(dml.Algorithm):
     contributor = "bemullen_dharmesh"
-    reads = ["bemullen_dharmesh.cityscores"]
-    writes = ["bemullen_dharmesh.cityscores_monthly"]
+    reads = ["bemullen_dharmesh.service_requests"]
+    writes = ["bemullen_dharmesh.service_requests_monthly"]
 
     @staticmethod
     def execute(trial = False):
@@ -25,7 +29,7 @@ class TransformCityScores(dml.Algorithm):
         repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
 
         subprocess.check_output('mongo repo -u bemullen_dharmesh -p\
-            bemullen_dharmesh --authenticationDatabase "repo" transformCityScores.js', shell=True)
+            bemullen_dharmesh --authenticationDatabase "repo" transformServiceRequests.js', shell=True)
 
         endTime = datetime.datetime.now()
 
@@ -43,14 +47,15 @@ class TransformCityScores(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
 
-        this_script = doc.agent('alg:bemullen_dharmesh#TransformCityScores', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        cityscores = doc.entity('dat:bemullen_dharmesh#cityscores', {prov.model.PROV_LABEL:'CityScores Boston', prov.model.PROV_TYPE:'ont:DataSet'})        
-        get_cityscores = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime,
-            {'prov:label':'A consolidated metric measuring Boston\'s residents\' satisfaction'})        
-        doc.wasAssociatedWith(get_cityscores, this_script)
-        doc.used(get_cityscores, cityscores, startTime)
-        doc.wasAttributedTo(cityscores, this_script)
-        doc.wasGeneratedBy(cityscores, get_cityscores, endTime)        
+        this_script = doc.agent('alg:bemullen_dharmesh#TransformServiceRequests', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+        service_requests = doc.entity('dat:bemullen_dharmesh#service_requests', {prov.model.PROV_LABEL:'311 Service Requests', prov.model.PROV_TYPE:'ont:DataSet'})        
+        get_service_requests = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime,
+            {'prov:label':'Boston City\'s 311 Service Requests Portal'})        
+        doc.wasAssociatedWith(get_service_requests, this_script)
+        doc.used(get_service_requests, service_requests, startTime)
+        doc.wasAttributedTo(service_requests, this_script)
+        doc.wasGeneratedBy(service_requests, get_service_requests, endTime)        
         
         repo.logout()
         return doc
+

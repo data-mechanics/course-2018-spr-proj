@@ -2,7 +2,8 @@
 # Project 1
 
 ### Team:
-*rikenm@bu.edu*
+
+*rikenm@bu.edu*,
 *bm181354@bu.edu*
 
 

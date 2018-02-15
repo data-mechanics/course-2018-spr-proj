@@ -1,1 +1,7 @@
-Hello world
+MISSION STATEMENT:
+As society continues to grow more and more people are congregating in cities and there are more environmental concerns that need to be taken into account. We have taken data sets containing open spaces in Boston and Cambridge, as well as bike paths in Boston and Cambridge and bike racks in Cambridge. By combining the open spaces data sets and accumulating total amount of open spaces in each area we can get an idea of how much open space there is in each area. We also accumulated the total area of open spaces in each city to track open spaces of similar sizes by using an intersection between the two data sets to get a better understanding of the contrast we were dealing with. Similarly by combining bike path datasets and accumulating the lengths of the bike paths for each city we can get an idea of how much area of each city is traversed by bikes instead of other environmentally harmful transportation. Finally, by combining the bike rack and bike path datasets for Cambridge we can see what areas have sufficient support for bikers and what areas could use more. We made a combined data set of all the coordinates for both features and found a ratio of the amount of bike paths to the amount of bike racks in Cambridge. By taking advantage of all of this data we could potentially see what parts of each area could use environmental improvements and where, and what parts are sufficient in terms of open space and biking. 
+
+TOOLS USED/IMPORTS:
+numpy
+geojson
+

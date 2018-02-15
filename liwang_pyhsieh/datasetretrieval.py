@@ -18,7 +18,7 @@ def time_validity(str):
     min = int(str[3:5])
     return 0 <= hr < 24 and 0 <= min < 60
 
-class DatasetRetrieval(dml.Algorithm):
+class datasetretrieval(dml.Algorithm):
     contributor = 'liwang_pyhsieh'
     reads = []
     writes = ['liwang_pyhsieh.crash_2015', 'liwang_pyhsieh.hospitals', 'liwang_pyhsieh.police_station',

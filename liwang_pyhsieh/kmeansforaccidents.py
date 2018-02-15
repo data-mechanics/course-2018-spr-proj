@@ -44,10 +44,10 @@ def aggregate(R, f):
 
 # Finding road safety rating by using numbers of
 # surrounding traffic signals and road lights
-class KmeansForAccidentDist(dml.Algorithm):
+class kmeansforaccidents(dml.Algorithm):
     contributor = 'liwang_pyhsieh'
     reads = ['liwang_pyhsieh.crash_2015']
-    writes = ['liwang_pyhsieh.crash_2015_clustergroup']
+    writes = ['liwang_pyhsieh.crash_clustering']
 
     @staticmethod
     def execute(trial=False):
@@ -107,7 +107,7 @@ class KmeansForAccidentDist(dml.Algorithm):
             for m, p in MP]
         for i in range(50):
             print(data_cluster[i])
-            
+
         # Store the result
         repo.dropCollection("crash_clustering")
         repo.createCollection("crash_clustering")

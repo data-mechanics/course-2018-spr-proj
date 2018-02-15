@@ -91,7 +91,7 @@ def getVDist(lat1, long1, lat2, long2):
 
 # Finding road safety rating by using numbers of
 # surrounding traffic signals and road lights
-class SafetyRating(dml.Algorithm):
+class safetyrating(dml.Algorithm):
     startTime = datetime.now()
 
     contributor = 'liwang_pyhsieh'
@@ -128,7 +128,6 @@ class SafetyRating(dml.Algorithm):
             for row in repo['liwang_pyhsieh.street_lights'].find()
         ]
 
-        '''
         prod_crash_lights = product(dataset_crash, dataset_lights, "crash", "light", "_id", "_id")
 
         prod_crash_lights = [
@@ -144,7 +143,10 @@ class SafetyRating(dml.Algorithm):
 
         # Aggregate by sum
         lightcounts = group_aggcount(near_lights, "_id", "_id_crash")
-        '''
+        lightcounts = lightcounts + [{"_id": row["_id"], "count": 0} for row in dataset_crash]
+        lightcounts = [{"_id": int(row["_id"]), "light_count": int(row["sum"])} for row in
+                        group_aggsum(lightcounts, "_id", "_id", "count")]
+
         # Do them again on signals
         dataset_signals = [
             {
@@ -165,22 +167,21 @@ class SafetyRating(dml.Algorithm):
         ]
 
         # Items with zero count will disappear, so zero-filling is required
-        # Encoding problem may happen when handling integers, so a conversion to string is made
+        # Encoding problem may happen when handling integers not of python native types
+        # (becuase pandas is used), so a conversion is made in advance
         signalcounts = group_aggcount(near_signals, "_id", "_id_crash")
         signalcounts = signalcounts + [{"_id": row["_id"], "count": 0} for row in dataset_crash]
         signalcounts = [{"_id": int(row["_id"]), "signal_count": int(row["sum"])} for row in group_aggsum(signalcounts, "_id", "_id", "count")]
 
-        print(signalcounts[:10])
 
-        '''
         # Join them on _id
-        data_lightsignalcount = join(lightcounts, signalcounts, "light", "signal", "_id", "_id", "_id", "_id")
-        '''
+        safetyscore = join(lightcounts, signalcounts, "light", "signal", "_id", "_id", "_id", "_id")
+
         # Store the result
         repo.dropCollection("safety_scores")
         repo.createCollection("safety_scores")
         # repo['liwang_pyhsieh.crash_2015'].insert_many(data_lightsignalcount)
-        repo['liwang_pyhsieh.safety_scores'].insert_many(signalcounts)
+        repo['liwang_pyhsieh.safety_scores'].insert_many(safetyscore)
         repo.logout()
 
     @staticmethod

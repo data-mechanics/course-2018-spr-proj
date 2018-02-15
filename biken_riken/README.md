@@ -20,19 +20,19 @@ Typically a market basket consist of Housing, Transportation, Medical care, Good
 
 ## Data set:
 
-1. Public school record from the Greater Boston area
+1. Public school record from the Greater Boston area <br />
 'http://datamechanics.io/data/bm181354_rikenm/Public_Schools.csv'
 
-2. Transportation and Housing data set
+2. Transportation and Housing data set <br />
 'http://datamechanics.io/data/bm181354_rikenm/htaindex_data_places_25.csv'
 
-3. Crime in the neighborhood of the Greater Boston area
+3. Crime in the neighborhood of the Greater Boston area <br />
 'https://data.boston.gov/dataset/6220d948-eae2-4e4b-8723-2dc8e67722a3/resource/12cb3883-56f5-47de-afa5-3b1cf61b257b/download/crime.csv'
 
-4. Emergency Medical Service EMS Stations
+4. Emergency Medical Service EMS Stations <br />
 'http://datamechanics.io/data/bm181354_rikenm/Emergency_Medical_Service_EMS_Stations.csv'
 
-5. Liquor Dataset to relate to Crime in the area
+5. Liquor Dataset to relate to Crime in the area <br />
 'https://data.boston.gov/dataset/6220d948-eae2-4e4b-8723-2dc8e67722a3/resource/12cb3883-56f5-47de-afa5-3b1cf61b257b/download/crime.csv'
 
 

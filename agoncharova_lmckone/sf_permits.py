@@ -75,16 +75,14 @@ class sf_permits(dml.Algorithm):
         get_sf_permits = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_sf_permits, this_script)
 
-        doc.usage(get_sf_permits, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval'}
-                  )
+        doc.usage(get_sf_permits, resource, startTime, None, { prov.model.PROV_TYPE:'ont:Retrieval' })
 
         sf_permits = doc.entity('dat:agoncharova_lmckone#sf_permits', {prov.model.PROV_LABEL:'San Francisco Permits', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(sf_permits, this_script)
         doc.wasGeneratedBy(sf_permits, get_sf_permits, endTime)
         doc.wasDerivedFrom(sf_permits, resource, get_sf_permits, get_sf_permits, get_sf_permits)
         repo.logout()
-                  
+
         return doc
 
 sf_permits.execute()

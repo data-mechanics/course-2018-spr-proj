@@ -6,7 +6,7 @@ import prov.model
 import datetime
 import pymongo
 import re
-
+import uuid
 
 class combine_sf_boston_permit_data(dml.Algorithm):
 	contributor = 'agoncharova_lmckone'
@@ -129,8 +129,43 @@ class combine_sf_boston_permit_data(dml.Algorithm):
 
 	@staticmethod
 	def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-		return 0
+		# Set up the database connection.
+		client = dml.pymongo.MongoClient()
+		repo = client.repo
 
+		repo.authenticate('agoncharova_lmckone', 'agoncharova_lmckone')
+		doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+		doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+		doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+		doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+		doc.add_namespace('bdp', 'https://data.boston.gov/export/')
+		doc.add_namespace('sfdp', 'https://datasf.org/opendata/')
 
-combine_sf_boston_permit_data.execute()
+		this_script = doc.agent('alg:agoncharova_lmckone#boston_sf_permits', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+		resource = doc.entity('bdp:6ddcd912-32a0-43df-9908-63574f8c7e77', {'prov:label':'Combined Boston and SF Permit data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+		
+		boston_sf_permits = doc.entity('dat:agoncharova_lmckone#boston_sf_permits', {prov.model.PROV_LABEL:'Combined Boston and SF Permit data', prov.model.PROV_TYPE:'ont:DataSet'})
+		get_boston_sf_permits = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+		doc.wasAssociatedWith(get_boston_sf_permits, this_script)
+		doc.usage(get_boston_sf_permits, resource, startTime, None, { prov.model.PROV_TYPE:'ont:Retrieval' } )
+		
+		get_boston_permits = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+		doc.wasAssociatedWith(get_boston_permits, this_script)
+		doc.usage(get_boston_permits, resource, startTime, None, { prov.model.PROV_TYPE:'ont:Retrieval' } )
+
+		get_sf_permits = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+		doc.wasAssociatedWith(get_sf_permits, this_script)
+		doc.usage(get_sf_permits, resource, startTime, None, { prov.model.PROV_TYPE:'ont:Retrieval' } )
+
+		
+		doc.wasAttributedTo(boston_sf_permits, this_script)
+		doc.wasGeneratedBy(get_boston_sf_permits, get_boston_permits, endTime)
+		doc.wasDerivedFrom(boston_sf_permits, resource, get_boston_permits, get_boston_permits, get_boston_permits)
+		doc.wasDerivedFrom(boston_sf_permits, resource, get_sf_permits, get_sf_permits, get_sf_permits)
+		repo.logout()
+		      
+		return doc
+
+# combine_sf_boston_permit_data.execute()
+combine_sf_boston_permit_data.provenance()
 

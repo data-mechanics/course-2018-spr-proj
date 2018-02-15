@@ -9,9 +9,15 @@ import uuid
 import re
 import functools
 
-class foursquare_analysis(dml.Algorithm):
+'''
+We count how many businesses and permits are associated with a
+certain zipcode
+'''
+class count_activity(dml.Algorithm):
 	contributor = 'agoncharova_lmckone'
-	reads = ['agoncharova_lmckone.sf_businesses', 'agoncharova_lmckone.boston_businesses']
+	reads = [ 'agoncharova_lmckone.sf_businesses', 
+		'agoncharova_lmckone.boston_businesses',
+		'agoncharova_lmckone.boston_sf_permits' ]
 	writes = []
 
 	pp = pprint.PrettyPrinter(indent=2)
@@ -44,7 +50,7 @@ class foursquare_analysis(dml.Algorithm):
 		"Conference Room"
 		# for boston area, returns 167 pts
 		'''
-		fa = foursquare_analysis
+		fa = count_activity
 		result = []
 		filter_by = ["Coworking Space", "Tech Startup", "Conference Room", "IT Services"] 
 		for item in data:
@@ -59,7 +65,7 @@ class foursquare_analysis(dml.Algorithm):
 		'''
 		Filters permit data for Boston and permit type = 1 (SF permit type)
 		'''
-		fa = foursquare_analysis
+		fa = count_activity
 
 		# get permit data for boston from the unified database
 		client = pymongo.MongoClient()
@@ -71,7 +77,7 @@ class foursquare_analysis(dml.Algorithm):
 		return data
 
 	def count(zip_codes):
-		return functools.reduce(foursquare_analysis.reducer, map(lambda zip_code: dict( [ [zip_code, 1] ] ), zip_codes))
+		return functools.reduce(count_activity.reducer, map(lambda zip_code: dict( [ [zip_code, 1] ] ), zip_codes))
 
 	def reducer(i, j):
 		for k in j: i[k] = i.get(k, 0) + j.get(k, 0)
@@ -101,7 +107,7 @@ class foursquare_analysis(dml.Algorithm):
 
 	@staticmethod
 	def execute():
-		fa = foursquare_analysis
+		fa = count_activity
 		boston_4sq = fa.get_4sq_data("Boston")
 		sf_4sq = fa.get_4sq_data() # don't pass in an arg cause SF by default
 
@@ -131,6 +137,40 @@ class foursquare_analysis(dml.Algorithm):
 
 	@staticmethod
 	def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-		return 0
+		client = dml.pymongo.MongoClient()
+		repo = client.repo
+		
+		repo.authenticate('agoncharova_lmckone', 'agoncharova_lmckone')
+		doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+		doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+		doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+		doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+		doc.add_namespace('4sq', 'https://developer.foursquare.com/places-api')
 
-foursquare_analysis.execute()
+		this_script = doc.agent('alg:agoncharova_lmckone#count_activity', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+		resource = doc.entity('dat:d7b9-4064', {'prov:label':'Count Activity by Zipcode', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+		
+		count_activity = doc.entity('dat:agoncharova_lmckone#count_activity', {prov.model.PROV_LABEL:'Count Activity by Zipcode', prov.model.PROV_TYPE:'ont:DataSet'})
+		
+		get_count_activity = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+		doc.wasAssociatedWith(get_count_activity, this_script)
+		doc.usage(get_count_activity, resource, startTime, None, { prov.model.PROV_TYPE:'ont:Retrieval' } )
+
+		get_4sq_data = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+		doc.wasAssociatedWith(get_4sq_data, this_script)
+		doc.usage(get_4sq_data, resource, startTime, None, { prov.model.PROV_TYPE:'ont:Retrieval' } )
+
+		get_boston_sf_permits = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+		doc.wasAssociatedWith(get_boston_sf_permits, this_script)
+		doc.usage(get_boston_sf_permits, resource, startTime, None, { prov.model.PROV_TYPE:'ont:Retrieval' } )
+
+		
+		doc.wasAttributedTo(count_activity, this_script)
+		doc.wasGeneratedBy(count_activity, get_count_activity, endTime)
+		doc.wasDerivedFrom(count_activity, resource, get_boston_sf_permits, get_boston_sf_permits, get_boston_sf_permits)
+		doc.wasDerivedFrom(count_activity, resource, get_4sq_data, get_4sq_data, get_4sq_data)
+		repo.logout()
+		return doc
+
+count_activity.provenance()
+# count_activity.execute()

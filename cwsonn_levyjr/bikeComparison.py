@@ -70,45 +70,42 @@ class bikeComparison(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('cwsonn_levyjr', 'cwsonn_levyjr')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/adsouza_bmroach_mcaloonj_mcsmocha/')
+        doc.add_namespace('dat', 'http://datamechanics.io/data/adsouza_bmroach_mcaloonj_mcsmocha/')
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
-
-        this_script = doc.agent('alg:cwsonn_levyjr#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_found, this_script)
-        doc.wasAssociatedWith(get_lost, this_script)
-        doc.usage(get_found, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
-        doc.usage(get_lost, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
-                  }
-                  )
-
-        lost = doc.entity('dat:cwsonn_levyjr#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(lost, this_script)
-        doc.wasGeneratedBy(lost, get_lost, endTime)
-        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-
-        found = doc.entity('dat:cwsonn_levyjr#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(found, this_script)
-        doc.wasGeneratedBy(found, get_found, endTime)
-        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
-
+        doc.add_namespace('log', 'http://datamechanics.io/log#')
+        doc.add_namespace('bod', 'https://data.cambridgema.gov/Planning/Open-Space/q73m-a5e2')
+        doc.add_namespace('bod', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/')
+        
+        #Agent
+        this_script = doc.agent('alg:bikeComparison', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        
+        #Resources
+        bikepath = doc.entity('dat:bikepath', {'prov:label': 'bikepath', prov.model.PROV_TYPE:'ont:DataResource'})
+        Cbikepath = doc.entity('dat:Cbikepath', {'prov:label': 'Cbikepath', prov.model.PROV_TYPE:'ont:DataResource'})
+        
+        #Activities
+        this_run = doc.activity('log:a'+str(uuid.uuid4()), startTime, endTime, {prov.model.PROV_TYPE:'ont:Computation'})
+        
+        #Usage
+        doc.wasAssociatedWith(this_run, this_script)
+        doc.used(this_run, bikepath, startTime)
+        doc.used(this_run, Cbikepath, startTime)
+        
+        # New dataset
+        
+        bikeComparison = doc.entity('dat:bikeLengthComparison', {prov.model.PROV_LABEL:'bikeLengthComparison',prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(bikeComparison, this_script)
+        doc.wasGeneratedBy(bikeComparison, this_run, endTime)
+        doc.wasDerivedFrom(bikeComparison, bikepath, this_run, this_run, this_run)
+        doc.wasDerivedFrom(bikeComparison, Cbikepath, this_run, this_run, this_run)
+        
         repo.logout()
-                  
+        
         return doc
 
-bikeComparison.execute()
+'''bikeComparison.execute()
 doc = bikeComparison.provenance()
 print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+print(json.dumps(json.loads(doc.serialize()), indent=4)'''
 

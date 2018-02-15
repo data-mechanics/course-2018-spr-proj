@@ -6,7 +6,7 @@ import prov.model
 import datetime
 import uuid
 
-class liquorCrime(dml.Algorithm):
+class crime(dml.Algorithm):
     contributor = 'biken_riken'
     reads = []
     writes = ['biken_riken.liquor-licenses', 'biken_riken.crime-record','biken_riken.liquor-crime']
@@ -81,13 +81,13 @@ class liquorCrime(dml.Algorithm):
         repo = client.repo
         
         repo.authenticate('biken_riken', 'biken_riken')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('alg', 'http://datamechanics.io/?prefix=bm181354_rikenm/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp','https://data.boston.gov/dataset/47d501bf-8bfa-4076-944f-da0aedb60c8a/resource/aab353c1-c797-4053-a3fc-e893f5ccf547/download/')
         
-        this_script = doc.agent('alg:biken_riken#liquorCrime', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:biken_riken#crime', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         resource = doc.entity('bdp:liquor-licenses', {'prov:label':'dataset of all liquor license in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         

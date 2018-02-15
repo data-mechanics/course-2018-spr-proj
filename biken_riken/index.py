@@ -41,11 +41,19 @@ class index(dml.Algorithm):
         average_transportation_cost = arr_transportation.mean()
         # applies value/average to all the row of data
         index_transport = arr_transportation/average_transportation_cost
-
+        
+        # index of 1 to 5 for transportation
+        index_transport = (index_transport/max(index_transport)*5)
+        
         # Benchmark and ideal housing cost
         average_housing = arr_housing.mean()
         # applies value/average to all the row of data
         index_house = arr_housing/average_housing
+        
+        # index 1 to 5 for housing
+        index_house = (index_house/max(index_house)*5)
+        
+        
 
         # combined all the computed data
         new_df = pd.DataFrame(
@@ -87,11 +95,11 @@ class index(dml.Algorithm):
         repo = client.repo
         
         repo.authenticate('biken_riken', 'biken_riken')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('alg', 'http://datamechanics.io/?prefix=bm181354_rikenm/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp','http://datamechanics.io/data/bm181354_rikenm/')
+        doc.add_namespace('bdp','https://htaindex.cnt.org/download/')
         
         this_script = doc.agent('alg:biken_riken#index', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         

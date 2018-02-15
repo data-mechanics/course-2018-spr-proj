@@ -6,14 +6,15 @@ import prov.model
 import datetime
 import uuid
 
-class ems(dml.Algorithm):
+class schoolIndex(dml.Algorithm):
     contributor = 'biken_riken'
     reads = []
-    writes = ['biken_riken.ems']
+    writes = ['biken_riken.school_db']
     
     @staticmethod
     def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
+        
         startTime = datetime.datetime.now()
         
         # Set up the database connection.
@@ -22,43 +23,38 @@ class ems(dml.Algorithm):
         repo.authenticate('biken_riken', 'biken_riken')
         
         # Dataset01
-        url = 'http://datamechanics.io/data/bm181354_rikenm/Emergency_Medical_Service_EMS_Stations.csv'
- 
-        medical_df = pd.read_csv(url)
+        url = 'http://datamechanics.io/data/bm181354_rikenm/Public_Schools.csv'
+        #'http://bostonopendata-boston.opendata.arcgis.com/datasets/1d9509a8b2fd485d9ad471ba2fdb1f90_0'
         
-        #mass_list = medical_df['STATE']
-        #print(mass_list)
-        mass_df = medical_df[medical_df.STATE == 'MA']
+        school_df = pd.read_csv(url)
         
-        # all city from Massachusetts
-        mass_city = mass_df['CITY'] # list
+        #  TODO : bring this from index source
+        school = school_df['CITY']
+        # (city , no# of school in the area)
+        school_df = school_df[school_df['CITY'].apply(lambda l: l).isin(school)].CITY.value_counts()
+        # school index
+        avg = school_df/school_df.mean()
+        max_num = school_df.max()
+        # index from 1 to 5
+        school_index = (school_df/max_num)*5
 
-        # (city, overall number of emergency service)
-        mass_df = mass_df[mass_df['CITY'].apply(lambda l:l.upper()).isin(mass_city)].CITY.value_counts()
-        
 
-        # average
-        mass_em_index = (mass_df /  mass_df.mean())
-
-        # converting into 1 - 5 scale
-        highest = mass_em_index[0]
-        mass_em_index = 1 + (mass_df /  mass_df.mean())/highest * 4
-
-        # creating df that only contains city, total number of service, EMS_INDEX
+        # create new dataframe and concatinate two list
         n = pd.DataFrame(
                  {
-                 'CITY_SERVICE':mass_df,
-                 'EMS_INDEX': mass_em_index
+                 'school':school_df,
+                 'school_index' :school_index
                  })
-        
+
         r = json.loads(n.to_json( orient='records'))
         s = json.dumps(r, sort_keys=True, indent=2)
 
-        # clear
-        repo.dropPermanent('emsdb')
-        repo.createPermanent('emsdb')
-        repo['biken_riken.emsdb'].insert_many(r)
 
+        # clear
+        repo.dropPermanent("school_db")
+        repo.createPermanent("school_db")
+        #jup_repo.createPermanent('trail_index')
+        repo['school_db'].things.insert_many(r)
 
         # logout
         repo.logout()
@@ -77,6 +73,7 @@ class ems(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         
+        ####
         repo.authenticate('biken_riken', 'biken_riken')
         doc.add_namespace('alg', 'http://datamechanics.io/?prefix=bm181354_rikenm/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
@@ -84,24 +81,26 @@ class ems(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp','http://datamechanics.io/data/bm181354_rikenm/')
         
-        this_script = doc.agent('alg:biken_riken#ems', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:biken_riken#schoolIndex', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
-        resource = doc.entity('bdp:Emergency_Medical_Service_EMS_Stations', {'prov:label':'dataset of medical service in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        #change this [format]
+        resource = doc.entity('bdp:Public_Schools', {'prov:label':'dataset of all the schools in the Greater Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        ###
         
-        get_ems = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_school = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         
-        doc.wasAssociatedWith(get_ems, this_script)
+        doc.wasAssociatedWith(get_school, this_script)
         
-        #change this
-        doc.usage(get_ems, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval',
+        #change this [format]
+        doc.usage(get_school, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval',
                   'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'})
                   
-        ems = doc.entity('dat:biken_riken#emsdb', {prov.model.PROV_LABEL:'Emergency index', prov.model.PROV_TYPE:'ont:DataSet'})
-        
-        doc.wasAttributedTo(ems, this_script)
-        doc.wasGeneratedBy(ems, get_ems, endTime)
-        doc.wasDerivedFrom(ems, resource, get_ems, get_ems, get_ems)
-        
+        # change this
+        index = doc.entity('dat:biken_riken#school_db', {prov.model.PROV_LABEL:'index  of school of boston', prov.model.PROV_TYPE:'ont:DataSet'})
+                  
+        doc.wasAttributedTo(index, this_script)
+        doc.wasGeneratedBy(index, get_school, endTime)
+        doc.wasDerivedFrom(index, resource, index, index, index)
                   
         repo.logout()
         return doc

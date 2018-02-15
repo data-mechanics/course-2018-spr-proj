@@ -1,8 +1,8 @@
 import json
 import dml
 import prov.model
-import datetime
 import uuid
+from datetime import datetime
 from fjansen.utils import utils
 
 
@@ -13,7 +13,7 @@ class transform_fire_311(dml.Algorithm):
 
     @staticmethod
     def execute(trial=False):
-        start_time = datetime.datetime.now()
+        start_time = datetime.now()
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
@@ -24,24 +24,35 @@ class transform_fire_311(dml.Algorithm):
         nyc311 = repo['fjansen.nyc311']
 
         # Select all dates and fire types, add 1 to end to ease sum later
+        # Make sure dates are unified
         fires_date_type = utils.project(fires.find(),
-                                        lambda t: (t['Alarm Date'], (t['Incident Description'].strip(), 1)))
+                                        lambda t: (
+                                        datetime.strptime(t['Alarm Date'], '%Y-%m-%dT%H:%M:%S').date().strftime(
+                                            '%Y-%m-%d'), (t['Incident Description'].strip(), 1)))
+        nyc311_date_type = utils.project(nyc311.find(), lambda t: (
+            datetime.strptime(t['created_date'], '%Y-%m-%dT%H:%M:%S.%f').date().strftime('%Y-%m-%d'),
+            (t['complaint_type'].strip(), 1)))
 
         # Group by date
         fires_by_date = utils.aggregate(fires_date_type, lambda x: x)
+        nyc311_by_date = utils.aggregate(nyc311_date_type, lambda x: x)
         # Sum types by date
         fires_by_type_date = utils.project(fires_by_date, lambda x: [x[0], utils.aggregate(x[1], sum)])
+        nyc311_by_type_date = utils.project(nyc311_by_date, lambda x: [x[0], utils.aggregate(x[1], sum)])
+
+        # Combine two data sets and merge incidents by date
+        fires_nyc311_by_type_date = utils.aggregate(utils.union(fires_by_type_date, nyc311_by_type_date), lambda x: x[0])
 
         repo.dropCollection('nyc311_fire')
         repo.createCollection('nyc311_fire')
-        for e in fires_by_type_date:
+        for e in fires_nyc311_by_type_date:
             # Convert to object MongoDB can insert
             obj = {'date': e[0], 'incidents': dict(e[1])}
             repo['fjansen.nyc311_fire'].insert(obj)
 
         repo.logout()
 
-        end_time = datetime.datetime.now()
+        end_time = datetime.now()
 
         return {"start": start_time, "end": end_time}
 
@@ -79,7 +90,7 @@ class transform_fire_311(dml.Algorithm):
         doc.usage(nyc311_fire, resource_nyc311, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
 
         output = doc.entity('dat:fjansen#reports_by_date',
-                            {prov.model.PROV_LABEL: 'Number of fire and 311 reports by date',
+                            {prov.model.PROV_LABEL: 'Number of fire and 311 reports by date and type',
                              prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(output, this_script)
         doc.wasGeneratedBy(output, nyc311_fire, endTime)

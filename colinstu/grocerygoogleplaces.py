@@ -6,10 +6,10 @@ import datetime
 import uuid
 
 
-class employeeearnings(dml.Algorithm):
+class grocerygoogleplaces(dml.Algorithm):
     contributor = 'colinstu'
     reads = []
-    writes = ['colinstu.employeeearnings']
+    writes = ['colinstu.grocerygoogleplaces']
 
     @staticmethod
     def execute(trial=False):
@@ -21,17 +21,15 @@ class employeeearnings(dml.Algorithm):
         repo = client.repo
         repo.authenticate('colinstu', 'colinstu')
 
-        url = 'https://data.boston.gov/export/836/8bd/8368bd3d-3633-4927-8355-2a2f9811ab4f.json'
+        url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=grocery+in+boston&key='  # TODO: add API key from config.json
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        response = response.replace("]", "")
-        response = response + "]"  # fixes typo in dataset
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("employeeearnings")
-        repo.createCollection("employeeearnings")
-        repo['colinstu.employeeearnings'].insert_many(r)
-        repo['colinstu.employeeearnings'].metadata({'complete': True})
-        print(repo['colinstu.employeeearnings'].metadata())
+        repo.dropCollection("grocerygoogleplaces")
+        repo.createCollection("grocerygoogleplaces")
+        repo['colinstu.grocerygoogleplaces'].insert_many(r)
+        repo['colinstu.grocerygoogleplaces'].metadata({'complete': True})
+        print(repo['colinstu.grocerygoogleplaces'].metadata())
 
         repo.logout()
 
@@ -58,32 +56,32 @@ class employeeearnings(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'https://data.boston.gov/dataset/active-food-establishment-licenses')
 
-        this_script = doc.agent('alg:colinstu#employeeearnings',
+        this_script = doc.agent('alg:colinstu#grocerygoogleplaces',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label': 'Active Food Establishment Licenses',
                                                 prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'json'})
-        get_earnings = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_earnings, this_script)
+        get_grocery = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_grocery, this_script)
 
-        doc.usage(get_earnings, resource, startTime, None,
+        doc.usage(get_grocery, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
                    'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'  # TODO: fix query
                    }
                   )
 
-        earnings = doc.entity('dat:colinstu#employeeearnings', {prov.model.PROV_LABEL: 'Employee Earnings Report',
+        grocery = doc.entity('dat:colinstu#grocerygoogleplaces', {prov.model.PROV_LABEL: 'Grocery Stores in Boston (Google Places)',
                                                           prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(earnings, this_script)
-        doc.wasGeneratedBy(earnings, get_earnings, endTime)
-        doc.wasDerivedFrom(earnings, resource, get_earnings, get_earnings, get_earnings)
+        doc.wasAttributedTo(grocery, this_script)
+        doc.wasGeneratedBy(grocery, get_grocery, endTime)
+        doc.wasDerivedFrom(grocery, resource, get_grocery, get_grocery, get_grocery)
 
         repo.logout()
 
         return doc
 
 
-employeeearnings.execute()
-doc = employeeearnings.provenance()
+grocerygoogleplaces.execute()
+doc = grocerygoogleplaces.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

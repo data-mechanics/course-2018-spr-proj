@@ -9,7 +9,7 @@ import uuid
 class bostonneighborhoods(dml.Algorithm):
     contributor = 'colinstu'
     reads = []
-    writes = ['colinstu.lost', 'colinstu.found']
+    writes = ['colinstu.neighborhood']
 
     @staticmethod
     def execute(trial=False):
@@ -27,7 +27,7 @@ class bostonneighborhoods(dml.Algorithm):
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("neighborhood")
         repo.createCollection("neighborhood")
-        repo['colinstu.neighborhood'].insert_many(r)
+        repo['colinstu.neighborhood'].insert_many(r)  # TODO: fix insert many geojson
         repo['colinstu.neighborhood'].metadata({'complete': True})
         print(repo['colinstu.neighborhood'].metadata())
 

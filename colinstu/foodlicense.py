@@ -9,7 +9,7 @@ import uuid
 class foodlicense(dml.Algorithm):
     contributor = 'colinstu'
     reads = []
-    writes = ['colinstu.lost', 'colinstu.found']
+    writes = ['colinstu.foodlicense']
 
     @staticmethod
     def execute(trial = False):

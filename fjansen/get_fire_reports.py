@@ -13,7 +13,6 @@ class GetFireReports(dml.Algorithm):
 
     @staticmethod
     def execute(trial=False):
-        """Retrieve some data sets (not using the API here for the sake of simplicity)."""
         start_time = datetime.datetime.now()
 
         # Set up the database connection.
@@ -24,7 +23,7 @@ class GetFireReports(dml.Algorithm):
         if trial:
             urls = [
                 'https://data.boston.gov/api/3/action/datastore_search?resource_id=8f4f497e-d93c-4f2f-b754-bfc69e2700a0&limit=1000'
-                ]
+            ]
         else:
             urls = [
                 'https://data.boston.gov/api/3/action/datastore_search?resource_id=8608b9db-71e2-4acb-9691-75b3c66fdd17&limit=10000',
@@ -57,7 +56,7 @@ class GetFireReports(dml.Algorithm):
             Create the provenance document describing everything happening
             in this script. Each run of the script will generate a new
             document describing that invocation event.
-            """
+        """
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
@@ -76,11 +75,11 @@ class GetFireReports(dml.Algorithm):
                               {'prov:label': 'Fire Incident Reporting', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
         resource2 = doc.entity('bdp:d969a70d-2734-4e75-b2ae-e64aec289892',
-                              {'prov:label': 'Fire Incident Reporting', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'json'})
+                               {'prov:label': 'Fire Incident Reporting', prov.model.PROV_TYPE: 'ont:DataResource',
+                                'ont:Extension': 'json'})
         resource3 = doc.entity('bdp:8608b9db-71e2-4acb-9691-75b3c66fdd17',
-                              {'prov:label': 'Fire Incident Reporting', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'json'})
+                               {'prov:label': 'Fire Incident Reporting', prov.model.PROV_TYPE: 'ont:DataResource',
+                                'ont:Extension': 'json'})
         fires = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(fires, this_script)
 
@@ -91,7 +90,8 @@ class GetFireReports(dml.Algorithm):
         doc.usage(fires, resource3, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval',
                                                       'ont:Query': '?resource_id=8608b9db-71e2-4acb-9691-75b3c66fdd17&limit=10000'})
 
-        output = doc.entity('dat:fjansen#fires', {prov.model.PROV_LABEL: 'Fire Incident Reporting', prov.model.PROV_TYPE: 'ont:DataSet'})
+        output = doc.entity('dat:fjansen#fires',
+                            {prov.model.PROV_LABEL: 'Fire Incident Reporting', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(output, this_script)
         doc.wasGeneratedBy(output, fires, endTime)
         doc.wasDerivedFrom(output, resource, resource2, resource3, fires)

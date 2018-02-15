@@ -13,7 +13,6 @@ class GetNYC311(dml.Algorithm):
 
     @staticmethod
     def execute(trial=False):
-        """Retrieve some data sets (not using the API here for the sake of simplicity)."""
         start_time = datetime.datetime.now()
 
         # Set up the database connection.
@@ -46,7 +45,7 @@ class GetNYC311(dml.Algorithm):
             Create the provenance document describing everything happening
             in this script. Each run of the script will generate a new
             document describing that invocation event.
-            """
+        """
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
@@ -68,9 +67,10 @@ class GetNYC311(dml.Algorithm):
         doc.wasAssociatedWith(incidents, this_script)
 
         doc.usage(incidents, resource, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval',
-                                                     'ont:Query': '?limit=10000'})
+                                                         'ont:Query': '?limit=10000'})
 
-        output = doc.entity('dat:fjansen#incidents', {prov.model.PROV_LABEL: '311 Incidence Reports', prov.model.PROV_TYPE: 'ont:DataSet'})
+        output = doc.entity('dat:fjansen#incidents',
+                            {prov.model.PROV_LABEL: '311 Incidence Reports', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(output, this_script)
         doc.wasGeneratedBy(output, incidents, endTime)
         doc.wasDerivedFrom(output, resource, incidents)

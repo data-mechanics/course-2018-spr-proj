@@ -5,10 +5,10 @@ import uuid
 
 
 class combineneighbourhood(dml.Algorithm):
-    contributor = 'rpm1995'
-    reads = ['rpm1995.neighbourhoodnames',
-             'rpm1995.neighbourhoodnonames']
-    writes = ['rpm1995.neighbourhoods']
+    contributor = 'jhs2018_rpm1995'
+    reads = ['jhs2018_rpm1995.neighbourhoodnames',
+             'jhs2018_rpm1995.neighbourhoodnonames']
+    writes = ['jhs2018_rpm1995.neighbourhoods']
 
     @staticmethod
     def execute(trial=False):
@@ -18,19 +18,19 @@ class combineneighbourhood(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('rpm1995', 'rpm1995')
+        repo.authenticate('jhs2018_rpm1995', 'jhs2018_rpm1995')
 
         print("Now running combineneighbourhood.py")
         # Collecting collections
 
-        nonames = repo.rpm1995.neighbourhoodnonames.find()
-        # names = repo.rpm1995.neighbourhoodnames.find()
+        nonames = repo.jhs2018_rpm1995.neighbourhoodnonames.find()
+        # names = repo.jhs2018_rpm1995.neighbourhoodnames.find()
 
         cleanneighbourhoods = []             # Will insert this into our new collection
 
         for tosearch in nonames:
             id = tosearch['fields']['objectid']
-            names = repo.rpm1995.neighbourhoodnames.find()
+            names = repo.jhs2018_rpm1995.neighbourhoodnames.find()
             for searchhere in names:
                 if id == searchhere['properties']['OBJECTID']:
                     cleanneighbourhoods.append({
@@ -42,7 +42,7 @@ class combineneighbourhood(dml.Algorithm):
         repo.dropCollection("neighbourhoods")
         repo.createCollection("neighbourhoods")
 
-        repo['rpm1995.neighbourhoods'].insert_many(cleanneighbourhoods)
+        repo['jhs2018_rpm1995.neighbourhoods'].insert_many(cleanneighbourhoods)
 
         repo.logout()
 
@@ -59,7 +59,7 @@ class combineneighbourhood(dml.Algorithm):
 
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('rpm1995', 'rpm1995')
+        repo.authenticate('jhs2018_rpm1995', 'jhs2018_rpm1995')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet',
@@ -69,7 +69,7 @@ class combineneighbourhood(dml.Algorithm):
         # Wicked Open Data
         doc.add_namespace('ab', 'https://data.boston.gov/dataset/boston-neighborhoods')   # Analyze Boston
 
-        this_script = doc.agent('alg:rpm1995#combineneighbourhood',
+        this_script = doc.agent('alg:jhs2018_rpm1995#combineneighbourhood',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
 # #######
@@ -97,7 +97,7 @@ class combineneighbourhood(dml.Algorithm):
         doc.usage(neighbourhoodfinal, resource_neighbourhoodnames, startTime)
 
 # #######
-        neighbourhoods = doc.entity('dat:rpm1995neighbourhoods',
+        neighbourhoods = doc.entity('dat:jhs2018_rpm1995neighbourhoods',
                                     {prov.model.PROV_LABEL: 'Neighbourhoods in Boston',
                                      prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(neighbourhoods, this_script)

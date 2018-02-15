@@ -24,14 +24,14 @@ def fetch_geojson(url, item):
 
 
 class getdata(dml.Algorithm):
-    contributor = 'rpm1995'
+    contributor = 'jhs2018_rpm1995'
     reads = []
-    writes = ['rpm1995.neighbourhoodnames',
-              'rpm1995.neighbourhoodnonames',
-              'rpm1995.hubway',
-              'rpm1995.trees',
-              'rpm1995.charge',
-              'rpm1995.openspaces']
+    writes = ['jhs2018_rpm1995.neighbourhoodnames',
+              'jhs2018_rpm1995.neighbourhoodnonames',
+              'jhs2018_rpm1995.hubway',
+              'jhs2018_rpm1995.trees',
+              'jhs2018_rpm1995.charge',
+              'jhs2018_rpm1995.openspaces']
 
     @staticmethod
     def execute(trial=False):
@@ -41,48 +41,48 @@ class getdata(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('rpm1995', 'rpm1995')
+        repo.authenticate('jhs2018_rpm1995', 'jhs2018_rpm1995')
 
         # This fetches coordinates of Boston neighbourhoods but without the names
         r = fetch_json('https://boston.opendatasoft.com/explore/dataset/boston-neighborhoods/download/?format=json'
                        '&timezone=America/New_York', "Neighbourhoods")
         repo.dropCollection("neighbourhoodnonames")
         repo.createCollection("neighbourhoodnonames")
-        repo['rpm1995.neighbourhoodnonames'].insert_many(r)
+        repo['jhs2018_rpm1995.neighbourhoodnonames'].insert_many(r)
 
         # This fetches names of Boston Neighbourhoods but without the coordinates
         r = fetch_geojson('http://bostonopendata-boston.opendata.arcgis.com/datasets/3525b0ee6e6b427f9aab5d0a1d0a1a28_0'
                           '.geojson', "Neighbourhoods")
         repo.dropCollection("neighbourhoodnames")
         repo.createCollection("neighbourhoodnames")
-        repo['rpm1995.neighbourhoodnames'].insert_many(r)
+        repo['jhs2018_rpm1995.neighbourhoodnames'].insert_many(r)
 
         # This fetches a dataset with details about Hubway stations in Boston
         r = fetch_geojson('http://bostonopendata-boston.opendata.arcgis.com/datasets'
                           '/ee7474e2a0aa45cbbdfe0b747a5eb032_0.geojson', "Hubway Stations")
         repo.dropCollection("hubway")
         repo.createCollection("hubway")
-        repo['rpm1995.hubway'].insert_many(r)
+        repo['jhs2018_rpm1995.hubway'].insert_many(r)
 
         # This fetches a dataset with details about Trees in Boston
         r = fetch_geojson('http://datamechanics.io/data/Trees%20(1).geojson', "Trees")
         repo.dropCollection("trees")
         repo.createCollection("trees")
-        repo['rpm1995.trees'].insert_many(r)
+        repo['jhs2018_rpm1995.trees'].insert_many(r)
 
         # This fetches a dataset with details about Charging Stations in Boston
         r = fetch_json('https://boston.opendatasoft.com/explore/dataset/charging-stations/download/?format=json'
                        '&timezone=America/New_York', "Charging Stations")
         repo.dropCollection("charge")
         repo.createCollection("charge")
-        repo['rpm1995.charge'].insert_many(r)
+        repo['jhs2018_rpm1995.charge'].insert_many(r)
 
         # This fetches a dataset with details about Open Spaces in Boston
         r = fetch_geojson('http://bostonopendata-boston.opendata.arcgis.com/datasets/2868d370c55d4d458d4ae2224ef8cddd_7'
                           '.geojson', "Open Spaces")
         repo.dropCollection("openspaces")
         repo.createCollection("openspaces")
-        repo['rpm1995.openspaces'].insert_many(r)
+        repo['jhs2018_rpm1995.openspaces'].insert_many(r)
         repo.logout()
 
         endTime = datetime.datetime.now()
@@ -98,7 +98,7 @@ class getdata(dml.Algorithm):
 
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('rpm1995', 'rpm1995')
+        repo.authenticate('jhs2018_rpm1995', 'jhs2018_rpm1995')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet',
@@ -112,7 +112,7 @@ class getdata(dml.Algorithm):
         doc.add_namespace('charge', 'http://bostonopendata-boston.opendata.arcgis.com/datasets')
         doc.add_namespace('openspace', 'http://bostonopendata-boston.opendata.arcgis.com/datasets')
 
-        this_script = doc.agent('alg:rpm1995#getdata',
+        this_script = doc.agent('alg:jhs2018_rpm1995#getdata',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
 # #######
@@ -162,7 +162,7 @@ class getdata(dml.Algorithm):
         doc.wasAssociatedWith(get_openspaces, this_script)
         doc.usage(get_openspaces, resource_openspaces, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
 # #######
-        neighbourhoodnonames = doc.entity('dat:rpm1995neighbourhoodnonames',
+        neighbourhoodnonames = doc.entity('dat:jhs2018_rpm1995neighbourhoodnonames',
                                           {prov.model.PROV_LABEL: 'neighbourhoodnonames',
                                            prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(neighbourhoodnonames, this_script)
@@ -170,7 +170,7 @@ class getdata(dml.Algorithm):
         doc.wasDerivedFrom(neighbourhoodnonames, resource_neighbourhoodnonames, get_neighbourhoodnonames,
                            get_neighbourhoodnonames, get_neighbourhoodnonames)
 
-        neighbourhoodnames = doc.entity('dat:rpm1995neighbourhoodnames',
+        neighbourhoodnames = doc.entity('dat:jhs2018_rpm1995neighbourhoodnames',
                                         {prov.model.PROV_LABEL: 'neighbourhoodnames',
                                          prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(neighbourhoodnames, this_script)
@@ -178,23 +178,23 @@ class getdata(dml.Algorithm):
         doc.wasDerivedFrom(neighbourhoodnames, resource_neighbourhoodnames, get_neighbourhoodnames,
                            get_neighbourhoodnames, get_neighbourhoodnonames)
 
-        hubway = doc.entity('dat:rpm1995hubway', {prov.model.PROV_LABEL: 'hubway', prov.model.PROV_TYPE: 'ont:DataSet'})
+        hubway = doc.entity('dat:jhs2018_rpm1995hubway', {prov.model.PROV_LABEL: 'hubway', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(hubway, this_script)
         doc.wasGeneratedBy(hubway, get_hubway, endTime)
         doc.wasDerivedFrom(hubway, resource_hubway, get_hubway, get_hubway, get_hubway)
 
-        trees = doc.entity('dat:rpm1995trees', {prov.model.PROV_LABEL: 'trees', prov.model.PROV_TYPE: 'ont:DataSet'})
+        trees = doc.entity('dat:jhs2018_rpm1995trees', {prov.model.PROV_LABEL: 'trees', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(trees, this_script)
         doc.wasGeneratedBy(trees, get_trees, endTime)
         doc.wasDerivedFrom(trees, resource_trees, get_trees, get_trees, get_trees)
 
-        charge = doc.entity('dat:rpm1995charge',
+        charge = doc.entity('dat:jhs2018_rpm1995charge',
                             {prov.model.PROV_LABEL: 'charge', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(charge, this_script)
         doc.wasGeneratedBy(charge, get_charge, endTime)
         doc.wasDerivedFrom(charge, resource_charge, get_charge, get_charge, get_charge)
 
-        openspaces = doc.entity('dat:rpm1995openspaces',
+        openspaces = doc.entity('dat:jhs2018_rpm1995openspaces',
                                 {prov.model.PROV_LABEL: 'openspaces', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(openspaces, this_script)
         doc.wasGeneratedBy(openspaces, get_openspaces, endTime)

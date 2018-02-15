@@ -6,9 +6,9 @@ from shapely.geometry import Polygon
 
 
 class open_centroids(dml.Algorithm):    # We are figuring out the coordinates of the centroid of every open space in
-    contributor = 'rpm1995'             # Boston and adding this to the dataset greenspaces
-    reads = ['rpm1995.openspaces']
-    writes = ['rpm1995.greenspaces']
+    contributor = 'jhs2018_rpm1995'             # Boston and adding this to the dataset greenspaces
+    reads = ['jhs2018_rpm1995.openspaces']
+    writes = ['jhs2018_rpm1995.greenspaces']
 
     @staticmethod
     def extract(cursor, megalist):
@@ -46,19 +46,19 @@ class open_centroids(dml.Algorithm):    # We are figuring out the coordinates of
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('rpm1995', 'rpm1995')
+        repo.authenticate('jhs2018_rpm1995', 'jhs2018_rpm1995')
 
         print("Now running open_centroids.py")
 
         objects = []
 
-        openspaces = repo.rpm1995.openspaces.find()
+        openspaces = repo.jhs2018_rpm1995.openspaces.find()
 
         objects = open_centroids.extract(openspaces, objects)
 
         repo.dropCollection("greenspaces")
         repo.createCollection("greenspaces")
-        repo['rpm1995.greenspaces'].insert_many(objects)
+        repo['jhs2018_rpm1995.greenspaces'].insert_many(objects)
 
         repo.logout()
 
@@ -75,7 +75,7 @@ class open_centroids(dml.Algorithm):    # We are figuring out the coordinates of
 
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('rpm1995', 'rpm1995')
+        repo.authenticate('jhs2018_rpm1995', 'jhs2018_rpm1995')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet',
@@ -85,7 +85,7 @@ class open_centroids(dml.Algorithm):    # We are figuring out the coordinates of
         # Wicked Open Data
         doc.add_namespace('ab', 'https://data.boston.gov/dataset/boston-neighborhoods')   # Analyze Boston
 
-        this_script = doc.agent('alg:rpm1995#open_centroids',
+        this_script = doc.agent('alg:jhs2018_rpm1995#open_centroids',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
 # #######
@@ -104,7 +104,7 @@ class open_centroids(dml.Algorithm):    # We are figuring out the coordinates of
         doc.usage(get_openspaces, resource_openspaces, startTime)
 
 # #######
-        greenobjects = doc.entity('dat:rpm1995_centroids_openspaces',
+        greenobjects = doc.entity('dat:jhs2018_rpm1995_centroids_openspaces',
                                   {prov.model.PROV_LABEL: 'Coordinates of centroids of open spaces in Boston',
                                    prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(greenobjects, this_script)

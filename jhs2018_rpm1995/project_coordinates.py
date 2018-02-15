@@ -5,11 +5,11 @@ import uuid
 
 
 class project_coordinates(dml.Algorithm):
-    contributor = 'rpm1995'
-    reads = ['rpm1995.hubway',                  # We will combine 3 datasets into dataset greenobjects, which
-             'rpm1995.trees',                   # will have just the type of objects (tree, charging station, etc.) and
-             'rpm1995.charge']                  # its geographical coordinates
-    writes = ['rpm1995.greenobjects']
+    contributor = 'jhs2018_rpm1995'
+    reads = ['jhs2018_rpm1995.hubway',                  # We will combine 3 datasets into dataset greenobjects, which
+             'jhs2018_rpm1995.trees',                   # will have just the type of objects (tree, charging station, etc.) and
+             'jhs2018_rpm1995.charge']                  # its geographical coordinates
+    writes = ['jhs2018_rpm1995.greenobjects']
 
     @staticmethod
     def extract(cursor, type, megalist):        # This function extracts the type of object we are looking at (eg: tree)
@@ -26,16 +26,16 @@ class project_coordinates(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('rpm1995', 'rpm1995')
+        repo.authenticate('jhs2018_rpm1995', 'jhs2018_rpm1995')
 
         print("Now running project_coordinates.py")
 
         objects = []
 
-        hubway = repo.rpm1995.hubway.find()
-        trees = repo.rpm1995.trees.find()
-        charge = repo.rpm1995.charge.find()
-        # openspaces = repo.rpm1995.openspaces.find()
+        hubway = repo.jhs2018_rpm1995.hubway.find()
+        trees = repo.jhs2018_rpm1995.trees.find()
+        charge = repo.jhs2018_rpm1995.charge.find()
+        # openspaces = repo.jhs2018_rpm1995.openspaces.find()
 
         objects = project_coordinates.extract(hubway, "hubway", objects)
         objects = project_coordinates.extract(trees, "tree", objects)
@@ -43,7 +43,7 @@ class project_coordinates(dml.Algorithm):
 
         repo.dropCollection("greenobjects")
         repo.createCollection("greenobjects")
-        repo['rpm1995.greenobjects'].insert_many(objects)
+        repo['jhs2018_rpm1995.greenobjects'].insert_many(objects)
 
         repo.logout()
 
@@ -60,7 +60,7 @@ class project_coordinates(dml.Algorithm):
 
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('rpm1995', 'rpm1995')
+        repo.authenticate('jhs2018_rpm1995', 'jhs2018_rpm1995')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet',
@@ -70,7 +70,7 @@ class project_coordinates(dml.Algorithm):
         # Wicked Open Data
         doc.add_namespace('ab', 'https://data.boston.gov/dataset/boston-neighborhoods')   # Analyze Boston
 
-        this_script = doc.agent('alg:rpm1995#project_coordinates',
+        this_script = doc.agent('alg:jhs2018_rpm1995#project_coordinates',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
 # #######
@@ -98,7 +98,7 @@ class project_coordinates(dml.Algorithm):
         doc.usage(get_greenobjects, resource_trees, startTime)
 
 # #######
-        greenobjects = doc.entity('dat:rpm1995_greenobjects',
+        greenobjects = doc.entity('dat:jhs2018_rpm1995_greenobjects',
                                   {prov.model.PROV_LABEL: 'Coordinates of Environment Friendly Assets in Boston',
                                    prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(greenobjects, this_script)

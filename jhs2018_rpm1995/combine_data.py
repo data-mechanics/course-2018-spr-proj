@@ -7,13 +7,13 @@ from shapely.geometry import Point, Polygon
 
 
 class combine_data(dml.Algorithm):
-    contributor = 'rpm1995'
-    reads = ['rpm1995.neighbourhoods',
-             'rpm1995.trees',
-             'rpm1995.charge',
-             'rpm1995.greenspaces',
-             'rpm1995.hubway']
-    writes = ['rpm1995.greenneighbourhoods']
+    contributor = 'jhs2018_rpm1995'
+    reads = ['jhs2018_rpm1995.neighbourhoods',
+             'jhs2018_rpm1995.trees',
+             'jhs2018_rpm1995.charge',
+             'jhs2018_rpm1995.greenspaces',
+             'jhs2018_rpm1995.hubway']
+    writes = ['jhs2018_rpm1995.greenneighbourhoods']
 
     @staticmethod
     def extract(cursor, areacoords):            # This function returns coordinates in database referred to by "cursor"
@@ -33,13 +33,13 @@ class combine_data(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('rpm1995', 'rpm1995')
+        repo.authenticate('jhs2018_rpm1995', 'jhs2018_rpm1995')
 
         print("Now running combine_data.py")
 
         # insert_me = []
 
-        neighbourhoods = repo.rpm1995.neighbourhoods.find()
+        neighbourhoods = repo.jhs2018_rpm1995.neighbourhoods.find()
         ultimate = []
 
         for i in neighbourhoods:
@@ -51,7 +51,7 @@ class combine_data(dml.Algorithm):
             except AssertionError:
                 areacoords = Polygon(i['Details'][0])
 
-            greenspace = repo.rpm1995.greenspaces.find()        # Combining neighbourhoods and open spaces
+            greenspace = repo.jhs2018_rpm1995.greenspaces.find()        # Combining neighbourhoods and open spaces
             coordbit = []
             for j in greenspace:
                 type = j['Type']
@@ -59,7 +59,7 @@ class combine_data(dml.Algorithm):
                 if areacoords.contains(Point(coords)):
                     coordbit.append(coords)
 
-            hubwayobject = repo.rpm1995.hubway.find()           # Combining neighbourhoods and Hubway Stations
+            hubwayobject = repo.jhs2018_rpm1995.hubway.find()           # Combining neighbourhoods and Hubway Stations
             type1 = "Hubway"
             hubwaycoord = combine_data.extract(hubwayobject, areacoords)
             # for k in greenobject:
@@ -71,11 +71,11 @@ class combine_data(dml.Algorithm):
             #                                                                                          "Coordinates":
             #                                                                                              greencoord}]})
 
-            chargeobject = repo.rpm1995.charges.find()          # Combining neighbourhoods and Charging Stations
+            chargeobject = repo.jhs2018_rpm1995.charges.find()          # Combining neighbourhoods and Charging Stations
             type2 = "Charge"
             chargecoord = combine_data.extract(chargeobject, areacoords)
 
-            treeobject = repo.rpm1995.trees.find()              # Combining neighbourhoods and Trees
+            treeobject = repo.jhs2018_rpm1995.trees.find()              # Combining neighbourhoods and Trees
             type3 = "Tree"
             treecoord = combine_data.extract(treeobject, areacoords)
 
@@ -87,7 +87,7 @@ class combine_data(dml.Algorithm):
 
         repo.dropCollection("greenneighbourhoods")
         repo.createCollection("greenneighbourhoods")
-        repo['rpm1995.greenneighbourhoods'].insert_many(ultimate)
+        repo['jhs2018_rpm1995.greenneighbourhoods'].insert_many(ultimate)
 
         repo.logout()
 
@@ -106,7 +106,7 @@ class combine_data(dml.Algorithm):
 
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('rpm1995', 'rpm1995')
+        repo.authenticate('jhs2018_rpm1995', 'jhs2018_rpm1995')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet',
@@ -116,7 +116,7 @@ class combine_data(dml.Algorithm):
         # Wicked Open Data
         doc.add_namespace('ab', 'https://data.boston.gov/dataset/boston-neighborhoods')   # Analyze Boston
 
-        this_script = doc.agent('alg:rpm1995#combine_data',
+        this_script = doc.agent('alg:jhs2018_rpm1995#combine_data',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
 # #######
@@ -135,7 +135,7 @@ class combine_data(dml.Algorithm):
                                                                prov.model.PROV_TYPE: 'ont:DataResource',
                                                                'ont:Extension': 'json'})
 
-        resource_neighbourhoods = doc.entity('bwod: rpm1995neighbourhoods', {'prov:label': 'Boston Neighbourhoods',
+        resource_neighbourhoods = doc.entity('bwod: jhs2018_rpm1995neighbourhoods', {'prov:label': 'Boston Neighbourhoods',
                                                                              prov.model.PROV_TYPE: 'ont:DataResource',
                                                                              'ont:Extension': 'json'})
 
@@ -152,7 +152,7 @@ class combine_data(dml.Algorithm):
         doc.usage(get_details, resource_openspaces, startTime)
         doc.usage(get_details, resource_neighbourhoods, startTime)
 # #######
-        greenneighbourhoods = doc.entity('dat:rpm1995_greenneighbourhoods',
+        greenneighbourhoods = doc.entity('dat:jhs2018_rpm1995_greenneighbourhoods',
                                          {prov.model.PROV_LABEL: 'Environmentally Friendly Assets in Boston '
                                                                  'Neighbourhoods', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(greenneighbourhoods, this_script)

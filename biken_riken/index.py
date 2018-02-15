@@ -99,19 +99,18 @@ class index(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp','https://htaindex.cnt.org/download/')
+        doc.add_namespace('bdp','http://datamechanics.io/?prefix=bm181354_rikenm/')
         
         this_script = doc.agent('alg:biken_riken#index', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
-        resource = doc.entity('bdp:htaindex_data_places_25', {'prov:label':'dataset of all liquor license in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        resource = doc.entity('bdp:htaindex_data_places_25', {'prov:label':'dataset of all indices raw values', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         
         get_index = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         
         doc.wasAssociatedWith(get_index, this_script)
         
         #change this
-        doc.usage(get_index, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'})
+        doc.usage(get_index, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval'})
         
         # change this
         index = doc.entity('dat:biken_riken#indexdb', {prov.model.PROV_LABEL:'index  of transportation, housing', prov.model.PROV_TYPE:'ont:DataSet'})

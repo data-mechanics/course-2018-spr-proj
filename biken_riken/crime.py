@@ -85,7 +85,7 @@ class crime(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp','https://data.boston.gov/dataset/47d501bf-8bfa-4076-944f-da0aedb60c8a/resource/aab353c1-c797-4053-a3fc-e893f5ccf547/download/')
+        doc.add_namespace('bdp','http://datamechanics.io/?prefix=bm181354_rikenm/')
         
         this_script = doc.agent('alg:biken_riken#crime', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
@@ -104,11 +104,9 @@ class crime(dml.Algorithm):
         doc.wasAssociatedWith(get_liquor_license, this_script)
         
         # change here
-        doc.usage(get_crime, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'})
+        doc.usage(get_crime, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval'})
         doc.usage(get_liquor_license, resource_two, startTime, None,
-                            {prov.model.PROV_TYPE:'ont:Retrieval',
-                            'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
+                            {prov.model.PROV_TYPE:'ont:Retrieval'
                             })
                   
         liquor_license = doc.entity('dat:biken_riken#liquor-licenses', {prov.model.PROV_LABEL:'liquor license', prov.model.PROV_TYPE:'ont:DataSet'})

@@ -79,9 +79,10 @@ class schoolIndex(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp','http://datamechanics.io/data/bm181354_rikenm/')
+        doc.add_namespace('bdp','http://datamechanics.io/?prefix=bm181354_rikenm/')
         
         this_script = doc.agent('alg:biken_riken#schoolIndex', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        ####
         
         #change this [format]
         resource = doc.entity('bdp:Public_Schools', {'prov:label':'dataset of all the schools in the Greater Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
@@ -92,8 +93,7 @@ class schoolIndex(dml.Algorithm):
         doc.wasAssociatedWith(get_school, this_script)
         
         #change this [format]
-        doc.usage(get_school, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'})
+        doc.usage(get_school, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval'})
                   
         # change this
         index = doc.entity('dat:biken_riken#school_db', {prov.model.PROV_LABEL:'index  of school of boston', prov.model.PROV_TYPE:'ont:DataSet'})

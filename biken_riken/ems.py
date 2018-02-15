@@ -82,7 +82,7 @@ class ems(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp','http://datamechanics.io/data/bm181354_rikenm/')
+        doc.add_namespace('bdp','http://datamechanics.io/?prefix=bm181354_rikenm/')
         
         this_script = doc.agent('alg:biken_riken#ems', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
@@ -93,8 +93,7 @@ class ems(dml.Algorithm):
         doc.wasAssociatedWith(get_ems, this_script)
         
         #change this
-        doc.usage(get_ems, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'})
+        doc.usage(get_ems, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval'})
                   
         ems = doc.entity('dat:biken_riken#emsdb', {prov.model.PROV_LABEL:'Emergency index', prov.model.PROV_TYPE:'ont:DataSet'})
         

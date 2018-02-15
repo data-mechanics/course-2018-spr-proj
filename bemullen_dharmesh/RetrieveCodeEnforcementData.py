@@ -29,7 +29,7 @@ class RetrieveCodeEnforcementData(dml.Algorithm):
         repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
 
         key = "code_enforcements"
-        url = RetrieveCodeEnforcementData.parseURL('''https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT * from "90ed3816-5e70-443c-803d-9a71f44470be" WHERE "Status_DTTM" >= '2016-02-01 00:00:00' AND "Status_DTTM" <= '2018-01-01 00:00:00' LIMIT 5''')
+        url = RetrieveCodeEnforcementData.parseURL('''https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT * from "90ed3816-5e70-443c-803d-9a71f44470be" WHERE "Status_DTTM" >= '2016-02-01 00:00:00' AND "Status_DTTM" <= '2018-01-01 00:00:00' ''')
 
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)['result']['records']

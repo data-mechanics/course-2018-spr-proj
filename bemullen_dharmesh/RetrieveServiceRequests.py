@@ -29,7 +29,7 @@ class RetrieveServiceRequests(dml.Algorithm):
         repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
 
         key = "service_requests"
-        url = RetrieveServiceRequests.parseURL('''https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT * from "2968e2c0-d479-49ba-a884-4ef523ada3c0" WHERE "open_dt" >= '2016-02-01 00:00:00' AND "open_dt" <= '2018-01-01 00:00:00' LIMIT 5''')
+        url = RetrieveServiceRequests.parseURL('''https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT * from "2968e2c0-d479-49ba-a884-4ef523ada3c0" WHERE "open_dt" >= '2016-02-01 00:00:00' AND "open_dt" <= '2018-01-01 00:00:00' ''')
 
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)['result']['records']

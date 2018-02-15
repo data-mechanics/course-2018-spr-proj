@@ -8,7 +8,7 @@ import uuid
 class requestCityScore(dml.Algorithm):
     contributor = 'lliu_saragl'
     reads = []
-    writes = ['lliu_saragl.scores'] #example has two in here not one
+    writes = ['lliu_saragl.scores']
 
     @staticmethod
     def execute(trial = False):
@@ -58,25 +58,21 @@ class requestCityScore(dml.Algorithm):
         doc.add_namespace('anb', 'https://data.boston.gov/')
 
         this_script = doc.agent('alg:lliu_saragl#requestCityScore', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('anb:5bce8e71-5192-48c0-ab13-8faff8fef4d7', {'prov:label': 'CityScore, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('anb:5bce8e71-5192-48c0-ab13-8faff8fef4d7', {'prov:label': 'CityScore, Service Requests', prov.model.PROV_TYPE:'ont:DataSet', 'ont:Extension':'json'})
         get_city = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_city, this_script)
-        doc.usage(get_city, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=CityScore&$CTY_SCR_NAME,CTY_SCR_NBR_QT_01,CTY_SCR_TGT_01'
-                  }
-            )
+        doc.usage(get_city, resource, startTime, None, {prov.model.PROV_TYPE:'ont:Retrieval'})
         city_score = doc.entity('dat:lliu_saragl#CityScore',{prov.model.PROV_LABEL:'CityScore', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(city_score, this_script)
         doc.wasGeneratedBy(city_score, get_city, endTime)
-        doc.wasDerivedFrom(city_score, resource, get_city, get_city, get_city)
+        doc.wasDerivedFrom(city_score, get_city, get_city, get_city)
 
         #repo.record(doc.serialize())
         repo.logout()
 
         return doc
 
-#requestCityScore.execute()
-#doc = requestCityScore.provenance()
-#print(doc.get_provn())
-#print(json.dumps(json.loads(doc.serialize()), indent=4))
+requestCityScore.execute()
+doc = requestCityScore.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))

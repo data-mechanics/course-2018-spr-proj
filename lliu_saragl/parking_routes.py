@@ -83,7 +83,7 @@ class parking_routes(dml.Algorithm):
         repo.logout()
         return doc
 
-parking_routes.execute()
-doc = parking_routes.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+#parking_routes.execute()
+#doc = parking_routes.provenance()
+#print(doc.get_provn())
+#print(json.dumps(json.loads(doc.serialize()), indent=4))

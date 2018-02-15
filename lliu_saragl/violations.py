@@ -71,7 +71,7 @@ class violations(dml.Algorithm):
 
         return doc
 
-violations.execute()
-doc = violations.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+#violations.execute()
+#doc = violations.provenance()
+#print(doc.get_provn())
+#print(json.dumps(json.loads(doc.serialize()), indent=4))

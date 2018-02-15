@@ -20,17 +20,17 @@ class request311(dml.Algorithm):
         repo = client.repo
         repo.authenticate('lliu_saragl', 'lliu_saragl')
 
-        url = 'https://data.boston.gov/export/296/8e2/2968e2c0-d479-49ba-a884-4ef523ada3c0.json'
+        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=2968e2c0-d479-49ba-a884-4ef523ada3c0&q=snow'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        response = response.replace("]", "")
-        response += "]"
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropPermanent("Requests")
-        repo.createPermanent("Requests")
-        repo['lliu_saragl.Requests'].insert_many(r)
-        repo['lliu_saragl.Requests'].metadata({'complete':True})
-        print(repo['lliu_saragl.Requests'].metadata())
+        print(s)
+        repo.dropPermanent("requests")
+        repo.createPermanent("requests")
+        
+        repo['lliu_saragl.requests'].insert_many(r['result']['records'])
+        repo['lliu_saragl.requests'].metadata({'complete':True})
+        print(repo['lliu_saragl.requests'].metadata())
 
         repo.logout()
 
@@ -55,21 +55,20 @@ class request311(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         
         #additional resource
-        doc.add_namespace('anb', 'https://data.boston.gov/')
+        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:lliu_saragl#request311', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('anb:2968e2c0-d479-49ba-a884-4ef523ada3c0', {'prov:label': '311 Requests, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        this_script = doc.agent('alg:lliu_saragl#requests', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('bdp:2968e2c0-d479-49ba-a884-4ef523ada3c0', {'prov:label': '311 Requests regarding Snow', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_311 = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_311, this_script)
-        doc.usage(get_311, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=C311+Requests&$CASE_TITLE,TYPE,QUEUE,Department,Location,pwd_district,neighborhood,neighborhood_services_district,LOCATION_STREET_NAME,LOCATION_ZIPCODE'
-                  }
-            )
-        req_311 = doc.entity('dat:lliu_saragl#request311',{prov.model.PROV_LABEL:'311 Requests', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(req_311, this_script)
-        doc.wasGeneratedBy(req_311, get_311, endTime)
-        doc.wasDerivedFrom(req_311, resource, get_311, get_311, get_311)
+        
+        doc.usage(get_311, resource, startTime, None, {prov.model.PROV_TYPE:'ont:Retrieval'})
+        
+        requests = doc.entity('dat:lliu_saragl#request311',{prov.model.PROV_LABEL:'311 Requests regarding Snow', prov.model.PROV_TYPE:'ont:DataSet'})
+        
+        doc.wasAttributedTo(requests, this_script)
+        doc.wasGeneratedBy(requests, get_311, endTime)
+        doc.wasDerivedFrom(requests, get_311, get_311, get_311)
 
         #repo.record(doc.serialize())
         repo.logout()

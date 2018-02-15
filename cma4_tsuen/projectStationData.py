@@ -31,10 +31,10 @@ class projectDestinationData(dml.Algorithm):
         	for row in collection
         ]
 
-        # the following needs modification
 
         collection2 = repo['cma4_tsuen.mbta'].find()
         mbta_dataset = []
+        # more projection
         mbta_dataset = [{'key': ('mbta', row['Stop_Name']),'coords': (row['Coords:'][0], row['Coords:'][1])} for row in collection2]
         
         for x in range(len(mbta_dataset)):

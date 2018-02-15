@@ -10,24 +10,24 @@ class food(dml.Algorithm):
     reads = []
     writes = ['cma4_tsuen.food']
 
-    # def PartToParts():
-    #     with open('./../data/food.json', 'r') as myfile:
+    def PartToParts():
+        with open('./../data/food.json', 'r') as myfile:
             
-    #         data=myfile.readlines()
+            data=myfile.readlines()
             
-    #         total = round(len(data) / 11)
-    #         print(total)
-    #         part_data = []
-    #         current = 0
-    #         for x in range(11):
-    #             name = "part" + str(x+1)
-    #             with open('./../data/food_' + name +'.txt', 'w') as partfile:
-    #                 for y in range(current + 1, len(data)):
-    #                     if(y % total == 0):
-    #                         partfile.write(data[y])
-    #                         current = y
-    #                         break
-    #                     partfile.write(data[y])
+            total = round(len(data) / 10)
+            print(total)
+            part_data = []
+            current = 0
+            for x in range(10):
+                name = "part" + str(x+1)
+                with open('./../data/food_' + name +'.json', 'w') as partfile:
+                    for y in range(current + 1, len(data)+1):
+                        if(y % total == 0):
+                            partfile.write(data[y])
+                            current = y
+                            break
+                        partfile.write(data[y])
                      
 
     @staticmethod
@@ -60,7 +60,7 @@ class food(dml.Algorithm):
             
 
         with open("./../data/master_food.json", 'w') as finaljson:
-            with open("./../data/food.txt", 'r') as jsonfile:
+            with open("./../data/food.json", 'r') as jsonfile:
                 data = jsonfile.readlines()
                 for i in range(len(data)):
                     finaljson.write(data[i])
@@ -69,8 +69,9 @@ class food(dml.Algorithm):
         r = json.load(jsonfile)
         
         #r = json.load(jsonfile)
-        #food_data.append([{"Business Name": field['businessName'], "Coords": field['Location']}
-        #for field in r])
+        food_data = []
+        food_data.append([{"Business Name": field['businessName'], "Coords": field['Location']}
+        for field in r])
 
 
         #jsonfile = open("./../data/food.json", 'r') 
@@ -131,8 +132,8 @@ class food(dml.Algorithm):
         return doc
 #food.PartToParts()
 food.execute()
-#doc = food.provenance()
-#print(doc.get_provn())
-#print(json.dumps(json.loads(doc.serialize()), indent=4))
+doc = food.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

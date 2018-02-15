@@ -6,7 +6,7 @@ import datetime
 import uuid
 
 
-class GetFireReports(dml.Algorithm):
+class get_fire_reports(dml.Algorithm):
     contributor = 'fjansen'
     reads = []
     writes = ['fjansen.fires']
@@ -101,8 +101,8 @@ class GetFireReports(dml.Algorithm):
         return doc
 
 
-GetFireReports.execute()
-docs = GetFireReports.provenance()
+get_fire_reports.execute()
+docs = get_fire_reports.provenance()
 print(docs.get_provn())
 print(json.dumps(json.loads(docs.serialize()), indent=4))
 

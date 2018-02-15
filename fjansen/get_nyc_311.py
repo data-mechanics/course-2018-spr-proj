@@ -6,7 +6,7 @@ import datetime
 import uuid
 
 
-class GetNYC311(dml.Algorithm):
+class get_nyc_311(dml.Algorithm):
     contributor = 'fjansen'
     reads = []
     writes = ['fjansen.nyc311']
@@ -80,8 +80,8 @@ class GetNYC311(dml.Algorithm):
         return doc
 
 
-GetNYC311.execute()
-docs = GetNYC311.provenance()
+get_nyc_311.execute()
+docs = get_nyc_311.provenance()
 print(docs.get_provn())
 print(json.dumps(json.loads(docs.serialize()), indent=4))
 

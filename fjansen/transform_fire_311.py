@@ -3,10 +3,10 @@ import dml
 import prov.model
 import datetime
 import uuid
-import utils
+from fjansen.utils import utils
 
 
-class TransformFire311(dml.Algorithm):
+class transform_fire_311(dml.Algorithm):
     contributor = 'fjansen'
     reads = ['fjansen.fires', 'fjansen.nyc311']
     writes = ['fjansen.nyc311_fire']
@@ -91,8 +91,8 @@ class TransformFire311(dml.Algorithm):
         return doc
 
 
-TransformFire311.execute()
-docs = TransformFire311.provenance()
+transform_fire_311.execute()
+docs = transform_fire_311.provenance()
 print(docs.get_provn())
 print(json.dumps(json.loads(docs.serialize()), indent=4))
 

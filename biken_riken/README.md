@@ -3,7 +3,7 @@
 
 ### Team:
 
-*rikenm@bu.edu*,
+*rikenm@bu.edu* <br />
 *bm181354@bu.edu*
 
 
@@ -38,8 +38,18 @@ Typically a market basket consist of Housing, Transportation, Medical care, Good
 
 ## Data Transformation :
 
+### Index Transformation:
+
+We filtered the data set to get the required field and applied a function to find the index of Transportation, Housing on all the attribute of the dataset.  Concatenated all the new data as new dataset
+
+### School Data Transformation:
+
+We again filtered the dataset and applied lambda function to obtain all the information from those cities of the Greater Boston area.  Computed the indices for the school all over the city and then created a new series of dataset from old and new dataset
 
 
+### Emergency Medical Transformation:
+
+We selected relevant city information, applied a lambda function which projected it as ( City, total number of medical service ) -- City works as a key here. Computed an index with another function. Concatenated it with old and new data set to from brand new dataset.
 
 
 
@@ -48,6 +58,8 @@ Typically a market basket consist of Housing, Transportation, Medical care, Good
 ```python
 python execute.py biken_riken
 ```
+
+While running the program, it might take few extra seconds to run. Partly due to loading some of the heavy datasets into the program.
 
 
 

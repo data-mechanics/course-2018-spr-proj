@@ -98,13 +98,13 @@ class countHydrantsInNeighborhoods(dml.Algorithm):
                   }
                   )
 
-        hydrant_groups = doc.entity('dat:jlove#hydrantGroups', {prov.model.PROV_LABEL:'Normalized Boston Median Household Income by Neighborhood', prov.model.PROV_TYPE:'ont:DataSet'})
+        hydrant_groups = doc.entity('dat:jlove#hydrantGroups', {prov.model.PROV_LABEL:'Boston Fire Hydrants Grouped by Neighborhood', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(hydrant_groups, this_script)
         doc.wasGeneratedBy(hydrant_groups, count_hydrants, endTime)
         doc.wasDerivedFrom(hydrant_groups, resource1, count_hydrants, count_hydrants, count_hydrants)
         doc.wasDerivedFrom(hydrant_groups, resource2, count_hydrants, count_hydrants, count_hydrants)
         
-        hydrant_counts = doc.entity('dat:jlove#hydrantCounts', {prov.model.PROV_LABEL:'Boston Neighborhood Borders with Information About Median Household Income', prov.model.PROV_TYPE:'ont:DataSet'})
+        hydrant_counts = doc.entity('dat:jlove#hydrantCounts', {prov.model.PROV_LABEL:'Number of Fire Hydrants Per Boston Neighborhood', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(hydrant_counts, this_script)
         doc.wasGeneratedBy(hydrant_counts, count_hydrants, endTime)
         doc.wasDerivedFrom(hydrant_counts, resource3, count_hydrants, count_hydrants, count_hydrants)

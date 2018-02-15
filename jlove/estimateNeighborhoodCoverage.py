@@ -85,7 +85,7 @@ class estimateNeighborhoodCoverage(dml.Algorithm):
                   }
                   )
 
-        percent_covered = doc.entity('dat:jlove#percentCovered', {prov.model.PROV_LABEL:'Normalized Boston Median Household Income by Neighborhood', prov.model.PROV_TYPE:'ont:DataSet'})
+        percent_covered = doc.entity('dat:jlove#percentCovered', {prov.model.PROV_LABEL:'Estimated Percentage of Neighborhood Flooded', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(percent_covered, this_script)
         doc.wasGeneratedBy(percent_covered, estimate_coverage, endTime)
         doc.wasDerivedFrom(percent_covered, resource1, estimate_coverage, estimate_coverage, estimate_coverage)

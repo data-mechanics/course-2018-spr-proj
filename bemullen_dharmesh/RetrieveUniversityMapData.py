@@ -51,7 +51,7 @@ class RetrieveUniversityMapData(dml.Algorithm):
         doc.add_namespace('datp', 'http://datamechanics.io/data/bemullen_dharmesh/data/')
         doc.add_namespace('bgis', 'https://bostonopendata-boston.opendata.arcgis.com/datasets/')
 
-        this_script = doc.agent('alg:bemullen_dharmesh#Retrieve', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:bemullen_dharmesh#RetrieveUniversityMapData', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
 
         resource_universities = doc.entity('bgis:cbf14bb032ef4bd38e20429f71acb61a_2',
             {'prov:label':'Coordinates of Universities in Boston',

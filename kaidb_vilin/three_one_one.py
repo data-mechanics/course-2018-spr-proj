@@ -11,7 +11,7 @@ class three_one_one(dml.Algorithm):
     contributor = 'kaidb_vilin'
     reads = []
     writes = ['kaidb_vilin.three_one_one']
-    DEBUG = True
+    DEBUG = False
 
 
     @staticmethod
@@ -37,7 +37,7 @@ class three_one_one(dml.Algorithm):
         # will create NAAN values for open tasks 
         completion_time = df['closed_dt'] - df['open_dt']
         # Deviation from predicted allotment of time
-        estimate_deviation = df_c['closed_dt'] - df_c['target_dt']
+        estimate_deviation = df['closed_dt'] - df['target_dt']
         
         # Project out unecesarry meta-data
         data = df[identif + date_cols + descriptor + location_columns + punctual]

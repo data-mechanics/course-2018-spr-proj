@@ -11,7 +11,7 @@ class payroll(dml.Algorithm):
     contributor = 'kaidb_vilin'
     reads = []
     writes = ['kaidb_vilin.payroll']
-    DEBUG = True
+    DEBUG = False
 
     @staticmethod
     def clean_data(df):

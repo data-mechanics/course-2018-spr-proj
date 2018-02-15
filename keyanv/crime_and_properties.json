@@ -1,0 +1,100 @@
+{"_id":{"$oid":"5a85014abfaae5167c569eae"},"Street":"PUTNAM","Cost":"419900","Tax":"444674","Offense":"Larceny","Desc":"LARCENY ALL OTHERS"}
+{"_id":{"$oid":"5a85014abfaae5167c569eaf"},"Street":"LEXINGTON","Cost":"462500","Tax":"489788","Offense":"Verbal Disputes","Desc":"VERBAL DISPUTE"}
+{"_id":{"$oid":"5a85014abfaae5167c569eb0"},"Street":"LEXINGTON","Cost":"421000","Tax":"445839","Offense":"Property Found","Desc":"PROPERTY - FOUND"}
+{"_id":{"$oid":"5a85014abfaae5167c569eb1"},"Street":"LEXINGTON","Cost":"402200","Tax":"425930","Offense":"Larceny","Desc":"LARCENY SHOPLIFTING"}
+{"_id":{"$oid":"5a85014abfaae5167c569eb2"},"Street":"LEXINGTON","Cost":"421200","Tax":"446050","Offense":"Medical Assistance","Desc":"SICK/INJURED/MEDICAL - PERSON"}
+{"_id":{"$oid":"5a85014abfaae5167c569eb3"},"Street":"LEXINGTON","Cost":"493900","Tax":"523040","Offense":"Motor Vehicle Accident Response","Desc":"M/V ACCIDENT - OTHER"}
+{"_id":{"$oid":"5a85014abfaae5167c569eb4"},"Street":"LEXINGTON","Cost":"531600","Tax":"562964","Offense":"Motor Vehicle Accident Response","Desc":"M/V ACCIDENT - PROPERTY �DAMAGE"}
+{"_id":{"$oid":"5a85014abfaae5167c569eb5"},"Street":"LEXINGTON","Cost":"546000","Tax":"578214","Offense":"Robbery","Desc":"ROBBERY - OTHER"}
+{"_id":{"$oid":"5a85014abfaae5167c569eb6"},"Street":"LEXINGTON","Cost":"418600","Tax":"443297","Offense":"Verbal Disputes","Desc":"VERBAL DISPUTE"}
+{"_id":{"$oid":"5a85014abfaae5167c569eb7"},"Street":"HEMENWAY","Cost":"331300","Tax":"350847","Offense":"Towed","Desc":"TOWED MOTOR VEHICLE"}
+{"_id":{"$oid":"5a85014abfaae5167c569eb8"},"Street":"HEMENWAY","Cost":"294200","Tax":"311558","Offense":"Motor Vehicle Accident Response","Desc":"M/V ACCIDENT - PERSONAL INJURY"}
+{"_id":{"$oid":"5a85014abfaae5167c569eb9"},"Street":"HEMENWAY","Cost":"304600","Tax":"322571","Offense":"Larceny","Desc":"LARCENY ALL OTHERS"}
+{"_id":{"$oid":"5a85014abfaae5167c569eba"},"Street":"HEMENWAY","Cost":"331300","Tax":"350847","Offense":"Auto Theft Recovery","Desc":"RECOVERED - MV RECOVERED IN BOSTON (STOLEN OUTSIDE BOSTON)"}
+{"_id":{"$oid":"5a85014abfaae5167c569ebb"},"Street":"HEMENWAY","Cost":"284900","Tax":"301709","Offense":"Drug Violation","Desc":"DRUGS - POSS CLASS D - INTENT TO MFR DIST DISP"}
+{"_id":{"$oid":"5a85014abfaae5167c569ebc"},"Street":"HEMENWAY","Cost":"5854000","Tax":"6204386","Offense":"Disorderly Conduct","Desc":"DISTURBING THE PEACE"}
+{"_id":{"$oid":"5a85014abfaae5167c569ebd"},"Street":"FORSYTH","Cost":"33200","Tax":"84228","Offense":"Violations","Desc":"VAL - OPERATING WITHOUT LICENSE"}
+{"_id":{"$oid":"5a85014abfaae5167c569ebe"},"Street":"FORSYTH","Cost":"38573000","Tax":"0","Offense":"Investigate Person","Desc":"INVESTIGATE PERSON"}
+{"_id":{"$oid":"5a85014abfaae5167c569ebf"},"Street":"FORSYTH","Cost":"1768000","Tax":"4510416","Offense":"Robbery","Desc":"ROBBERY - COMMERCIAL"}
+{"_id":{"$oid":"5a85014abfaae5167c569ec0"},"Street":"BOYLSTON","Cost":"13267500","Tax":"0","Offense":"Medical Assistance","Desc":"SICK/INJURED/MEDICAL - PERSON"}
+{"_id":{"$oid":"5a85014abfaae5167c569ec1"},"Street":"BOYLSTON","Cost":"14716000","Tax":"0","Offense":"Verbal Disputes","Desc":"VERBAL DISPUTE"}
+{"_id":{"$oid":"5a85014abfaae5167c569ec2"},"Street":"HEMENWAY","Cost":"558770","Tax":"596737","Offense":"Counterfeiting","Desc":"FORGERY / COUNTERFEITING"}
+{"_id":{"$oid":"5a85014abfaae5167c569ec3"},"Street":"HEMENWAY","Cost":"517846","Tax":"548399","Offense":"Larceny","Desc":"LARCENY ALL OTHERS"}
+{"_id":{"$oid":"5a85014abfaae5167c569ec4"},"Street":"HEMENWAY","Cost":"517846","Tax":"548399","Offense":"Drug Violation","Desc":"DRUGS - SICK ASSIST - HEROIN"}
+{"_id":{"$oid":"5a85014abfaae5167c569ec5"},"Street":"HEMENWAY","Cost":"517846","Tax":"548399","Offense":"Landlord/Tenant Disputes","Desc":"LANDLORD - TENANT SERVICE"}
+{"_id":{"$oid":"5a85014abfaae5167c569ec6"},"Street":"HEMENWAY","Cost":"517846","Tax":"548399","Offense":"Medical Assistance","Desc":"SICK/INJURED/MEDICAL - PERSON"}
+{"_id":{"$oid":"5a85014abfaae5167c569ec7"},"Street":"HEMENWAY","Cost":"517846","Tax":"548399","Offense":"Other","Desc":"THREATS TO DO BODILY HARM"}
+{"_id":{"$oid":"5a85014abfaae5167c569ec8"},"Street":"HEMENWAY","Cost":"3357118","Tax":"0","Offense":"Larceny","Desc":"LARCENY SHOPLIFTING"}
+{"_id":{"$oid":"5a85014abfaae5167c569ec9"},"Street":"HEMENWAY","Cost":"8393382","Tax":"0","Offense":"Fraud","Desc":"FRAUD - FALSE PRETENSE / SCHEME"}
+{"_id":{"$oid":"5a85014abfaae5167c569eca"},"Street":"HEMENWAY","Cost":"0","Tax":"0","Offense":"Verbal Disputes","Desc":"VERBAL DISPUTE"}
+{"_id":{"$oid":"5a85014abfaae5167c569ecb"},"Street":"HEMENWAY","Cost":"762900","Tax":"807911","Offense":"Motor Vehicle Accident Response","Desc":"M/V ACCIDENT - PERSONAL INJURY"}
+{"_id":{"$oid":"5a85014abfaae5167c569ecc"},"Street":"HEMENWAY","Cost":"335000","Tax":"354765","Offense":"Simple Assault","Desc":"ASSAULT SIMPLE - BATTERY"}
+{"_id":{"$oid":"5a85014abfaae5167c569ecd"},"Street":"HEMENWAY","Cost":"243900","Tax":"258290","Offense":"Larceny","Desc":"LARCENY ALL OTHERS"}
+{"_id":{"$oid":"5a85014abfaae5167c569ece"},"Street":"HEMENWAY","Cost":"349400","Tax":"370015","Offense":"Motor Vehicle Accident Response","Desc":"M/V ACCIDENT INVOLVING PEDESTRIAN - INJURY"}
+{"_id":{"$oid":"5a85014abfaae5167c569ecf"},"Street":"HEMENWAY","Cost":"496500","Tax":"525794","Offense":"Motor Vehicle Accident Response","Desc":"M/V ACCIDENT - PERSONAL INJURY"}
+{"_id":{"$oid":"5a85014abfaae5167c569ed0"},"Street":"HEMENWAY","Cost":"257400","Tax":"272587","Offense":"Auto Theft","Desc":"AUTO THEFT - LEASED/RENTED VEHICLE"}
+{"_id":{"$oid":"5a85014abfaae5167c569ed1"},"Street":"HEMENWAY","Cost":"369900","Tax":"391724","Offense":"Larceny From Motor Vehicle","Desc":"LARCENY THEFT FROM MV - NON-ACCESSORY"}
+{"_id":{"$oid":"5a85014abfaae5167c569ed2"},"Street":"HEMENWAY","Cost":"345600","Tax":"365990","Offense":"Robbery","Desc":"ROBBERY - STREET"}
+{"_id":{"$oid":"5a85014abfaae5167c569ed3"},"Street":"HEMENWAY","Cost":"222000","Tax":"235098","Offense":"Medical Assistance","Desc":"SICK/INJURED/MEDICAL - PERSON"}
+{"_id":{"$oid":"5a85014abfaae5167c569ed4"},"Street":"HEMENWAY","Cost":"352200","Tax":"372980","Offense":"Warrant Arrests","Desc":"WARRANT ARREST"}
+{"_id":{"$oid":"5a85014abfaae5167c569ed5"},"Street":"HEMENWAY","Cost":"332100","Tax":"351694","Offense":"Warrant Arrests","Desc":"WARRANT ARREST"}
+{"_id":{"$oid":"5a85014abfaae5167c569ed6"},"Street":"HEMENWAY","Cost":"259400","Tax":"274705","Offense":"Motor Vehicle Accident Response","Desc":"M/V - LEAVING SCENE - PROPERTY DAMAGE"}
+{"_id":{"$oid":"5a85014abfaae5167c569ed7"},"Street":"HEMENWAY","Cost":"257400","Tax":"272587","Offense":"Motor Vehicle Accident Response","Desc":"M/V ACCIDENT - PROPERTY �DAMAGE"}
+{"_id":{"$oid":"5a85014abfaae5167c569ed8"},"Street":"HEMENWAY","Cost":"369900","Tax":"391724","Offense":"Larceny","Desc":"LARCENY SHOPLIFTING"}
+{"_id":{"$oid":"5a85014abfaae5167c569ed9"},"Street":"HEMENWAY","Cost":"345600","Tax":"365990","Offense":"Vandalism","Desc":"VANDALISM"}
+{"_id":{"$oid":"5a85014abfaae5167c569eda"},"Street":"HEMENWAY","Cost":"239400","Tax":"253525","Offense":"Larceny From Motor Vehicle","Desc":"LARCENY THEFT FROM MV - NON-ACCESSORY"}
+{"_id":{"$oid":"5a85014abfaae5167c569edb"},"Street":"HEMENWAY","Cost":"349400","Tax":"370015","Offense":"Drug Violation","Desc":"DRUGS - POSS CLASS B - COCAINE, ETC."}
+{"_id":{"$oid":"5a85014abfaae5167c569edc"},"Street":"HEMENWAY","Cost":"390200","Tax":"413221","Offense":"Larceny","Desc":"LARCENY ALL OTHERS"}
+{"_id":{"$oid":"5a85014abfaae5167c569edd"},"Street":"HEMENWAY","Cost":"259400","Tax":"274705","Offense":"Medical Assistance","Desc":"SICK/INJURED/MEDICAL - PERSON"}
+{"_id":{"$oid":"5a85014abfaae5167c569ede"},"Street":"HEMENWAY","Cost":"257400","Tax":"272587","Offense":"Motor Vehicle Accident Response","Desc":"M/V ACCIDENT - PROPERTY �DAMAGE"}
+{"_id":{"$oid":"5a85014abfaae5167c569edf"},"Street":"HEMENWAY","Cost":"418900","Tax":"443615","Offense":"Motor Vehicle Accident Response","Desc":"M/V ACCIDENT - PERSONAL INJURY"}
+{"_id":{"$oid":"5a85014abfaae5167c569ee0"},"Street":"HEMENWAY","Cost":"345600","Tax":"365990","Offense":"Other","Desc":"THREATS TO DO BODILY HARM"}
+{"_id":{"$oid":"5a85014abfaae5167c569ee1"},"Street":"HEMENWAY","Cost":"469200","Tax":"496883","Offense":"Auto Theft","Desc":"AUTO THEFT"}
+{"_id":{"$oid":"5a85014abfaae5167c569ee2"},"Street":"HEMENWAY","Cost":"368100","Tax":"389818","Offense":"Vandalism","Desc":"VANDALISM"}
+{"_id":{"$oid":"5a85014abfaae5167c569ee3"},"Street":"HEMENWAY","Cost":"259400","Tax":"274705","Offense":"Motor Vehicle Accident Response","Desc":"M/V - LEAVING SCENE - PROPERTY DAMAGE"}
+{"_id":{"$oid":"5a85014abfaae5167c569ee4"},"Street":"HEMENWAY","Cost":"491500","Tax":"520499","Offense":"Drug Violation","Desc":"DRUGS - POSS CLASS B - COCAINE, ETC."}
+{"_id":{"$oid":"5a85014abfaae5167c569ee5"},"Street":"HEMENWAY","Cost":"310000","Tax":"328290","Offense":"Violations","Desc":"VAL - OPERATING AFTER REV/SUSP."}
+{"_id":{"$oid":"5a85014abfaae5167c569ee6"},"Street":"HEMENWAY","Cost":"1545000","Tax":"1636155","Offense":"Violations","Desc":"VAL - OPERATING WITHOUT LICENSE"}
+{"_id":{"$oid":"5a85014abfaae5167c569ee7"},"Street":"HEMENWAY","Cost":"0","Tax":"0","Offense":"Drug Violation","Desc":"DRUGS - POSS CLASS A - INTENT TO MFR DIST DISP"}
+{"_id":{"$oid":"5a85014abfaae5167c569ee8"},"Street":"HEMENWAY","Cost":"504100","Tax":"533841","Offense":"Drug Violation","Desc":"DRUGS - CONSP TO VIOL CONTROLLED SUBSTANCE"}
+{"_id":{"$oid":"5a85014abfaae5167c569ee9"},"Street":"HEMENWAY","Cost":"603900","Tax":"639530","Offense":"Property Lost","Desc":"PROPERTY - LOST"}
+{"_id":{"$oid":"5a85014abfaae5167c569eea"},"Street":"HEMENWAY","Cost":"561200","Tax":"594311","Offense":"Fraud","Desc":"FRAUD - FALSE PRETENSE / SCHEME"}
+{"_id":{"$oid":"5a85014abfaae5167c569eeb"},"Street":"HEMENWAY","Cost":"580900","Tax":"615173","Offense":"Larceny","Desc":"LARCENY ALL OTHERS"}
+{"_id":{"$oid":"5a85014abfaae5167c569eec"},"Street":"HEMENWAY","Cost":"3268500","Tax":"3466342","Offense":"Medical Assistance","Desc":"SICK/INJURED/MEDICAL - PERSON"}
+{"_id":{"$oid":"5a85014abfaae5167c569eed"},"Street":"HEMENWAY","Cost":"0","Tax":"0","Offense":"Property Found","Desc":"PROPERTY - FOUND"}
+{"_id":{"$oid":"5a85014abfaae5167c569eee"},"Street":"HEMENWAY","Cost":"374100","Tax":"396172","Offense":"Missing Person Reported","Desc":"MISSING PERSON"}
+{"_id":{"$oid":"5a85014abfaae5167c569eef"},"Street":"HEMENWAY","Cost":"404000","Tax":"427836","Offense":"Investigate Person","Desc":"INVESTIGATE PERSON"}
+{"_id":{"$oid":"5a85014abfaae5167c569ef0"},"Street":"HEMENWAY","Cost":"321700","Tax":"340680","Offense":"Residential Burglary","Desc":"BURGLARY - RESIDENTIAL - NO FORCE"}
+{"_id":{"$oid":"5a85014abfaae5167c569ef1"},"Street":"HEMENWAY","Cost":"537300","Tax":"569001","Offense":"Vandalism","Desc":"VANDALISM"}
+{"_id":{"$oid":"5a85014abfaae5167c569ef2"},"Street":"HEMENWAY","Cost":"603800","Tax":"639424","Offense":"Missing Person Located","Desc":"MISSING PERSON - NOT REPORTED - LOCATED"}
+{"_id":{"$oid":"5a85014abfaae5167c569ef3"},"Street":"HEMENWAY","Cost":"506200","Tax":"536066","Offense":"Other","Desc":"THREATS TO DO BODILY HARM"}
+{"_id":{"$oid":"5a85014abfaae5167c569ef4"},"Street":"HEMENWAY","Cost":"525500","Tax":"556504","Offense":"Motor Vehicle Accident Response","Desc":"M/V - LEAVING SCENE - PROPERTY DAMAGE"}
+{"_id":{"$oid":"5a85014abfaae5167c569ef5"},"Street":"HEMENWAY","Cost":"1196200","Tax":"1266776","Offense":"Medical Assistance","Desc":"SICK/INJURED/MEDICAL - PERSON"}
+{"_id":{"$oid":"5a85014abfaae5167c569ef6"},"Street":"HEMENWAY","Cost":"1213100","Tax":"1284673","Offense":"Vandalism","Desc":"VANDALISM"}
+{"_id":{"$oid":"5a85014abfaae5167c569ef7"},"Street":"HEMENWAY","Cost":"1335500","Tax":"1414295","Offense":"Motor Vehicle Accident Response","Desc":"M/V ACCIDENT - PERSONAL INJURY"}
+{"_id":{"$oid":"5a85014abfaae5167c569ef8"},"Street":"HEMENWAY","Cost":"808000","Tax":"855672","Offense":"Medical Assistance","Desc":"SICK/INJURED/MEDICAL - PERSON"}
+{"_id":{"$oid":"5a85014abfaae5167c569ef9"},"Street":"HEMENWAY","Cost":"0","Tax":"0","Offense":"Embezzlement","Desc":"EMBEZZLEMENT"}
+{"_id":{"$oid":"5a85014abfaae5167c569efa"},"Street":"HEMENWAY","Cost":"638500","Tax":"676172","Offense":"Larceny From Motor Vehicle","Desc":"LARCENY THEFT OF MV PARTS \u0026 ACCESSORIES"}
+{"_id":{"$oid":"5a85014abfaae5167c569efb"},"Street":"HEMENWAY","Cost":"624100","Tax":"660922","Offense":"Larceny From Motor Vehicle","Desc":"LARCENY THEFT FROM MV - NON-ACCESSORY"}
+{"_id":{"$oid":"5a85014abfaae5167c569efc"},"Street":"HEMENWAY","Cost":"646700","Tax":"684855","Offense":"Larceny","Desc":"LARCENY THEFT FROM BUILDING"}
+{"_id":{"$oid":"5a85014abfaae5167c569efd"},"Street":"HEMENWAY","Cost":"599500","Tax":"634871","Offense":"Drug Violation","Desc":"DRUGS - SICK ASSIST - HEROIN"}
+{"_id":{"$oid":"5a85014abfaae5167c569efe"},"Street":"HEMENWAY","Cost":"929400","Tax":"984235","Offense":"Investigate Person","Desc":"INVESTIGATE PERSON"}
+{"_id":{"$oid":"5a85014abfaae5167c569eff"},"Street":"HEMENWAY","Cost":"1724500","Tax":"1826246","Offense":"Property Lost","Desc":"PROPERTY - LOST"}
+{"_id":{"$oid":"5a85014abfaae5167c569f00"},"Street":"HEMENWAY","Cost":"0","Tax":"0","Offense":"Other","Desc":"THREATS TO DO BODILY HARM"}
+{"_id":{"$oid":"5a85014abfaae5167c569f01"},"Street":"HEMENWAY","Cost":"368700","Tax":"390453","Offense":"Aggravated Assault","Desc":"ASSAULT - AGGRAVATED"}
+{"_id":{"$oid":"5a85014abfaae5167c569f02"},"Street":"HEMENWAY","Cost":"426100","Tax":"451240","Offense":"Larceny","Desc":"LARCENY ALL OTHERS"}
+{"_id":{"$oid":"5a85014abfaae5167c569f03"},"Street":"HEMENWAY","Cost":"422000","Tax":"446898","Offense":"Property Lost","Desc":"PROPERTY - LOST"}
+{"_id":{"$oid":"5a85014abfaae5167c569f04"},"Street":"HEMENWAY","Cost":"482600","Tax":"511073","Offense":"Investigate Property","Desc":"INVESTIGATE PROPERTY"}
+{"_id":{"$oid":"5a85014abfaae5167c569f05"},"Street":"HEMENWAY","Cost":"522300","Tax":"553116","Offense":"Motor Vehicle Accident Response","Desc":"M/V ACCIDENT - PERSONAL INJURY"}
+{"_id":{"$oid":"5a85014abfaae5167c569f06"},"Street":"HEMENWAY","Cost":"482600","Tax":"511073","Offense":"Verbal Disputes","Desc":"VERBAL DISPUTE"}
+{"_id":{"$oid":"5a85014abfaae5167c569f07"},"Street":"HEMENWAY","Cost":"537700","Tax":"569424","Offense":"Investigate Property","Desc":"INVESTIGATE PROPERTY"}
+{"_id":{"$oid":"5a85014abfaae5167c569f08"},"Street":"HEMENWAY","Cost":"482600","Tax":"511073","Offense":"Harassment","Desc":"HARASSMENT"}
+{"_id":{"$oid":"5a85014abfaae5167c569f09"},"Street":"HEMENWAY","Cost":"522300","Tax":"553116","Offense":"Larceny From Motor Vehicle","Desc":"LARCENY THEFT FROM MV - NON-ACCESSORY"}
+{"_id":{"$oid":"5a85014abfaae5167c569f0a"},"Street":"HEMENWAY","Cost":"482600","Tax":"511073","Offense":"Larceny","Desc":"LARCENY ALL OTHERS"}
+{"_id":{"$oid":"5a85014abfaae5167c569f0b"},"Street":"HEMENWAY","Cost":"4310500","Tax":"5143202","Offense":"Investigate Person","Desc":"INVESTIGATE PERSON"}
+{"_id":{"$oid":"5a85014abfaae5167c569f0c"},"Street":"FENWAY","Cost":"2042000","Tax":"0","Offense":"Larceny","Desc":"LARCENY SHOPLIFTING"}
+{"_id":{"$oid":"5a85014abfaae5167c569f0d"},"Street":"FENWAY","Cost":"0","Tax":"0","Offense":"Investigate Property","Desc":"INVESTIGATE PROPERTY"}
+{"_id":{"$oid":"5a85014abfaae5167c569f0e"},"Street":"FENWAY","Cost":"302800","Tax":"320665","Offense":"Harassment","Desc":"HARASSMENT"}
+{"_id":{"$oid":"5a85014abfaae5167c569f0f"},"Street":"FENWAY","Cost":"366800","Tax":"388441","Offense":"Fraud","Desc":"FRAUD - FALSE PRETENSE / SCHEME"}
+{"_id":{"$oid":"5a85014abfaae5167c569f10"},"Street":"FENWAY","Cost":"735700","Tax":"779106","Offense":"Larceny From Motor Vehicle","Desc":"LARCENY THEFT OF MV PARTS \u0026 ACCESSORIES"}
+{"_id":{"$oid":"5a85014abfaae5167c569f11"},"Street":"FENWAY","Cost":"795600","Tax":"842540","Offense":"Motor Vehicle Accident Response","Desc":"M/V ACCIDENT - PERSONAL INJURY"}

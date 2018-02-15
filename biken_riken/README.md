@@ -10,12 +10,12 @@
 ## Hypothesis:
 
 
-Filtering and obtaining datasets from Transportation department, Housing department, market value ,crime rate and so forth of datasets of the Greater Boston area.
+Filtering and obtaining datasets from Transportation department, Housing department, market value, crime rate and so forth of datasets of the Greater Boston area.
 
 With this information, we can calculate the CPI *--Consumer Price Index*. As described by U.S. Bureau of Labor Statistics - **'The Consumer Price Index (CPI) is a measure of the average change over time in the prices paid by urban consumers for a market basket of consumer goods and services'**.
-Typically a market basket consist of Housing, Transportation, Medical care, Good and Services. Accumulating these will results in a number which when compare within city, we will be able to find price inflation among city of the Greater Boston Area.
+Typically a market basket consist of Housing, Transportation, Medical care, Good and Services. Accumulating this data with other factors such as crime, neighborhood  will results in a number which when compare within city, we will be able to find difference in price inflation, livability among city of the Greater Boston Area.
 
-### Solving this problem we will be able to create an algorithm to determine which place in the city is good for living by factoring inflation of prices with help of Index created.
+### Solving this problem we will be able to create an algorithm to determine which place in the city is good/best for living. This will be done by factoring all the indices created through the algorithm.
 
 
 ## Data set:
@@ -50,7 +50,6 @@ We again filtered the dataset and applied lambda function to obtain all the info
 ### Emergency Medical Transformation:
 
 We selected relevant city information, applied a lambda function which projected it as ( City, total number of medical service ) -- City works as a key here. Computed an index with another function. Concatenated it with old and new data set to from brand new dataset.
-
 
 
 ## To Run:

@@ -12,7 +12,7 @@ class foodlicense(dml.Algorithm):
     writes = ['colinstu.lost', 'colinstu.found']
 
     @staticmethod
-    def execute(trial = False):
+    def execute(trial=False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
@@ -30,17 +30,17 @@ class foodlicense(dml.Algorithm):
         repo.dropCollection("foodlicense")
         repo.createCollection("foodlicense")
         repo['colinstu.foodlicense'].insert_many(r)
-        repo['colinstu.foodlicense'].metadata({'complete':True})
+        repo['colinstu.foodlicense'].metadata({'complete': True})
         print(repo['colinstu.foodlicense'].metadata())
 
         repo.logout()
 
         endTime = datetime.datetime.now()
 
-        return {"start":startTime, "end":endTime}
+        return {"start": startTime, "end": endTime}
 
     @staticmethod
-    def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
+    def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
         '''
             Create the provenance document describing everything happening
             in this script. Each run of the script will generate a new
@@ -51,32 +51,36 @@ class foodlicense(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('colinstu', 'colinstu')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont',
+                          'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'https://data.boston.gov/dataset/active-food-establishment-licenses')
 
-        this_script = doc.agent('alg:colinstu#foodlicense', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'Active Food Establishment Licenses', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_foodlic = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        this_script = doc.agent('alg:colinstu#foodlicense',
+                                {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+        resource = doc.entity('bdp:wc8w-nujj', {'prov:label': 'Active Food Establishment Licenses',
+                                                prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'json'})
+        get_foodlic = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_foodlic, this_script)
 
         doc.usage(get_foodlic, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'  # TODO: fix query
-                  }
+                  {prov.model.PROV_TYPE: 'ont:Retrieval',
+                   'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'  # TODO: fix query
+                   }
                   )
 
-        foodlic = doc.entity('dat:colinstu#foodlicense', {prov.model.PROV_LABEL:'Active Food Establishment Licenses', prov.model.PROV_TYPE:'ont:DataSet'})
+        foodlic = doc.entity('dat:colinstu#foodlicense', {prov.model.PROV_LABEL: 'Active Food Establishment Licenses',
+                                                          prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(foodlic, this_script)
         doc.wasGeneratedBy(foodlic, get_foodlic, endTime)
         doc.wasDerivedFrom(foodlic, resource, get_foodlic, get_foodlic, get_foodlic)
 
-
         repo.logout()
-                  
+
         return doc
+
 
 foodlicense.execute()
 doc = foodlicense.provenance()

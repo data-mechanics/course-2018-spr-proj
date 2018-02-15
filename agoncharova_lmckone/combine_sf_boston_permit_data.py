@@ -166,6 +166,6 @@ class combine_sf_boston_permit_data(dml.Algorithm):
 		      
 		return doc
 
-# combine_sf_boston_permit_data.execute()
+combine_sf_boston_permit_data.execute()
 combine_sf_boston_permit_data.provenance()
 

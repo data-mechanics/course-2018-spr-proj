@@ -173,4 +173,4 @@ class count_activity(dml.Algorithm):
 		return doc
 
 count_activity.provenance()
-# count_activity.execute()
+count_activity.execute()

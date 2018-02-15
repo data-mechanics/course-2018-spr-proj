@@ -24,8 +24,8 @@ class crime_data(dml.Algorithm):
         response = urllib.request.urlopen(url).read().decode("utf-8")
 
         # preprocessing to fix the mistakes of the ignorant soul who provided this data without verifying if it is valid json
-        #response = response.replace(']', "")
-        #response += ']'
+        response = response.replace(']', "")
+        response += ']'
 
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)

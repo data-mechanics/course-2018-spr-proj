@@ -27,7 +27,7 @@ To that end, the datasets we are using are:
 
 Transformations are stored in files beginning with the name: "Transform". The python files are used to create the provenance document for each transformation while the Javascript files perform the actual MongoDB queries.
 
-## Running
+## Evaluation
 
 To run the code, setup the database structure as documented in the parent README and then run:
 

@@ -6,6 +6,14 @@ import datetime
 import uuid
 
 
+def map(f, R):
+    return [t for (k, v) in R for t in f(k, v)]
+
+
+def reduce(f, R):
+    keys = {k for (k, v) in R}
+    return [f(k1, [v for (k2, v) in R if k1 == k2]) for k1 in keys]
+
 class combineincomeneighborhood(dml.Algorithm):
     contributor = 'colinstu'
     reads = ['colinstu.HUDincome','colinstu.employeeearnings','colinstu.neighborhood']
@@ -24,6 +32,9 @@ class combineincomeneighborhood(dml.Algorithm):
         income = repo['colinstu.HUDincome']
         r = json.loads(income)
         s = json.dumps(r, sort_keys=True, indent=2)
+
+
+
         repo.dropCollection("combineincomeneighborhood")
         repo.createCollection("combineincomeneighborhood")
         repo['colinstu.combineincomeneighborhood'].insert_many(r)
@@ -57,14 +68,14 @@ class combineincomeneighborhood(dml.Algorithm):
 
         this_script = doc.agent('alg:colinstu#combineincomeneighborhood',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label': 'Active Food Establishment Licenses',
+        resource = doc.entity('bdp:wc8w-nujj', {'prov:label': 'Combine Income and Neighborhood Data',
                                                 prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'json'})
         get_foodlic = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_foodlic, this_script)
 
         doc.usage(get_foodlic, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'  # TODO: fix query
+                   'ont:Query': '?type='  # TODO: fix query
                    }
                   )
 

@@ -63,9 +63,7 @@ class foodlicense(dml.Algorithm):
         doc.wasAssociatedWith(get_foodlic, this_script)
 
         doc.usage(get_foodlic, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'  # TODO: fix query
-                  }
+                  {prov.model.PROV_TYPE:'ont:Retrieval'}
                   )
 
         foodlic = doc.entity('dat:colinstu#foodlicense', {prov.model.PROV_LABEL:'Active Food Establishment Licenses', prov.model.PROV_TYPE:'ont:DataSet'})

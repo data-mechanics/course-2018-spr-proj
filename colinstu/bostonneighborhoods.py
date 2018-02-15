@@ -64,9 +64,7 @@ class bostonneighborhoods(dml.Algorithm):
         doc.wasAssociatedWith(get_neighborhood, this_script)
 
         doc.usage(get_neighborhood, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'  # TODO: fix query
-                   }
+                  {prov.model.PROV_TYPE: 'ont:Retrieval'}
                   )
 
         neighborhood = doc.entity('dat:colinstu#neighborhood', {prov.model.PROV_LABEL: 'Boston Neighborhoods',

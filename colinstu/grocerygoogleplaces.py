@@ -6,6 +6,7 @@ import datetime
 import uuid
 
 
+
 class grocerygoogleplaces(dml.Algorithm):
     contributor = 'colinstu'
     reads = []
@@ -13,7 +14,6 @@ class grocerygoogleplaces(dml.Algorithm):
 
     @staticmethod
     def execute(trial=False):
-        '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
@@ -21,7 +21,7 @@ class grocerygoogleplaces(dml.Algorithm):
         repo = client.repo
         repo.authenticate('colinstu', 'colinstu')
 
-        url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=grocery+in+boston&key='  # TODO: add API key from config.json
+        url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=grocery+in+boston&key=' + googlekey # TODO: add API key from config.json
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
@@ -64,9 +64,7 @@ class grocerygoogleplaces(dml.Algorithm):
         doc.wasAssociatedWith(get_grocery, this_script)
 
         doc.usage(get_grocery, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'  # TODO: fix query
-                   }
+                  {prov.model.PROV_TYPE: 'ont:Retrieval'}
                   )
 
         grocery = doc.entity('dat:colinstu#grocerygoogleplaces', {prov.model.PROV_LABEL: 'Grocery Stores in Boston (Google Places)',

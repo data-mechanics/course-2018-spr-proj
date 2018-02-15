@@ -7,7 +7,7 @@ import datetime
 import uuid
 
 
-class HUDincomelimits(dml.Algorithm):
+class HUDincome(dml.Algorithm):
     contributor = 'colinstu'
     reads = []
     writes = ['colinstu.HUDincome']
@@ -57,7 +57,7 @@ class HUDincomelimits(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'https://data.boston.gov/dataset/active-food-establishment-licenses')
 
-        this_script = doc.agent('alg:colinstu#HUDincomelimits',
+        this_script = doc.agent('alg:colinstu#HUDincome',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label': 'HUD Income Limits',
                                                 prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'json'})
@@ -65,12 +65,10 @@ class HUDincomelimits(dml.Algorithm):
         doc.wasAssociatedWith(get_HUDincome, this_script)
 
         doc.usage(get_HUDincome, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'  # TODO: fix query
-                   }
+                  {prov.model.PROV_TYPE: 'ont:Retrieval'}
                   )
 
-        HUDincome = doc.entity('dat:colinstu#HUDincomelimits', {prov.model.PROV_LABEL: 'Active Food Establishment Licenses',
+        HUDincome = doc.entity('dat:colinstu#HUDincome', {prov.model.PROV_LABEL: 'Active Food Establishment Licenses',
                                                           prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(HUDincome, this_script)
         doc.wasGeneratedBy(HUDincome, get_HUDincome, endTime)
@@ -81,8 +79,8 @@ class HUDincomelimits(dml.Algorithm):
         return doc
 
 
-HUDincomelimits.execute()
-doc = HUDincomelimits.provenance()
+HUDincome.execute()
+doc = HUDincome.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

@@ -124,7 +124,7 @@ class safetyrating(dml.Algorithm):
 
         # Join and caculate distance of pairs
         dataset_lights = [
-            {"_id": row["OBJECTID"], "Lat": row["Lat"], "Long": row["Long"]}
+            {"_id": row["_id"], "Lat": row["latitude"], "Long": row["longitude"]}
             for row in repo['liwang_pyhsieh.street_lights'].find()
         ]
 
@@ -135,11 +135,8 @@ class safetyrating(dml.Algorithm):
              "dist": getVDist(row["crash_lat"], row["crash_long"], row["light_Lat"], row["light_Long"])}
             for row in prod_crash_lights
         ]
-
         # Select ones within some range
-        near_lights = [
-            row for row in prod_crash_lights if row["dist"] < 0.25
-        ]
+        near_lights = [ row for row in prod_crash_lights if row["dist"] < 0.25 ]
 
         # Aggregate by sum
         lightcounts = group_aggcount(near_lights, "_id", "_id_crash")
@@ -188,4 +185,4 @@ class safetyrating(dml.Algorithm):
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
         pass
 
-SafetyRating.execute()
+safetyrating.execute()

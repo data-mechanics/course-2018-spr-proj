@@ -189,8 +189,8 @@ class datasetretrieval(dml.Algorithm):
         return doc
 
 
-DatasetRetrieval.execute()
-doc = DatasetRetrieval.provenance()
+datasetretrieval.execute()
+doc = datasetretrieval.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

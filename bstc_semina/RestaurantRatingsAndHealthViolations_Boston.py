@@ -126,39 +126,40 @@ class RestaurantRatingsAndHealthViolations_Boston(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('alice_bob', 'alice_bob')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        repo.authenticate('bstc_semina', 'bstc_semina')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/bstc_semina') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/bstc_semina') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        
 
-        this_script = doc.agent('alg:alice_bob#example', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_found = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_lost = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_found, this_script)
-        doc.wasAssociatedWith(get_lost, this_script)
-        doc.usage(get_found, resource, startTime, None,
+        this_script = doc.agent('alg:bstc_semina#RestaurantRatingsAndPropertyViolations_Boston', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource1 = doc.entity('dat:bstc_semina#dat:getBostonInspectionData', {'prov:label':'Building Code Violations', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource2 = doc.entity('dat:bstc_semina#dat:getBostonYelpRestaurantData', {'prov:label':'Reviews', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_insp = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_yelp = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_insp, this_script)
+        doc.wasAssociatedWith(get_yelp, this_script)
+        doc.usage(get_insp, resource1, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'
+                  'ont:Query':'?type=_id,name,location,num_violations,ave_violation_severity'
                   }
                   )
-        doc.usage(get_lost, resource, startTime, None,
+        doc.usage(get_yelp, resource2, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Animal+Lost&$select=type,latitude,longitude,OPEN_DT'
+                  'ont:Query':'?type=rating,review_count'
                   }
                   )
 
-        lost = doc.entity('dat:alice_bob#lost', {prov.model.PROV_LABEL:'Animals Lost', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(lost, this_script)
-        doc.wasGeneratedBy(lost, get_lost, endTime)
-        doc.wasDerivedFrom(lost, resource, get_lost, get_lost, get_lost)
-
-        found = doc.entity('dat:alice_bob#found', {prov.model.PROV_LABEL:'Animals Found', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(found, this_script)
-        doc.wasGeneratedBy(found, get_found, endTime)
-        doc.wasDerivedFrom(found, resource, get_found, get_found, get_found)
+        isnp = doc.entity('dat:bstc_semina#dat:getBostonEnforcementData', {prov.model.PROV_LABEL:'Boston Inspection Data', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(isnp, this_script)
+        doc.wasGeneratedBy(isnp, get_insp, endTime)
+        doc.wasDerivedFrom(isnp, resource1, get_insp, get_insp, get_insp)
+        
+        yelp = doc.entity('dat:bstc_semina#dat:getBostonYelpRestaurantData', {prov.model.PROV_LABEL:'Boston Yelp Data', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(yelp, this_script)
+        doc.wasGeneratedBy(yelp, get_yelp, endTime)
+        doc.wasDerivedFrom(yelp, resource2, get_yelp, get_yelp, get_yelp)
 
         repo.logout()
 

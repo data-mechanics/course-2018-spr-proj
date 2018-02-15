@@ -165,9 +165,7 @@ class foursquare_api_retrieve(dml.Algorithm):
 		doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
 		# custom data sources
-		doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 		doc.add_namespace('4sq', 'https://data.cityofboston.gov/resource/')
-		doc.add_namespace('sfdp', 'https://datasf.org/opendata/')
 
 		this_script = doc.agent('alg:agoncharova_lmckone#foursquare_api_retrieve', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
 		resource = doc.entity('4sq:40e2-897e', {'prov:label':'Foursquare, Office Data for Boston and SF', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
@@ -179,18 +177,10 @@ class foursquare_api_retrieve(dml.Algorithm):
 		doc.wasAssociatedWith(get_boston, this_script)
 		# SF query
 		sf_queries = fr.construct_set_of_queries("SF")
-		doc.usage(get_sf, resource, startTime, None,
-							{prov.model.PROV_TYPE:'ont:Retrieval',
-							'ont:Query': "|".join(sf_queries)
-							}
-							)
+		doc.usage(get_sf, resource, startTime, None, {prov.model.PROV_TYPE:'ont:Retrieval', 'ont:Query': "|".join(sf_queries) })
 		# Boston query
 		boston_queries = fr.construct_set_of_queries("Boston")
-		doc.usage(get_boston, resource, startTime, None,
-							{prov.model.PROV_TYPE:'ont:Retrieval',
-							'ont:Query': "|".join(boston_queries)
-							}
-							)
+		doc.usage(get_boston, resource, startTime, None, {prov.model.PROV_TYPE:'ont:Retrieval', 'ont:Query': "|".join(boston_queries) })
 		
 		sf_businesses = doc.entity('dat:agoncharova_lmckone#sf_businesses', {prov.model.PROV_LABEL:'SF Businesses', prov.model.PROV_TYPE:'ont:DataSet'})
 		doc.wasAttributedTo(sf_businesses, this_script)

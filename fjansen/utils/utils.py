@@ -1,6 +1,3 @@
-class utils():
-    pass
-
 # From http://cs-people.bu.edu/lapets/591/s.php#9da373c4cc654556bf2fa3fed6d56995
 def union(R, S):
     return R + S

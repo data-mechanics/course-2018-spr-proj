@@ -6,7 +6,7 @@ import datetime
 import uuid
 
 
-class foodlicense(dml.Algorithm):
+class employeeearnings(dml.Algorithm):
     contributor = 'colinstu'
     reads = []
     writes = ['colinstu.lost', 'colinstu.found']
@@ -21,17 +21,17 @@ class foodlicense(dml.Algorithm):
         repo = client.repo
         repo.authenticate('colinstu', 'colinstu')
 
-        url = 'https://data.boston.gov/export/f1e/137/f1e13724-284d-478c-b8bc-ef042aa5b70b.json'
+        url = 'https://data.boston.gov/export/836/8bd/8368bd3d-3633-4927-8355-2a2f9811ab4f.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         response = response.replace("]", "")
         response = response + "]"  # fixes typo in dataset
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("foodlicense")
-        repo.createCollection("foodlicense")
-        repo['colinstu.foodlicense'].insert_many(r)
-        repo['colinstu.foodlicense'].metadata({'complete': True})
-        print(repo['colinstu.foodlicense'].metadata())
+        repo.dropCollection("employeeearnings")
+        repo.createCollection("employeeearnings")
+        repo['colinstu.employeeearnings'].insert_many(r)
+        repo['colinstu.employeeearnings'].metadata({'complete': True})
+        print(repo['colinstu.employeeearnings'].metadata())
 
         repo.logout()
 
@@ -58,32 +58,32 @@ class foodlicense(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'https://data.boston.gov/dataset/active-food-establishment-licenses')
 
-        this_script = doc.agent('alg:colinstu#foodlicense',
+        this_script = doc.agent('alg:colinstu#employeeearnings',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label': 'Active Food Establishment Licenses',
                                                 prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'json'})
-        get_foodlic = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_foodlic, this_script)
+        get_earnings = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_earnings, this_script)
 
-        doc.usage(get_foodlic, resource, startTime, None,
+        doc.usage(get_earnings, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
                    'ont:Query': '?type=Animal+Found&$select=type,latitude,longitude,OPEN_DT'  # TODO: fix query
                    }
                   )
 
-        foodlic = doc.entity('dat:colinstu#foodlicense', {prov.model.PROV_LABEL: 'Active Food Establishment Licenses',
+        earnings = doc.entity('dat:colinstu#employeeearnings', {prov.model.PROV_LABEL: 'Employee Earnings Report',
                                                           prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(foodlic, this_script)
-        doc.wasGeneratedBy(foodlic, get_foodlic, endTime)
-        doc.wasDerivedFrom(foodlic, resource, get_foodlic, get_foodlic, get_foodlic)
+        doc.wasAttributedTo(earnings, this_script)
+        doc.wasGeneratedBy(earnings, get_earnings, endTime)
+        doc.wasDerivedFrom(earnings, resource, get_earnings, get_earnings, get_earnings)
 
         repo.logout()
 
         return doc
 
 
-foodlicense.execute()
-doc = foodlicense.provenance()
+employeeearnings.execute()
+doc = employeeearnings.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

@@ -5,8 +5,7 @@ import prov.model
 import datetime
 import uuid
 
-
-
+googlekey = ''
 class grocerygoogleplaces(dml.Algorithm):
     contributor = 'colinstu'
     reads = []
@@ -21,13 +20,15 @@ class grocerygoogleplaces(dml.Algorithm):
         repo = client.repo
         repo.authenticate('colinstu', 'colinstu')
 
-        url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=grocery+in+boston&key=' + googlekey # TODO: add API key from config.json
+        json_data = open("/Users/colinstuart/Dropbox/CS591-Data-Mechanics/course-2018-spr-proj/auth.json")
+        jdata = json.load(json_data)
+        url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=grocery+in+boston&key=' + jdata['googlekey']
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("grocerygoogleplaces")
         repo.createCollection("grocerygoogleplaces")
-        repo['colinstu.grocerygoogleplaces'].insert_many(r)
+        repo['colinstu.grocerygoogleplaces'].insert_many(r['results'])
         repo['colinstu.grocerygoogleplaces'].metadata({'complete': True})
         print(repo['colinstu.grocerygoogleplaces'].metadata())
 
@@ -54,17 +55,19 @@ class grocerygoogleplaces(dml.Algorithm):
         doc.add_namespace('ont',
                           'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('bdp', 'https://data.boston.gov/dataset/active-food-establishment-licenses')
+        doc.add_namespace('bdp', 'https://maps.googleapis.com/maps/api/place/textsearch/')
 
         this_script = doc.agent('alg:colinstu#grocerygoogleplaces',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label': 'Active Food Establishment Licenses',
+        resource = doc.entity('bdp:wc8w-nujj', {'prov:label': 'Google Places Query for Grocery in Boston',
                                                 prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'json'})
         get_grocery = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_grocery, this_script)
 
         doc.usage(get_grocery, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval'}
+                  {prov.model.PROV_TYPE: 'ont:Retrieval',
+                   'ont:Query': 'query=grocery+in+boston&key='
+                   }
                   )
 
         grocery = doc.entity('dat:colinstu#grocerygoogleplaces', {prov.model.PROV_LABEL: 'Grocery Stores in Boston (Google Places)',

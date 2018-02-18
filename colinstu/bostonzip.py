@@ -6,22 +6,13 @@ import datetime
 import uuid
 
 
-def map(f, R):
-    return [t for (k, v) in R for t in f(k, v)]
-
-
-def reduce(f, R):
-    keys = {k for (k, v) in R}
-    return [f(k1, [v for (k2, v) in R if k1 == k2]) for k1 in keys]
-
-class combineincomeneighborhood(dml.Algorithm):
+class bostonzip(dml.Algorithm):
     contributor = 'colinstu'
-    reads = ['colinstu.HUDincome','colinstu.employeeearnings','colinstu.neighborhood']
-    writes = ['colinstu.combineincomeneighborhood']
+    reads = []
+    writes = ['colinstu.bostonzip']
 
     @staticmethod
     def execute(trial=False):
-        '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
@@ -29,17 +20,15 @@ class combineincomeneighborhood(dml.Algorithm):
         repo = client.repo
         repo.authenticate('colinstu', 'colinstu')
 
-        income = repo['colinstu.HUDincome']
-        r = json.loads(income)
+        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/53ea466a189b4f43b3dfb7b38fa7f3b6_1.geojson'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
-
-
-
-        repo.dropCollection("combineincomeneighborhood")
-        repo.createCollection("combineincomeneighborhood")
-        repo['colinstu.combineincomeneighborhood'].insert_many(r)
-        repo['colinstu.combineincomeneighborhood'].metadata({'complete': True})
-        print(repo['colinstu.combineincomeneighborhood'].metadata())
+        repo.dropCollection("bostonzip")
+        repo.createCollection("bostonzip")
+        repo['colinstu.bostonzip'].insert_many(r['features'])
+        repo['colinstu.bostonzip'].metadata({'complete': True})
+        print(repo['colinstu.bostonzip'].metadata())
 
         repo.logout()
 
@@ -64,34 +53,31 @@ class combineincomeneighborhood(dml.Algorithm):
         doc.add_namespace('ont',
                           'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('bdp', 'https://data.boston.gov/dataset/active-food-establishment-licenses')
+        doc.add_namespace('bdp', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/53ea466a189b4f43b3dfb7b38fa7f3b6_1.geojson')
 
-        this_script = doc.agent('alg:colinstu#combineincomeneighborhood',
+        this_script = doc.agent('alg:colinstu#bostonzip',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label': 'Combine Income and Neighborhood Data',
+        resource = doc.entity('bdp:wc8w-nujj', {'prov:label': 'Boston bostonzip',
                                                 prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'json'})
-        get_foodlic = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_foodlic, this_script)
+        get_zip = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_zip, this_script)
 
-        doc.usage(get_foodlic, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query': '?type='  # TODO: fix query
-                   }
+        doc.usage(get_zip, resource, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Retrieval'}
                   )
 
-        foodlic = doc.entity('dat:colinstu#foodlicense', {prov.model.PROV_LABEL: 'Active Food Establishment Licenses',
+        zip = doc.entity('dat:colinstu#bostonzip', {prov.model.PROV_LABEL: 'Boston Zip Codes',
                                                           prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(foodlic, this_script)
-        doc.wasGeneratedBy(foodlic, get_foodlic, endTime)
-        doc.wasDerivedFrom(foodlic, resource, get_foodlic, get_foodlic, get_foodlic)
-
+        doc.wasAttributedTo(zip, this_script)
+        doc.wasGeneratedBy(zip, get_zip, endTime)
+        doc.wasDerivedFrom(zip, resource, get_zip, get_zip, get_zip)
         repo.logout()
 
         return doc
 
 
-foodlicense.execute()
-doc = foodlicense.provenance()
+bostonzip.execute()
+doc = bostonzip.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

@@ -27,7 +27,7 @@ class bostonneighborhoods(dml.Algorithm):
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("neighborhood")
         repo.createCollection("neighborhood")
-        repo['colinstu.neighborhood'].insert_many(r)  # TODO: fix insert many geojson
+        repo['colinstu.neighborhood'].insert_many(r['features'])
         repo['colinstu.neighborhood'].metadata({'complete': True})
         print(repo['colinstu.neighborhood'].metadata())
 

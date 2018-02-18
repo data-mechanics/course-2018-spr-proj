@@ -28,7 +28,7 @@ class HUDincome(dml.Algorithm):
         s = geojson.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("HUDincome")
         repo.createCollection("HUDincome")
-        repo['colinstu.HUDincome'].insert_many(r)  # TODO: fix insert many
+        repo['colinstu.HUDincome'].insert_many(r['features'])
         repo['colinstu.HUDincome'].metadata({'complete': True})
         print(repo['colinstu.HUDincome'].metadata())
 
@@ -55,7 +55,7 @@ class HUDincome(dml.Algorithm):
         doc.add_namespace('ont',
                           'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('bdp', 'https://data.boston.gov/dataset/active-food-establishment-licenses')
+        doc.add_namespace('bdp', 'https://mapc-admin.carto.com/api/v2/sql?q=SELECT%20a.seq_id%2Ca.muni_id%2Ca.municipal%2Ca.countyname%2Ca.areaname%2Ca.fy_year%2Ca.median%2Ca.il_50_1%2Ca.il_50_2%2Ca.il_50_3%2Ca.il_50_4%2Ca.il_50_5%2Ca.il_50_6%2Ca.il_50_7%2Ca.il_50_8%2Ca.il_30_1%2Ca.il_30_2%2Ca.il_30_3%2Ca.il_30_4%2Ca.il_30_5%2Ca.il_30_6%2Ca.il_30_7%2Ca.il_30_8%2Ca.il_80_1%2Ca.il_80_2%2Ca.il_80_3%2Ca.il_80_4%2Ca.il_80_5%2Ca.il_80_6%2Ca.il_80_7%2Ca.il_80_8%2C%20b.the_geom%2C%20b.the_geom_webmercator%20%20FROM%20hous_section8_income_limits_by_year_m%20a%20%20INNER%20JOIN%20ma_municipalities%20b%20ON%20a.muni_id%20%3D%20b.muni_id%20WHERE%20a.fy_year%20IN%20(%272017%27)&format=geojson&filename=hous_section8_income_limits_by_year_m')
 
         this_script = doc.agent('alg:colinstu#HUDincome',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
@@ -68,7 +68,7 @@ class HUDincome(dml.Algorithm):
                   {prov.model.PROV_TYPE: 'ont:Retrieval'}
                   )
 
-        HUDincome = doc.entity('dat:colinstu#HUDincome', {prov.model.PROV_LABEL: 'Active Food Establishment Licenses',
+        HUDincome = doc.entity('dat:colinstu#HUDincome', {prov.model.PROV_LABEL: 'HUD Income Limits',
                                                           prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(HUDincome, this_script)
         doc.wasGeneratedBy(HUDincome, get_HUDincome, endTime)

@@ -8,8 +8,8 @@ import uuid
 class example(dml.Algorithm):
     contributor = 'xhug'
     reads = []
-    writes = ['xhug.lost', 'xhug.found']
-
+    writes = ['xhug.hubways', 'xhug.bilkeavailability', 'xhug.Tstops', 'xhug.bostoncolleges', 'xhug.trafficejam']
+    
     @staticmethod
     def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
@@ -20,23 +20,45 @@ class example(dml.Algorithm):
         repo = client.repo
         repo.authenticate('xhug', 'xhug')
 
-        url = 'http://cs-people.bu.edu/lapets/591/examples/lost.json'
+        url = 'http://datamechanics.io/data/xhug/hubways.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("lost")
-        repo.createCollection("lost")
-        repo['xhug.lost'].insert_many(r)
-        repo['xhug.lost'].metadata({'complete':True})
-        print(repo['xhug.lost'].metadata())
+        repo.dropCollection("hubways")
+        repo.createCollection("hubways")
+        repo['xhug.hubways'].insert_many(r)
+        repo['xhug.hubways'].metadata({'complete':True})
+        print(repo['xhug.hubways'].metadata())
 
-        url = 'http://cs-people.bu.edu/lapets/591/examples/found.json'
+        url = 'http://datamechanics.io/data/xhug/bilkeavailability.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("found")
-        repo.createCollection("found")
-        repo['xhug.found'].insert_many(r)
+        repo.dropCollection("bilkeavailability")
+        repo.createCollection("bilkeavailability")
+        repo['xhug.bilkeavailability'].insert_many(r)
+        repo['xhug.bilkeavailability'].metadata({'complete':True})
+        print(repo['xhug.bilkeavailability'].metadata())
+
+        url = 'http://datamechanics.io/data/xhug/Tstops.json'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
+        s = json.dumps(r, sort_keys=True, indent=2)
+        repo.dropCollection("Tstops")
+        repo.createCollection("Tstops")
+        repo['xhug.Tstops'].insert_many(r)
+        repo['xhug.Tstops'].metadata({'complete':True})
+        print(repo['xhug.Tstops'].metadata())
+
+        url = 'http://datamechanics.io/data/xhug/trafficejam.json'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
+        s = json.dumps(r, sort_keys=True, indent=2)
+        repo.dropCollection("trafficejam")
+        repo.createCollection("trafficejam")
+        repo['xhug.trafficejam'].insert_many(r)
+        repo['xhug.trafficejam'].metadata({'complete':True})
+        print(repo['xhug.trafficejam'].metadata())
 
         repo.logout()
 

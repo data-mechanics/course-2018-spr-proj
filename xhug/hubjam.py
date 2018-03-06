@@ -5,7 +5,7 @@ import datetime
 import uuid
 import gpxpy.geo
 
-class tAndBike(dml.Algorithm):
+class hubjam(dml.Algorithm):
 
  def project(R, p):
     return [p(t) for t in R]

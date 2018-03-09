@@ -54,51 +54,25 @@ def aggregate(R, f):
 
 		def getschooladdress(school):
 			if 'Address' in school:
-				return school['properties']['Address']
+				temp = school['properties']['Address'].split(",")
+				return temp[0]
+
 
 		collegelocations = project(colleges, getschooladdress())
-	
-		
 
+		college_jam = []
 
-		
-		
-
-		'''computing the frequency of the jam occurs on each street
-		'''
-
-		jamstreets = aggregate(project(X, lambda t: (t[0]), sum))
-			
-
-		
-		schoolsstreet= []
-
-		'''cleanse the data to contain only streets of schools
-		'''
-		for x in schoolsData.find():
-			if 'Name' && 'Address' && in x:
-			schoolsstreet.append(entry['Name'],entry['Address'])
+		for i in jamlocations:
+			for j in collegelocations:
+				if i in j:
+					college_jam.append(i)
 
 
 		
 
-		'''aggregate two new created dataset jamstreets and schoolsstreet into 
-		   a new one jamandschools which has the attributes Name, Street and 
-		   Frequency. 
-		'''
-
-		jamandschools = []
-
-		jamandschools = [(x[0],y[1]) for x in schoolsstreet for y in jamstreets if y[0] in x[1]]
-
-
-
-
-		
-
-		repo.dropCollection("jamandschoolsdata")
-		repo.createCollection("jamandschoolsdata")
-		repo.['xhug.jamandschoolsdata'].insert_many(jamandschools)
+		repo.dropCollection("collegeandjam")
+		repo.createCollection("collegeandjam")
+		repo['xhug.collegeandjam'].insert(college_jam)
 		repo.logout()
 		endTime = datetime.datetime.now()
 		return {"start": startTime, "end": endTime}

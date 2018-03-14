@@ -5,10 +5,10 @@ import prov.model
 import datetime
 import uuid
 
-class violations(dml.Algorithm):
+class request311(dml.Algorithm):
     contributor = 'lliu_saragl'
     reads = []
-    writes = ['lliu_saragl.violations']
+    writes = ['lliu_saragl.requests'] #example has two in here not one
 
     @staticmethod
     def execute(trial = False):
@@ -20,18 +20,18 @@ class violations(dml.Algorithm):
         repo = client.repo
         repo.authenticate('lliu_saragl', 'lliu_saragl')
 
-        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=90ed3816-5e70-443c-803d-9a71f44470be&q=snow'
+        url = 'https://data.boston.gov/api/3/action/datastore_search?resource_id=2968e2c0-d479-49ba-a884-4ef523ada3c0&q=snow'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
         print(s)
-        repo.dropPermanent("violations")
-        repo.createPermanent("violations")
+        repo.dropPermanent("requests")
+        repo.createPermanent("requests")
         
-        repo['lliu_saragl.violations'].insert_many(r['result']['records'])
-        repo['lliu_saragl.violations'].metadata({'complete':True})
-        print(repo['lliu_saragl.violations'].metadata())
-        
+        repo['lliu_saragl.requests'].insert_many(r['result']['records'])
+        repo['lliu_saragl.requests'].metadata({'complete':True})
+        print(repo['lliu_saragl.requests'].metadata())
+
         repo.logout()
 
         endTime = datetime.datetime.now()
@@ -41,7 +41,7 @@ class violations(dml.Algorithm):
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''
-        Create the provenacne document describing everything happening in this script.
+        Create the provenance document describing everything happening in this script.
         Each run of the script will generate a new document describing that invocation event.
         '''
 
@@ -53,25 +53,29 @@ class violations(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        
+        #additional resource
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
 
-        this_script = doc.agent('alg:lliu_saragl#violations', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:90ed3816-5e70-443c-803d-9a71f44470be', {'prov:label': 'List of Snow Violations', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_violations = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_violations, this_script)
+        this_script = doc.agent('alg:lliu_saragl#requests', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('bdp:2968e2c0-d479-49ba-a884-4ef523ada3c0', {'prov:label': '311 Requests regarding Snow', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_311 = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_311, this_script)
         
-        doc.usage(get_violations, resource, startTime, None, {prov.model.PROV_TYPE:'ont:Retrieval'})
+        doc.usage(get_311, resource, startTime, None, {prov.model.PROV_TYPE:'ont:Retrieval'})
         
-        violations = doc.entity('dat:lliu_saragl#violations',{prov.model.PROV_LABEL:'List of Snow Violations', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(violations, this_script)
-        doc.wasGeneratedBy(violations, get_violations, endTime)
-        doc.wasDerivedFrom(violations, get_violations, get_violations, get_violations)
+        requests = doc.entity('dat:lliu_saragl#request311',{prov.model.PROV_LABEL:'311 Requests regarding Snow', prov.model.PROV_TYPE:'ont:DataSet'})
+        
+        doc.wasAttributedTo(requests, this_script)
+        doc.wasGeneratedBy(requests, get_311, endTime)
+        doc.wasDerivedFrom(requests, get_311, get_311, get_311)
 
+        #repo.record(doc.serialize())
         repo.logout()
 
         return doc
 
-#violations.execute()
-#doc = violations.provenance()
-#print(doc.get_provn())
-#print(json.dumps(json.loads(doc.serialize()), indent=4))
+request311.execute()
+doc = request311.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))

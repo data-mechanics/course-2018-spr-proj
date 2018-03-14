@@ -4,10 +4,10 @@ import uuid
 import datetime
 import json
 
-class parking_routes(dml.Algorithm):
+class request_violations(dml.Algorithm):
     contributor = 'lliu_saragl'
-    reads = ['lliu_saragl.parking', 'lliu_saragl.routes']
-    writes = ['lliu_saragl.parking_routes']
+    reads = ['lliu_saragl.requests', 'lliu_saragl.violations']
+    writes = ['lliu_saragl.request_violations']
 
     @staticmethod
     def execute(trial = False):
@@ -17,8 +17,8 @@ class parking_routes(dml.Algorithm):
         repo = client.repo
         repo.authenticate('lliu_saragl', 'lliu_saragl')
 
-        repo.dropPermanent("parking_routes")
-        repo.createPermanent("parking_routes")
+        repo.dropPermanent("request_violations")
+        repo.createPermanent("request_violations")
         
         def getData(db):
             d = []
@@ -26,29 +26,26 @@ class parking_routes(dml.Algorithm):
                 d.append(i)
             return d
 
-        p = getData('parking')
+        p = getData('requests')
 
-        r = getData('routes')
+        r = getData('violations')
 
-        lstOfParking = {}
+        lstOfRequests = {}
         for i in p:
-            l = i['properties']['Address']
-            if l not in lstOfParking:
+            l = i['LOCATION_ZIPCODE']
+            if l not in lstOfRequests:
                 l = l.replace(".","")
-                lstOfParking[l] = {
-                    "Spaces":i['properties']['Spaces'],
-                    "Fees":i['properties']['Fee']
-                    }
+                lstOfRequests[l] = {"Type":i['TYPE']}
 
-        lstOfRoutes = {}
+        lstOfViolations = {}
         for i in r:
-            temp = i['properties']['FULL_NAME']
-            if temp not in lstOfRoutes:
+            temp = i['Zip']
+            if temp not in lstOfViolations:
                 temp = temp.replace(".","")
-                lstOfRoutes[temp] = {}
+                lstOfViolations[temp] = {}
 
         
-        u = {**lstOfParking, **lstOfRoutes}
+        u = {**lstOfRequests, **lstOfViolations}
         
         print(u)
         
@@ -71,19 +68,19 @@ class parking_routes(dml.Algorithm):
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
         doc.add_namespace('bos', 'http://bostonopendata.boston.opendata.arcgis.com/') # Parking data
 
-        this_script = doc.agent('alg:lliu_saragl#parking_routes', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dat:lliu_saragl#parking', {prov.model.PROV_LABEL:'Parking Resource', prov.model.PROV_TYPE:'ont:DataSet'})
+        this_script = doc.agent('alg:lliu_saragl#request_violations', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('dat:lliu_saragl#requests', {prov.model.PROV_LABEL:'311 Requests', prov.model.PROV_TYPE:'ont:DataSet'})
 
-        get_parkingroute = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime, {prov.model.PROV_TYPE:'ont:Computation'})
+        get_requestviolations = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime, {prov.model.PROV_TYPE:'ont:Computation'})
 
         doc.wasAttributedTo(resource, this_script)
-        doc.wasGeneratedBy(resource, get_parkingroute, endTime)
-        doc.wasDerivedFrom(resource, get_parkingroute, get_parkingroute, get_parkingroute)
+        doc.wasGeneratedBy(resource, get_requestviolations, endTime)
+        doc.wasDerivedFrom(resource, get_requestviolations, get_requestviolations, get_requestviolations)
 
         repo.logout()
         return doc
 
-#parking_routes.execute()
-#doc = parking_routes.provenance()
-#print(doc.get_provn())
-#print(json.dumps(json.loads(doc.serialize()), indent=4))
+request_violations.execute()
+doc = request_violations.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))

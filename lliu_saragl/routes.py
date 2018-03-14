@@ -72,7 +72,7 @@ class routes(dml.Algorithm):
 
         return doc
 
-routes.execute()
-doc = routes.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+#routes.execute()
+#doc = routes.provenance()
+#print(doc.get_provn())
+#print(json.dumps(json.loads(doc.serialize()), indent=4))

@@ -4,7 +4,7 @@
     "name": "repo"
   },
   "admin": {
-    "name": "bstc_semina",
-    "pwd": "bstc_semina"
+    "name": "admin",
+    "pwd": "example"
   }
 }

@@ -1,0 +1,465 @@
+{"_id":{"$oid":"5a84f640bfaae5259c613c44"},"latitude":42.34098682393803,"longitude":-71.14589692101931,"name":"Wilson Park","approx_radius":"37.129419356163076"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c45"},"latitude":42.35955874095454,"longitude":-71.12532522395152,"name":"Hooker-Sorrento Street Playground","approx_radius":"119.07583828387"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c46"},"latitude":42.365391780804515,"longitude":-71.13088243377268,"name":"Smith Playground","approx_radius":"458.6522058378568"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c47"},"latitude":42.359455944378745,"longitude":-71.13323644346795,"name":"Fern Square","approx_radius":"24.963043925862422"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c48"},"latitude":42.35061050080243,"longitude":-71.13775403938264,"name":"Ringer Playground","approx_radius":"378.1791248754451"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c49"},"latitude":42.35455338216947,"longitude":-71.15301127828756,"name":"McKinney Playground","approx_radius":"286.1745591963937"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c4a"},"latitude":42.35579095255692,"longitude":-71.16128637001293,"name":"Hobart Park","approx_radius":"116.45416218159562"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c4b"},"latitude":42.35044913457533,"longitude":-71.15227237433255,"name":"Market Street Burying Ground","approx_radius":"81.41632813661744"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c4c"},"latitude":42.34598030078051,"longitude":-71.1527413780076,"name":"Jackson Square","approx_radius":"41.44930560073543"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c4d"},"latitude":42.338719529385266,"longitude":-71.16312665421594,"name":"Evergreen Cemetery","approx_radius":"537.8408266610991"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c4e"},"latitude":42.351296431329494,"longitude":-71.16589565708666,"name":"Hardiman Playground","approx_radius":"146.24899394240862"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c4f"},"latitude":42.34737753922421,"longitude":-71.1595470632584,"name":"Rogers Park","approx_radius":"336.7924852086352"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c50"},"latitude":42.34268532632895,"longitude":-71.14739676187388,"name":"Euston Path Rock","approx_radius":"73.55841143626373"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c51"},"latitude":42.34487976154917,"longitude":-71.16534146852527,"name":"Chandler Pond","approx_radius":"513.854317536086"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c52"},"latitude":42.319335874248765,"longitude":-71.05801148894919,"name":"Mullen Square","approx_radius":"56.077827412369324"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c53"},"latitude":42.317114339517,"longitude":-71.06433994097017,"name":"Dorchester North Burying Ground","approx_radius":"214.1195273857914"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c54"},"latitude":42.31724463366776,"longitude":-71.03874374469353,"name":"Calf Pasture I","approx_radius":"163.59499051992913"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c55"},"latitude":42.307732902637376,"longitude":-71.06056592035155,"name":"Meetinghouse Hill Overlook","approx_radius":"68.94962029865934"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c56"},"latitude":42.31161100962696,"longitude":-71.06176889916335,"name":"Downer Avenue Playground","approx_radius":"109.52850641536175"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c57"},"latitude":42.31063405674498,"longitude":-71.06557779158685,"name":"The Humps","approx_radius":"114.4851834412805"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c58"},"latitude":42.31108611207112,"longitude":-71.06869280236613,"name":"Quincy/Stanley Play Area","approx_radius":"82.91202912645764"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c59"},"latitude":42.31098665244201,"longitude":-71.05870932896073,"name":"Deer Street Park","approx_radius":"59.006716587950805"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c5a"},"latitude":42.30837902801345,"longitude":-71.064354486779,"name":"Coppens Square","approx_radius":"71.55798204434225"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c5b"},"latitude":42.308579796724146,"longitude":-71.05194277717771,"name":"McConnell Park","approx_radius":"298.1302075026912"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c5c"},"latitude":42.355136250512025,"longitude":-71.06535220581246,"name":"Boston Common","approx_radius":"796.4002463765439"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c5d"},"latitude":42.35297207286741,"longitude":-71.06583866498916,"name":"Central Burying Ground","approx_radius":"165.1693506538526"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c5e"},"latitude":42.354817558094915,"longitude":-71.07016328122596,"name":"Public Garden","approx_radius":"571.0759065228032"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c5f"},"latitude":42.357209211143854,"longitude":-71.0618285764579,"name":"Granary Burying Ground","approx_radius":"161.00175390623042"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c60"},"latitude":42.360548470728624,"longitude":-71.06729894975301,"name":"Phillips Street Play Area","approx_radius":"40.91084831393289"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c61"},"latitude":42.35914383131578,"longitude":-71.06608188359637,"name":"Myrtle Street Playground","approx_radius":"48.808788624258334"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c62"},"latitude":42.34985343305704,"longitude":-71.07664472138657,"name":"Copley Square Park","approx_radius":"160.37894323393306"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c63"},"latitude":42.35277758664718,"longitude":-71.07652778192059,"name":"Clarendon Street Playlot","approx_radius":"77.03239582453291"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c64"},"latitude":42.3663800384284,"longitude":-71.05681235932138,"name":"DeFilippo Playground","approx_radius":"128.72940480570318"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c65"},"latitude":42.36727297800338,"longitude":-71.05555733492989,"name":"Copp's Hill Burying Ground","approx_radius":"171.37258866919612"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c66"},"latitude":42.36784144550468,"longitude":-71.05528191216591,"name":"Copp's Hill Terrace","approx_radius":"105.88787642497819"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c67"},"latitude":42.367437221639996,"longitude":-71.05405713028331,"name":"Foster Street Play Area","approx_radius":"39.930984842787744"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c68"},"latitude":42.36677805187621,"longitude":-71.05322438756798,"name":"Charter Street Park","approx_radius":"58.6694944104646"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c69"},"latitude":42.36580205754649,"longitude":-71.05364888972062,"name":"Paul Revere Mall","approx_radius":"104.58163582384117"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c6a"},"latitude":42.36503974112495,"longitude":-71.05440093433421,"name":"Polcari Park","approx_radius":"66.66576068581567"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c6b"},"latitude":42.363553863491106,"longitude":-71.05633739407149,"name":"Cutillo Park","approx_radius":"64.4185673420718"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c6c"},"latitude":42.35972558351653,"longitude":-71.06085443141508,"name":"Pemberton Square II","approx_radius":"121.40055527991939"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c6d"},"latitude":42.35707190819053,"longitude":-71.05610611441648,"name":"Angell Memorial Square","approx_radius":"50.22197540153845"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c6e"},"latitude":42.36855132060883,"longitude":-71.05624011103149,"name":"Langone Park","approx_radius":"174.69093059792252"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c6f"},"latitude":42.363535935579414,"longitude":-71.05350921456662,"name":"Rachel Revere Square","approx_radius":"35.76567283557009"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c70"},"latitude":42.34831159877674,"longitude":-71.06163667937118,"name":"Tai Tung Park","approx_radius":"21.697450953719965"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c71"},"latitude":42.35476073097898,"longitude":-71.05765357106733,"name":"Winthrop Square","approx_radius":"47.57226701335164"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c72"},"latitude":42.379653852984575,"longitude":-71.06824488244902,"name":"Edwards Playground","approx_radius":"137.80665350471548"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c73"},"latitude":42.372851234991145,"longitude":-71.062608120553,"name":"John Harvard Mall","approx_radius":"107.32624808790963"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c74"},"latitude":42.38115135688411,"longitude":-71.05807144507911,"name":"Charlestown HS Athletic Fields","approx_radius":"380.29243151439545"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c75"},"latitude":42.3856237489297,"longitude":-71.07185469961634,"name":"Ryan Playground","approx_radius":"358.55582081742114"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c76"},"latitude":42.37967672664451,"longitude":-71.05360755053327,"name":"Barry Playground","approx_radius":"227.07296516850408"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c77"},"latitude":42.38205786624167,"longitude":-71.06736175259933,"name":"Doherty Playground","approx_radius":"231.9816767364102"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c78"},"latitude":42.37632683924084,"longitude":-71.06765759252245,"name":"Phipp's Street Burying Ground","approx_radius":"157.5675807578981"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c79"},"latitude":42.37428551956823,"longitude":-71.0600823311662,"name":"Winthrop Square","approx_radius":"111.83031827948741"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c7a"},"latitude":42.376874103033494,"longitude":-71.0568513057159,"name":"Hayes Square","approx_radius":"49.67048839729091"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c7b"},"latitude":42.381886330694506,"longitude":-71.05822355166386,"name":"Charlestown Sprouts Garden","approx_radius":"83.55384650131559"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c7c"},"latitude":[-71.02844404566574,42.371537041188716],"longitude":[-71.02943755562647,42.37243719594762],"name":"East Boston Memorial Park I","approx_radius":770074.5146484375}
+{"_id":{"$oid":"5a84f640bfaae5259c613c7d"},"latitude":42.3875432124615,"longitude":-71.00973055318342,"name":"Noyes Playground","approx_radius":"344.61119038917434"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c7e"},"latitude":42.38364820973324,"longitude":-71.01675666244958,"name":"Cuneo Park","approx_radius":"60.5975410599749"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c7f"},"latitude":42.38095200192239,"longitude":-71.02068570152113,"name":"Bennington Street Cemetery","approx_radius":"245.3315712509417"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c80"},"latitude":42.381852849399294,"longitude":-71.02934260381116,"name":"American Legion Playground","approx_radius":"248.85944497365313"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c81"},"latitude":42.381177895787204,"longitude":-71.03077935424233,"name":"Prescott Square","approx_radius":"70.94037884908177"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c82"},"latitude":42.38040896562193,"longitude":-71.03303862279007,"name":"Putnam Square","approx_radius":"60.846336286509825"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c83"},"latitude":42.37196166855537,"longitude":-71.03714463351128,"name":"Paris Street Playground","approx_radius":"106.16608165044403"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c84"},"latitude":42.36574098568568,"longitude":-71.03347296400905,"name":"Brophy Park","approx_radius":"119.73093214610068"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c85"},"latitude":42.36600165283463,"longitude":-71.03233582545741,"name":"Sumner \u0026 Lamson Street Playground","approx_radius":"84.89920807305651"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c86"},"latitude":42.3831282038912,"longitude":-71.02942527273065,"name":"Condor Street Beach I","approx_radius":"195.81099090072553"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c87"},"latitude":42.368919791288704,"longitude":-71.03783897135534,"name":"East Boston Greenway","approx_radius":"220.4630391585083"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c88"},"latitude":42.34469108428335,"longitude":-71.08749998995532,"name":"Symphony Community Park","approx_radius":"81.40773220918938"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c89"},"latitude":42.346389619700886,"longitude":-71.08802177764429,"name":"Edgerly Road Playground","approx_radius":"41.40664880954768"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c8a"},"latitude":42.33718711306324,"longitude":-71.10313438614764,"name":"Oscar Tugo Circle","approx_radius":"28.57418278843845"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c8b"},"latitude":42.34898234160836,"longitude":-71.09452681615683,"name":"Commonwealth Avenue Mall II","approx_radius":"118.45958519490375"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c8c"},"latitude":42.343629892005396,"longitude":-71.0870325873925,"name":"Harry Ellis Dickson Park","approx_radius":"34.236963394679435"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c8d"},"latitude":42.321218384406066,"longitude":-70.96506479753342,"name":"Long Island","approx_radius":"1768.643317036479"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c8e"},"latitude":42.31203502279339,"longitude":-70.95421731993174,"name":"Rainsford Island","approx_radius":"481.74716616436075"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c8f"},"latitude":42.304072015368675,"longitude":-70.99555685140166,"name":"Moon Island","approx_radius":"870.5677202446215"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c90"},"latitude":42.27022774410603,"longitude":-71.12739464546624,"name":"Monterey Hilltop I","approx_radius":"240.8971602175998"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c91"},"latitude":42.26694627433371,"longitude":-71.12443189551834,"name":"Sherrin Woods I","approx_radius":"576.4195746256943"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c92"},"latitude":42.256995928706864,"longitude":-71.11591424595214,"name":"West Street","approx_radius":"186.74648647957528"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c93"},"latitude":42.26057993248198,"longitude":-71.12243165909638,"name":"Dell Rock I","approx_radius":"134.56320594580336"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c94"},"latitude":42.24862784447363,"longitude":-71.1263136059771,"name":"Amatucci Playground","approx_radius":"82.61139161063362"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c95"},"latitude":42.23975020712436,"longitude":-71.13543290857683,"name":"Iacono/Readville Playground","approx_radius":"261.82135384092254"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c96"},"latitude":42.23743714205278,"longitude":-71.13234047710188,"name":"Jeremiah Hurley Memorial Park","approx_radius":"34.08147955902372"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c97"},"latitude":42.24606848331857,"longitude":-71.11490835089188,"name":"Williams Square","approx_radius":"23.206875615153923"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c98"},"latitude":42.273911886588365,"longitude":-71.11126033422462,"name":"Pleasant View I","approx_radius":"36.18144356454157"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c99"},"latitude":42.332951393014916,"longitude":-71.09913303705585,"name":"Mission Hill Playground","approx_radius":"195.52490891702496"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c9a"},"latitude":42.331191342840995,"longitude":-71.09836494837387,"name":"Gibbons Playground","approx_radius":"39.74436928618069"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c9b"},"latitude":42.3222667612252,"longitude":-71.10436634431201,"name":"Mozart Street Playground","approx_radius":"108.20001311710487"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c9c"},"latitude":42.318179919699624,"longitude":-71.10683897932223,"name":"Beecher Street Play Area","approx_radius":"54.05041561713423"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c9d"},"latitude":[-71.11269825040047,42.30694798710158],"longitude":[-71.11281360171516,42.307842356341276],"name":"Murphy Playground","approx_radius":110805.9306640625}
+{"_id":{"$oid":"5a84f640bfaae5259c613c9e"},"latitude":42.30938439990302,"longitude":-71.1158934214432,"name":"Soldier's Monument","approx_radius":"42.90225864524463"}
+{"_id":{"$oid":"5a84f640bfaae5259c613c9f"},"latitude":42.33279317037524,"longitude":-71.09779931831555,"name":"Tobin Community Center Garden","approx_radius":"73.71942667890656"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ca0"},"latitude":[-71.1065246778951,42.30760630938402],"longitude":[-71.10734423937369,42.3080555705595],"name":"English H.S. Athletic Fields","approx_radius":332508.3576660156}
+{"_id":{"$oid":"5a84f640bfaae5259c613ca1"},"latitude":42.311276080573926,"longitude":-71.10744544642978,"name":"Johnson Park II","approx_radius":"53.48802978142812"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ca2"},"latitude":42.321920155510796,"longitude":-71.10988524059158,"name":"Mahoney Square","approx_radius":"28.895938855315734"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ca3"},"latitude":42.3293631095776,"longitude":-71.10960121808074,"name":"Back of the Hill","approx_radius":"227.01972358188803"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ca4"},"latitude":42.283047243415275,"longitude":-71.07745641704588,"name":"Thetford/Evans Playground","approx_radius":"97.47379214922202"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ca5"},"latitude":42.271925583614184,"longitude":-71.09600518153945,"name":"Woodhaven","approx_radius":"137.2116865135515"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ca6"},"latitude":42.274352531004496,"longitude":-71.0873595615083,"name":"Gladeside I","approx_radius":"378.09873278736814"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ca7"},"latitude":42.28545354912844,"longitude":-71.08602733598823,"name":"Willowwood Rock","approx_radius":"89.03711837873499"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ca8"},"latitude":[-71.08450555801574,42.29005305192334],"longitude":[-71.08446023392523,42.29016164272972],"name":"Franklin Field BHA Garden","approx_radius":4193.961181640625}
+{"_id":{"$oid":"5a84f640bfaae5259c613ca9"},"latitude":42.27778941038694,"longitude":-71.0904971229274,"name":"Walker Playground","approx_radius":"287.4103521687625"}
+{"_id":{"$oid":"5a84f640bfaae5259c613caa"},"latitude":42.29308439483092,"longitude":-71.12996607883434,"name":"Walter Street Cemetery","approx_radius":"111.82962592432742"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cab"},"latitude":42.28886563127551,"longitude":-71.11877871698135,"name":"Pagel Playground","approx_radius":"197.9431295855474"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cac"},"latitude":42.296018196581606,"longitude":-71.11294952293515,"name":"Parkman Playground","approx_radius":"194.65242306100254"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cad"},"latitude":42.287919350623824,"longitude":-71.1354138239521,"name":"Fallon Field","approx_radius":"323.59543246089606"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cae"},"latitude":42.280766084445204,"longitude":-71.12643371358416,"name":"Poplar Street Play Area","approx_radius":"81.03842597491027"}
+{"_id":{"$oid":"5a84f640bfaae5259c613caf"},"latitude":42.279986016289435,"longitude":-71.12609296126884,"name":"Delano Park","approx_radius":"54.74098203295491"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cb0"},"latitude":42.33397741185854,"longitude":-71.08822259340556,"name":"Whittier Playground","approx_radius":"71.04567858669014"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cb1"},"latitude":[-71.07543563751531,42.32633472318952],"longitude":[-71.07543412321068,42.326335469343604],"name":"Dudley Town Common","approx_radius":26879.855224609375}
+{"_id":{"$oid":"5a84f640bfaae5259c613cb2"},"latitude":42.33031194329527,"longitude":-71.09281768948645,"name":"King Street Play Area","approx_radius":"47.90952651950199"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cb3"},"latitude":42.33097195695958,"longitude":-71.09248207482841,"name":"Jeep Jones Park","approx_radius":"159.0204979088202"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cb4"},"latitude":42.32853300758417,"longitude":-71.09469182008363,"name":"Linwood Park","approx_radius":"32.000767064976706"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cb5"},"latitude":42.32807394546966,"longitude":-71.09253841165024,"name":"Alvah Kittredge Park","approx_radius":"40.149512397353"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cb6"},"latitude":42.32645996090834,"longitude":-71.09032685601841,"name":"Rockledge Street Urban Wild","approx_radius":"84.66033958220105"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cb7"},"latitude":42.326874896555005,"longitude":-71.08513445826442,"name":"St James Street Park","approx_radius":"79.08756437843886"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cb8"},"latitude":[-71.08888524246296,42.322738417153374],"longitude":[-71.08940625093639,42.32322672118961],"name":"Malcolm X Park I","approx_radius":658608.4772949219}
+{"_id":{"$oid":"5a84f640bfaae5259c613cb9"},"latitude":42.31829138515357,"longitude":-71.0899376627462,"name":"Horatio Harris Park","approx_radius":"187.163285053656"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cba"},"latitude":42.315076091342824,"longitude":-71.0886409240604,"name":"Trotter School Playground","approx_radius":"131.4889341230084"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cbb"},"latitude":42.3153840079887,"longitude":-71.09223366587304,"name":"Crawford Street Playground","approx_radius":"189.13417729122315"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cbc"},"latitude":42.31433561622465,"longitude":-71.09408865653408,"name":"Msgr. John Roussin Park","approx_radius":"66.6349839623674"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cbd"},"latitude":42.311602852502666,"longitude":-71.10427192666872,"name":"Flaherty Playground","approx_radius":"138.57256888505339"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cbe"},"latitude":42.3224880093277,"longitude":-71.09579466254513,"name":"Marcella Playground","approx_radius":"265.7457206751921"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cbf"},"latitude":42.325807327978666,"longitude":-71.09520699759985,"name":"Highland Park","approx_radius":"224.63356872298053"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cc0"},"latitude":42.32507113657618,"longitude":-71.08967374687347,"name":"Cedar Square","approx_radius":"92.707532871681"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cc1"},"latitude":42.327477920270205,"longitude":-71.09331454062153,"name":"Cedar Street Garden I","approx_radius":"78.6093959595464"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cc2"},"latitude":42.312929090459235,"longitude":-71.08206350036512,"name":"Elm Hill Park","approx_radius":"41.12307133632754"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cc3"},"latitude":42.3147215536457,"longitude":-71.07971674794838,"name":"Quincy Street Play Area","approx_radius":"91.70173065500302"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cc4"},"latitude":42.324226520217664,"longitude":-71.07839280754975,"name":"Howes Playground","approx_radius":"170.72583892984386"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cc5"},"latitude":42.32258950364273,"longitude":-71.08061387220415,"name":"Little Scobie Playground","approx_radius":"105.03940873651612"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cc6"},"latitude":42.301337045002484,"longitude":-71.08341939331149,"name":"Erie/Ellington Playground","approx_radius":"73.67250683612394"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cc7"},"latitude":42.305242169486114,"longitude":-71.08373087975066,"name":"Puddingstone Park","approx_radius":"88.66937657877504"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cc8"},"latitude":42.329336400440525,"longitude":-71.07664841375907,"name":"Bynoe Park","approx_radius":"193.10597133600322"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cc9"},"latitude":42.32997425643378,"longitude":-71.09078637508085,"name":"John Eliot Square","approx_radius":"43.49676406832128"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cca"},"latitude":42.323648053743106,"longitude":-71.08334318334488,"name":"Buena Vista","approx_radius":"143.16723367492511"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ccb"},"latitude":42.31573002637309,"longitude":-71.0952025215883,"name":"Waldren Road Garden","approx_radius":"41.89049957054201"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ccc"},"latitude":[-71.07221925268438,42.32400957530963],"longitude":[-71.07210871304763,42.324052769738884],"name":"The Food Project Lot #1A","approx_radius":18009.2158203125}
+{"_id":{"$oid":"5a84f640bfaae5259c613ccd"},"latitude":42.3328199437848,"longitude":-71.08683741239815,"name":"Madison Park H.S. Athletic Fields","approx_radius":"369.6973182420743"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cce"},"latitude":42.322317967369635,"longitude":-71.0747626163155,"name":"Dennis Street Park","approx_radius":"97.83293339365495"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ccf"},"latitude":42.31535233239412,"longitude":-71.08256931991998,"name":"Holborn Street Playlot","approx_radius":"43.597844043334916"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cd0"},"latitude":42.337002804648655,"longitude":-71.03226926642448,"name":"Medal of Honor Park","approx_radius":"300.95453157114247"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cd1"},"latitude":42.33749448654915,"longitude":-71.03191105255006,"name":"Christopher Lee Playground","approx_radius":"282.24820274994255"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cd2"},"latitude":42.33428300588171,"longitude":-71.03448729141427,"name":"Hawes Burying Ground","approx_radius":"63.188998023157126"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cd3"},"latitude":42.334099621548624,"longitude":-71.03447007076448,"name":"Union Burying Ground","approx_radius":"47.11397132430056"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cd4"},"latitude":42.34188178057758,"longitude":-71.05300204513901,"name":"Flaherty Park","approx_radius":"67.95029756312486"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cd5"},"latitude":42.339253931553884,"longitude":-71.04895602069253,"name":"Buckley Playground","approx_radius":"98.11446896115719"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cd6"},"latitude":42.304491861824154,"longitude":-71.06271585461451,"name":"Ronan Park","approx_radius":"396.14365451179344"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cd7"},"latitude":42.30249318064582,"longitude":-71.0761944393419,"name":"Mt. Bowdoin Green","approx_radius":"86.39949306622967"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cd8"},"latitude":42.30089725902571,"longitude":-71.05192292948436,"name":"Byrne Playground","approx_radius":"128.95689812442257"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cd9"},"latitude":42.29803589452162,"longitude":-71.06163632022233,"name":"Doherty/Gibson Playground","approx_radius":"281.8530840756919"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cda"},"latitude":42.29601102520865,"longitude":-71.06583848321797,"name":"Wellesley Park","approx_radius":"99.46696442574206"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cdb"},"latitude":42.291345881042936,"longitude":-71.05643011678958,"name":"Hemenway Playground","approx_radius":"247.57117036792573"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cdc"},"latitude":42.290950088482134,"longitude":-71.06643546183793,"name":"Rev. Loesch Family Park","approx_radius":"182.68070682942215"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cdd"},"latitude":42.27742574118091,"longitude":-71.07033949352669,"name":"Walsh Playground","approx_radius":"310.38449154821535"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cde"},"latitude":42.27859380414426,"longitude":-71.067180546913,"name":"Dorchester South Burying Ground","approx_radius":"165.3540297128411"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cdf"},"latitude":42.276675263348736,"longitude":-71.06312149639689,"name":"Dorchester Park","approx_radius":"616.1412907327525"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ce0"},"latitude":42.279612412697574,"longitude":-71.0531256712711,"name":"Martin/Hilltop Playground","approx_radius":"148.4225609194683"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ce1"},"latitude":42.29764875608084,"longitude":-71.07201501326412,"name":"Mother's Rest at Four Corners","approx_radius":"127.9302911492712"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ce2"},"latitude":42.29959496769646,"longitude":-71.07621974521801,"name":"Ripley Playground","approx_radius":"108.63900387964806"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ce3"},"latitude":42.2878098257026,"longitude":-71.04568281955999,"name":"Garvey Playground","approx_radius":"270.888616487906"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ce4"},"latitude":42.29632435254438,"longitude":-71.0635811205833,"name":"Centervale Park","approx_radius":"53.3414936180667"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ce5"},"latitude":42.30366664590799,"longitude":-71.07265163108198,"name":"Geneva Cliffs I","approx_radius":"158.48665739171366"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ce6"},"latitude":42.28865216898033,"longitude":-71.06004515346638,"name":"Lydon Way Garden","approx_radius":"52.8732726879188"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ce7"},"latitude":42.29035816507835,"longitude":-71.07111882455857,"name":"Codman Square","approx_radius":"69.59484288687548"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ce8"},"latitude":42.34374364123922,"longitude":-71.07543436768233,"name":"Hayes Park","approx_radius":"71.00279462547354"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ce9"},"latitude":42.34288316121555,"longitude":-71.0714388750095,"name":"Union Park","approx_radius":"71.96963987912422"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cea"},"latitude":42.343428878932414,"longitude":-71.06749894439673,"name":"Peters Park I","approx_radius":"215.74142129810298"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ceb"},"latitude":42.34172368202014,"longitude":-71.06429303506023,"name":"Rotch Playground","approx_radius":"205.64289839549969"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cec"},"latitude":42.34335460089677,"longitude":-71.07014947280742,"name":"Ringgold Park","approx_radius":"81.25898853543468"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ced"},"latitude":42.33967702303439,"longitude":-71.07339496261561,"name":"Blackstone Square","approx_radius":"211.62351933724963"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cee"},"latitude":42.33882363218292,"longitude":-71.07235907392938,"name":"Franklin Square","approx_radius":"213.27794046964797"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cef"},"latitude":42.33791637445726,"longitude":-71.07402835214864,"name":"South End South Burying Ground","approx_radius":"145.59611404390503"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cf0"},"latitude":42.33668602681637,"longitude":-71.07471755864462,"name":"Worcester Square","approx_radius":"69.83366207861917"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cf1"},"latitude":42.33906098690383,"longitude":-71.08517016443452,"name":"Carter Playground","approx_radius":"261.19338106170983"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cf2"},"latitude":42.34349791968141,"longitude":-71.08016825608863,"name":"Titus Sparrow Park","approx_radius":"159.3787154934503"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cf3"},"latitude":42.34059846366745,"longitude":-71.06767294782199,"name":"Waltham Square","approx_radius":"40.73323872021228"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cf4"},"latitude":42.34344258821997,"longitude":-71.07790712430145,"name":"Harriet Tubman Square","approx_radius":"44.91401455039266"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cf5"},"latitude":42.341309262708315,"longitude":-71.07883185274666,"name":"Concord Square","approx_radius":"46.43960930883967"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cf6"},"latitude":42.33491349946046,"longitude":-71.0805089593747,"name":"Ramsay Park","approx_radius":"280.69391985979274"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cf7"},"latitude":[-71.07883475316268,42.337792970472435],"longitude":[-71.07881788077107,42.33779371892669],"name":"Chester Square","approx_radius":38774.76953125}
+{"_id":{"$oid":"5a84f640bfaae5259c613cf8"},"latitude":42.34043339080003,"longitude":-71.07052016957542,"name":"Msgr. Reynolds Playground","approx_radius":"73.35111504008748"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cf9"},"latitude":[-71.07838384852309,42.34201468420058],"longitude":[-71.078382634989,42.34201467975053],"name":"Rutland Square","approx_radius":6787.08349609375}
+{"_id":{"$oid":"5a84f640bfaae5259c613cfa"},"latitude":42.342674128014394,"longitude":-71.07816432206799,"name":"Hiscock Park","approx_radius":"41.025669674026865"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cfb"},"latitude":42.281450871795364,"longitude":-71.15631029107249,"name":"Billings Field","approx_radius":"388.28115441646247"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cfc"},"latitude":[-71.16085248025594,42.263367972970244],"longitude":[-71.1608406960207,42.26357798891873],"name":"Dana Road I","approx_radius":118826.91711425781}
+{"_id":{"$oid":"5a84f640bfaae5259c613cfd"},"latitude":42.2601671925217,"longitude":-71.16046926627531,"name":"Draper Playground","approx_radius":"283.9866855603663"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cfe"},"latitude":42.28148607233637,"longitude":-71.15867855596895,"name":"Westerly Burying Ground","approx_radius":"114.53606369914812"}
+{"_id":{"$oid":"5a84f640bfaae5259c613cff"},"latitude":42.29120018215549,"longitude":-71.1634055387834,"name":"Piemonte Park","approx_radius":"35.46124402428702"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d00"},"latitude":42.28499219289625,"longitude":-71.15303671853783,"name":"Duffie Square","approx_radius":"29.368651987523233"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d01"},"latitude":[-71.13522833286291,42.298205807079974],"longitude":[-71.13410608490172,42.298335106548],"name":"Allandale Woods I","approx_radius":2.1596073881835938e+06}
+{"_id":{"$oid":"5a84f640bfaae5259c613d02"},"latitude":42.28218986558329,"longitude":-71.17648283948478,"name":"West Roxbury H.S. Athletic Fields","approx_radius":"435.3956089529479"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d03"},"latitude":[-71.07129253065776,42.32574705063129],"longitude":[-71.0711161275607,42.325907635682256],"name":"Mason Schoolyard","approx_radius":16573.86376953125}
+{"_id":{"$oid":"5a84f640bfaae5259c613d04"},"latitude":42.29557085779436,"longitude":-71.07092375978971,"name":"Lucy Stone Schoolyard","approx_radius":"105.00986390890685"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d05"},"latitude":[-71.07760427688619,42.350137860615014],"longitude":[-71.07744066470944,42.35017462159746],"name":"Dartmouth Street Mall","approx_radius":43849.427978515625}
+{"_id":{"$oid":"5a84f640bfaae5259c613d06"},"latitude":42.34246143667749,"longitude":-71.10066086981743,"name":"Ramler Park","approx_radius":"87.29045490619774"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d07"},"latitude":42.384233346557856,"longitude":-70.9951319843986,"name":"Belle Isle Coastal Preserve","approx_radius":"148.6842342352545"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d08"},"latitude":42.31003687794721,"longitude":-71.06711210762722,"name":"Fernald Rock","approx_radius":"29.676789334604628"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d09"},"latitude":[-71.14210635690219,42.34508902464398],"longitude":[-71.14210512802858,42.34509172168691],"name":"Commonwealth Avenue Outbound","approx_radius":240795.42138671875}
+{"_id":{"$oid":"5a84f640bfaae5259c613d0a"},"latitude":42.355113841509755,"longitude":-71.13714400137795,"name":"Penniman Road Play Area","approx_radius":"113.17715081894309"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d0b"},"latitude":42.34075125920217,"longitude":-71.07529003495542,"name":"O'Day Playground","approx_radius":"109.69321452994534"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d0c"},"latitude":42.35287906412554,"longitude":-71.0490633675985,"name":"Martin's Park","approx_radius":"110.24973311320554"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d0d"},"latitude":42.34439398573907,"longitude":-71.07882146431362,"name":"Braddock Park","approx_radius":"35.76369057483973"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d0e"},"latitude":42.3584204802692,"longitude":-71.05277466590711,"name":"Grain Exchange Plaza","approx_radius":"26.882884649728858"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d0f"},"latitude":[-71.08025580195303,42.33919254215583],"longitude":[-71.08025700946158,42.33919344685775],"name":"Massachusetts Avenue Malls","approx_radius":18945.850830078125}
+{"_id":{"$oid":"5a84f640bfaae5259c613d10"},"latitude":42.372070949891956,"longitude":-71.04033684484915,"name":"Veterans Park II","approx_radius":"53.55088008365839"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d11"},"latitude":[-71.07325502155824,42.38515705513723],"longitude":[-71.07325134315792,42.38518026883504],"name":"Sullivan Square","approx_radius":70591.32299804688}
+{"_id":{"$oid":"5a84f640bfaae5259c613d12"},"latitude":42.385365233838094,"longitude":-71.07783887506359,"name":"Caldwell Street Play Area","approx_radius":"43.8219568422247"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d13"},"latitude":42.32891585008142,"longitude":-71.03572179269739,"name":"L Street Beach","approx_radius":"277.9887875766203"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d14"},"latitude":42.254702855358424,"longitude":-71.14083142229975,"name":"Stonehill Park","approx_radius":"71.26234329788899"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d15"},"latitude":42.31697793138237,"longitude":-71.1240000694869,"name":"Parkman Memorial","approx_radius":"305.0381647882193"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d16"},"latitude":42.28144907310264,"longitude":-71.17213885538284,"name":"West Roxbury High School Marsh","approx_radius":"546.1861039186924"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d17"},"latitude":42.33706139901735,"longitude":-71.09810659497167,"name":"Mass Art Park","approx_radius":"47.558985566640864"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d18"},"latitude":[-71.06001350706585,42.29161131637889],"longitude":[-71.06001471337792,42.29161222130237],"name":"Florida Street Reservation","approx_radius":2960.841796875}
+{"_id":{"$oid":"5a84f640bfaae5259c613d19"},"latitude":42.250203766177,"longitude":-71.12872627514983,"name":"Reservation Road Park","approx_radius":"360.0340857859179"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d1a"},"latitude":42.31049929436752,"longitude":-71.09562762872467,"name":"White Stadium","approx_radius":"417.725405174478"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d1b"},"latitude":42.28091408607471,"longitude":-71.184486307863,"name":"Millennium Park I","approx_radius":"1127.6358590209252"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d1c"},"latitude":42.30801609833031,"longitude":-71.11507954968961,"name":"South Street Mall \u0026 Courts","approx_radius":"82.57934334563832"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d1d"},"latitude":42.36493262959829,"longitude":-71.03412080603947,"name":"Golden Stairs Terrace Park I","approx_radius":"49.974853319722804"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d1e"},"latitude":42.36503757888457,"longitude":-71.0348559119603,"name":"The Rockies","approx_radius":"99.71748878024492"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d1f"},"latitude":42.34612097586405,"longitude":-71.07459076220361,"name":"Childe Hassam Park","approx_radius":"36.348965796197355"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d20"},"latitude":42.33045652704591,"longitude":-71.09063465833574,"name":"Roxbury Heritage State Park II","approx_radius":"79.76475084561754"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d21"},"latitude":42.318760819877554,"longitude":-71.06515262059513,"name":"Nellie Miranda Memorial Park","approx_radius":"36.276530060289225"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d22"},"latitude":42.309135167057576,"longitude":-71.08319738243297,"name":"Grove Hall Plaza","approx_radius":"40.2304691088085"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d23"},"latitude":42.38093469106973,"longitude":-71.02241080820137,"name":"Mendoza Square","approx_radius":"23.298377737758887"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d24"},"latitude":42.328879406848884,"longitude":-71.09439461562981,"name":"Centre Place Garden","approx_radius":"49.9400074454809"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d25"},"latitude":[-71.09388752074169,42.32721779558164],"longitude":[-71.0938093125955,42.327196083220834],"name":"Allan Crite Garden I","approx_radius":16717.337890625}
+{"_id":{"$oid":"5a84f640bfaae5259c613d26"},"latitude":[-71.14810887485721,42.26182072108642],"longitude":[-71.14820354448638,42.26184063779897],"name":"Ohrenberger Recreation Complex","approx_radius":165442.74377441406}
+{"_id":{"$oid":"5a84f640bfaae5259c613d27"},"latitude":[-71.16786794211882,42.350753869526834],"longitude":[-71.16783661419115,42.35077961727802],"name":"Oak Square","approx_radius":11824.839599609375}
+{"_id":{"$oid":"5a84f640bfaae5259c613d28"},"latitude":42.3534031675656,"longitude":-71.16510231124509,"name":"Wilson Square","approx_radius":"28.457257735622893"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d29"},"latitude":42.35790791300491,"longitude":-71.05528894477118,"name":"Liberty Square","approx_radius":"20.405227723659223"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d2a"},"latitude":42.32542320415873,"longitude":-71.04997294539233,"name":"Joe Moakley Park","approx_radius":"902.8483076436694"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d2b"},"latitude":42.347421588702126,"longitude":-71.0691027171991,"name":"Chandler/Tremont Plaza","approx_radius":"58.27927135828042"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d2c"},"latitude":42.317155988574235,"longitude":-71.06886072681206,"name":"Nonquit Street Garden","approx_radius":"47.42171878922829"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d2d"},"latitude":42.28596372795395,"longitude":-71.06405093923581,"name":"Peabody Square","approx_radius":"25.929034458088935"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d2e"},"latitude":42.28851340904986,"longitude":-71.04050268442198,"name":"Daniel E. O'Connor Park","approx_radius":"43.48517749933932"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d2f"},"latitude":42.31906322941116,"longitude":-71.10918513038685,"name":"Oakview Terrace","approx_radius":"37.31710342045257"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d30"},"latitude":[-71.11445305683642,42.324416415334625],"longitude":[-71.11432979085936,42.324536281165926],"name":"Jamaicaway","approx_radius":206898.89819335938}
+{"_id":{"$oid":"5a84f640bfaae5259c613d31"},"latitude":42.36015308542439,"longitude":-71.05681189241265,"name":"Faneuil Square","approx_radius":"106.75969657900757"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d32"},"latitude":42.36004098252782,"longitude":-71.06343386948618,"name":"Temple Street Park","approx_radius":"29.427206710153417"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d33"},"latitude":[-71.1049413066977,42.30588253216965],"longitude":[-71.10457292285633,42.30577964387368],"name":"Williams Street III","approx_radius":13429.40283203125}
+{"_id":{"$oid":"5a84f640bfaae5259c613d34"},"latitude":[-71.09645987195906,42.29095834575862],"longitude":[-71.09625219668723,42.29097103057766],"name":"American Legion Highway","approx_radius":295286.5627441406}
+{"_id":{"$oid":"5a84f640bfaae5259c613d35"},"latitude":42.26193288004937,"longitude":-71.14824565174061,"name":"Ohrenberger Woodland","approx_radius":"229.4535382335031"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d36"},"latitude":42.278001017069215,"longitude":-71.17815427862976,"name":"Rivermoor III","approx_radius":"85.28585393259571"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d37"},"latitude":42.38306696488572,"longitude":-71.04108534016932,"name":"Condor Street Overlook","approx_radius":"412.7846082575758"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d38"},"latitude":42.31809948393515,"longitude":-71.04477657486127,"name":"McCormack School Ball Field","approx_radius":"145.33874418843413"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d39"},"latitude":42.263226730612594,"longitude":-71.12574437431901,"name":"West Austin Rock","approx_radius":"64.32562932362144"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d3a"},"latitude":42.30558361682031,"longitude":-71.09014446739864,"name":"Franklin Park Zoo","approx_radius":"941.1292693443987"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d3b"},"latitude":42.33910556261005,"longitude":-71.0759320962495,"name":"Newland Street Park","approx_radius":"47.19498078119643"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d3c"},"latitude":42.28214611904946,"longitude":-71.15736122069238,"name":"Zero Quinn Way","approx_radius":"24.222974133378887"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d3d"},"latitude":[-71.10232564429626,42.32532467568304],"longitude":[-71.10263250203448,42.32541555213265],"name":"Bromley Heath Play Area","approx_radius":35772.240966796875}
+{"_id":{"$oid":"5a84f640bfaae5259c613d3e"},"latitude":42.30314957026878,"longitude":-71.07952827427559,"name":"Fenelon Street Playground","approx_radius":"54.43431320939739"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d3f"},"latitude":42.31145110571359,"longitude":-71.06783349128996,"name":"Stanley-Bellevue Park","approx_radius":"70.81018869098999"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d40"},"latitude":42.340069765380726,"longitude":-71.06690049712172,"name":"St Helena's Park","approx_radius":"56.59003923673084"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d41"},"latitude":42.274245531526205,"longitude":-71.09908667157691,"name":"Ernst Chery Jr. Playground","approx_radius":"59.35508251480859"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d42"},"latitude":42.28250263278991,"longitude":-71.19030217299498,"name":"Millennium Park II","approx_radius":"341.42772908379504"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d43"},"latitude":[-71.13817357843513,42.35314129349925],"longitude":[-71.13801521524896,42.3531773152946],"name":"Union Square Plaza","approx_radius":16984.150634765625}
+{"_id":{"$oid":"5a84f640bfaae5259c613d44"},"latitude":42.37767571650169,"longitude":-71.03961718036014,"name":"Our Garden","approx_radius":"62.17484657259079"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d45"},"latitude":42.32699623647985,"longitude":-71.08252812382418,"name":"Boston Evening Academy Garden","approx_radius":"55.81318640060773"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d46"},"latitude":42.32750715599471,"longitude":-71.08150836285716,"name":"Phyllis Wheatley/Warren Place","approx_radius":"47.304718296975786"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d47"},"latitude":42.31267632392779,"longitude":-71.11340137515242,"name":"Starr Lane Park","approx_radius":"30.99250868048255"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d48"},"latitude":42.37630831792251,"longitude":-71.05032301921271,"name":"13th Street Circle Garden","approx_radius":"29.197493939441962"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d49"},"latitude":42.3736258453339,"longitude":-71.0513042903334,"name":"8th Street Circle Garden","approx_radius":"26.008033046915077"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d4a"},"latitude":42.37494380090798,"longitude":-71.05093377531888,"name":"9th Street Circle Garden","approx_radius":"25.874015878299833"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d4b"},"latitude":42.30710844989659,"longitude":-71.11496245342319,"name":"Agassiz Community \u0026 School Garden","approx_radius":"55.306767149669945"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d4c"},"latitude":42.292198633472545,"longitude":-71.06536255285899,"name":"Clementine Park","approx_radius":"17.963777926461763"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d4d"},"latitude":42.35192653944396,"longitude":-71.05240952158397,"name":"Federal Reserve Bank Harborwalk","approx_radius":"38.36090812828857"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d4e"},"latitude":42.26408391836834,"longitude":-71.1277096506476,"name":"McGann Park","approx_radius":"114.2590642137119"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d4f"},"latitude":[-71.10391727023354,42.27371699838465],"longitude":[-71.10395458238854,42.27368012544273],"name":"Mattahunt Woods III","approx_radius":155324.21557617188}
+{"_id":{"$oid":"5a84f640bfaae5259c613d50"},"latitude":42.34914578652,"longitude":-71.06837594635624,"name":"Bay Village Garden","approx_radius":"17.445768441371904"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d51"},"latitude":42.358805578065414,"longitude":-71.061036310384,"name":"Pemberton Square Access","approx_radius":"44.85379407869204"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d52"},"latitude":42.36641779796102,"longitude":-71.04158726913224,"name":"Lewis Mall Harborpark","approx_radius":"61.73376006140482"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d53"},"latitude":42.3043128885263,"longitude":-71.09161928187632,"name":"Franklin Park II","approx_radius":"478.02334023721625"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d54"},"latitude":42.34976172599862,"longitude":-71.14557266037971,"name":"Brighton HS Hillside","approx_radius":"146.57947162843442"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d55"},"latitude":42.300748333845696,"longitude":-71.13428797744741,"name":"Allandale Woods II","approx_radius":"384.24876810487007"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d56"},"latitude":[-71.10364152566633,42.274606369828774],"longitude":[-71.10286571884191,42.275371082247354],"name":"Mattahunt School Woods","approx_radius":129744.44946289062}
+{"_id":{"$oid":"5a84f640bfaae5259c613d57"},"latitude":[-71.10484087799583,42.27555262408004],"longitude":[-71.10552578459975,42.27587462513002],"name":"Mattahunt Schoolyard","approx_radius":143364.26635742188}
+{"_id":{"$oid":"5a84f640bfaae5259c613d58"},"latitude":42.2760002978845,"longitude":-71.10367246671167,"name":"Mattahunt School Entrance Plaza","approx_radius":"72.20315514045335"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d59"},"latitude":42.2776600773701,"longitude":-71.10215483731716,"name":"Currier Woods I","approx_radius":"143.0979976619236"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d5a"},"latitude":42.33958320367765,"longitude":-71.09197093502303,"name":"Huntington-Hemenway Mall","approx_radius":"68.42980878236642"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d5b"},"latitude":42.290135068723956,"longitude":-71.08502028531862,"name":"Franklin Field BHA Green","approx_radius":"99.27078996771031"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d5c"},"latitude":42.29030545197266,"longitude":-71.08732766778355,"name":"Franklin Field BHA Playground","approx_radius":"73.96791215924634"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d5d"},"latitude":42.3153090024491,"longitude":-71.0792953317688,"name":"ELC Playlot","approx_radius":"81.44462313784719"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d5e"},"latitude":42.329345803369165,"longitude":-71.09358901625411,"name":"John Eliot Square Urban Wild I","approx_radius":"57.74450120388188"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d5f"},"latitude":[-71.09960377694578,42.27518630251603],"longitude":[-71.09969039679383,42.27509577724174],"name":"Savannah Woods I","approx_radius":139206.5390625}
+{"_id":{"$oid":"5a84f640bfaae5259c613d60"},"latitude":[-71.08362028295016,42.341057526303004],"longitude":[-71.08378969292534,42.34090803385866],"name":"Carter School Grounds","approx_radius":21284.509521484375}
+{"_id":{"$oid":"5a84f640bfaae5259c613d61"},"latitude":42.33066683614838,"longitude":-71.08725534606126,"name":"Madison Park Village CG","approx_radius":"65.93572846637377"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d62"},"latitude":42.34945050895218,"longitude":-71.07785217920832,"name":"BPL Courtyard","approx_radius":"53.02290566425404"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d63"},"latitude":42.32149037130606,"longitude":-71.05529583721855,"name":"Sharon's Park","approx_radius":"66.40230089825133"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d64"},"latitude":42.325371732300404,"longitude":-71.05703526902191,"name":"Washburn Street Green I","approx_radius":"42.82625714926925"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d65"},"latitude":42.29918357080988,"longitude":-71.06542361049011,"name":"William S. Britton Square","approx_radius":"20.80031738058486"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d66"},"latitude":[-71.10512050445054,42.272531920412625],"longitude":[-71.1051648139674,42.27248678923008],"name":"Mattahunt Woods I","approx_radius":261960.13037109375}
+{"_id":{"$oid":"5a84f640bfaae5259c613d67"},"latitude":42.263931007589925,"longitude":-71.15532154067604,"name":"Beethoven School Play Area","approx_radius":"89.88552740954991"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d68"},"latitude":42.29774680605254,"longitude":-71.07296720453856,"name":"Algonquin Square","approx_radius":"23.30380431393566"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d69"},"latitude":42.31595878042718,"longitude":-71.09850655727672,"name":"Egleston Plaza I","approx_radius":"35.835312818352214"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d6a"},"latitude":42.31585166261943,"longitude":-71.09842409689584,"name":"Egleston Plaza II","approx_radius":"12.759437955497491"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d6b"},"latitude":42.275790725479595,"longitude":-71.09684023011454,"name":"Almont Park II","approx_radius":"51.104954911889976"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d6c"},"latitude":42.36487657445743,"longitude":-71.03393731765367,"name":"Golden Stairs Terrace Park II","approx_radius":"33.19050985841372"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d6d"},"latitude":42.264130572447336,"longitude":-71.11808258984851,"name":"Foley Square","approx_radius":"44.49973083703725"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d6e"},"latitude":42.25254168534396,"longitude":-71.11365031627798,"name":"Jones Square","approx_radius":"24.79738776143872"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d6f"},"latitude":42.29331792744507,"longitude":-71.13232101670431,"name":"Roslindale Wetlands Urban Wild I","approx_radius":"334.22270054353856"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d70"},"latitude":42.30096678447,"longitude":-71.0547942310867,"name":"Scalia Square","approx_radius":"12.716111347781213"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d71"},"latitude":42.334673755108504,"longitude":-71.09003496941783,"name":"Schroeder Plaza","approx_radius":"65.12442637795486"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d72"},"latitude":42.380057302577306,"longitude":-71.02574884415594,"name":"Solari Square","approx_radius":"8.363665223166073"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d73"},"latitude":42.25788394537726,"longitude":-71.12077109605826,"name":"Webster Square","approx_radius":"27.585823539075093"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d74"},"latitude":42.31432223778085,"longitude":-71.09135590908286,"name":"Wolf Square","approx_radius":"17.889040268956393"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d75"},"latitude":42.25555547054145,"longitude":-71.11252378319317,"name":"Woodworth Square","approx_radius":"22.060853813980906"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d76"},"latitude":42.36047252863203,"longitude":-71.05702114073705,"name":"Union Street Park II","approx_radius":"21.270357502294306"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d77"},"latitude":42.320477010719884,"longitude":-71.08751918271653,"name":"Malcolm X Park II","approx_radius":"51.191741936600195"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d78"},"latitude":[-71.11670337401853,42.271109794758026],"longitude":[-71.11653592336395,42.271167967123525],"name":"Crane Ledge I","approx_radius":62987.482666015625}
+{"_id":{"$oid":"5a84f640bfaae5259c613d79"},"latitude":[-71.12287717525143,42.25159743023647],"longitude":[-71.12284522956635,42.25164579604923],"name":"Dana Avenue Urban Wild II","approx_radius":1413.0673828125}
+{"_id":{"$oid":"5a84f640bfaae5259c613d7a"},"latitude":42.26041398789538,"longitude":-71.1226281504573,"name":"Dell Rock II","approx_radius":"24.26101629551858"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d7b"},"latitude":42.27296223914502,"longitude":-71.09119608124183,"name":"Babson-Cookson Tract","approx_radius":"183.97874767306385"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d7c"},"latitude":42.29736412660912,"longitude":-71.12022701797967,"name":"Bussey Brook Meadow I","approx_radius":"584.987035211319"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d7d"},"latitude":42.361434034329164,"longitude":-71.06213033558441,"name":"Cardinal Cushing Park II","approx_radius":"32.42029150673185"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d7e"},"latitude":42.361779015410285,"longitude":-71.06171604665386,"name":"Bowdoin Mall","approx_radius":"84.64326078711865"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d7f"},"latitude":42.36200583050019,"longitude":-71.05997207253974,"name":"Hawkins-New Sudbury Mall II","approx_radius":"36.17829753782348"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d80"},"latitude":42.35295446368421,"longitude":-71.05679081577759,"name":"RFK Greenway II","approx_radius":"63.97383400955663"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d81"},"latitude":42.351139971796535,"longitude":-71.0596100297286,"name":"China Gate Plaza","approx_radius":"45.33906768144805"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d82"},"latitude":[-71.09153865750352,42.343128935460186],"longitude":[-71.09150958898759,42.34319973469429],"name":"Back Bay Fens","approx_radius":3.0533670021972656e+06}
+{"_id":{"$oid":"5a84f640bfaae5259c613d83"},"latitude":[-71.11010834016196,42.34040510955089],"longitude":[-71.11009331231972,42.340405418704904],"name":"Riverway I","approx_radius":748570.3308105469}
+{"_id":{"$oid":"5a84f640bfaae5259c613d84"},"latitude":[-71.11246390212372,42.33336521900109],"longitude":[-71.11243740102708,42.333373232298406],"name":"Riverway III","approx_radius":230726.90380859375}
+{"_id":{"$oid":"5a84f640bfaae5259c613d85"},"latitude":42.31769771106401,"longitude":-71.12079150814394,"name":"Jamaica Pond Park","approx_radius":"1164.1311271956517"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d86"},"latitude":42.38258682623835,"longitude":-71.02904650512465,"name":"Condor Street Beach II","approx_radius":"53.35963421465005"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d87"},"latitude":42.28112002332143,"longitude":-71.17310751243984,"name":"West Roxbury H.S. Campus","approx_radius":"314.28463610486205"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d88"},"latitude":42.274625495835906,"longitude":-71.12744194874935,"name":"Conley School Play Yard","approx_radius":"140.62384544113038"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d89"},"latitude":[-71.06144426841021,42.32015206587424],"longitude":[-71.06134078396695,42.32025229818696],"name":"Edward Everett Square","approx_radius":4096.96630859375}
+{"_id":{"$oid":"5a84f640bfaae5259c613d8a"},"latitude":[-71.09523233189658,42.34534290235894],"longitude":[-71.09502628830514,42.34539431542748],"name":"Boylston Street I","approx_radius":26869.3759765625}
+{"_id":{"$oid":"5a84f640bfaae5259c613d8b"},"latitude":[-71.0943503380383,42.34309878340808],"longitude":[-71.09437835519995,42.34310383655768],"name":"Park Drive I","approx_radius":221943.40185546875}
+{"_id":{"$oid":"5a84f640bfaae5259c613d8c"},"latitude":42.34413523219172,"longitude":-71.09105669922674,"name":"Fire Alarm House Grounds","approx_radius":"108.82989529523084"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d8d"},"latitude":42.338302910712265,"longitude":-71.11040277168556,"name":"Riverway V","approx_radius":"56.17745857905905"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d8e"},"latitude":[-71.0737363452261,42.352947805999946],"longitude":[-71.07165157947775,42.3535081979851],"name":"Commonwealth Avenue Mall I","approx_radius":473518.3742675781}
+{"_id":{"$oid":"5a84f640bfaae5259c613d8f"},"latitude":42.30694313041253,"longitude":-71.12380327930785,"name":"Centre Street III","approx_radius":"11.738600452250342"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d90"},"latitude":42.29495163769766,"longitude":-71.13509907924363,"name":"Centre Street V","approx_radius":"60.43296707064384"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d91"},"latitude":[-71.0428438959178,42.31737275758786],"longitude":[-71.04292194512955,42.31745575783979],"name":"Dever School Schoolyard","approx_radius":49245.954345703125}
+{"_id":{"$oid":"5a84f640bfaae5259c613d92"},"latitude":42.31748754976312,"longitude":-71.04540841144834,"name":"McCormack School Courts","approx_radius":"76.14475707347157"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d93"},"latitude":42.307904667316826,"longitude":-71.08602648061913,"name":"Maple-Sonoma Streets Community Park","approx_radius":"62.78004496556181"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d94"},"latitude":42.34755493474855,"longitude":-71.15377884372788,"name":"Brighton Common","approx_radius":"83.84210428238308"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d95"},"latitude":42.337140476188566,"longitude":-71.05144458036708,"name":"Sweeney Playground","approx_radius":"81.65327802350554"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d96"},"latitude":42.31764764058708,"longitude":-71.05649140234559,"name":"Ryan Play Area","approx_radius":"94.07668216789354"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d97"},"latitude":42.32725541910894,"longitude":-71.09064282010685,"name":"Lambert Avenue Playground","approx_radius":"105.35501108513398"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d98"},"latitude":42.29329790356041,"longitude":-71.0571010055731,"name":"Adams/King Playground","approx_radius":"96.97854870782028"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d99"},"latitude":42.35158258034875,"longitude":-71.06784566698194,"name":"Lincoln Square","approx_radius":"27.532114723003392"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d9a"},"latitude":42.3794954218626,"longitude":-71.06178523885121,"name":"Bunker Hill Burying Ground","approx_radius":"124.56209599065977"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d9b"},"latitude":42.32558457270852,"longitude":-71.07302584604055,"name":"Magazine Street Garden","approx_radius":"52.368041770544366"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d9c"},"latitude":42.326106551088486,"longitude":-71.06835993177359,"name":"Clifford Playground","approx_radius":"324.35114607088275"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d9d"},"latitude":42.28944175616807,"longitude":-71.07642881178565,"name":"Elmhurst Street Park","approx_radius":"58.03559757883062"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d9e"},"latitude":42.26067961644677,"longitude":-71.154417359407,"name":"Dunbarton Woods","approx_radius":"101.3341779095688"}
+{"_id":{"$oid":"5a84f640bfaae5259c613d9f"},"latitude":42.34269242443302,"longitude":-71.06901998338583,"name":"Bradford Street Play Area","approx_radius":"23.49314192235929"}
+{"_id":{"$oid":"5a84f640bfaae5259c613da0"},"latitude":42.334654585326696,"longitude":-71.03388816540814,"name":"Lincoln Square","approx_radius":"62.99103627360587"}
+{"_id":{"$oid":"5a84f640bfaae5259c613da1"},"latitude":42.31683306923226,"longitude":-71.0863600679715,"name":"Laviscount Park","approx_radius":"126.6282375478998"}
+{"_id":{"$oid":"5a84f640bfaae5259c613da2"},"latitude":42.350577929058126,"longitude":-71.06901941650277,"name":"Statler Park","approx_radius":"65.28741157507751"}
+{"_id":{"$oid":"5a84f640bfaae5259c613da3"},"latitude":42.29426648134491,"longitude":-71.15346549510161,"name":"Hynes Playground","approx_radius":"298.6791534971573"}
+{"_id":{"$oid":"5a84f640bfaae5259c613da4"},"latitude":42.31078014011433,"longitude":-71.071804446767,"name":"Columbia Road Totlot","approx_radius":"60.11359465200907"}
+{"_id":{"$oid":"5a84f640bfaae5259c613da5"},"latitude":42.36386269494221,"longitude":-71.05340583489367,"name":"North Square","approx_radius":"38.30923084543397"}
+{"_id":{"$oid":"5a84f640bfaae5259c613da6"},"latitude":42.33193332983049,"longitude":-71.08133684880707,"name":"Eliot Burying Ground","approx_radius":"105.07010628173273"}
+{"_id":{"$oid":"5a84f640bfaae5259c613da7"},"latitude":42.25155790416076,"longitude":-71.12409250732388,"name":"Blake Estates Urban Wild","approx_radius":"68.91331674597114"}
+{"_id":{"$oid":"5a84f640bfaae5259c613da8"},"latitude":42.245432101839114,"longitude":-71.14127838453419,"name":"Fairview Cemetery","approx_radius":"891.2496085835584"}
+{"_id":{"$oid":"5a84f640bfaae5259c613da9"},"latitude":42.31786053033008,"longitude":-71.04529631640365,"name":"McCormack School Yard","approx_radius":"98.85660587088441"}
+{"_id":{"$oid":"5a84f640bfaae5259c613daa"},"latitude":42.34643614093987,"longitude":-71.08462471512675,"name":"Belvidere/Dalton Plaza","approx_radius":"48.37363504345666"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dab"},"latitude":42.34556368156955,"longitude":-71.15150798729005,"name":"Joyce Playground","approx_radius":"138.13969913461642"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dac"},"latitude":42.335612133649605,"longitude":-71.15156577659556,"name":"Cassidy Playground","approx_radius":"365.02242832742326"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dad"},"latitude":42.34042157104907,"longitude":-71.1522752760224,"name":"Shubow Park I","approx_radius":"89.10494658892233"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dae"},"latitude":42.3400697607613,"longitude":-71.15195859681009,"name":"Shubow Park II","approx_radius":"47.13200095066279"}
+{"_id":{"$oid":"5a84f640bfaae5259c613daf"},"latitude":42.374904081817164,"longitude":-71.03945388048659,"name":"Central Square","approx_radius":"112.03268296674058"}
+{"_id":{"$oid":"5a84f640bfaae5259c613db0"},"latitude":42.30472812532924,"longitude":-71.10662309228476,"name":"Rossmore/Stedman Park","approx_radius":"36.710744272501934"}
+{"_id":{"$oid":"5a84f640bfaae5259c613db1"},"latitude":42.31165571705262,"longitude":-71.11549297431677,"name":"Brewer-Burroughs Tot Lot","approx_radius":"55.17450152809736"}
+{"_id":{"$oid":"5a84f640bfaae5259c613db2"},"latitude":[-71.09737041856052,42.33879420444763],"longitude":[-71.0972850849901,42.33882741536791],"name":"The Fenway I","approx_radius":294057.63427734375}
+{"_id":{"$oid":"5a84f640bfaae5259c613db3"},"latitude":[-71.10311430578717,42.33737365331853],"longitude":[-71.10285549057774,42.33775180076],"name":"Avenue Louis Pasteur","approx_radius":64724.8681640625}
+{"_id":{"$oid":"5a84f640bfaae5259c613db4"},"latitude":42.34935912928052,"longitude":-71.1501305092164,"name":"Brighton Police Station Campus","approx_radius":"79.64486533333154"}
+{"_id":{"$oid":"5a84f640bfaae5259c613db5"},"latitude":42.34932953688599,"longitude":-71.14988651819773,"name":"Public Ground","approx_radius":"29.7364811452676"}
+{"_id":{"$oid":"5a84f640bfaae5259c613db6"},"latitude":42.30362506254264,"longitude":-71.07020484106394,"name":"Tebroc Street Playlot","approx_radius":"19.94421346186665"}
+{"_id":{"$oid":"5a84f640bfaae5259c613db7"},"latitude":42.366162755378994,"longitude":-71.05424280831394,"name":"Webster Avenue Playground","approx_radius":"29.961899206235145"}
+{"_id":{"$oid":"5a84f640bfaae5259c613db8"},"latitude":42.334188118739554,"longitude":-71.10523526749816,"name":"Hanlon Square","approx_radius":"23.424394335021255"}
+{"_id":{"$oid":"5a84f640bfaae5259c613db9"},"latitude":42.37934275422587,"longitude":-71.06994681538032,"name":"Essex Square","approx_radius":"18.795383904407025"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dba"},"latitude":42.32703948190639,"longitude":-71.07925690296372,"name":"Mt. Pleasant Play Area","approx_radius":"74.89581497059574"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dbb"},"latitude":42.3383446690634,"longitude":-71.10862733335242,"name":"Joslin Park","approx_radius":"75.10731999308705"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dbc"},"latitude":[-71.10556653101204,42.325323981040796],"longitude":[-71.10556448001341,42.32532777954916],"name":"Hennigan Schoolyard","approx_radius":82063.61279296875}
+{"_id":{"$oid":"5a84f640bfaae5259c613dbd"},"latitude":42.35946490958467,"longitude":-71.14549537780366,"name":"Portsmouth Street Playground","approx_radius":"243.95835891729067"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dbe"},"latitude":42.326316995762475,"longitude":-71.10038001964736,"name":"Heath Square","approx_radius":"36.89875915673774"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dbf"},"latitude":42.28741176523898,"longitude":-71.13201148857904,"name":"Gustav Emmel Square","approx_radius":"16.192557440018554"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dc0"},"latitude":[-71.06467587824697,42.375235722991874],"longitude":[-71.06433991584149,42.37534041493756],"name":"Thompson Square","approx_radius":5906.880126953125}
+{"_id":{"$oid":"5a84f640bfaae5259c613dc1"},"latitude":[-71.06775121788189,42.29532902529042],"longitude":[-71.0677367265399,42.29533043736163],"name":"Tremlett Square","approx_radius":6886.379638671875}
+{"_id":{"$oid":"5a84f640bfaae5259c613dc2"},"latitude":42.389647035523176,"longitude":-70.99908577775841,"name":"Bonito Square","approx_radius":"29.51257306907356"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dc3"},"latitude":[-71.05949719182412,42.320119014608245],"longitude":[-71.05969928708225,42.32012514665712],"name":"Columbia Road","approx_radius":25062.266357421875}
+{"_id":{"$oid":"5a84f640bfaae5259c613dc4"},"latitude":42.37239902715837,"longitude":-71.06179113656245,"name":"Charlestown Veteran's Memorial Park","approx_radius":"27.162108895737603"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dc5"},"latitude":42.328845749262406,"longitude":-71.09993427476698,"name":"Hillside/Calumet","approx_radius":"132.19886371476775"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dc6"},"latitude":42.28577487048941,"longitude":-71.07278301136054,"name":"Roberts Playground","approx_radius":"375.92413334683494"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dc7"},"latitude":[-71.11465746736368,42.32453909070736],"longitude":[-71.11463093241947,42.324553316431285],"name":"Olmsted Park","approx_radius":1.8653472294921875e+06}
+{"_id":{"$oid":"5a84f640bfaae5259c613dc8"},"latitude":42.33719676091352,"longitude":-71.04697950602163,"name":"Foster's Nook CG I","approx_radius":"34.041582823586786"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dc9"},"latitude":42.348150987974705,"longitude":-71.0733945257946,"name":"Frieda Garcia Park","approx_radius":"63.002117119450126"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dca"},"latitude":42.26913035047316,"longitude":-71.1378703296795,"name":"Boundary I","approx_radius":"335.331498045238"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dcb"},"latitude":42.26700176818928,"longitude":-71.13066347979519,"name":"George Wright Golf Course","approx_radius":"1470.6706919499404"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dcc"},"latitude":[-71.13057547139483,42.2679722762144],"longitude":[-71.13029501322217,42.26810646522684],"name":"DeForest Urban Wild I","approx_radius":39824.05859375}
+{"_id":{"$oid":"5a84f640bfaae5259c613dcd"},"latitude":42.328050672312045,"longitude":-71.10347338193034,"name":"McLaughlin Playground","approx_radius":"403.61851628288724"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dce"},"latitude":42.32940151029445,"longitude":-71.09840149735795,"name":"Parker/Terrace","approx_radius":"136.04337951985323"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dcf"},"latitude":42.36983740150445,"longitude":-71.04401760116653,"name":"LoPresti Park","approx_radius":"212.13426272459677"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dd0"},"latitude":42.360470778705064,"longitude":-71.12704447014109,"name":"Raymond V. Mellone Park I","approx_radius":"122.61327474021662"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dd1"},"latitude":42.360198710925445,"longitude":-71.12762456263319,"name":"Raymond V. Mellone Park II","approx_radius":"81.42729168158137"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dd2"},"latitude":42.32880423352388,"longitude":-71.08585014981932,"name":"Justice Gourdin Park I","approx_radius":"83.67668007601591"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dd3"},"latitude":42.34901862442126,"longitude":-71.06598215835635,"name":"Elliot Norton Park","approx_radius":"114.49348438694535"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dd4"},"latitude":42.34948729096031,"longitude":-71.06673746801553,"name":"Bay Village Neighborhood Park","approx_radius":"41.50058818678554"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dd5"},"latitude":42.31587622496911,"longitude":-71.07566184125149,"name":"Beauford Play Area","approx_radius":"59.581026236857575"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dd6"},"latitude":42.31057586858335,"longitude":-71.07801551325595,"name":"Children's Park","approx_radius":"54.612128341856256"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dd7"},"latitude":42.31739284670008,"longitude":-71.07592164502556,"name":"Winthrop Playground","approx_radius":"155.0465681259474"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dd8"},"latitude":42.320175997139685,"longitude":-71.07425858648445,"name":"The Food Project Lot #2","approx_radius":"138.40923466109925"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dd9"},"latitude":42.31825852762101,"longitude":-71.07027545945915,"name":"Magnolia \u0026 Woodford Streets Garden","approx_radius":"46.68101320552891"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dda"},"latitude":42.31361315212993,"longitude":-71.07260767533474,"name":"Denton Square","approx_radius":"32.169099996583824"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ddb"},"latitude":42.3097369497719,"longitude":-71.0778603121369,"name":"Fredericks Middle School Playground","approx_radius":"266.9235950630027"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ddc"},"latitude":42.31559880187791,"longitude":-71.0746883180146,"name":"Woodcliff","approx_radius":"134.70643038801794"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ddd"},"latitude":[-71.07353066383456,42.30955146718181],"longitude":[-71.07279512928471,42.310767406542624],"name":"Ceylon Park I","approx_radius":180796.14526367188}
+{"_id":{"$oid":"5a84f640bfaae5259c613dde"},"latitude":42.31117724006293,"longitude":-71.07308029869124,"name":"Dickerman School Yard","approx_radius":"88.03207863059717"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ddf"},"latitude":42.31964406522968,"longitude":-71.0712816054216,"name":"Hannon Playground","approx_radius":"167.60463579673927"}
+{"_id":{"$oid":"5a84f640bfaae5259c613de0"},"latitude":42.28811146583293,"longitude":-71.12328152820479,"name":"Healy Playground","approx_radius":"365.3437848083234"}
+{"_id":{"$oid":"5a84f640bfaae5259c613de1"},"latitude":42.34125351284689,"longitude":-71.07722421622051,"name":"South End Library Park","approx_radius":"58.8781945346997"}
+{"_id":{"$oid":"5a84f640bfaae5259c613de2"},"latitude":[-70.98442542310323,42.328396297636296],"longitude":[-70.98461181529689,42.32840465640649],"name":"Spectacle Island I","approx_radius":3.746063962158203e+06}
+{"_id":{"$oid":"5a84f640bfaae5259c613de3"},"latitude":42.380946526103784,"longitude":-71.06406964601592,"name":"Cook Street Play Area","approx_radius":"38.125283999486165"}
+{"_id":{"$oid":"5a84f640bfaae5259c613de4"},"latitude":42.36137908523304,"longitude":-71.05173113169917,"name":"Christopher Columbus Park","approx_radius":"259.8766926360415"}
+{"_id":{"$oid":"5a84f640bfaae5259c613de5"},"latitude":42.37432764170273,"longitude":-71.06560214368916,"name":"Peter Looney Park","approx_radius":"98.17457306380216"}
+{"_id":{"$oid":"5a84f640bfaae5259c613de6"},"latitude":42.35221802431168,"longitude":-71.0629010835613,"name":"Liberty Tree Park","approx_radius":"43.417337384354596"}
+{"_id":{"$oid":"5a84f640bfaae5259c613de7"},"latitude":42.378119748864606,"longitude":-71.04217907769396,"name":"Umana Schoolyard","approx_radius":"195.76290702107383"}
+{"_id":{"$oid":"5a84f640bfaae5259c613de8"},"latitude":42.32523133052349,"longitude":-71.10958320481,"name":"Nira Rock","approx_radius":"141.93783899819735"}
+{"_id":{"$oid":"5a84f640bfaae5259c613de9"},"latitude":42.32602135842971,"longitude":-71.10870600927905,"name":"Jefferson Playground","approx_radius":"219.13709723531247"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dea"},"latitude":42.319635801965305,"longitude":-71.09985837692199,"name":"Amory Street Park","approx_radius":"41.45079253001346"}
+{"_id":{"$oid":"5a84f640bfaae5259c613deb"},"latitude":42.31435875696817,"longitude":-71.09724238329581,"name":"Hernandez Schoolyard","approx_radius":"86.24681648673155"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dec"},"latitude":42.285500182817614,"longitude":-71.11771461974595,"name":"Philbrick Schoolyard","approx_radius":"65.3480438706324"}
+{"_id":{"$oid":"5a84f640bfaae5259c613ded"},"latitude":42.31463295355608,"longitude":-71.09788301622913,"name":"Dixwell Street Playlot","approx_radius":"38.940565240900334"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dee"},"latitude":42.368741080331304,"longitude":-71.05437194342184,"name":"Puopolo Playground","approx_radius":"224.9713301197056"}
+{"_id":{"$oid":"5a84f640bfaae5259c613def"},"latitude":42.30579370326033,"longitude":-71.13160122715708,"name":"Manning Schoolyard","approx_radius":"59.66239146096037"}
+{"_id":{"$oid":"5a84f640bfaae5259c613df0"},"latitude":42.34356422953645,"longitude":-71.05279344659374,"name":"A Street Park I","approx_radius":"137.4753022005285"}
+{"_id":{"$oid":"5a84f640bfaae5259c613df1"},"latitude":[-71.08852500367774,42.30180840215091],"longitude":[-71.08864748701549,42.30180974101015],"name":"Franklin Park","approx_radius":1.7082410232177734e+07}
+{"_id":{"$oid":"5a84f640bfaae5259c613df2"},"latitude":42.286658743812715,"longitude":-71.12839411397094,"name":"Adams Park","approx_radius":"98.91611474976138"}
+{"_id":{"$oid":"5a84f640bfaae5259c613df3"},"latitude":[-71.11780450079512,42.302490010537156],"longitude":[-71.11802345676448,42.30255312751642],"name":"Arnold Arboretum","approx_radius":9.768623905029297e+06}
+{"_id":{"$oid":"5a84f640bfaae5259c613df4"},"latitude":42.31748727225801,"longitude":-71.0916715469854,"name":"Higginson Schoolyard","approx_radius":"76.66814009979623"}
+{"_id":{"$oid":"5a84f640bfaae5259c613df5"},"latitude":42.27460672393799,"longitude":-71.09733546218621,"name":"Almont Park","approx_radius":"502.21946139405145"}
+{"_id":{"$oid":"5a84f640bfaae5259c613df6"},"latitude":42.320561021256815,"longitude":-71.10601789134398,"name":"Forbes Street Playground","approx_radius":"38.09132786392686"}
+{"_id":{"$oid":"5a84f640bfaae5259c613df7"},"latitude":42.364628491673635,"longitude":-71.02884777192494,"name":"Porzio Park II","approx_radius":"51.090445426176004"}
+{"_id":{"$oid":"5a84f640bfaae5259c613df8"},"latitude":[-71.02862723130286,42.36406739402154],"longitude":[-71.02798741426416,42.36488527036004],"name":"Porzio Park","approx_radius":102871.09326171875}
+{"_id":{"$oid":"5a84f640bfaae5259c613df9"},"latitude":[-71.15414567235086,42.26952956056382],"longitude":[-71.15447038353913,42.269780281999985],"name":"Shaw Woods I","approx_radius":31150.17724609375}
+{"_id":{"$oid":"5a84f640bfaae5259c613dfa"},"latitude":42.26440177640569,"longitude":-71.11293110951551,"name":"Ross Playground","approx_radius":"427.16855179268236"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dfb"},"latitude":42.27980174053632,"longitude":-71.12309403405746,"name":"Canterbury I","approx_radius":"131.68103320421014"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dfc"},"latitude":42.282634517380195,"longitude":-71.1067909662294,"name":"Mt. Hope Cemetery","approx_radius":"1316.7698393228034"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dfd"},"latitude":42.310887840046284,"longitude":-71.04850131368782,"name":"Savin Hill Park","approx_radius":"339.07643951271945"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dfe"},"latitude":42.339028718265695,"longitude":-71.05325428906797,"name":"Orton Field","approx_radius":"148.87067907446624"}
+{"_id":{"$oid":"5a84f640bfaae5259c613dff"},"latitude":42.31991829256459,"longitude":-71.10787873609027,"name":"Paul Gore Street Park","approx_radius":"102.59949278874858"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e00"},"latitude":42.308091592847354,"longitude":-71.06311437890172,"name":"Allen Park","approx_radius":"133.97440823074854"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e01"},"latitude":42.28814738881039,"longitude":-71.1012015254395,"name":"Boston Nature Center_Visitor Ctr","approx_radius":"189.44929521457868"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e02"},"latitude":42.350146166857904,"longitude":-71.14766287459537,"name":"Cunningham Park","approx_radius":"62.55924243048794"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e03"},"latitude":42.382666284900765,"longitude":-71.01917890250047,"name":"McLean Playground","approx_radius":"82.44992043804837"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e04"},"latitude":42.347738611512185,"longitude":-71.14283475715256,"name":"Fidelis Way Park","approx_radius":"263.1365554381764"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e05"},"latitude":42.292846041595226,"longitude":-71.08638262271322,"name":"Harambee Park","approx_radius":"787.8343225868635"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e06"},"latitude":42.314207489615185,"longitude":-71.10161688612625,"name":"Egleston Community Orchard","approx_radius":"39.31480490794962"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e07"},"latitude":42.29671963158834,"longitude":-71.13392911391378,"name":"VFW Parkway II","approx_radius":"94.79169040126276"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e08"},"latitude":42.25643496016666,"longitude":-71.15976601578147,"name":"Carroll Pond Playground","approx_radius":"86.35888833747818"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e09"},"latitude":[-71.04852886912666,42.29049011627104],"longitude":[-71.04851618152671,42.2904906813172],"name":"O'Donnell Square","approx_radius":2656.323486328125}
+{"_id":{"$oid":"5a84f640bfaae5259c613e0a"},"latitude":42.35821145738678,"longitude":-71.05976739037023,"name":"King's Chapel Burying Ground","approx_radius":"85.08013934778116"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e0b"},"latitude":42.304984930556586,"longitude":-71.11598106172418,"name":"South St BHA Community Garden","approx_radius":"55.94766327169993"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e0c"},"latitude":42.325199714358874,"longitude":-71.08679349571129,"name":"Tommy's Rock (Alpine)","approx_radius":"60.502711668258996"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e0d"},"latitude":42.34401467502001,"longitude":-71.05318612679399,"name":"A Street Park II","approx_radius":"59.667583359051626"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e0e"},"latitude":42.29403138519118,"longitude":-71.08646439300324,"name":"Blue Hill Club Recreation Center","approx_radius":"236.06829382685765"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e0f"},"latitude":42.33313891516839,"longitude":-71.02561568358317,"name":"Columbia Park","approx_radius":"68.76569431578308"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e10"},"latitude":42.32555691070528,"longitude":-71.0571512165746,"name":"Washburn Street Green II","approx_radius":"15.53082093964094"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e11"},"latitude":42.33985610821478,"longitude":-71.0686929746526,"name":"Harrison/Plympton Basketball Court","approx_radius":"56.336483308171964"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e12"},"latitude":42.386175502722324,"longitude":-71.00563445613523,"name":"Goodearl Square","approx_radius":"16.683864011654343"}
+{"_id":{"$oid":"5a84f640bfaae5259c613e13"},"latitude":[-71.08229867142308,42.304230131018855],"longitude":[-71.08228956249104,42.304231448941614],"name":"Columbia Road Mall","approx_radius":39445.45068359375}
+{"_id":{"$oid":"5a84f640bfaae5259c613e14"},"latitude":42.38261153631081,"longitude":-71.0403441695788,"name":"Condor Street Overlook Access Area","approx_radius":"21.37099483736337"}

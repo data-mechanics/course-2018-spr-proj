@@ -6,9 +6,9 @@ import pandas as pd
 import json
 
 class getStreetlights(dml.Algorithm):
-    contributor = 'ferrys'
+    contributor = 'aoconno8_dmak1112_ferrys'
     reads = []
-    writes = ['ferrys.streetlights']
+    writes = ['aoconno8_dmak1112_ferrys.streetlights']
 
     @staticmethod
     def execute(trial = False):
@@ -17,16 +17,16 @@ class getStreetlights(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ferrys', 'ferrys')
+        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
 
         url = 'https://data.boston.gov/dataset/52b0fdad-4037-460c-9c92-290f5774ab2b/resource/c2fcc1e3-c38f-44ad-a0cf-e5ea2a6585b5/download/streetlight-locations.csv'
         streetlight_dict = pd.read_csv(url).to_dict(orient='records')
                 
         repo.dropCollection('streetlights')
         repo.createCollection('streetlights')
-        repo['ferrys.streetlights'].insert_many(streetlight_dict)
-        repo['ferrys.streetlights'].metadata({'complete':True})
-        print(repo['ferrys.streetlights'].metadata())
+        repo['aoconno8_dmak1112_ferrys.streetlights'].insert_many(streetlight_dict)
+        repo['aoconno8_dmak1112_ferrys.streetlights'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112_ferrys.streetlights'].metadata())
 
         repo.logout()
         endTime = datetime.datetime.now()
@@ -44,14 +44,14 @@ class getStreetlights(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ferrys', 'ferrys')
+        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.boston.gov/dataset/')
 
-        this_script = doc.agent('alg:ferrys#getStreetlights', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:aoconno8_dmak1112_ferrys#getStreetlights', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bdp:streetlight-locations', {'prov:label':'Streetlight Location Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         get_streetlights = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_streetlights, this_script)
@@ -61,7 +61,7 @@ class getStreetlights(dml.Algorithm):
                   })
 
 
-        streetlight_locations = doc.entity('dat:ferrys#streetlights', {prov.model.PROV_LABEL:'streetlights', prov.model.PROV_TYPE:'ont:DataSet'})
+        streetlight_locations = doc.entity('dat:aoconno8_dmak1112_ferrys#streetlights', {prov.model.PROV_LABEL:'streetlights', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(streetlight_locations, this_script)
         doc.wasGeneratedBy(streetlight_locations, get_streetlights, endTime)
         doc.wasDerivedFrom(streetlight_locations, resource, get_streetlights, get_streetlights, get_streetlights)

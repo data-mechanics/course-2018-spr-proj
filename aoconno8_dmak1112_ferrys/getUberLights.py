@@ -12,9 +12,9 @@ class getUberLights(dml.Algorithm):
     '''
         Returns the number of streetlights in an uber boundary
     '''
-    contributor = 'ferrys'
-    reads = ['ferrys.uber_boundaries', 'ferrys.streetlights']
-    writes = ['ferrys.uberlights']
+    contributor = 'aoconno8_dmak1112_ferrys'
+    reads = ['aoconno8_dmak1112_ferrys.uber_boundaries', 'aoconno8_dmak1112_ferrys.streetlights']
+    writes = ['aoconno8_dmak1112_ferrys.uberlights']
 
     @staticmethod
     def execute(trial = False):
@@ -23,14 +23,14 @@ class getUberLights(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ferrys', 'ferrys')
+        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
         
         # uber
-        uber = repo.ferrys.uber_boundaries.find()
+        uber = repo.aoconno8_dmak1112_ferrys.uber_boundaries.find()
         projected_uber = getUberLights.project(uber, lambda t: (t['properties']['MOVEMENT_ID'], [tuple(x) for x in t['geometry']['coordinates'][0][0]]))
         
         # streetlights
-        streetlights = repo.ferrys.streetlights.find()
+        streetlights = repo.aoconno8_dmak1112_ferrys.streetlights.find()
         projected_streetlights = getUberLights.project(streetlights, lambda t: [float(x) for x in t['the_geom'].replace(')', ' ').replace('(', ' ').split()[1:]])
         
         if trial:
@@ -54,9 +54,9 @@ class getUberLights(dml.Algorithm):
         
         repo.dropCollection("uberlights")
         repo.createCollection("uberlights")
-        repo['ferrys.uberlights'].insert_many(uber_light)
-        repo['ferrys.uberlights'].metadata({'complete':True})
-        print(repo['ferrys.uberlights'].metadata())
+        repo['aoconno8_dmak1112_ferrys.uberlights'].insert_many(uber_light)
+        repo['aoconno8_dmak1112_ferrys.uberlights'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112_ferrys.uberlights'].metadata())
 
                 
         repo.logout()
@@ -75,16 +75,16 @@ class getUberLights(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ferrys', 'ferrys')
+        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
-        this_script = doc.agent('alg:ferrys#getUberLights', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+        this_script = doc.agent('alg:aoconno8_dmak1112_ferrys#getUberLights', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-        uber_boundaries = doc.entity('dat:ferrys#uber_boundaries', {prov.model.PROV_LABEL:'uber_boundaries', prov.model.PROV_TYPE:'ont:DataSet'})
-        streetlight_locations = doc.entity('dat:ferrys#streetlights', {prov.model.PROV_LABEL:'streetlights', prov.model.PROV_TYPE:'ont:DataSet'})
+        uber_boundaries = doc.entity('dat:aoconno8_dmak1112_ferrys#uber_boundaries', {prov.model.PROV_LABEL:'uber_boundaries', prov.model.PROV_TYPE:'ont:DataSet'})
+        streetlight_locations = doc.entity('dat:aoconno8_dmak1112_ferrys#streetlights', {prov.model.PROV_LABEL:'streetlights', prov.model.PROV_TYPE:'ont:DataSet'})
         
         get_uber_lights = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
@@ -93,7 +93,7 @@ class getUberLights(dml.Algorithm):
         doc.usage(get_uber_lights, uber_boundaries, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
         doc.usage(get_uber_lights, streetlight_locations, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
 
-        uber_lights = doc.entity('dat:ferrys#uberlights', {prov.model.PROV_LABEL: 'Uber Boundaries with Streetlights', prov.model.PROV_TYPE: 'ont:DataSet'})
+        uber_lights = doc.entity('dat:aoconno8_dmak1112_ferrys#uberlights', {prov.model.PROV_LABEL: 'Uber Boundaries with Streetlights', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(uber_lights, this_script)
         doc.wasGeneratedBy(uber_lights, get_uber_lights, endTime)
         doc.wasDerivedFrom(uber_lights, uber_boundaries, get_uber_lights, get_uber_lights, get_uber_lights)

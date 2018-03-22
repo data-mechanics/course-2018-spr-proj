@@ -7,9 +7,9 @@ import json
 import urllib
 
 class getUber(dml.Algorithm):
-    contributor = 'ferrys'
+    contributor = 'aoconno8_dmak1112_ferrys'
     reads = []
-    writes = ['ferrys.uber_travel', 'ferrys.uber_boundaries']
+    writes = ['aoconno8_dmak1112_ferrys.uber_travel', 'aoconno8_dmak1112_ferrys.uber_boundaries']
 
     @staticmethod
     def execute(trial = False):
@@ -18,16 +18,16 @@ class getUber(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ferrys', 'ferrys')
+        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
 
         url = 'http://datamechanics.io/data/ferrys/Uber_Travel_Times.csv'
         uber_travel_dict = pd.read_csv(url).to_dict(orient='records')
         
         repo.dropCollection("uber_travel")
         repo.createCollection("uber_travel")
-        repo['ferrys.uber_travel'].insert_many(uber_travel_dict)
-        repo['ferrys.uber_travel'].metadata({'complete':True})
-        print(repo['ferrys.uber_travel'].metadata())
+        repo['aoconno8_dmak1112_ferrys.uber_travel'].insert_many(uber_travel_dict)
+        repo['aoconno8_dmak1112_ferrys.uber_travel'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112_ferrys.uber_travel'].metadata())
         
         url = 'http://datamechanics.io/data/ferrys/boston_censustracts.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
@@ -35,9 +35,9 @@ class getUber(dml.Algorithm):
         
         repo.dropCollection("uber_boundaries")
         repo.createCollection("uber_boundaries")
-        repo['ferrys.uber_boundaries'].insert_many(uber_boundaries)
-        repo['ferrys.uber_boundaries'].metadata({'complete':True})
-        print(repo['ferrys.uber_boundaries'].metadata())
+        repo['aoconno8_dmak1112_ferrys.uber_boundaries'].insert_many(uber_boundaries)
+        repo['aoconno8_dmak1112_ferrys.uber_boundaries'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112_ferrys.uber_boundaries'].metadata())
         
 
         repo.logout()
@@ -56,15 +56,15 @@ class getUber(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ferrys', 'ferrys')
+        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
-        this_script = doc.agent('alg:ferrys#getUber', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        uber_times_resource = doc.entity('dat:ferrys#Uber_Travel_Times', {'prov:label':'Uber Travel Times Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
-        boundaries_resource = doc.entity('dat:ferrys#boston_censustracts', {'prov:label':'Uber Boundary Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        this_script = doc.agent('alg:aoconno8_dmak1112_ferrys#getUber', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        uber_times_resource = doc.entity('dat:aoconno8_dmak1112_ferrys#Uber_Travel_Times', {'prov:label':'Uber Travel Times Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        boundaries_resource = doc.entity('dat:aoconno8_dmak1112_ferrys#boston_censustracts', {'prov:label':'Uber Boundary Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         
         get_uber = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_uber, this_script)
@@ -73,12 +73,12 @@ class getUber(dml.Algorithm):
 
 
 
-        uber_travel = doc.entity('dat:ferrys#uber_travel', {prov.model.PROV_LABEL:'uber_travel', prov.model.PROV_TYPE:'ont:DataSet'})
+        uber_travel = doc.entity('dat:aoconno8_dmak1112_ferrys#uber_travel', {prov.model.PROV_LABEL:'uber_travel', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(uber_travel, this_script)
         doc.wasGeneratedBy(uber_travel, get_uber, endTime)
         doc.wasDerivedFrom(uber_travel, uber_times_resource, get_uber, get_uber, get_uber)
         
-        uber_boundaries = doc.entity('dat:ferrys#uber_boundaries', {prov.model.PROV_LABEL:'uber_boundaries', prov.model.PROV_TYPE:'ont:DataSet'})
+        uber_boundaries = doc.entity('dat:aoconno8_dmak1112_ferrys#uber_boundaries', {prov.model.PROV_LABEL:'uber_boundaries', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(uber_boundaries, this_script)
         doc.wasGeneratedBy(uber_boundaries, get_uber, endTime)
         doc.wasDerivedFrom(uber_boundaries, boundaries_resource, get_uber, get_uber, get_uber)

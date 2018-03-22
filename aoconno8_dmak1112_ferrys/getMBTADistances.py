@@ -11,9 +11,9 @@ class getMBTADistances(dml.Algorithm):
         Returns the number of MBTA stops near a specific alcohol license
         Easily extended to also return which MBTA stops are near and where they are
     '''
-    contributor = 'ferrys'
-    reads = ['ferrys.mbta', 'ferrys.alc_licenses']
-    writes = ['ferrys.mbtadistance']
+    contributor = 'aoconno8_dmak1112_ferrys'
+    reads = ['aoconno8_dmak1112_ferrys.mbta', 'aoconno8_dmak1112_ferrys.alc_licenses']
+    writes = ['aoconno8_dmak1112_ferrys.mbtadistance']
 
     @staticmethod
     def execute(trial = False):
@@ -22,16 +22,16 @@ class getMBTADistances(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ferrys', 'ferrys')
+        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
         api_key = dml.auth['services']['googlegeocoding']['key']
         
         # mbta
-        mbta = repo.ferrys.mbta.find()
+        mbta = repo.aoconno8_dmak1112_ferrys.mbta.find()
         projected_mbta = getMBTADistances.project(mbta, lambda t: (t['attributes']['latitude'], t['attributes']['longitude']))
 
 
         # alc
-        alc = repo.ferrys.alc_licenses.find()
+        alc = repo.aoconno8_dmak1112_ferrys.alc_licenses.find()
         projected_alc = getMBTADistances.project(alc, lambda t: (t['License Number'], t['Street Number'] + ' ' + t['Street Name'] + ' ' +  str(t['Suffix']) + ' ' + t['City']))
 
         if trial:
@@ -71,9 +71,9 @@ class getMBTADistances(dml.Algorithm):
 
         repo.dropCollection('mbtadistance')
         repo.createCollection('mbtadistance')
-        repo['ferrys.mbtadistance'].insert_many(num_mbta_near)
-        repo['ferrys.mbtadistance'].metadata({'complete':True})
-        print(repo['ferrys.mbtadistance'].metadata())
+        repo['aoconno8_dmak1112_ferrys.mbtadistance'].insert_many(num_mbta_near)
+        repo['aoconno8_dmak1112_ferrys.mbtadistance'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112_ferrys.mbtadistance'].metadata())
         
         repo.logout()
         endTime = datetime.datetime.now()
@@ -91,17 +91,17 @@ class getMBTADistances(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ferrys', 'ferrys')
+        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('geocode', 'https://maps.googleapis.com/maps/api/geocode')
 
-        this_script = doc.agent('alg:ferrys#getMBTADistances', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+        this_script = doc.agent('alg:aoconno8_dmak1112_ferrys#getMBTADistances', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-        licenses = doc.entity('dat:ferrys#alc_licenses', {prov.model.PROV_LABEL:'alc_licenses', prov.model.PROV_TYPE:'ont:DataSet'})
-        mbta_stops = doc.entity('dat:ferrys#mbta', {prov.model.PROV_LABEL:'mbta', prov.model.PROV_TYPE:'ont:DataSet'})
+        licenses = doc.entity('dat:aoconno8_dmak1112_ferrys#alc_licenses', {prov.model.PROV_LABEL:'alc_licenses', prov.model.PROV_TYPE:'ont:DataSet'})
+        mbta_stops = doc.entity('dat:aoconno8_dmak1112_ferrys#mbta', {prov.model.PROV_LABEL:'mbta', prov.model.PROV_TYPE:'ont:DataSet'})
         geocode_locations = doc.entity('geocode:json', {'prov:label':'Google Geocode API', prov.model.PROV_TYPE:'ont:DataResource'})
 
 
@@ -114,7 +114,7 @@ class getMBTADistances(dml.Algorithm):
         doc.usage(get_mbta_dist, geocode_locations, startTime, None, 
                   {prov.model.PROV_TYPE:'ont:Retrieval', 'ont:Query':'?address=$&key=$'})
 
-        mbta_dist = doc.entity('dat:ferrys#mbtadistance', {prov.model.PROV_LABEL: 'Alcohol Licenses and MBTA Stop Locations', prov.model.PROV_TYPE: 'ont:DataSet'})
+        mbta_dist = doc.entity('dat:aoconno8_dmak1112_ferrys#mbtadistance', {prov.model.PROV_LABEL: 'Alcohol Licenses and MBTA Stop Locations', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(mbta_dist, this_script)
         doc.wasGeneratedBy(mbta_dist, get_mbta_dist, endTime)
         doc.wasDerivedFrom(mbta_dist, licenses, get_mbta_dist, get_mbta_dist, get_mbta_dist)

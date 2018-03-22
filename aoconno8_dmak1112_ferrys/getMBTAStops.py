@@ -6,9 +6,9 @@ import datetime
 import uuid
 
 class getMBTAStops(dml.Algorithm):
-    contributor = 'ferrys'
+    contributor = 'aoconno8_dmak1112_ferrys'
     reads = []
-    writes = ['ferrys.mbta']
+    writes = ['aoconno8_dmak1112_ferrys.mbta']
 
     @staticmethod
     def execute(trial = False):
@@ -17,7 +17,7 @@ class getMBTAStops(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ferrys', 'ferrys')
+        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
 
         api_key = dml.auth['services']['mbtadeveloperportal']['key']
     
@@ -27,9 +27,9 @@ class getMBTAStops(dml.Algorithm):
                 
         repo.dropCollection('mbta')
         repo.createCollection('mbta')
-        repo['ferrys.mbta'].insert_many(mbta_json)
-        repo['ferrys.mbta'].metadata({'complete':True})
-        print(repo['ferrys.mbta'].metadata())
+        repo['aoconno8_dmak1112_ferrys.mbta'].insert_many(mbta_json)
+        repo['aoconno8_dmak1112_ferrys.mbta'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112_ferrys.mbta'].metadata())
 
         repo.logout()
         endTime = datetime.datetime.now()
@@ -47,21 +47,21 @@ class getMBTAStops(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ferrys', 'ferrys')
+        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('mbta', 'https://api-v3.mbta.com/')
 
-        this_script = doc.agent('alg:ferrys#getMBTAStops', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:aoconno8_dmak1112_ferrys#getMBTAStops', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('mbta:stops', {'prov:label':'MBTA Developer Portal', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_mbta_stops = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_mbta_stops, this_script)
         doc.usage(get_mbta_stops, resource, startTime, None, 
                   { prov.model.PROV_TYPE:'ont:Retrieval', 'ont:Query':'?api_key=$' })
 
-        mbta_stops= doc.entity('dat:ferrys#mbta', {prov.model.PROV_LABEL:'mbta', prov.model.PROV_TYPE:'ont:DataSet'})
+        mbta_stops= doc.entity('dat:aoconno8_dmak1112_ferrys#mbta', {prov.model.PROV_LABEL:'mbta', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(mbta_stops, this_script)
         doc.wasGeneratedBy(mbta_stops, get_mbta_stops, endTime)
         doc.wasDerivedFrom(mbta_stops, resource, get_mbta_stops, get_mbta_stops, get_mbta_stops)

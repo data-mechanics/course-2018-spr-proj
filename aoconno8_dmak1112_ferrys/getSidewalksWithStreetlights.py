@@ -10,9 +10,9 @@ from tqdm import tqdm
 import shapely.geometry
 
 class getSidewalksWithStreetlights(dml.Algorithm):
-    contributor = 'ferrys'
-    reads = ['ferrys.sidewalks', 'ferrys.streetlights']
-    writes = ['ferrys.sidewalkswithstreetlights']
+    contributor = 'aoconno8_dmak1112_ferrys'
+    reads = ['aoconno8_dmak1112_ferrys.sidewalks', 'aoconno8_dmak1112_ferrys.streetlights']
+    writes = ['aoconno8_dmak1112_ferrys.sidewalkswithstreetlights']
 
     @staticmethod
     def execute(trial = False):
@@ -21,14 +21,14 @@ class getSidewalksWithStreetlights(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('ferrys', 'ferrys')
+        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
         
         # sidewalks
-        sidewalks = repo.ferrys.sidewalks.find()
+        sidewalks = repo.aoconno8_dmak1112_ferrys.sidewalks.find()
         projected_sidewalks = getSidewalksWithStreetlights.project(sidewalks, lambda t: t['geometry']['coordinates'][0])
         
         # streetlights
-        streetlights = repo.ferrys.streetlights.find()
+        streetlights = repo.aoconno8_dmak1112_ferrys.streetlights.find()
         projected_streetlights = getSidewalksWithStreetlights.project(streetlights, lambda t: [float(x) for x in t['the_geom'].replace(')', ' ').replace('(', ' ').split()[1:]])
         
         if trial:
@@ -60,9 +60,9 @@ class getSidewalksWithStreetlights(dml.Algorithm):
         
         repo.dropCollection("sidewalkswithstreetlights")
         repo.createCollection("sidewalkswithstreetlights")
-        repo['ferrys.sidewalkswithstreetlights'].insert_many(side_light)
-        repo['ferrys.sidewalkswithstreetlights'].metadata({'complete':True})
-        print(repo['ferrys.sidewalkswithstreetlights'].metadata())
+        repo['aoconno8_dmak1112_ferrys.sidewalkswithstreetlights'].insert_many(side_light)
+        repo['aoconno8_dmak1112_ferrys.sidewalkswithstreetlights'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112_ferrys.sidewalkswithstreetlights'].metadata())
                 
         repo.logout()
         endTime = datetime.datetime.now()
@@ -81,17 +81,17 @@ class getSidewalksWithStreetlights(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
 
-        repo.authenticate('ferrys', 'ferrys')
+        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bod', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/')
 
-        this_script = doc.agent('alg:ferrys#getSidewalksWithStreetlights', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+        this_script = doc.agent('alg:aoconno8_dmak1112_ferrys#getSidewalksWithStreetlights', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-        sidewalk_locations = doc.entity('dat:ferrys#sidewalks', {prov.model.PROV_LABEL:'sidewalks', prov.model.PROV_TYPE:'ont:DataSet'})
-        streetlight_locations = doc.entity('dat:ferrys#streetlights', {prov.model.PROV_LABEL:'streetlights', prov.model.PROV_TYPE:'ont:DataSet'})
+        sidewalk_locations = doc.entity('dat:aoconno8_dmak1112_ferrys#sidewalks', {prov.model.PROV_LABEL:'sidewalks', prov.model.PROV_TYPE:'ont:DataSet'})
+        streetlight_locations = doc.entity('dat:aoconno8_dmak1112_ferrys#streetlights', {prov.model.PROV_LABEL:'streetlights', prov.model.PROV_TYPE:'ont:DataSet'})
         
         get_uber_lights = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
@@ -100,7 +100,7 @@ class getSidewalksWithStreetlights(dml.Algorithm):
         doc.usage(get_uber_lights, sidewalk_locations, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
         doc.usage(get_uber_lights, streetlight_locations, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
 
-        uber_lights = doc.entity('dat:ferrys#sidewalkswithstreetlights', {prov.model.PROV_LABEL: 'Sidewalks with Streetlights', prov.model.PROV_TYPE: 'ont:DataSet'})
+        uber_lights = doc.entity('dat:aoconno8_dmak1112_ferrys#sidewalkswithstreetlights', {prov.model.PROV_LABEL: 'Sidewalks with Streetlights', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(uber_lights, this_script)
         doc.wasGeneratedBy(uber_lights, get_uber_lights, endTime)
         doc.wasDerivedFrom(uber_lights, sidewalk_locations, get_uber_lights, get_uber_lights, get_uber_lights)

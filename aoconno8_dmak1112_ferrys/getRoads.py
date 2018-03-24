@@ -6,10 +6,10 @@ import datetime
 import uuid
 import json
 
-class getSidewalks(dml.Algorithm):
+class getRoads(dml.Algorithm):
     contributor = 'aoconno8_dmak1112_ferrys'
     reads = []
-    writes = ['aoconno8_dmak1112_ferrys.sidewalks']
+    writes = ['aoconno8_dmak1112_ferrys.roads']
 
     @staticmethod
     def execute(trial = False):
@@ -20,15 +20,15 @@ class getSidewalks(dml.Algorithm):
         repo = client.repo
         repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
 
-        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/6aa3bdc3ff5443a98d506812825c250a_0.geojson'
+        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/cfd1740c2e4b49389f47a9ce2dd236cc_8.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        sidewalk_dict = dict(geojson.loads(response))['features']
+        road_dict = dict(geojson.loads(response))['features']
                 
-        repo.dropCollection("sidewalks")
-        repo.createCollection("sidewalks")
-        repo['aoconno8_dmak1112_ferrys.sidewalks'].insert_many(sidewalk_dict)
-        repo['aoconno8_dmak1112_ferrys.sidewalks'].metadata({'complete':True})
-        print(repo['aoconno8_dmak1112_ferrys.sidewalks'].metadata())
+        repo.dropCollection("roads")
+        repo.createCollection("roads")
+        repo['aoconno8_dmak1112_ferrys.roads'].insert_many(road_dict)
+        repo['aoconno8_dmak1112_ferrys.roads'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112_ferrys.roads'].metadata())
 
         repo.logout()
         endTime = datetime.datetime.now()
@@ -72,7 +72,7 @@ class getSidewalks(dml.Algorithm):
                   
         return doc
 
-#getSidewalks.execute()
+getRoads.execute()
 #doc = getSidewalks.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

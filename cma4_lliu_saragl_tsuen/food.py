@@ -11,7 +11,7 @@ class food(dml.Algorithm):
     writes = ['cma4_tsuen.food']
 
     def PartToParts():
-        with open('./../data/food.json', 'r') as myfile:
+        with open('./data/food.json', 'r') as myfile:
             
             data=myfile.readlines()
             

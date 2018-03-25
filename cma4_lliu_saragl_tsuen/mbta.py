@@ -56,7 +56,7 @@ class mbta(dml.Algorithm):
         repo = client.repo
         repo.authenticate('cma4_lliu_saragl_tsuen', 'cma4_lliu_saragl_tsuen')
 
-        url = 'http://datamechanics.io/data/cma4_lliu_saragl_tsuen/mbta.json'
+        url = 'http://datamechanics.io/data/cma4_tsuen/mbta.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
 
         r = json.loads(response)

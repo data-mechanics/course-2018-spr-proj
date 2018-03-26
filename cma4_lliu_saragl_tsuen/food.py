@@ -53,7 +53,7 @@ class food(dml.Algorithm):
         for field in r])
 
 
-        jsonfile = open("./data/food.json", 'r') 
+        
         #response = urllib.request.urlopen(url).read().decode("utf-8")
         #r = json.load(jsonfile)
         

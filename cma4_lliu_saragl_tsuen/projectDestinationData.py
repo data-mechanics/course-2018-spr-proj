@@ -12,7 +12,7 @@ class projectDestinationData(dml.Algorithm):
     writes = ['cma4_lliu_saragl_tsuen.destinationsProjected']
 
     @staticmethod
-    def execute(trial = False):
+    def execute(trial = True):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
@@ -44,16 +44,28 @@ class projectDestinationData(dml.Algorithm):
 
 
         final = []
+        inList = []
+        i = 1
         # create tuples out of string coordinates
+        Completion = 0
         for entry in dataSet:
-            if entry not in final:
+            #if i == 2:
+            #    break
+            i += 1
+            if  i % 170571 == 0:
+                Completion += 33
+                print(str(Completion) + "% Complete")
+            
+            if entry['name'] not in inList:
                 if entry['coords'] != "NULL":
+                    inList.append(entry['name'])
                     stringCoords = entry['coords']
                     la = stringCoords[1:13]
                     lo = stringCoords[15:-1]
                     if la == '' or lo == '':
                         continue
                     entry['coords'] = (float(la),float(lo))
+                    #print(entry)
                     final.append(entry)
 
         print(final)

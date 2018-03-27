@@ -1,13 +1,16 @@
+# ############################## Projecting Coordinates and leaving out the boring data ################################
+
 import dml
 import prov.model
 import datetime
+import json
 import uuid
 
 
 class project_coordinates(dml.Algorithm):
     contributor = 'jhs2018_rpm1995'
     reads = ['jhs2018_rpm1995.hubway',                  # We will combine 3 datasets into dataset greenobjects, which
-             'jhs2018_rpm1995.trees',                   # will have just the type of objects (tree, charging station, etc.) and
+             # 'jhs2018_rpm1995.trees',                   # will have just the type of objects (tree, charging station, etc.) and
              'jhs2018_rpm1995.charge']                  # its geographical coordinates
     writes = ['jhs2018_rpm1995.greenobjects']
 
@@ -33,12 +36,12 @@ class project_coordinates(dml.Algorithm):
         objects = []
 
         hubway = repo.jhs2018_rpm1995.hubway.find()
-        trees = repo.jhs2018_rpm1995.trees.find()
+        # trees = repo.jhs2018_rpm1995.trees.find()
         charge = repo.jhs2018_rpm1995.charge.find()
         # openspaces = repo.jhs2018_rpm1995.openspaces.find()
 
         objects = project_coordinates.extract(hubway, "hubway", objects)
-        objects = project_coordinates.extract(trees, "tree", objects)
+        # objects = project_coordinates.extract(trees, "tree", objects)
         objects = project_coordinates.extract(charge, "charge", objects)
 
         repo.dropCollection("greenobjects")
@@ -78,8 +81,8 @@ class project_coordinates(dml.Algorithm):
                                                            prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension':
                                                            'geojson'})
 
-        resource_trees = doc.entity('alg: trees', {'prov:label': 'Trees in Boston', prov.model.PROV_TYPE:
-                                                   'ont:DataResource', 'ont:Extension': 'json'})
+        # resource_trees = doc.entity('alg: trees', {'prov:label': 'Trees in Boston', prov.model.PROV_TYPE:
+        #                                            'ont:DataResource', 'ont:Extension': 'json'})
 
         resource_charges = doc.entity('bwod: charging', {'prov:label': 'Charging Stations in Boston',
                                                          prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension':
@@ -95,7 +98,7 @@ class project_coordinates(dml.Algorithm):
 
         doc.usage(get_greenobjects, resource_hubway, startTime)
         doc.usage(get_greenobjects, resource_charges, startTime)
-        doc.usage(get_greenobjects, resource_trees, startTime)
+        # doc.usage(get_greenobjects, resource_trees, startTime)
 
 # #######
         greenobjects = doc.entity('dat:jhs2018_rpm1995_greenobjects',
@@ -105,8 +108,8 @@ class project_coordinates(dml.Algorithm):
         doc.wasGeneratedBy(greenobjects, get_greenobjects, endTime)
         doc.wasDerivedFrom(greenobjects, resource_hubway, get_greenobjects, get_greenobjects,
                            get_greenobjects)
-        doc.wasDerivedFrom(greenobjects, resource_trees, get_greenobjects, get_greenobjects,
-                           get_greenobjects)
+        # doc.wasDerivedFrom(greenobjects, resource_trees, get_greenobjects, get_greenobjects,
+        #                    get_greenobjects)
         doc.wasDerivedFrom(greenobjects, resource_charges, get_greenobjects, get_greenobjects,
                            get_greenobjects)
 
@@ -115,8 +118,8 @@ class project_coordinates(dml.Algorithm):
         return doc
 
 
-# combineneighbourhood.execute()
-# doc = combineneighbourhood.provenance()
+# project_coordinates.execute()
+# doc = project_coordinates.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))
 

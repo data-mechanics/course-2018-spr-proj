@@ -1,3 +1,7 @@
+# ####################################### Gonna get us some DATA #######################################################
+# ################ Data about Hubway Stations, Electric Charging Stations, and Open Spaces in Boston ###################
+
+
 import urllib.request
 import json
 import dml
@@ -26,10 +30,7 @@ def fetch_geojson(url, item):
 class getdata(dml.Algorithm):
     contributor = 'jhs2018_rpm1995'
     reads = []
-    writes = ['jhs2018_rpm1995.neighbourhoodnames',
-              'jhs2018_rpm1995.neighbourhoodnonames',
-              'jhs2018_rpm1995.hubway',
-              'jhs2018_rpm1995.trees',
+    writes = ['jhs2018_rpm1995.hubway',
               'jhs2018_rpm1995.charge',
               'jhs2018_rpm1995.openspaces']
 
@@ -43,20 +44,6 @@ class getdata(dml.Algorithm):
         repo = client.repo
         repo.authenticate('jhs2018_rpm1995', 'jhs2018_rpm1995')
 
-        # This fetches coordinates of Boston neighbourhoods but without the names
-        r = fetch_json('https://boston.opendatasoft.com/explore/dataset/boston-neighborhoods/download/?format=json'
-                       '&timezone=America/New_York', "Neighbourhoods")
-        repo.dropCollection("neighbourhoodnonames")
-        repo.createCollection("neighbourhoodnonames")
-        repo['jhs2018_rpm1995.neighbourhoodnonames'].insert_many(r)
-
-        # This fetches names of Boston Neighbourhoods but without the coordinates
-        r = fetch_geojson('http://bostonopendata-boston.opendata.arcgis.com/datasets/3525b0ee6e6b427f9aab5d0a1d0a1a28_0'
-                          '.geojson', "Neighbourhoods")
-        repo.dropCollection("neighbourhoodnames")
-        repo.createCollection("neighbourhoodnames")
-        repo['jhs2018_rpm1995.neighbourhoodnames'].insert_many(r)
-
         # This fetches a dataset with details about Hubway stations in Boston
         r = fetch_geojson('http://bostonopendata-boston.opendata.arcgis.com/datasets'
                           '/ee7474e2a0aa45cbbdfe0b747a5eb032_0.geojson', "Hubway Stations")
@@ -64,11 +51,11 @@ class getdata(dml.Algorithm):
         repo.createCollection("hubway")
         repo['jhs2018_rpm1995.hubway'].insert_many(r)
 
-        # This fetches a dataset with details about Trees in Boston
-        r = fetch_geojson('http://datamechanics.io/data/Trees%20(1).geojson', "Trees")
-        repo.dropCollection("trees")
-        repo.createCollection("trees")
-        repo['jhs2018_rpm1995.trees'].insert_many(r)
+        # # This fetches a dataset with details about Trees in Boston
+        # r = fetch_geojson('http://datamechanics.io/data/Trees%20(1).geojson', "Trees")
+        # repo.dropCollection("trees")
+        # repo.createCollection("trees")
+        # repo['jhs2018_rpm1995.trees'].insert_many(r)
 
         # This fetches a dataset with details about Charging Stations in Boston
         r = fetch_json('https://boston.opendatasoft.com/explore/dataset/charging-stations/download/?format=json'
@@ -106,9 +93,8 @@ class getdata(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bwod', 'https://boston.opendatasoft.com/explore/dataset/boston-neighborhoods/')  # Boston
         # Wicked Open Data
-        doc.add_namespace('ab', 'https://data.boston.gov/dataset/boston-neighborhoods')   # Analyze Boston
         doc.add_namespace('hub', 'http://bostonopendata-boston.opendata.arcgis.com/datasets')  # Boston Open Data
-        doc.add_namespace('tree', 'http://datamechanics.io/data')
+        # doc.add_namespace('tree', 'http://datamechanics.io/data')
         doc.add_namespace('charge', 'http://bostonopendata-boston.opendata.arcgis.com/datasets')
         doc.add_namespace('openspace', 'http://bostonopendata-boston.opendata.arcgis.com/datasets')
 
@@ -116,23 +102,6 @@ class getdata(dml.Algorithm):
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
 # #######
-        resource_neighbourhoodnonames = doc.entity('bwod: neighbourhood_no_names', {'prov:label': 'Boston '
-                                                                                    'Neighbourhoods without Names',
-                                                                                    prov.model.PROV_TYPE:
-                                                                                        'ont:DataResource',
-                                                                                    'ont:Extension': 'geojson'})
-        get_neighbourhoodnonames = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_neighbourhoodnonames, this_script)
-        doc.usage(get_neighbourhoodnonames, resource_neighbourhoodnonames, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval'})
-
-        resource_neighbourhoodnames = doc.entity('ab: neighbourhood_names', {'prov:label': 'Boston Neighbourhood Names',
-                                                                             prov.model.PROV_TYPE: 'ont:DataResource',
-                                                                             'ont:Extension': 'json'})
-        get_neighbourhoodnames = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_neighbourhoodnames, this_script)
-        doc.usage(get_neighbourhoodnames, resource_neighbourhoodnames, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval'})
 
         resource_hubway = doc.entity('hub: geojson', {'prov:label': 'Hubway stations in Boston',
                                                       prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension':
@@ -141,11 +110,11 @@ class getdata(dml.Algorithm):
         doc.wasAssociatedWith(get_hubway, this_script)
         doc.usage(get_hubway, resource_hubway, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
 
-        resource_trees = doc.entity('tree: geojson', {'prov:label': 'Trees in Boston',
-                                                  prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'geojson'})
-        get_trees = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_trees, this_script)
-        doc.usage(get_trees, resource_trees, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
+        # resource_trees = doc.entity('tree: geojson', {'prov:label': 'Trees in Boston',
+        #                                         prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'geojson'})
+        # get_trees = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        # doc.wasAssociatedWith(get_trees, this_script)
+        # doc.usage(get_trees, resource_trees, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
 
         resource_charge = doc.entity('charge: json', {'prov:label': 'Charging Stations in Boston',
                                                       prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension':
@@ -162,31 +131,16 @@ class getdata(dml.Algorithm):
         doc.wasAssociatedWith(get_openspaces, this_script)
         doc.usage(get_openspaces, resource_openspaces, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
 # #######
-        neighbourhoodnonames = doc.entity('dat:jhs2018_rpm1995neighbourhoodnonames',
-                                          {prov.model.PROV_LABEL: 'neighbourhoodnonames',
-                                           prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(neighbourhoodnonames, this_script)
-        doc.wasGeneratedBy(neighbourhoodnonames, get_neighbourhoodnonames, endTime)
-        doc.wasDerivedFrom(neighbourhoodnonames, resource_neighbourhoodnonames, get_neighbourhoodnonames,
-                           get_neighbourhoodnonames, get_neighbourhoodnonames)
-
-        neighbourhoodnames = doc.entity('dat:jhs2018_rpm1995neighbourhoodnames',
-                                        {prov.model.PROV_LABEL: 'neighbourhoodnames',
-                                         prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(neighbourhoodnames, this_script)
-        doc.wasGeneratedBy(neighbourhoodnames, get_neighbourhoodnames, endTime)
-        doc.wasDerivedFrom(neighbourhoodnames, resource_neighbourhoodnames, get_neighbourhoodnames,
-                           get_neighbourhoodnames, get_neighbourhoodnonames)
 
         hubway = doc.entity('dat:jhs2018_rpm1995hubway', {prov.model.PROV_LABEL: 'hubway', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(hubway, this_script)
         doc.wasGeneratedBy(hubway, get_hubway, endTime)
         doc.wasDerivedFrom(hubway, resource_hubway, get_hubway, get_hubway, get_hubway)
 
-        trees = doc.entity('dat:jhs2018_rpm1995trees', {prov.model.PROV_LABEL: 'trees', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(trees, this_script)
-        doc.wasGeneratedBy(trees, get_trees, endTime)
-        doc.wasDerivedFrom(trees, resource_trees, get_trees, get_trees, get_trees)
+        # trees = doc.entity('dat:jhs2018_rpm1995trees', {prov.model.PROV_LABEL: 'trees', prov.model.PROV_TYPE: 'ont:DataSet'})
+        # doc.wasAttributedTo(trees, this_script)
+        # doc.wasGeneratedBy(trees, get_trees, endTime)
+        # doc.wasDerivedFrom(trees, resource_trees, get_trees, get_trees, get_trees)
 
         charge = doc.entity('dat:jhs2018_rpm1995charge',
                             {prov.model.PROV_LABEL: 'charge', prov.model.PROV_TYPE: 'ont:DataSet'})

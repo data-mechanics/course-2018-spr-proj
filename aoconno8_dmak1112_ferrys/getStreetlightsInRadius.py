@@ -1,61 +1,49 @@
 import geojson
 import geoql
-import geoleaflet
-import requests
 import geopy
-import urllib.request
 import dml
 import prov.model
 import datetime
 import uuid
-import json
 import copy
 from geoql import geoql
 
 
-class getStreetsInRadius(dml.Algorithm):
+
+class getStreetlightsInRadius(dml.Algorithm):
     contributor = 'aoconno8_dmak1112_ferrys'
-    reads = ['aoconno8_dmak1112_ferrys.sidewalks', 'aoconno8_dmak1112_ferrys.closest_mbta_stops']
-    writes = ['aoconno8_dmak1112_ferrys.streets_in_radius']
+    reads = ['aoconno8_dmak1112_ferrys.streetlights', 'aoconno8_dmak1112_ferrys.closest_mbta_stops']
+    writes = ['aoconno8_dmak1112_ferrys.streetlights_in_radius']
 
     @staticmethod
     def execute(trial=False):
+        def project(R, p):
+            return [p(t) for t in R]
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
-        # streetdata = repo.aoconno8_dmak1112_ferrys.sidewalks.find()
-        # for i in streetdata:
-        #     print(i)
-        #     break
+        repo.dropCollection("streetlights_in_radius")
+        repo.createCollection("streetlights_in_radius")
+        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
         alcohol_mbta_stops = repo.aoconno8_dmak1112_ferrys.closest_mbta_stops.find()
-
-
-
-        # streetdata = geojson data of streets,
-        # e.g.
-        # print(g)
-        # get sidewalks as geojson
-        roads_cursor = repo.aoconno8_dmak1112_ferrys.roads.find()
-        theroads = []
-        for roads in roads_cursor:
-            # print(roads)
-            roads.pop('_id', None)
-            theroads.append(roads)
-        # roads_geojson = {"features": theroads[:10]}
-        roads_geojson = {"features": theroads}
-
-        # print(roads_geojson)
-        g = geojson.dumps(roads_geojson)
+        streetlights_cursor = repo.aoconno8_dmak1112_ferrys.streetlights.find()
+        projected_lights = project(streetlights_cursor, lambda t: (t['Long'], t['Lat']))
+        thelights = []
+        for light in projected_lights:
+            thelights.append({"type": "Feature", "geometry": {"type": "Point", "coordinates": light}})
+        lights_geojson = {"features": thelights}
+        g = geojson.dumps(lights_geojson)
         g = geoql.loads(g)
-        # g = geoql.loads(requests.get(url + 'example_extract.geojson').text, encoding="latin-1")
-        # print(g)
-        # quit()
         for i in alcohol_mbta_stops:
             alc_coord = i['alc_coord']
             mbta_coords = i['mbta_coords']
+            final_dict = {}
+            final_dict["alc_coord"] = alc_coord
+            mbta = {}
+            mbta_coord_index = 1
             for mbta_coord in mbta_coords:
                 temp = copy.deepcopy(g)
                 radius = geopy.distance.vincenty(alc_coord, mbta_coord).miles
@@ -63,11 +51,19 @@ class getStreetsInRadius(dml.Algorithm):
                 print("alc coord is: ", alc_coord)
                 print("mbta coord is: ", mbta_coord)
                 t = g.keep_within_radius((alc_coord), radius, 'miles')
+                final_dict["mbta_coord_" + str(mbta_coord_index)] = mbta_coord
+                final_dict["streetlights_for_mbta_coord_" + str(mbta_coord_index)] = t["features"]
                 g = copy.deepcopy(temp)
-                # break
+                mbta_coord_index = mbta_coord_index + 1
+            # alc_coord =''.join((str(e) + " ") for e in alc_coord)
+            repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].insert(final_dict)
 
-    # 42.3522913, -71.0452839
+        repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].metadata())
 
+        repo.logout()
+        endTime = datetime.datetime.now()
+        return {"start": startTime, "end": endTime}
 
 
     @staticmethod
@@ -111,8 +107,8 @@ class getStreetsInRadius(dml.Algorithm):
 
         return doc
 
-getStreetsInRadius.execute()
-doc = getStreetsInRadius.provenance()
+getStreetlightsInRadius.execute()
+# doc = getStreetlightsInRadius.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))
 

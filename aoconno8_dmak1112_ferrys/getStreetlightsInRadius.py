@@ -28,8 +28,11 @@ class getStreetlightsInRadius(dml.Algorithm):
         repo.dropCollection("streetlights_in_radius")
         repo.createCollection("streetlights_in_radius")
         repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
-        alcohol_mbta_stops = repo.aoconno8_dmak1112_ferrys.closest_mbta_stops.find()
         streetlights_cursor = repo.aoconno8_dmak1112_ferrys.streetlights.find()
+        if trial:
+            alcohol_mbta_stops = repo.aoconno8_dmak1112_ferrys.closest_mbta_stops.find().limit(3)
+        else:
+            alcohol_mbta_stops = repo.aoconno8_dmak1112_ferrys.closest_mbta_stops.find()
         projected_lights = project(streetlights_cursor, lambda t: (t['Long'], t['Lat']))
         thelights = []
         for light in projected_lights:
@@ -44,18 +47,27 @@ class getStreetlightsInRadius(dml.Algorithm):
             final_dict["alc_coord"] = alc_coord
             mbta = {}
             mbta_coord_index = 1
+
+            #Uncomment this and comment the loop below if you want just one radius for farthest mbta stop
+            # mbta_coord = mbta_coords[2]
+            # temp = copy.deepcopy(g)
+            # radius = geopy.distance.vincenty(alc_coord, mbta_coord).miles
+            # t = g.keep_within_radius((alc_coord), radius, 'miles')
+            # final_dict["mbta_coord"] = mbta_coord
+            # final_dict["streetlights_for_mbta_coord"] = t["features"]
+            # g = copy.deepcopy(temp)
+            # mbta_coord_index = mbta_coord_index + 1
+
+
             for mbta_coord in mbta_coords:
                 temp = copy.deepcopy(g)
                 radius = geopy.distance.vincenty(alc_coord, mbta_coord).miles
-                print("radius is: ", radius)
-                print("alc coord is: ", alc_coord)
-                print("mbta coord is: ", mbta_coord)
                 t = g.keep_within_radius((alc_coord), radius, 'miles')
                 final_dict["mbta_coord_" + str(mbta_coord_index)] = mbta_coord
                 final_dict["streetlights_for_mbta_coord_" + str(mbta_coord_index)] = t["features"]
                 g = copy.deepcopy(temp)
                 mbta_coord_index = mbta_coord_index + 1
-            # alc_coord =''.join((str(e) + " ") for e in alc_coord)
+            alc_coord =''.join((str(e) + " ") for e in alc_coord)
             repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].insert(final_dict)
 
         repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].metadata({'complete':True})

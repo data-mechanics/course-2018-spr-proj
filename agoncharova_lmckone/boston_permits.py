@@ -74,7 +74,6 @@ class boston_permits(dml.Algorithm):
                   
         return doc
 
-
 #boston_permits.execute()
 #boston_permits.provenance()
 

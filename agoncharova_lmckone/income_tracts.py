@@ -8,10 +8,10 @@ import prov.model
 import datetime
 import uuid
 
-class census_blockgroups(dml.Algorithm):
+class income_tracts(dml.Algorithm):
 	contributor = 'agoncharova_lmckone'
 	reads = []
-	writes = ['agoncharova_lmckone.census_blockgroups']
+	writes = ['agoncharova_lmckone.income_tracts']
 
 	@staticmethod
 	def execute(trial = False):
@@ -23,17 +23,17 @@ class census_blockgroups(dml.Algorithm):
 		repo = client.repo
 		repo.authenticate('agoncharova_lmckone', 'agoncharova_lmckone')
 
-		repo.dropCollection("census_blockgroups")
-		repo.createCollection("census_blockgroups")
+		repo.dropCollection("income_tracts")
+		repo.createCollection("income_tracts")
 
 
 		c = Census("d07b9c8b06ff352d4f8217ddc4f15737fc6c867c", year=2015)
-		#get median income in 2015 for all blockgroups in Massachusetts
+		#get median income in 2015 for all census tracts in Massachusetts
 		data = c.acs5.state_county_tract('B06011_001E', states.MA.fips, '025', Census.ALL)
 		print(type(data))
 
-		repo['agoncharova_lmckone.census_blockgroups'].insert_many(data)
-		repo['agoncharova_lmckone.census_blockgroups'].metadata({'complete':True})
+		repo['agoncharova_lmckone.income_tracts'].insert_many(data)
+		repo['agoncharova_lmckone.income_tracts'].metadata({'complete':True})
 
 		repo.logout()
 		endTime = datetime.datetime.now()
@@ -54,27 +54,27 @@ class census_blockgroups(dml.Algorithm):
 		doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
 		doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
-		doc.add_namespace('bdp', 'https://data.boston.gov/export/')
+		doc.add_namespace('census', 'https://api.census.gov/data/')
 
-		this_script = doc.agent('alg:agoncharova_lmckone#census_blockgroups', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-		resource = doc.entity('sfdp:93gi-sfd2', {'prov:label':'San Francisco Data Portal Evictions', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-		get_census_blockgroups = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-		doc.wasAssociatedWith(get_census_blockgroups, this_script)
+		this_script = doc.agent('alg:agoncharova_lmckone#income_tracts', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+		resource = doc.entity('census:B06011_001E', {'prov:label':'Census API income by census tract', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+		get_income_tracts = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+		doc.wasAssociatedWith(get_income_tracts, this_script)
 
-		doc.usage(get_census_blockgroups, resource, startTime, None,
+		doc.usage(get_income_tracts, resource, startTime, None,
 				  {prov.model.PROV_TYPE:'ont:Retrieval'}
 				  )
 
-		census_blockgroups = doc.entity('dat:agoncharova_lmckone#census_blockgroups', {prov.model.PROV_LABEL:'Income by Blockgroup', prov.model.PROV_TYPE:'ont:DataSet'})
-		doc.wasAttributedTo(census_blockgroups, this_script)
-		doc.wasGeneratedBy(census_blockgroups, get_census_blockgroups, endTime)
-		doc.wasDerivedFrom(census_blockgroups, resource, get_census_blockgroups, get_census_blockgroups, get_census_blockgroups)
+		income_tracts = doc.entity('dat:agoncharova_lmckone#income_tracts', {prov.model.PROV_LABEL:'Income by Census Tract', prov.model.PROV_TYPE:'ont:DataSet'})
+		doc.wasAttributedTo(income_tracts, this_script)
+		doc.wasGeneratedBy(income_tracts, get_income_tracts, endTime)
+		doc.wasDerivedFrom(income_tracts, resource, get_income_tracts, get_income_tracts, get_income_tracts)
 		repo.logout()
 				  
 		return doc
 
 
-census_blockgroups.execute()
+income_tracts.execute()
 
 
 

@@ -30,46 +30,47 @@ class getStreetlightsInRadius(dml.Algorithm):
         repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
         streetlights_cursor = repo.aoconno8_dmak1112_ferrys.streetlights.find()
         if trial:
-            alcohol_mbta_stops = repo.aoconno8_dmak1112_ferrys.closest_mbta_stops.find().limit(3)
+            alcohol_mbta_stops = repo.aoconno8_dmak1112_ferrys.closest_mbta_stops.find().limit(1)
         else:
             alcohol_mbta_stops = repo.aoconno8_dmak1112_ferrys.closest_mbta_stops.find()
+            
         projected_lights = project(streetlights_cursor, lambda t: (t['Long'], t['Lat']))
-        thelights = []
+        
+        the_lights = []
         for light in projected_lights:
-            thelights.append({"type": "Feature", "geometry": {"type": "Point", "coordinates": light}})
-        lights_geojson = {"features": thelights}
-        g = geojson.dumps(lights_geojson)
-        g = geoql.loads(g)
-        for i in alcohol_mbta_stops:
-            alc_coord = i['alc_coord']
-            mbta_coords = i['mbta_coords']
-            final_dict = {}
-            final_dict["alc_coord"] = alc_coord
-            mbta = {}
-            mbta_coord_index = 1
+            the_lights.append({"type": "Feature", "geometry": {"type": "Point", "coordinates": light}})
+            
+        lights_geojson = {"features": the_lights}
+        lights_geoql = geoql.loads(geojson.dumps(lights_geojson))
+        
+        alcohol_streetlight_list = []
+        for alcohol_mbta in alcohol_mbta_stops:
+            # make a copy so it doesn't get written over
+            temp = copy.deepcopy(lights_geoql)
 
-            #Uncomment this and comment the loop below if you want just one radius for farthest mbta stop
-            # mbta_coord = mbta_coords[2]
-            # temp = copy.deepcopy(g)
-            # radius = geopy.distance.vincenty(alc_coord, mbta_coord).miles
-            # t = g.keep_within_radius((alc_coord), radius, 'miles')
-            # final_dict["mbta_coord"] = mbta_coord
-            # final_dict["streetlights_for_mbta_coord"] = t["features"]
-            # g = copy.deepcopy(temp)
-            # mbta_coord_index = mbta_coord_index + 1
-
-
+            alc_coord = alcohol_mbta['alc_coord']
+            mbta_coords = alcohol_mbta['mbta_coords']
+            
+            # get the max radius
+            max_radius = 0
             for mbta_coord in mbta_coords:
-                temp = copy.deepcopy(g)
                 radius = geopy.distance.vincenty(alc_coord, mbta_coord).miles
-                t = g.keep_within_radius((alc_coord), radius, 'miles')
-                final_dict["mbta_coord_" + str(mbta_coord_index)] = mbta_coord
-                final_dict["streetlights_for_mbta_coord_" + str(mbta_coord_index)] = t["features"]
-                g = copy.deepcopy(temp)
-                mbta_coord_index = mbta_coord_index + 1
-            alc_coord =''.join((str(e) + " ") for e in alc_coord)
-            repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].insert(final_dict)
-
+                if radius > max_radius:
+                    max_radius = radius
+            # get the lights in that radius
+            t = lights_geoql.keep_within_radius((alc_coord), radius, 'miles')
+            
+            # create a new record with alcohol coordinate, mbta coordinates, and all the streetlights
+            alcohol_streetlight_list.append({
+                    "alc_coord": alc_coord,
+                    "mbta_coords":mbta_coords,
+                    "streetlights":t["features"]
+                })
+            
+            lights_geoql = copy.deepcopy(temp)
+                
+        print(alcohol_streetlight_list)
+        repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].insert_many(alcohol_streetlight_list)
         repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].metadata({'complete':True})
         print(repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].metadata())
 
@@ -119,7 +120,7 @@ class getStreetlightsInRadius(dml.Algorithm):
 
         return doc
 
-getStreetlightsInRadius.execute()
+getStreetlightsInRadius.execute(True)
 # doc = getStreetlightsInRadius.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

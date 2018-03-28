@@ -68,8 +68,7 @@ class getClosestMBTAStops(dml.Algorithm):
                     
             # get x nearest mbta stops from the alc license
             try:
-                for i in range(num_mbta_stops):
-                    nearest = index.nearest((alc_long,alc_lat,alc_long,alc_lat),  num_results=num_mbta_stops)
+                nearest = index.nearest((alc_long,alc_lat,alc_long,alc_lat), num_results=num_mbta_stops)
             except TypeError:
                 pass
             

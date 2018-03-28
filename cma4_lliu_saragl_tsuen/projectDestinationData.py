@@ -68,7 +68,6 @@ class projectDestinationData(dml.Algorithm):
                     #print(entry)
                     final.append(entry)
 
-        print(final)
 
         repo.dropCollection("cma4_lliu_saragl_tsuen.destinationsProjected")
         repo.createCollection("cma4_lliu_saragl_tsuen.destinationsProjected")

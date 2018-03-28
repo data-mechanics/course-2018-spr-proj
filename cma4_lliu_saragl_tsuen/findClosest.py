@@ -18,7 +18,7 @@ class findClosest(dml.Algorithm):
         dlon = q[1] - p[1]
         dlat = q[0] - p[0]
 
-        a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+        a = sin(dlat / 2)**2 + cos(p[0]) * cos(q[0]) * sin(dlon / 2)**2
         c = 2 * atan2(sqrt(a), sqrt(1 - a))
         return 6373 * c
 
@@ -53,6 +53,7 @@ class findClosest(dml.Algorithm):
             d['closestStation'] = closestStation
             d['stationCoords'] = minStationCoords
             final.append(d)
+            
 
         repo.dropCollection("cma4_lliu_saragl_tsuen.closest")
         repo.createCollection("cma4_lliu_saragl_tsuen.closest")

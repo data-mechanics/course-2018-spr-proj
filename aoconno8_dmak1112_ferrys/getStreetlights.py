@@ -70,7 +70,7 @@ class getStreetlights(dml.Algorithm):
                   
         return doc
 
-#getStreetlights.execute()
+getStreetlights.execute()
 #doc = getStreetlights.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

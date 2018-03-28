@@ -1,21 +1,17 @@
 import urllib.request
-import json
 import dml
 import prov.model
 import datetime
 import uuid
 from tqdm import tqdm
-import rtree
-import shapely.geometry
 import osmnx as ox
 import networkx as nx
-from matplotlib import pyplot as plt
-import math
 import utm
 
 class getShortestPath(dml.Algorithm):
     '''
-        Returns the closest x mbta stops 
+        Gets the shortest path between each alcohol license and its three closest MBTA stops
+        and gets all of the streetlights on that path
     '''
     contributor = 'aoconno8_dmak1112_ferrys'
     reads = ['aoconno8_dmak1112_ferrys.closest_mbta_stops']
@@ -29,59 +25,78 @@ class getShortestPath(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
-        api_key = dml.auth['services']['googlegeocoding']['key']
+        # format {alc_coord: (x, y) mbta_coords: (x, y), streetlights, [(x, y), (x, y)...]}
+        streetlights_in_radius_cursor = repo.aoconno8_dmak1112_ferrys.streetlights_in_radius.find()
+        streetlights_in_radius = getShortestPath.project(streetlights_in_radius_cursor, lambda t: t)
         
         print("Step 1")
+
         G = ox.graph_from_place('Boston, Massachusetts, USA', network_type='drive')
         graph_project = ox.project_graph(G)
-
-
+            
+            
         print("Step 2")
-        # mbta
-        num_mbta_stops = 3
-        mbta = repo.aoconno8_dmak1112_ferrys.closest_mbta_stops.find()
-
-        projected_mbta = getShortestPath.project(mbta, lambda t: (t['alc_license'], t['alc_coord'], t['mbta_coords']))
-
-        
-
-        if trial:
-            projected_mbta = projected_mbta[:10]
-
-        print("Step 3")
-        coords = {}
-        for i in range(len(projected_mbta)):
-            key = projected_mbta[i][0]
-            value = (projected_mbta[i][1], projected_mbta[i][2])
-            coords[key] = value
-
-
-        print("Step 4")
         routes = []
-        for i in coords:
-            license_key = i 
-            temp_list = []
-            orig_xy = (coords[i][0][0], coords[i][0][1])
+        streetlight_nodes_store = {} # formatted {streetlight_loc: nearest_node}
+        
+        for streetlights in tqdm(streetlights_in_radius):
+            alc_coord = streetlights['alc_coord']
+            mbta_coords = streetlights['mbta_coords']
+            streetlights_list = streetlights['streetlights']
+            
+            # get nearest node for alcohol coordinate
+            orig_xy = (alc_coord)
             proj_orig_xy = utm.from_latlon(orig_xy[0], orig_xy[1])
             input_orig_xy = (proj_orig_xy[1], proj_orig_xy[0])
             orig_node = ox.get_nearest_node(graph_project, input_orig_xy, return_dist=True, method='euclidean')
-            for j in range(len(coords[i][1])):
-                target_xy = (coords[i][1][j][0], coords[i][1][j][1])
+            
+            streetlight_nodes = {} # formatted {nearest_node: [list_of_streetlights]}
+            for streetlight in tqdm(streetlights_list):
+                # reformat as tuple so it can be a key in a dictionary
+                streetlight_coord = (streetlight['geometry']['coordinates'][0], streetlight['geometry']['coordinates'][1])
+                # if the streetlight is already stored, we already have the nearest node
+                if streetlight_coord in streetlight_nodes_store:
+                    nearest_node = streetlight_nodes_store[streetlight_coord]
+                else:
+                    # get the nearest node to the streetlight
+                    proj_streetlight_coord = utm.from_latlon(streetlight_coord[1], streetlight_coord[0])
+                    input_streetlight_coord = (proj_streetlight_coord[1], proj_streetlight_coord[0])
+                    nearest_node, distance = ox.get_nearest_node(graph_project, input_streetlight_coord, return_dist=True, method='euclidean')
+                    streetlight_nodes_store[streetlight_coord] = nearest_node
+                if nearest_node in streetlight_nodes:
+                    streetlight_nodes[nearest_node].append(streetlight_coord)
+                else:
+                    streetlight_nodes[nearest_node] = [streetlight_coord]
+                    
+            temp_routes = []
+            for mbta_coord in tqdm(mbta_coords):
+                # get nearest node to the mbta stop
+                target_xy = mbta_coord
                 proj_target_xy = utm.from_latlon(target_xy[0], target_xy[1])
                 input_target_xy = (proj_target_xy[1], proj_target_xy[0])
                 target_node = ox.get_nearest_node(graph_project, input_target_xy, return_dist=True, method='euclidean')
                 try:
-                    temp_route = nx.shortest_path(G=G, source=orig_node[0], target=target_node[0], weight='length')
+                    route = nx.shortest_path(G=G, source=orig_node[0], target=target_node[0], weight='length')
                 except:
-                    pass
-                temp_list.append(temp_route)
-
-            routes.append({
-                "alc_license": license_key,
-                "routes": temp_list,
-                "alc_coord": orig_xy,
-                "mbta_coords": coords[i][1]
+                    continue
+ 
+                # determine which lights are on the route
+                route_lights = []
+                for node in route:
+                    if node in streetlight_nodes:
+                        route_lights += streetlight_nodes[node]
+                
+                temp_routes.append({
+                    "mbta_coord": mbta_coord, 
+                    "route": route, 
+                    "streetlights": route_lights
                 })
+                
+            routes.append({
+                "alc_coord": orig_xy,
+                "mbta_routes": temp_routes
+            })
+        print(routes)
 
         print("All done")
         repo.dropCollection("shortest_path")

@@ -38,8 +38,14 @@ class getClosestMBTAStops(dml.Algorithm):
         projected_alc = getClosestMBTAStops.project(alc, lambda t: (t['License Number'], t['Street Number'] + ' ' + t['Street Name'] + ' ' +  str(t['Suffix']) + ' ' + t['City']))
 
         if trial:
-            projected_mbta = projected_mbta[:10]
-            projected_alc = projected_alc[:10]
+            # algorithm wasnt working well on trial because the mbta stops
+            # and alcohol licenses were so far away from each other
+            # so I just picked a small subset of close ones
+            projected_alc = [[42.3516079, -71.080906]]
+            alc_lat = projected_alc[0][0]
+            alc_long = projected_alc[0][1]
+            
+            projected_mbta = [[42.350067, -71.078068], [42.348227, -71.075493], [42.349224, -71.080600]]
             
         index = rtree.index.Index()
         for i in tqdm(range(len(projected_mbta))):
@@ -50,21 +56,21 @@ class getClosestMBTAStops(dml.Algorithm):
         cache = {}
         mbta_dist = []
         for alc_entry in tqdm(projected_alc):
-            
-            alc_address = alc_entry[1].replace(' ',  '+')
-            if alc_address in cache:
-                alc_lat = cache[alc_address][0]
-                alc_long = cache[alc_address][1]
-            else:
-                alc_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + alc_address + 'MA&key='+ api_key
-                response = urllib.request.urlopen(alc_url).read().decode("utf-8")
-                google_json = json.loads(response)
-                try:
-                    alc_lat = google_json["results"][0]["geometry"]["location"]['lat']
-                    alc_long = google_json["results"][0]["geometry"]["location"]['lng']
-                    cache[alc_address] = (alc_lat,alc_long)
-                except IndexError:
-                    continue
+            if not trial:
+                alc_address = alc_entry[1].replace(' ',  '+')
+                if alc_address in cache:
+                    alc_lat = cache[alc_address][0]
+                    alc_long = cache[alc_address][1]
+                else:
+                    alc_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + alc_address + 'MA&key='+ api_key
+                    response = urllib.request.urlopen(alc_url).read().decode("utf-8")
+                    google_json = json.loads(response)
+                    try:
+                        alc_lat = google_json["results"][0]["geometry"]["location"]['lat']
+                        alc_long = google_json["results"][0]["geometry"]["location"]['lng']
+                        cache[alc_address] = (alc_lat,alc_long)
+                    except IndexError:
+                        continue
                     
             # get x nearest mbta stops from the alc license
             try:
@@ -82,7 +88,6 @@ class getClosestMBTAStops(dml.Algorithm):
                         "mbta_coords":(mbta_coords)
                     })
 
-        print(mbta_dist)
         repo.dropCollection("closest_mbta_stops")
         repo.createCollection("closest_mbta_stops")
         repo['aoconno8_dmak1112_ferrys.closest_mbta_stops'].insert_many(mbta_dist)
@@ -143,7 +148,7 @@ class getClosestMBTAStops(dml.Algorithm):
         return [p(t) for t in R]
 
 
-getClosestMBTAStops.execute()
+#getClosestMBTAStops.execute(True)
 #doc = getClosestMBTAStops.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

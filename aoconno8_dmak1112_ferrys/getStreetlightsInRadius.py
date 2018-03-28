@@ -20,7 +20,6 @@ class getStreetlightsInRadius(dml.Algorithm):
         def project(R, p):
             return [p(t) for t in R]
         startTime = datetime.datetime.now()
-
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -29,6 +28,7 @@ class getStreetlightsInRadius(dml.Algorithm):
         repo.createCollection("streetlights_in_radius")
         repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
         streetlights_cursor = repo.aoconno8_dmak1112_ferrys.streetlights.find()
+        
         if trial:
             alcohol_mbta_stops = repo.aoconno8_dmak1112_ferrys.closest_mbta_stops.find().limit(1)
         else:
@@ -59,7 +59,6 @@ class getStreetlightsInRadius(dml.Algorithm):
                     max_radius = radius
             # get the lights in that radius
             t = lights_geoql.keep_within_radius((alc_coord), radius, 'miles')
-            
             # create a new record with alcohol coordinate, mbta coordinates, and all the streetlights
             alcohol_streetlight_list.append({
                     "alc_coord": alc_coord,
@@ -69,7 +68,6 @@ class getStreetlightsInRadius(dml.Algorithm):
             
             lights_geoql = copy.deepcopy(temp)
                 
-        print(alcohol_streetlight_list)
         repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].insert_many(alcohol_streetlight_list)
         repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].metadata({'complete':True})
         print(repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].metadata())
@@ -120,7 +118,7 @@ class getStreetlightsInRadius(dml.Algorithm):
 
         return doc
 
-getStreetlightsInRadius.execute(True)
+#getStreetlightsInRadius.execute()
 # doc = getStreetlightsInRadius.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

@@ -14,7 +14,7 @@ class getShortestPath(dml.Algorithm):
         and gets all of the streetlights on that path
     '''
     contributor = 'aoconno8_dmak1112_ferrys'
-    reads = ['aoconno8_dmak1112_ferrys.closest_mbta_stops']
+    reads = ['aoconno8_dmak1112_ferrys.streetlights_in_radius']
     writes = ['aoconno8_dmak1112_ferrys.shortest_path']
 
     @staticmethod
@@ -29,13 +29,15 @@ class getShortestPath(dml.Algorithm):
         streetlights_in_radius_cursor = repo.aoconno8_dmak1112_ferrys.streetlights_in_radius.find()
         streetlights_in_radius = getShortestPath.project(streetlights_in_radius_cursor, lambda t: t)
         
-        print("Step 1")
-
-        G = ox.graph_from_place('Boston, Massachusetts, USA', network_type='drive')
+        if trial:
+            streetlights_in_radius = streetlights_in_radius[:1]
+            coordinate = streetlights_in_radius[0]['alc_coord']
+            G = ox.graph_from_point(coordinate, 1000, network_type='drive')
+        else:
+            G = ox.graph_from_place('Boston, Massachusetts, USA', network_type='drive')
+        
         graph_project = ox.project_graph(G)
             
-            
-        print("Step 2")
         routes = []
         streetlight_nodes_store = {} # formatted {streetlight_loc: nearest_node}
         
@@ -51,7 +53,8 @@ class getShortestPath(dml.Algorithm):
             orig_node = ox.get_nearest_node(graph_project, input_orig_xy, return_dist=True, method='euclidean')
             
             streetlight_nodes = {} # formatted {nearest_node: [list_of_streetlights]}
-            for streetlight in tqdm(streetlights_list):
+                
+            for streetlight in streetlights_list:
                 # reformat as tuple so it can be a key in a dictionary
                 streetlight_coord = (streetlight['geometry']['coordinates'][0], streetlight['geometry']['coordinates'][1])
                 # if the streetlight is already stored, we already have the nearest node
@@ -96,9 +99,7 @@ class getShortestPath(dml.Algorithm):
                 "alc_coord": orig_xy,
                 "mbta_routes": temp_routes
             })
-        print(routes)
 
-        print("All done")
         repo.dropCollection("shortest_path")
         repo.createCollection("shortest_path")
         repo['aoconno8_dmak1112_ferrys.shortest_path'].insert_many(routes)
@@ -159,7 +160,7 @@ class getShortestPath(dml.Algorithm):
         return [p(t) for t in R]
 
 
-getShortestPath.execute()
+#getShortestPath.execute(True)
 #doc = getClosestMBTAStops.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

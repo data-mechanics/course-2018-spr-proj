@@ -7,13 +7,15 @@ import datetime
 import uuid
 import copy
 from geoql import geoql
+from tqdm import tqdm
+import json
 
 
 
 class getStreetlightsInRadius(dml.Algorithm):
     contributor = 'aoconno8_dmak1112_ferrys'
-    reads = ['aoconno8_dmak1112_ferrys.streetlights', 'aoconno8_dmak1112_ferrys.closest_mbta_stops']
-    writes = ['aoconno8_dmak1112_ferrys.streetlights_in_radius']
+    reads = ['aoconno8_dmak1112_ferrys.streetlights', 'aoconno8_dmak1112_ferrys.closest_mbta_stops_trial']
+    writes = ['aoconno8_dmak1112_ferrys.streetlights_in_radius_trial']
 
     @staticmethod
     def execute(trial=False):
@@ -24,16 +26,14 @@ class getStreetlightsInRadius(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
-        repo.dropCollection("streetlights_in_radius")
-        repo.createCollection("streetlights_in_radius")
-        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
         streetlights_cursor = repo.aoconno8_dmak1112_ferrys.streetlights.find()
         
         if trial:
             alcohol_mbta_stops = repo.aoconno8_dmak1112_ferrys.closest_mbta_stops.find().limit(1)
         else:
             alcohol_mbta_stops = repo.aoconno8_dmak1112_ferrys.closest_mbta_stops.find()
-            
+        
+        alcohol_mbta_stops = project(alcohol_mbta_stops, lambda t: t)
         projected_lights = project(streetlights_cursor, lambda t: (t['Long'], t['Lat']))
         
         the_lights = []
@@ -44,7 +44,7 @@ class getStreetlightsInRadius(dml.Algorithm):
         lights_geoql = geoql.loads(geojson.dumps(lights_geojson))
         
         alcohol_streetlight_list = []
-        for alcohol_mbta in alcohol_mbta_stops:
+        for alcohol_mbta in tqdm(alcohol_mbta_stops):
             # make a copy so it doesn't get written over
             temp = copy.deepcopy(lights_geoql)
 
@@ -67,18 +67,27 @@ class getStreetlightsInRadius(dml.Algorithm):
                 })
             
             lights_geoql = copy.deepcopy(temp)
-                
-        repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].insert_many(alcohol_streetlight_list)
-        repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].metadata({'complete':True})
-        print(repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].metadata())
+        
+#        repo.dropCollection("streetlights_in_radius")
+#        repo.createCollection("streetlights_in_radius")
+#        repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].insert_many(alcohol_streetlight_list)
+#        repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].metadata({'complete':True})
+#        print(repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].metadata())
 
+        repo.dropCollection("streetlights_in_radius_trial")
+        repo.createCollection("streetlights_in_radius_trial")
+        repo['aoconno8_dmak1112_ferrys.streetlights_in_radius_trial'].insert_many(alcohol_streetlight_list)
+        repo['aoconno8_dmak1112_ferrys.streetlights_in_radius_trial'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112_ferrys.streetlights_in_radius_trial'].metadata())
+        
+        
         repo.logout()
         endTime = datetime.datetime.now()
         return {"start": startTime, "end": endTime}
 
 
     @staticmethod
-    def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
+    def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''
         Create the provenance document describing everything happening
         in this script. Each run of the script will generate a new
@@ -89,38 +98,35 @@ class getStreetlightsInRadius(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
-        doc.add_namespace('ont',
-                          'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-        doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('bod', 'http://bostonopendata-boston.opendata.arcgis.com/datasets/')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
-        this_script = doc.agent('alg:aoconno8_dmak1112_ferrys#getSidewalks',
-                                {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('bod:6aa3bdc3ff5443a98d506812825c250a_0',
-                              {'prov:label': 'Sidewalk Location Geo Data', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'geojson'})
-        get_sidewalks = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_sidewalks, this_script)
-        doc.usage(get_sidewalks, resource, startTime, None,
-                  {
-                      prov.model.PROV_TYPE: 'ont:Retrieval'
-                  })
+        this_script = doc.agent('alg:aoconno8_dmak1112_ferrys#getStreetlightsInRadius', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-        sidewalk_locations = doc.entity('dat:aoconno8_dmak1112_ferrys#sidewalks',
-                                        {prov.model.PROV_LABEL: 'sidewalks', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(sidewalk_locations, this_script)
-        doc.wasGeneratedBy(sidewalk_locations, get_sidewalks, endTime)
-        doc.wasDerivedFrom(sidewalk_locations, resource, get_sidewalks, get_sidewalks, get_sidewalks)
+        streetlight_locations = doc.entity('dat:aoconno8_dmak1112_ferrys#streetlights', {prov.model.PROV_LABEL:'streetlights', prov.model.PROV_TYPE:'ont:DataSet'})
+        closest_mbta_stops = doc.entity('dat:aoconno8_dmak1112_ferrys#closest_mbta_stops', {prov.model.PROV_LABEL: 'Alcohol Licenses and MBTA Stop Locations', prov.model.PROV_TYPE: 'ont:DataSet'})
+
+        get_streetlights_in_radius = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+
+        doc.wasAssociatedWith(get_streetlights_in_radius, this_script)
+
+        doc.usage(get_streetlights_in_radius, streetlight_locations, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
+        doc.usage(get_streetlights_in_radius, closest_mbta_stops, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
+
+        streetlights_radius = doc.entity('dat:aoconno8_dmak1112_ferrys#streetlights_in_radius', {prov.model.PROV_LABEL: 'All streetlights in the radius of each alc license closest MBTA stops', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(streetlights_radius, this_script)
+        doc.wasGeneratedBy(streetlights_radius, get_streetlights_in_radius, endTime)
+        doc.wasDerivedFrom(streetlights_radius, streetlight_locations, get_streetlights_in_radius, get_streetlights_in_radius, get_streetlights_in_radius)
+        doc.wasDerivedFrom(streetlights_radius, closest_mbta_stops, get_streetlights_in_radius, get_streetlights_in_radius, get_streetlights_in_radius)
 
         repo.logout()
-
         return doc
 
-#getStreetlightsInRadius.execute()
-# doc = getStreetlightsInRadius.provenance()
-# print(doc.get_provn())
-# print(json.dumps(json.loads(doc.serialize()), indent=4))
+#getStreetlightsInRadius.execute(True)
+#doc = getStreetlightsInRadius.provenance()
+#print(doc.get_provn())
+#print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 # eof

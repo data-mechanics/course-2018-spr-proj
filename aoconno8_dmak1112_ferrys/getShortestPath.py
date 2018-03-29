@@ -1,4 +1,4 @@
-import urllib.request
+import json
 import dml
 import prov.model
 import datetime
@@ -14,8 +14,8 @@ class getShortestPath(dml.Algorithm):
         and gets all of the streetlights on that path
     '''
     contributor = 'aoconno8_dmak1112_ferrys'
-    reads = ['aoconno8_dmak1112_ferrys.streetlights_in_radius']
-    writes = ['aoconno8_dmak1112_ferrys.shortest_path']
+    reads = ['aoconno8_dmak1112_ferrys.streetlights_in_radius_trial']
+    writes = ['aoconno8_dmak1112_ferrys.shortest_path_trial']
 
     @staticmethod
     def execute(trial = False):
@@ -34,6 +34,7 @@ class getShortestPath(dml.Algorithm):
             coordinate = streetlights_in_radius[0]['alc_coord']
             G = ox.graph_from_point(coordinate, 1000, network_type='drive')
         else:
+            print("Generating graph")
             G = ox.graph_from_place('Boston, Massachusetts, USA', network_type='drive')
         
         graph_project = ox.project_graph(G)
@@ -54,7 +55,7 @@ class getShortestPath(dml.Algorithm):
             
             streetlight_nodes = {} # formatted {nearest_node: [list_of_streetlights]}
                 
-            for streetlight in streetlights_list:
+            for streetlight in tqdm(streetlights_list):
                 # reformat as tuple so it can be a key in a dictionary
                 streetlight_coord = (streetlight['geometry']['coordinates'][0], streetlight['geometry']['coordinates'][1])
                 # if the streetlight is already stored, we already have the nearest node
@@ -83,11 +84,11 @@ class getShortestPath(dml.Algorithm):
                 except:
                     continue
  
-                # determine which lights are on the route
+                # determine how many lights are near each node of the route
                 route_lights = []
                 for node in route:
                     if node in streetlight_nodes:
-                        route_lights += streetlight_nodes[node]
+                        route_lights += [(node, len(streetlight_nodes[node]))]
                 
                 temp_routes.append({
                     "mbta_coord": mbta_coord, 
@@ -100,11 +101,17 @@ class getShortestPath(dml.Algorithm):
                 "mbta_routes": temp_routes
             })
 
-        repo.dropCollection("shortest_path")
-        repo.createCollection("shortest_path")
-        repo['aoconno8_dmak1112_ferrys.shortest_path'].insert_many(routes)
-        repo['aoconno8_dmak1112_ferrys.shortest_path'].metadata({'complete':True})
-        print(repo['aoconno8_dmak1112_ferrys.shortest_path'].metadata())
+#        repo.dropCollection("shortest_path")
+#        repo.createCollection("shortest_path")
+#        repo['aoconno8_dmak1112_ferrys.shortest_path'].insert_many(routes)
+#        repo['aoconno8_dmak1112_ferrys.shortest_path'].metadata({'complete':True})
+#        print(repo['aoconno8_dmak1112_ferrys.shortest_path'].metadata())
+
+        repo.dropCollection("shortest_path_trial")
+        repo.createCollection("shortest_path_trial")
+        repo['aoconno8_dmak1112_ferrys.shortest_path_trial'].insert_many(routes)
+        repo['aoconno8_dmak1112_ferrys.shortest_path_trial'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112_ferrys.shortest_path_trial'].metadata())
         
         repo.logout()
         endTime = datetime.datetime.now()
@@ -127,41 +134,35 @@ class getShortestPath(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('geocode', 'https://maps.googleapis.com/maps/api/geocode')
+        doc.add_namespace('osm', 'https://openstreetmap.org/')
 
-        this_script = doc.agent('alg:aoconno8_dmak1112_ferrys#getMBTADistances', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+        this_script = doc.agent('alg:aoconno8_dmak1112_ferrys#getShortestPath', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-        licenses = doc.entity('dat:aoconno8_dmak1112_ferrys#alc_licenses', {prov.model.PROV_LABEL:'alc_licenses', prov.model.PROV_TYPE:'ont:DataSet'})
-        mbta_stops = doc.entity('dat:aoconno8_dmak1112_ferrys#mbta', {prov.model.PROV_LABEL:'mbta', prov.model.PROV_TYPE:'ont:DataSet'})
-        geocode_locations = doc.entity('geocode:json', {'prov:label':'Google Geocode API', prov.model.PROV_TYPE:'ont:DataResource'})
+        streetlights_radius = doc.entity('dat:aoconno8_dmak1112_ferrys#streetlights_in_radius', {prov.model.PROV_LABEL: 'All streetlights in the radius of each alc license closest MBTA stops', prov.model.PROV_TYPE: 'ont:DataSet'})
+        osm = doc.entity('osm:api', {'prov:label':'OpenStreetMap', prov.model.PROV_TYPE:'ont:DataResource'})
 
+        get_shortest_path = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
-        get_mbta_dist = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_shortest_path, this_script)
 
-        doc.wasAssociatedWith(get_mbta_dist, this_script)
+        doc.usage(get_shortest_path, streetlights_radius, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
+        doc.usage(get_shortest_path, osm, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
 
-        doc.usage(get_mbta_dist, licenses, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
-        doc.usage(get_mbta_dist, mbta_stops, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
-        doc.usage(get_mbta_dist, geocode_locations, startTime, None, 
-                  {prov.model.PROV_TYPE:'ont:Retrieval', 'ont:Query':'?address=$&key=$'})
-
-        mbta_dist = doc.entity('dat:aoconno8_dmak1112_ferrys#mbtadistance', {prov.model.PROV_LABEL: 'Alcohol Licenses and MBTA Stop Locations', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(mbta_dist, this_script)
-        doc.wasGeneratedBy(mbta_dist, get_mbta_dist, endTime)
-        doc.wasDerivedFrom(mbta_dist, licenses, get_mbta_dist, get_mbta_dist, get_mbta_dist)
-        doc.wasDerivedFrom(mbta_dist, mbta_stops, get_mbta_dist, get_mbta_dist, get_mbta_dist)
-        doc.wasDerivedFrom(mbta_dist, geocode_locations, get_mbta_dist, get_mbta_dist, get_mbta_dist)
+        shortest_path = doc.entity('dat:aoconno8_dmak1112_ferrys#shortest_path', {prov.model.PROV_LABEL: 'Shortest Paths Between Alcohol Licenses and MBTA Stop Locations', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(shortest_path, this_script)
+        doc.wasGeneratedBy(shortest_path, get_shortest_path, endTime)
+        doc.wasDerivedFrom(shortest_path, streetlights_radius, get_shortest_path, get_shortest_path, get_shortest_path)
+        doc.wasDerivedFrom(shortest_path, osm, get_shortest_path, get_shortest_path, get_shortest_path)
 
         repo.logout()
         return doc
-
 
     def project(R, p):
         return [p(t) for t in R]
 
 
 #getShortestPath.execute(True)
-#doc = getClosestMBTAStops.provenance()
+#doc = getShortestPath.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))
 

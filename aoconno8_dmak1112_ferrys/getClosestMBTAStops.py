@@ -14,7 +14,7 @@ class getClosestMBTAStops(dml.Algorithm):
     '''
     contributor = 'aoconno8_dmak1112_ferrys'
     reads = ['aoconno8_dmak1112_ferrys.mbta', 'aoconno8_dmak1112_ferrys.alc_licenses']
-    writes = ['aoconno8_dmak1112_ferrys.closest_mbta_stops']
+    writes = ['aoconno8_dmak1112_ferrys.closest_mbta_stops_trial']
 
     @staticmethod
     def execute(trial = False):
@@ -88,11 +88,18 @@ class getClosestMBTAStops(dml.Algorithm):
                         "mbta_coords":(mbta_coords)
                     })
 
-        repo.dropCollection("closest_mbta_stops")
-        repo.createCollection("closest_mbta_stops")
-        repo['aoconno8_dmak1112_ferrys.closest_mbta_stops'].insert_many(mbta_dist)
-        repo['aoconno8_dmak1112_ferrys.closest_mbta_stops'].metadata({'complete':True})
-        print(repo['aoconno8_dmak1112_ferrys.closest_mbta_stops'].metadata())
+#        repo.dropCollection("closest_mbta_stops")
+#        repo.createCollection("closest_mbta_stops")
+#        repo['aoconno8_dmak1112_ferrys.closest_mbta_stops'].insert_many(mbta_dist)
+#        repo['aoconno8_dmak1112_ferrys.closest_mbta_stops'].metadata({'complete':True})
+#        print(repo['aoconno8_dmak1112_ferrys.closest_mbta_stops'].metadata())
+
+        repo.dropCollection("closest_mbta_stops_trial")
+        repo.createCollection("closest_mbta_stops_trial")
+        repo['aoconno8_dmak1112_ferrys.closest_mbta_stops_trial'].insert_many(mbta_dist)
+        repo['aoconno8_dmak1112_ferrys.closest_mbta_stops_trial'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112_ferrys.closest_mbta_stops_trial'].metadata())
+
         
         repo.logout()
         endTime = datetime.datetime.now()
@@ -117,7 +124,7 @@ class getClosestMBTAStops(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('geocode', 'https://maps.googleapis.com/maps/api/geocode')
 
-        this_script = doc.agent('alg:aoconno8_dmak1112_ferrys#getMBTADistances', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+        this_script = doc.agent('alg:aoconno8_dmak1112_ferrys#getClosestMBTAStops', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
         licenses = doc.entity('dat:aoconno8_dmak1112_ferrys#alc_licenses', {prov.model.PROV_LABEL:'alc_licenses', prov.model.PROV_TYPE:'ont:DataSet'})
         mbta_stops = doc.entity('dat:aoconno8_dmak1112_ferrys#mbta', {prov.model.PROV_LABEL:'mbta', prov.model.PROV_TYPE:'ont:DataSet'})
@@ -133,12 +140,12 @@ class getClosestMBTAStops(dml.Algorithm):
         doc.usage(get_mbta_dist, geocode_locations, startTime, None, 
                   {prov.model.PROV_TYPE:'ont:Retrieval', 'ont:Query':'?address=$&key=$'})
 
-        mbta_dist = doc.entity('dat:aoconno8_dmak1112_ferrys#mbtadistance', {prov.model.PROV_LABEL: 'Alcohol Licenses and MBTA Stop Locations', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(mbta_dist, this_script)
-        doc.wasGeneratedBy(mbta_dist, get_mbta_dist, endTime)
-        doc.wasDerivedFrom(mbta_dist, licenses, get_mbta_dist, get_mbta_dist, get_mbta_dist)
-        doc.wasDerivedFrom(mbta_dist, mbta_stops, get_mbta_dist, get_mbta_dist, get_mbta_dist)
-        doc.wasDerivedFrom(mbta_dist, geocode_locations, get_mbta_dist, get_mbta_dist, get_mbta_dist)
+        closest_mbta_stops = doc.entity('dat:aoconno8_dmak1112_ferrys#closest_mbta_stops', {prov.model.PROV_LABEL: 'Alcohol Licenses and MBTA Stop Locations', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(closest_mbta_stops, this_script)
+        doc.wasGeneratedBy(closest_mbta_stops, get_mbta_dist, endTime)
+        doc.wasDerivedFrom(closest_mbta_stops, licenses, get_mbta_dist, get_mbta_dist, get_mbta_dist)
+        doc.wasDerivedFrom(closest_mbta_stops, mbta_stops, get_mbta_dist, get_mbta_dist, get_mbta_dist)
+        doc.wasDerivedFrom(closest_mbta_stops, geocode_locations, get_mbta_dist, get_mbta_dist, get_mbta_dist)
 
         repo.logout()
         return doc

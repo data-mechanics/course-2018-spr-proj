@@ -41,6 +41,7 @@ class subwayStop(dml.Algorithm):
                 dic['stopName'] = line[2][2:-2]
                 dic['Y'] = line[4]
                 dic['X'] = line[5]
+                dic['id'] = i
                 subStop.append(dic)
             i = i + 1
 

@@ -7,9 +7,9 @@ import datetime
 import uuid
 
 class crime(dml.Algorithm):
-    contributor = 'biken_riken'
+    contributor = 'bm181354_rikenm'
     reads = []
-    writes = ['biken_riken.liquor-licenses', 'biken_riken.crime-record','biken_riken.liquor-crime']
+    writes = ['bm181354_rikenm.liquor-licenses', 'bm181354_rikenm.crime-record','bm181354_rikenm.liquor-crime']
     
     @staticmethod
     def execute(trial = False):
@@ -19,7 +19,7 @@ class crime(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('biken_riken', 'biken_riken')
+        repo.authenticate('bm181354_rikenm', 'bm181354_rikenm')
         
         # Dataset01
         url = 'https://data.boston.gov/dataset/47d501bf-8bfa-4076-944f-da0aedb60c8a/resource/aab353c1-c797-4053-a3fc-e893f5ccf547/download/liquor-licenses.csv'
@@ -36,9 +36,9 @@ class crime(dml.Algorithm):
         repo.createCollection("liquor-licenses")
         
         # stores here
-        repo['biken_riken.liquor-licenses'].insert_many(r)
-        repo['biken_riken.liquor-licenses'].metadata({'complete':True})
-        #print(repo['biken_riken.liquor-licenses'].metadata())
+        repo['bm181354_rikenm.liquor-licenses'].insert_many(r)
+        repo['bm181354_rikenm.liquor-licenses'].metadata({'complete':True})
+        #print(repo['bm181354_rikenm.liquor-licenses'].metadata())
         
         # Dataset02
         url = 'https://data.boston.gov/dataset/6220d948-eae2-4e4b-8723-2dc8e67722a3/resource/12cb3883-56f5-47de-afa5-3b1cf61b257b/download/crime.csv'
@@ -50,9 +50,9 @@ class crime(dml.Algorithm):
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("crime-record")
         repo.createCollection("crime-record")
-        repo['biken_riken.crime-record'].insert_many(r)
-        repo['biken_riken.crime-record'].metadata({'complete':True})
-        #print(repo['biken_riken.crime-record'].metadata())
+        repo['bm181354_rikenm.crime-record'].insert_many(r)
+        repo['bm181354_rikenm.crime-record'].metadata({'complete':True})
+        #print(repo['bm181354_rikenm.crime-record'].metadata())
         
         
         #Union of both the datasets:
@@ -61,7 +61,7 @@ class crime(dml.Algorithm):
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("liquor-crime")
         repo.createCollection("liquor-crime")
-        repo['biken_riken.liquor-crime'].insert_many(r)
+        repo['bm181354_rikenm.liquor-crime'].insert_many(r)
         
         # logout
         repo.logout()
@@ -80,14 +80,14 @@ class crime(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         
-        repo.authenticate('biken_riken', 'biken_riken')
+        repo.authenticate('bm181354_rikenm', 'bm181354_rikenm')
         doc.add_namespace('alg', 'http://datamechanics.io/?prefix=bm181354_rikenm/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp','http://datamechanics.io/?prefix=bm181354_rikenm/')
         
-        this_script = doc.agent('alg:biken_riken#crime', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:bm181354_rikenm#crime', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         resource = doc.entity('bdp:liquor-licenses', {'prov:label':'dataset of all liquor license in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         
@@ -109,12 +109,12 @@ class crime(dml.Algorithm):
                             {prov.model.PROV_TYPE:'ont:Retrieval'
                             })
                   
-        liquor_license = doc.entity('dat:biken_riken#liquor-licenses', {prov.model.PROV_LABEL:'liquor license', prov.model.PROV_TYPE:'ont:DataSet'})
+        liquor_license = doc.entity('dat:bm181354_rikenm#liquor-licenses', {prov.model.PROV_LABEL:'liquor license', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(liquor_license, this_script)
         doc.wasGeneratedBy(liquor_license, get_liquor_license, endTime)
         doc.wasDerivedFrom(liquor_license, resource, get_liquor_license, get_liquor_license, get_liquor_license)
                   
-        crime = doc.entity('dat:biken_riken#crime-record', {prov.model.PROV_LABEL:'record of all crimes in Boston', prov.model.PROV_TYPE:'ont:DataSet'})
+        crime = doc.entity('dat:bm181354_rikenm#crime-record', {prov.model.PROV_LABEL:'record of all crimes in Boston', prov.model.PROV_TYPE:'ont:DataSet'})
         
         ######
         doc.wasAttributedTo(crime, this_script)
@@ -123,7 +123,7 @@ class crime(dml.Algorithm):
         doc.wasDerivedFrom(crime, resource_two,  get_crime,  get_crime, get_crime)
 
         # one more for concatination
-        liquor_crime = doc.entity('dat:biken_riken#liquor-crime', {prov.model.PROV_LABEL:'record of all crimes and liquor filtered and unionized', prov.model.PROV_TYPE:'ont:DataSet'})
+        liquor_crime = doc.entity('dat:bm181354_rikenm#liquor-crime', {prov.model.PROV_LABEL:'record of all crimes and liquor filtered and unionized', prov.model.PROV_TYPE:'ont:DataSet'})
         
         doc.wasAttributedTo(liquor_crime, this_script)
         

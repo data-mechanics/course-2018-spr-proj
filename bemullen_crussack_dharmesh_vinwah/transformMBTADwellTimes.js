@@ -3,7 +3,7 @@
  * Author: Dharmesh Tarapore <dharmesh@bu.edu>
  * Description: Data transformations on the MBTA dwell intervals dataset.
  */
-d = db.bemullen_dharmesh;
+d = db.bemullen_crussack_dharmesh_vinwah;
 
 mbta_red_dwells = d.mbta_red_dwells;
 mbta_green_dwells = d.mbta_green_dwells;

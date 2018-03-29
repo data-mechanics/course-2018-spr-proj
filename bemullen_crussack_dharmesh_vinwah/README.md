@@ -1,6 +1,6 @@
 # CS 591 L1 Project 1 
 
-Authors: Brooke Mullen <bemullen@bu.edu>, Dharmesh Tarapore <dharmesh@bu.edu>
+Authors: Brooke Mullen <bemullen@bu.edu>, Dharmesh Tarapore <dharmesh@bu.edu>, Claire Russack <crussack@bu.edu>, Vincent Wahl <vinwah@bu.edu>
 
 ## The Impact of College Students on Boston's residents
 
@@ -31,7 +31,7 @@ Transformations are stored in files beginning with the name: "Transform". The py
 
 To run the code, setup the database structure as documented in the parent README and then run:
 
-<code>python execute.py bemullen_dharmesh</code>
+<code>python execute.py bemullen_crussack_dharmesh_vinwah</code>
 
 
 

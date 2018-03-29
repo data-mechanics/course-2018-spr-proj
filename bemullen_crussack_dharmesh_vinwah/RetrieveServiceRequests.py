@@ -10,9 +10,9 @@ import uuid
 import xmltodict
 
 class RetrieveServiceRequests(dml.Algorithm):
-    contributor = "bemullen_dharmesh"
+    contributor = "bemullen_crussack_dharmesh_vinwah"
     reads = []
-    writes = ['bemullen_dharmesh.service_requests']
+    writes = ['bemullen_crussack_dharmesh_vinwah.service_requests']
 
     @staticmethod
     def parseURL(url):
@@ -26,7 +26,7 @@ class RetrieveServiceRequests(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
+        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
 
         key = "service_requests"
         url = RetrieveServiceRequests.parseURL('''https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT * from "2968e2c0-d479-49ba-a884-4ef523ada3c0" WHERE "open_dt" >= '2016-02-01 00:00:00' AND "open_dt" <= '2018-01-01 00:00:00' ''')
@@ -35,7 +35,7 @@ class RetrieveServiceRequests(dml.Algorithm):
         r = json.loads(response)['result']['records']
         repo.dropCollection(key)
         repo.createCollection(key)
-        repo['bemullen_dharmesh.' + key].insert_many(r)
+        repo['bemullen_crussack_dharmesh_vinwah.' + key].insert_many(r)
 
 
         repo.logout()
@@ -48,7 +48,7 @@ class RetrieveServiceRequests(dml.Algorithm):
 
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
+        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
@@ -57,7 +57,7 @@ class RetrieveServiceRequests(dml.Algorithm):
 
         doc.add_namespace('bdpr', 'https://data.boston.gov/api/3/action/datastore_search_sql')
 
-        this_script = doc.agent('alg:bemullen_dharmesh#RetrieveServiceRequests',
+        this_script = doc.agent('alg:bemullen_crussack_dharmesh_vinwah#RetrieveServiceRequests',
             {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
 
         resource_service_requests = doc.entity('bdpm:2968e2c0-d479-49ba-a884-4ef523ada3c0',
@@ -70,7 +70,7 @@ class RetrieveServiceRequests(dml.Algorithm):
             {prov.model.PROV_TYPE:'ont:Retrieval',
             'ont:Query':''' ?sql=SELECT * from "2968e2c0-d479-49ba-a884-4ef523ada3c0" WHERE "open_dt" >= '2016-02-01 00:00:00' AND "open_dt" <= '2018-01-01 00:00:00' '''})
 
-        service_requests = doc.entity('dat:bemullen_dharmesh#service_requests',
+        service_requests = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#service_requests',
             {prov.model.PROV_LABEL:'311 Service Requests',
             prov.model.PROV_TYPE:'ont:DataSet'
             })

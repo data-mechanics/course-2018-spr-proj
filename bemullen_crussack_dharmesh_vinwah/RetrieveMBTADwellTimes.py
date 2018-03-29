@@ -10,9 +10,9 @@ import uuid
 import xmltodict
 
 class RetrieveMBTADwellTimes(dml.Algorithm):
-    contributor = "bemullen_dharmesh"
+    contributor = "bemullen_crussack_dharmesh_vinwah"
     reads = []
-    writes = ["bemullen_dharmesh.mbta_red_dwells", "bemullen_dharmesh.mbta_green_dwells"]
+    writes = ["bemullen_crussack_dharmesh_vinwah.mbta_red_dwells", "bemullen_crussack_dharmesh_vinwah.mbta_green_dwells"]
 
     @staticmethod
     def execute(trial = False):
@@ -21,17 +21,17 @@ class RetrieveMBTADwellTimes(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
+        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
 
-        urls = {'mbta_red_dwells': 'http://datamechanics.io/data/bemullen_dharmesh/data/mbta_red_dwells.json',
-        'mbta_green_dwells': 'http://datamechanics.io/data/bemullen_dharmesh/data/mbta_green_dwells.json'}
+        urls = {'mbta_red_dwells': 'http://datamechanics.io/data/bemullen_crussack_dharmesh_vinwah/data/mbta_red_dwells.json',
+        'mbta_green_dwells': 'http://datamechanics.io/data/bemullen_crussack_dharmesh_vinwah/data/mbta_green_dwells.json'}
 
         for (key, url) in urls.items():
             response = urllib.request.urlopen(url).read().decode("utf-8")
             r = json.loads(response)[key]
             repo.dropCollection(key)
             repo.createCollection(key)
-            repo['bemullen_dharmesh.' + key].insert_many(r)
+            repo['bemullen_crussack_dharmesh_vinwah.' + key].insert_many(r)
 
         repo.logout()
         endTime = datetime.datetime.now()
@@ -49,7 +49,7 @@ class RetrieveMBTADwellTimes(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
+        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
@@ -59,9 +59,9 @@ class RetrieveMBTADwellTimes(dml.Algorithm):
         doc.add_namespace('bdpr', 'https://data.boston.gov/api/3/action/datastore_search_sql')
         doc.add_namespace('bdpm', 'https://data.boston.gov/datastore/odata3.0/')
         doc.add_namespace('bgis', 'https://bostonopendata-boston.opendata.arcgis.com/datasets/')
-        doc.add_namespace('datp', 'http://datamechanics.io/data/bemullen_dharmesh/data/')
+        doc.add_namespace('datp', 'http://datamechanics.io/data/bemullen_crussack_dharmesh_vinwah/data/')
 
-        this_script = doc.agent('alg:bemullen_dharmesh#RetrieveMBTADwellTimes', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:bemullen_crussack_dharmesh_vinwah#RetrieveMBTADwellTimes', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
 
         resource_mbta_red_dwells = doc.entity('datp:mbta_red_dwells',
             {'prov:label':'MBTA Red Line Dwell Values', prov.model.PROV_TYPE:'ont:DataResource',
@@ -82,7 +82,7 @@ class RetrieveMBTADwellTimes(dml.Algorithm):
             {prov.model.PROV_TYPE:'ont:Retrieval'})
         
 
-        mbta_red_dwells = doc.entity('dat:bemullen_dharmesh#mbta_red_dwells',
+        mbta_red_dwells = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#mbta_red_dwells',
             {prov.model.PROV_LABEL:'MBTA Red Line Dwell Intervals',
             prov.model.PROV_TYPE:'ont:DataSet'
             })
@@ -91,7 +91,7 @@ class RetrieveMBTADwellTimes(dml.Algorithm):
         doc.wasDerivedFrom(mbta_red_dwells, resource_mbta_red_dwells, get_mbta_red_dwells,
             get_mbta_red_dwells, get_mbta_red_dwells)
 
-        mbta_green_dwells = doc.entity('dat:bemullen_dharmesh#mbta_green_dwells',
+        mbta_green_dwells = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#mbta_green_dwells',
             {prov.model.PROV_LABEL:'MBTA Green Line Dwell Intervals',
             prov.model.PROV_TYPE:'ont:DataSet'
             })

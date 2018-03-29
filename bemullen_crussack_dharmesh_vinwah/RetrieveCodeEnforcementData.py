@@ -10,9 +10,9 @@ import uuid
 import xmltodict
 
 class RetrieveCodeEnforcementData(dml.Algorithm):
-    contributor = "bemullen_dharmesh"
+    contributor = "bemullen_crussack_dharmesh_vinwah"
     reads = []
-    writes = ['bemullen_dharmesh.code_enforcements']
+    writes = ['bemullen_crussack_dharmesh_vinwah.code_enforcements']
 
     @staticmethod
     def parseURL(url):
@@ -26,7 +26,7 @@ class RetrieveCodeEnforcementData(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
+        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
 
         key = "code_enforcements"
         url = RetrieveCodeEnforcementData.parseURL('''https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT * from "90ed3816-5e70-443c-803d-9a71f44470be" WHERE "Status_DTTM" >= '2016-02-01 00:00:00' AND "Status_DTTM" <= '2018-01-01 00:00:00' ''')
@@ -35,7 +35,7 @@ class RetrieveCodeEnforcementData(dml.Algorithm):
         r = json.loads(response)['result']['records']
         repo.dropCollection(key)
         repo.createCollection(key)
-        repo['bemullen_dharmesh.' + key].insert_many(r)
+        repo['bemullen_crussack_dharmesh_vinwah.' + key].insert_many(r)
 
 
         repo.logout()
@@ -48,7 +48,7 @@ class RetrieveCodeEnforcementData(dml.Algorithm):
 
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
+        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
@@ -57,7 +57,7 @@ class RetrieveCodeEnforcementData(dml.Algorithm):
 
         doc.add_namespace('bdpr', 'https://data.boston.gov/api/3/action/datastore_search_sql')
 
-        this_script = doc.agent('alg:bemullen_dharmesh#RetrieveCodeEnforcementData',
+        this_script = doc.agent('alg:bemullen_crussack_dharmesh_vinwah#RetrieveCodeEnforcementData',
             {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
 
         resource_code_enforcements = doc.entity('bdpr:90ed3816-5e70-443c-803d-9a71f44470be',
@@ -71,7 +71,7 @@ class RetrieveCodeEnforcementData(dml.Algorithm):
             'ont:Query':'''sql=SELECT * from "90ed3816-5e70-443c-803d-9a71f44470be" WHERE "Status_DTTM" >= '2016-02-01 00:00:00' AND "Status_DTTM" <= '2018-01-01 00:00:00' '''
             })
 
-        code_enforcements = doc.entity('dat:bemullen_dharmesh#code_enforcements',
+        code_enforcements = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#code_enforcements',
             {prov.model.PROV_LABEL:'Code Enforcement - Building and Property',
             prov.model.PROV_TYPE:'ont:DataSet'
             })

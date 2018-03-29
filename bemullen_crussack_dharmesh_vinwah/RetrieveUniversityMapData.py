@@ -8,9 +8,9 @@ import uuid
 import xmltodict
 
 class RetrieveUniversityMapData(dml.Algorithm):
-    contributor = "bemullen_dharmesh"
+    contributor = "bemullen_crussack_dharmesh_vinwah"
     reads = []
-    writes = ["bemullen_dharmesh.universities"]
+    writes = ["bemullen_crussack_dharmesh_vinwah.universities"]
 
     @staticmethod
     def execute(trial = False):
@@ -20,14 +20,14 @@ class RetrieveUniversityMapData(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
+        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
 
         url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/cbf14bb032ef4bd38e20429f71acb61a_2.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)['features']
         repo.dropCollection("universities")
         repo.createCollection("universities")
-        repo['bemullen_dharmesh.universities'].insert_many(r)
+        repo['bemullen_crussack_dharmesh_vinwah.universities'].insert_many(r)
 
         repo.logout()
         endTime = datetime.datetime.now()
@@ -38,7 +38,7 @@ class RetrieveUniversityMapData(dml.Algorithm):
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
+        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
@@ -48,10 +48,10 @@ class RetrieveUniversityMapData(dml.Algorithm):
         doc.add_namespace('bdpr', 'https://data.boston.gov/api/3/action/datastore_search_sql')
         doc.add_namespace('bdpm', 'https://data.boston.gov/datastore/odata3.0/')
         doc.add_namespace('bgis', 'https://bostonopendata-boston.opendata.arcgis.com/datasets/')
-        doc.add_namespace('datp', 'http://datamechanics.io/data/bemullen_dharmesh/data/')
+        doc.add_namespace('datp', 'http://datamechanics.io/data/bemullen_crussack_dharmesh_vinwah/data/')
         doc.add_namespace('bgis', 'https://bostonopendata-boston.opendata.arcgis.com/datasets/')
 
-        this_script = doc.agent('alg:bemullen_dharmesh#RetrieveUniversityMapData', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:bemullen_crussack_dharmesh_vinwah#RetrieveUniversityMapData', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
 
         resource_universities = doc.entity('bgis:cbf14bb032ef4bd38e20429f71acb61a_2',
             {'prov:label':'Coordinates of Universities in Boston',
@@ -62,7 +62,7 @@ class RetrieveUniversityMapData(dml.Algorithm):
         doc.usage(get_universities, resource_universities, startTime, None,
             {prov.model.PROV_TYPE:'ont:Retrieval'})
 
-        universities = doc.entity('dat:bemullen_dharmesh#universities',
+        universities = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#universities',
             {prov.model.PROV_LABEL:'Coordinates of Universities in Boston',
             prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(universities, this_script)

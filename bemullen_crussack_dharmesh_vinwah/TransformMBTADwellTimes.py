@@ -11,9 +11,9 @@ import subprocess
 import xmltodict
 
 class TransformMBTADwellTimes(dml.Algorithm):
-    contributor = "bemullen_dharmesh"
-    reads = ["bemullen_dharmesh.mbta_red_dwells", "mbta_green_dwells"]
-    writes = ["bemullen_dharmesh.mbta_red_dwells_monthly", "bemullen_dharmesh.mbta_green_dwells_monthly"]
+    contributor = "bemullen_crussack_dharmesh_vinwah"
+    reads = ["bemullen_crussack_dharmesh_vinwah.mbta_red_dwells", "mbta_green_dwells"]
+    writes = ["bemullen_crussack_dharmesh_vinwah.mbta_red_dwells_monthly", "bemullen_crussack_dharmesh_vinwah.mbta_green_dwells_monthly"]
 
     @staticmethod
     def execute(trial = False):
@@ -22,10 +22,10 @@ class TransformMBTADwellTimes(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
+        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
 
-        subprocess.check_output('mongo repo -u bemullen_dharmesh -p\
-            bemullen_dharmesh --authenticationDatabase "repo" transformMBTADwellTimes.js', shell=True)
+        subprocess.check_output('mongo repo -u bemullen_crussack_dharmesh_vinwah -p\
+            bemullen_crussack_dharmesh_vinwah --authenticationDatabase "repo" transformMBTADwellTimes.js', shell=True)
 
         endTime = datetime.datetime.now()
 
@@ -35,7 +35,7 @@ class TransformMBTADwellTimes(dml.Algorithm):
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
+        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
 
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
@@ -43,9 +43,9 @@ class TransformMBTADwellTimes(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
 
-        this_script = doc.agent('alg:bemullen_dharmesh#TransformCityScores', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+        this_script = doc.agent('alg:bemullen_crussack_dharmesh_vinwah#TransformCityScores', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         
-        mbta_red_dwells = doc.entity('dat:bemullen_dharmesh#mbta_red_dwells',
+        mbta_red_dwells = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#mbta_red_dwells',
             {prov.model.PROV_LABEL:'Dwell Intervals for the MBTA\'s Red Line', prov.model.PROV_TYPE:'ont:DataSet'})        
         get_mbta_red_dwells = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime,
             {'prov:label':'Dwell Intervals for the MBTA\'s Red Line'})
@@ -54,7 +54,7 @@ class TransformMBTADwellTimes(dml.Algorithm):
         doc.wasAttributedTo(mbta_red_dwells, this_script)
         doc.wasGeneratedBy(mbta_red_dwells, get_mbta_red_dwells, endTime) 
 
-        mbta_green_dwells = doc.entity('dat:bemullen_dharmesh#mbta_red_dwells',
+        mbta_green_dwells = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#mbta_red_dwells',
             {prov.model.PROV_LABEL:'Dwell Intervals for the MBTA\'s Green Line', prov.model.PROV_TYPE:'ont:DataSet'})        
         get_mbta_red_dwells = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime,
             {'prov:label':'Dwell Intervals for the MBTA\'s Green Line'})

@@ -1,5 +1,6 @@
 import urllib.request
 import json
+import math
 import dml
 import prov.model
 import datetime
@@ -69,7 +70,7 @@ class schoolSubwayDistance(dml.Algorithm):
                         identity = d
                         schoolX = x
                         schoolY = y
-            minDistance.append({'schoolName': school , 'subwayStation': station, 'Distance': minD, 'subwayId' : identity, "schoolX" : schoolX, 'schoolY' : schoolY})
+            minDistance.append({'schoolName': school , 'subwayStation': station, 'Distance': math.sqrt(minD), 'subwayId' : identity, "schoolX" : schoolX, 'schoolY' : schoolY})
 
         # save the information to the database
         repo.dropCollection("schoolSubwayDistance")

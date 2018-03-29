@@ -10,19 +10,6 @@ class boston_crimes(dml.Algorithm):
 	reads = []
 	writes = ['agoncharova_lmckone.boston_crimes']
 	repo_name = "agoncharova_lmckone.boston_crimes"
-	
-	@staticmethod
-	def setup():
-		'''
-		establish a conn to db and return the conn 
-		'''
-		client = dml.pymongo.MongoClient()
-		repo = client.repo
-		repo.authenticate("agoncharova_lmckone", "agoncharova_lmckone")
-		repo.dropCollection("boston_crimes")
-		repo.createCollection("boston_crimes")
-		print("finished setuprepo")
-		return 
 
 	@staticmethod
 	def get_crime_data():
@@ -38,14 +25,18 @@ class boston_crimes(dml.Algorithm):
 		'''Retrieve Boston Crime dataset for 2015-now'''
 		startTime = datetime.datetime.now()
 
-		# setup
-		repo = boston_crimes.setup()
+		client = dml.pymongo.MongoClient()
+		repo = client.repo
+		repo.authenticate("agoncharova_lmckone", "agoncharova_lmckone")
+		repo.dropCollection("boston_crimes")
+		repo.createCollection("boston_crimes")
+		print("finished setuprepo")
 		
 		# get data
 		data = boston_crimes.get_crime_data()
 		
 		# save data
-		repo[boston_crimes.repo_name].insert_many(data)
+		repo['agoncharova_lmckone.boston_crimes'].insert_many(data)
 		repo.logout()
 
 		print("got all Boston crime data and saved it to " + boston_crimes.repo_name)

@@ -21,7 +21,7 @@ class boston_evictions(dml.Algorithm):
 
 
 	@staticmethod
-	def execute():
+	def execute(trial = False):
 		startTime = datetime.datetime.now()
 		b_e = boston_evictions
 
@@ -74,5 +74,5 @@ class boston_evictions(dml.Algorithm):
 
 		return doc
 
-boston_evictions.execute()
+# boston_evictions.execute()
 # boston_evictions.provenance()

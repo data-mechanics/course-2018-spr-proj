@@ -34,7 +34,7 @@ class boston_crimes(dml.Algorithm):
 		return data
 
 	@staticmethod
-	def execute():
+	def execute(trial = False):
 		'''Retrieve Boston Crime dataset for 2015-now'''
 		startTime = datetime.datetime.now()
 

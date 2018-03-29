@@ -31,6 +31,7 @@ class boston_crimes(dml.Algorithm):
 		response = urllib.request.urlopen(url).read()
 		response = response.decode("utf-8").replace(']', "") + "]"
 		data = json.loads(response)
+		print(data)
 		return data
 
 	@staticmethod
@@ -39,13 +40,20 @@ class boston_crimes(dml.Algorithm):
 		startTime = datetime.datetime.now()
 
 		# setup
-		repo = boston_crimes.setup()
+		#repo = boston_crimes.setup()
+
+		client = dml.pymongo.MongoClient()
+		repo = client.repo
+		repo.authenticate("agoncharova_lmckone", "agoncharova_lmckone")
+		repo.dropCollection("boston_crimes")
+		repo.createCollection("boston_crimes")
+		print("finished setuprepo")
 		
 		# get data
 		data = boston_crimes.get_crime_data()
 		
 		# save data
-		repo[boston_crimes.repo_name].insert_many(data)
+		repo['agoncharova_lmckone.boston_crimes'].insert_many(data)
 		repo.logout()
 
 		print("got all Boston crime data and saved it to " + boston_crimes.repo_name)

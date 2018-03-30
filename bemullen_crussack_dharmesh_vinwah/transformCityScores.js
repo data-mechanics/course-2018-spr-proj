@@ -3,6 +3,7 @@
  * Author: Dharmesh Tarapore <dharmesh@bu.edu>
  * Description: Data transformations on the cityscores dataset.
  */
+db.loadServerScripts();
 d = db.bemullen_crussack_dharmesh_vinwah;
 scores = d.cityscores;
 
@@ -46,7 +47,7 @@ var scores_binned = scores.aggregate(
 
 arrayVals = scores_binned.toArray();
 d.cityscores_monthly.remove({});
-db.createCollection("cityscores_monthly");
+createCollection("cityscores_monthly");
 db.bemullen_crussack_dharmesh_vinwah.cityscores_monthly.insertMany(arrayVals);
 
 

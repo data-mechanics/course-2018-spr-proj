@@ -3,6 +3,7 @@
  * Author: Dharmesh Tarapore <dharmesh@bu.edu>
  * Description: Data transformations on the code enforcements dataset.
  */
+db.loadServerScripts();
 d = db.bemullen_crussack_dharmesh_vinwah;
 enforcements = d.code_enforcements;
 
@@ -35,5 +36,5 @@ var enforcements_binned = enforcements.aggregate([{
 
 arrayVals = enforcements_binned.toArray();
 d.enforcements_monthly.remove({});
-db.createCollection("enforcements_monthly");
+createCollection("enforcements_monthly");
 d.enforcements_monthly.insertMany(arrayVals);

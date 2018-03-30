@@ -3,6 +3,7 @@
  * Author: Dharmesh Tarapore <dharmesh@bu.edu>
  *
  */
+db.loadServerScripts();
 d = db.bemullen_crussack_dharmesh_vinwah;
 
 service_requests = d.service_requests;
@@ -60,5 +61,5 @@ var binnedServiceRequests = service_requests_binned = service_requests.aggregate
 
 arrayVals = binnedServiceRequests.toArray();
 d.service_requests_monthly.remove({});
-db.createCollection("service_requests_monthly");
+createCollection("service_requests_monthly");
 d.service_requests_monthly.insertMany(arrayVals);

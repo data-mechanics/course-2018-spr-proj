@@ -103,3 +103,6 @@ class RetrieveMBTADwellTimes(dml.Algorithm):
         repo.logout()
                   
         return doc
+
+if __name__ == "__main__":
+    RetrieveMBTADwellTimes.execute()

@@ -25,7 +25,8 @@ class TransformMBTADwellTimes(dml.Algorithm):
         repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
 
         subprocess.check_output('mongo repo -u bemullen_crussack_dharmesh_vinwah -p\
-            bemullen_crussack_dharmesh_vinwah --authenticationDatabase "repo" transformMBTADwellTimes.js', shell=True)
+            bemullen_crussack_dharmesh_vinwah --authenticationDatabase "repo" bemullen_crussack_dharmesh_vinwah\
+            /transformMBTADwellTimes.js', shell=True)
 
         endTime = datetime.datetime.now()
 
@@ -65,3 +66,6 @@ class TransformMBTADwellTimes(dml.Algorithm):
         
         repo.logout()
         return doc
+
+if __name__ == "__main__":
+    TransformMBTADwellTimes.execute()

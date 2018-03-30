@@ -3,6 +3,7 @@
  * Author: Dharmesh Tarapore <dharmesh@bu.edu>
  * Description: Data transformations on the MBTA dwell intervals dataset.
  */
+db.loadServerScripts();
 d = db.bemullen_crussack_dharmesh_vinwah;
 
 mbta_red_dwells = d.mbta_red_dwells;
@@ -66,5 +67,5 @@ var greenBinned = mbta_green_binned = mbta_green_dwells.aggregate(
 
 greenArrayVals = greenBinned.toArray();
 d.mbta_green_dwells_monthly.remove({});
-db.createCollection("mbta_green_dwells_monthly");
+createCollection("mbta_green_dwells_monthly");
 d.mbta_green_dwells_monthly.insertMany(greenArrayVals);

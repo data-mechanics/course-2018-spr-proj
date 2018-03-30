@@ -144,38 +144,43 @@ class count_evictions_crimes(dml.Algorithm):
 		# '''
 
 		# # Set up the database connection.
-		# client = dml.pymongo.MongoClient()
-		# repo = client.repo
-		# repo.authenticate('agoncharova_lmckone', 'agoncharova_lmckone')
-		# doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-		# doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-		# doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-		# doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+		client = dml.pymongo.MongoClient()
+		repo = client.repo
+		repo.authenticate('agoncharova_lmckone', 'agoncharova_lmckone')
+		doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+		doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+		doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+		doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
-		# this_script = doc.agent('alg:agoncharova_lmckone#sf_evictions_constructions', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+		this_script = doc.agent('alg:agoncharova_lmckone#count_evictions_crimes', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
 		
-		# resource_evictions = doc.entity('dat:agoncharova_lmckone#sf_evictions', {'prov:label':'San Francisco Evictions', prov.model.PROV_TYPE:'ont:DataSet'})
-		# resource_permits = doc.entity('dat:agoncharova_lmckone#sf_permits', {'prov:label':'San Francisco Permits', prov.model.PROV_TYPE:'ont:DataSet'})
+		get_count_evictions_crimes = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 		
-		# get_sf_evictions_constructions = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-		
-		# doc.wasAssociatedWith(get_sf_evictions_constructions, this_script)
+		evictions_input = doc.entity('dat:agoncharova_lmckone.boston_evictions',
+			{prov.model.PROV_LABEL:'Evictions',prov.model.PROV_TYPE:'ont:DataSet', 'ont:Query': '.find()'})
 
-		# doc.usage(get_sf_evictions_constructions, resource_evictions, startTime, None,
-		#           {prov.model.PROV_TYPE:'ont:Computation'}
-		#           )
+		crimes_input = doc.entity('dat:agoncharova_lmckone.boston_crimes',
+			{prov.model.PROV_LABEL:'Crimes',prov.model.PROV_TYPE:'ont:DataSet', 'ont:Query': '.find()'})
 
-		# doc.usage(get_sf_evictions_constructions, resource_permits, startTime, None,
-		#           {prov.model.PROV_TYPE:'ont:Computation'}
-		#           )
+		output = doc.entity('dat:agoncharova_lmckone.boston_tract_counts',
+			{prov.model.PROV_LABEL:'Count of evictions and crimes in each census tract', prov.model.PROV_TYPE:'ont:DataSet'})
 
-		# sf_evictions_constructions = doc.entity('dat:agoncharova_lmckone#sf_evictions_constructions', {prov.model.PROV_LABEL: 'Count of evictions and new constructions in SF by ZIP Code', prov.model.PROV_TYPE: 'ont:DataSet'})
-		# doc.wasAttributedTo(sf_evictions_constructions, this_script)
-		# doc.wasGeneratedBy(sf_evictions_constructions, get_sf_evictions_constructions, endTime)
-		# doc.wasDerivedFrom(sf_evictions_constructions, resource_evictions, get_sf_evictions_constructions, get_sf_evictions_constructions, get_sf_evictions_constructions)
-		# doc.wasDerivedFrom(sf_evictions_constructions, resource_permits, get_sf_evictions_constructions, get_sf_evictions_constructions, get_sf_evictions_constructions)
+		doc.wasAssociatedWith(get_count_evictions_crimes, this_script)
+
+		doc.usage(get_count_evictions_crimes, evictions_input, startTime, None,
+		          {prov.model.PROV_TYPE:'ont:Computation'}
+		          )
+
+		doc.usage(get_count_evictions_crimes, crimes_input, startTime, None,
+          {prov.model.PROV_TYPE:'ont:Computation'}
+          )
+
+		doc.wasAttributedTo(output, this_script)
+		doc.wasGeneratedBy(output, get_count_evictions_crimes, endTime)
+		doc.wasDerivedFrom(output, evictions_input, get_count_evictions_crimes, get_count_evictions_crimes, get_count_evictions_crimes)
+		doc.wasDerivedFrom(output, crimes_input, get_count_evictions_crimes, get_count_evictions_crimes, get_count_evictions_crimes)
 		
-		# repo.logout()
+		repo.logout()
 				  
 		return doc
 

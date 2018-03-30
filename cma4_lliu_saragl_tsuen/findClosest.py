@@ -8,9 +8,9 @@ from math import sin, cos, sqrt, atan2, radians
 import sys
 
 class findClosest(dml.Algorithm):
-    contributor = 'cma4_tsuen'
-    reads = ['cma4_tsuen.destinationsProjected', 'cma4_tsuen.stationsProjected']
-    writes = ['cma4_tsuen.closest']
+    contributor = 'cma4_lliu_saragl_tsuen'
+    reads = ['cma4_lliu_saragl_tsuen.destinationsProjected', 'cma4_lliu_saragl_tsuen.stationsProjected']
+    writes = ['cma4_lliu_saragl_tsuen.closest']
 
     def latLongDist(p, q):
         p = (radians(p[0]), radians(p[1]))
@@ -18,7 +18,7 @@ class findClosest(dml.Algorithm):
         dlon = q[1] - p[1]
         dlat = q[0] - p[0]
 
-        a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+        a = sin(dlat / 2)**2 + cos(p[0]) * cos(q[0]) * sin(dlon / 2)**2
         c = 2 * atan2(sqrt(a), sqrt(1 - a))
         return 6373 * c
 
@@ -30,10 +30,10 @@ class findClosest(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('cma4_tsuen', 'cma4_tsuen')
+        repo.authenticate('cma4_lliu_saragl_tsuen', 'cma4_lliu_saragl_tsuen')
 
-        destinations = repo['cma4_tsuen.destinationsProjected'].find()
-        stations = repo['cma4_tsuen.stationsProjected'].find()
+        destinations = repo['cma4_lliu_saragl_tsuen.destinationsProjected'].find()
+        stations = repo['cma4_lliu_saragl_tsuen.stationsProjected'].find()
 
         final = []
 
@@ -53,12 +53,13 @@ class findClosest(dml.Algorithm):
             d['closestStation'] = closestStation
             d['stationCoords'] = minStationCoords
             final.append(d)
+            
 
-        repo.dropCollection("cma4_tsuen.closest")
-        repo.createCollection("cma4_tsuen.closest")
-        repo['cma4_tsuen.closest'].insert_many(final)
-        repo['cma4_tsuen.closest'].metadata({'complete':True})
-        print(repo['cma4_tsuen.closest'].metadata())
+        repo.dropCollection("cma4_lliu_saragl_tsuen.closest")
+        repo.createCollection("cma4_lliu_saragl_tsuen.closest")
+        repo['cma4_lliu_saragl_tsuen.closest'].insert_many(final)
+        repo['cma4_lliu_saragl_tsuen.closest'].metadata({'complete':True})
+        print(repo['cma4_lliu_saragl_tsuen.closest'].metadata())
 
         repo.logout()
 
@@ -77,7 +78,7 @@ class findClosest(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('cma4_tsuen', 'cma4_tsuen')
+        repo.authenticate('cma4_lliu_saragl_tsuen', 'cma4_lliu_saragl_tsuen')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
@@ -85,7 +86,7 @@ class findClosest(dml.Algorithm):
         doc.add_namespace('destinations', 'http://datamechanics.io/')
         doc.add_namespace('stations', 'http://datamechanics.io/')
 
-        this_script = doc.agent('alg:cma4_tsuen#closest', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:cma4_lliu_saragl_tsuen#closest', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('dat:destinationsProjected', {'prov:label':'Destinations Name and Coords', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         resource2 = doc.entity('dat:stationsProjected', {'prov:label':'Stations stationsProjected Name and Data', prov.model.PROV_TYPE:'ont:DataSet', 'ont:Extension':'json'})
         get_closest = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
@@ -99,12 +100,12 @@ class findClosest(dml.Algorithm):
                   }
                   )
 
-        destinationsProjected = doc.entity('dat:cma4_tsuen#destinationsProjected', {prov.model.PROV_LABEL:'Projected Destinations', prov.model.PROV_TYPE:'ont:DataSet'})
+        destinationsProjected = doc.entity('dat:cma4_lliu_saragl_tsuen#destinationsProjected', {prov.model.PROV_LABEL:'Projected Destinations', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(destinationsProjected, this_script)
         doc.wasGeneratedBy(destinationsProjected, get_closest, endTime)
         doc.wasDerivedFrom(destinationsProjected, resource, get_closest, get_closest, get_closest)
 
-        stationsProjected = doc.entity('dat:cma4_tsuen#stationsProjected', {prov.model.PROV_LABEL:'Projected Stations', prov.model.PROV_TYPE:'ont:DataSet'})
+        stationsProjected = doc.entity('dat:cma4_lliu_saragl_tsuen#stationsProjected', {prov.model.PROV_LABEL:'Projected Stations', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(stationsProjected, this_script)
         doc.wasGeneratedBy(stationsProjected, get_closest, endTime)
         doc.wasDerivedFrom(stationsProjected, resource, get_closest, get_closest, get_closest)

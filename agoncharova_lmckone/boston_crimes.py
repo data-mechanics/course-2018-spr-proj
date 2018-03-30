@@ -4,25 +4,13 @@ import urllib.request
 import datetime
 import json
 import uuid
+import re
 
 class boston_crimes(dml.Algorithm):
 	contributor = 'agoncharova_lmckone'
 	reads = []
 	writes = ['agoncharova_lmckone.boston_crimes']
 	repo_name = "agoncharova_lmckone.boston_crimes"
-	
-	@staticmethod
-	def setup():
-		'''
-		establish a conn to db and return the conn 
-		'''
-		client = dml.pymongo.MongoClient()
-		repo = client.repo
-		repo.authenticate("agoncharova_lmckone", "agoncharova_lmckone")
-		repo.dropCollection("boston_crimes")
-		repo.createCollection("boston_crimes")
-		print("finished setuprepo")
-		return 
 
 	@staticmethod
 	def get_crime_data():
@@ -39,8 +27,6 @@ class boston_crimes(dml.Algorithm):
 		'''Retrieve Boston Crime dataset for 2015-now'''
 		startTime = datetime.datetime.now()
 
-		# setup
-		#repo = boston_crimes.setup()
 
 		client = dml.pymongo.MongoClient()
 		repo = client.repo
@@ -51,6 +37,19 @@ class boston_crimes(dml.Algorithm):
 		
 		# get data
 		data = boston_crimes.get_crime_data()
+
+		# filter out rows that dont have valid lat long points
+		data = [x for x in data if re.match("^4", x['Lat'])]
+		data = [x for x in data if re.match("^-7",x['Long'])]
+
+		#use only 2016 data for now bc of size
+		data = [x for x in data if x['YEAR']=="2016"]
+
+
+
+		for item in data:
+			item['Long'] = float(item['Long'])
+			item['Lat'] = float(item['Lat'])
 		
 		# save data
 		repo['agoncharova_lmckone.boston_crimes'].insert_many(data)
@@ -91,7 +90,7 @@ class boston_crimes(dml.Algorithm):
 
 		return doc
 
-# boston_crimes.execute()
+boston_crimes.execute()
 # doc = boston_crimes.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

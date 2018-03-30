@@ -18,9 +18,10 @@ class boston_tracts(dml.Algorithm):
 	def execute(trial=False):
 		startTime = datetime.datetime.now()
 
-		url = "http://datamechanics.io/data/boston_tracts.json"
+		url = "http://datamechanics.io/data/boston_tracts_3.json"
 		with ur.urlopen(url) as url:
 			data = json.loads(url.read().decode())
+			print(type(data))
 
 		# set up the database
 		client = dml.pymongo.MongoClient()

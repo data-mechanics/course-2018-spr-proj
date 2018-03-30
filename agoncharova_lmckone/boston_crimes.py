@@ -4,6 +4,7 @@ import urllib.request
 import datetime
 import json
 import uuid
+import re
 
 class boston_crimes(dml.Algorithm):
 	contributor = 'agoncharova_lmckone'
@@ -34,6 +35,19 @@ class boston_crimes(dml.Algorithm):
 		
 		# get data
 		data = boston_crimes.get_crime_data()
+
+		# filter out rows that dont have valid lat long points
+		data = [x for x in data if re.match("^4", x['Lat'])]
+		data = [x for x in data if re.match("^-7",x['Long'])]
+
+		#use only 2016 data for now bc of size
+		data = [x for x in data if x['YEAR']=="2016"]
+
+
+
+		for item in data:
+			item['Long'] = float(item['Long'])
+			item['Lat'] = float(item['Lat'])
 		
 		# save data
 		repo['agoncharova_lmckone.boston_crimes'].insert_many(data)
@@ -74,7 +88,7 @@ class boston_crimes(dml.Algorithm):
 
 		return doc
 
-# boston_crimes.execute()
+boston_crimes.execute()
 # doc = boston_crimes.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

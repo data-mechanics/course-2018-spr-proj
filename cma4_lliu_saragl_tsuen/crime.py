@@ -22,8 +22,11 @@ class crime(dml.Algorithm):
 
         url = 'http://datamechanics.io/data/20127to20158crimeincident2.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
+        print(response)
         r = json.loads(response)
+
         s = json.dumps(r, sort_keys=True, indent=2)
+
         repo.dropCollection("cma4_lliu_saragl_tsuen.crime")
         repo.createCollection("cma4_lliu_saragl_tsuen.crime")
         repo['cma4_lliu_saragl_tsuen.crime'].insert_many(r)

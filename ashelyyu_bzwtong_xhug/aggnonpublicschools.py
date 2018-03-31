@@ -22,8 +22,8 @@ class aggnonpublicschools(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
 
-        repo.dropPermanent("aggnonpublicschools")
-        repo.createPermanent("aggnonpublicschools")
+        repo.dropCollection("aggnonpublicschools")
+        repo.createCollection("aggnonpublicschools")
         
 
         zipCount= []

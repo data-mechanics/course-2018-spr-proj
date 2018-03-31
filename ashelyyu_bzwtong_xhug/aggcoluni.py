@@ -22,8 +22,8 @@ class aggcoluni(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
 
-        repo.dropPermanent("aggcoluni")
-        repo.createPermanent("aggcoluni")
+        repo.dropCollection("aggcoluni")
+        repo.createCollection("aggcoluni")
         
         collegeuni = list(repo.ashleyyu_bzwtong.collegeanduni.find())
 

@@ -22,8 +22,8 @@ class aggpublicschools(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
 
-        repo.dropPermanent("aggpublicschools")
-        repo.createPermanent("aggpublicschools")
+        repo.dropCollection("aggpublicschools")
+        repo.createCollection("aggpublicschools")
         
         publicschools = list(repo.ashleyyu_bzwtong.publicschools.find())
 

@@ -52,7 +52,7 @@ class display(dml.Algorithm):
                 coords = (j, i)
                 # folium.Marker(coords, popup=str(coords)).add_to(map_osm)      # Uncomment to see grid on map
                 # grid[coords] = 0                                              # For overall counts
-                grid[coords] = [[0], [0], [0]]                                  # [[charge], [hubway], [open space]]
+                grid[coords] = [[0], [0], [0], [0]]                     # [[charge], [hubway], [open spaces], [trees]]
                 j += 0.01
             i += 0.01
         # map_osm.save(filenamemap)                                             #
@@ -83,10 +83,12 @@ class display(dml.Algorithm):
                     grid[(ycell, xcell)][1][0] += 1
                 elif typekind == "openspace":
                     grid[(ycell, xcell)][2][0] += 1
+                elif typekind == "tree":
+                    grid[(ycell, xcell)][3][0] += 1
 
         for coords, counts in grid.items():     # Gonna save to database and display on map
             megalist.append({"coordinates": coords, "charge_count": counts[0][0], "hubway_count": counts[1][0],
-                             "open_count": counts[2][0]})
+                             "open_count": counts[2][0], "tree_count": counts[3][0]})
             folium.Marker(coords, popup=str(counts)).add_to(map_osm)
 
         repo.dropCollection("kmeansdata")

@@ -82,7 +82,7 @@ def findMinSat(streets):
             tot = i
             break
         s.pop()
-    print(s.check())
+    #print(s.check())
     return(s.model(), vs)   # Return the model and values              
 
 class findCrimeStats(dml.Algorithm):
@@ -124,7 +124,6 @@ class findCrimeStats(dml.Algorithm):
 
             # Process the model, store results in a dictionary in form 
             # {District: {Total: #, streets_results: {street: 0, street:1, etc.}}
-            # 0 means no night patrol, 1 means there is a patrol
             street_results = {}
             for entry in model: 
                 if vs[str(entry)]['street'] == 'Total':
@@ -164,37 +163,37 @@ class findCrimeStats(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('yash', 'yash')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/ybavishi#') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/ybavishi#') # The data sets are in <user>#<collection> format.
+        repo.authenticate('janellc_rstiffel_yash', 'janellc_rstiffel_yash')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/janellc_rstiffel_yash#') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/janellc_rstiffel_yash#') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('cri', 'https://data.boston.gov/')
 
-        this_script = doc.agent('alg:getCrimeData', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('cri:12cb3883-56f5-47de-afa5-3b1cf61b257b', {'prov:label':'Crimes', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_prices = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+
+        this_script = doc.agent('alg:findCrimeStats', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('dat:janellc_rstiffel_yash#crimeDistricts', {'prov:label':'Crimes Districts', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        find_stats = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         
-        doc.wasAssociatedWith(get_prices, this_script)
+        doc.wasAssociatedWith(find_stats, this_script)
 
-        doc.usage(get_prices, resource, startTime, None,
+        doc.usage(find_stats, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'api/3/action/datastore_search?offset=$&resource_id=12cb3883-56f5-47de-afa5-3b1cf61b257b'
+                  'ont:Query':''
                   }
                   )
         
-        prices = doc.entity('dat:crimesData', {prov.model.PROV_LABEL:'Crimes', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(prices, this_script)
-        doc.wasGeneratedBy(prices, get_prices, endTime)
-        doc.wasDerivedFrom(prices, resource, get_prices, get_prices, get_prices)
+        stats = doc.entity('dat:crimeStats', {prov.model.PROV_LABEL:'Crime Stats', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(stats, this_script)
+        doc.wasGeneratedBy(stats, find_stats, endTime)
+        doc.wasDerivedFrom(stats, resource, find_stats, find_stats, find_stats)
 
       
         repo.logout()
                   
         return doc
 
-findCrimeStats.execute()
-#doc = getCrimeData.provenance()
+#findCrimeStats.execute()
+#doc = findCrimeStats.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))
 ## eof

@@ -71,7 +71,12 @@ class getShortestPath(dml.Algorithm):
                     streetlight_nodes[nearest_node].append(streetlight_coord)
                 else:
                     streetlight_nodes[nearest_node] = [streetlight_coord]
-                    
+            
+            length_streetlight_nodes = {key: len(value) for key, value in streetlight_nodes.items()}
+            # gets the "safest" node (i.e. the one with the most streetlights)
+            if len(length_streetlight_nodes) > 0:
+                safest_node = max(length_streetlight_nodes, key=length_streetlight_nodes.get)
+            
             temp_routes = []
             for mbta_coord in tqdm(mbta_coords):
                 # get nearest node to the mbta stop
@@ -80,20 +85,45 @@ class getShortestPath(dml.Algorithm):
                 input_target_xy = (proj_target_xy[1], proj_target_xy[0])
                 target_node = ox.get_nearest_node(graph_project, input_target_xy, return_dist=True, method='euclidean')
                 try:
+                    # get the shortest path based on distance
                     route = nx.shortest_path(G=G, source=orig_node[0], target=target_node[0], weight='length')
+                    route_dist = nx.shortest_path_length(G=G, source=orig_node[0], target=target_node[0], weight='length')
+                    
+                    # get the shortest path that includes the "safest" node
+                    if safest_node:
+                        route_to_safe = nx.shortest_path(G=G, source=orig_node[0], target=safest_node, weight='length')
+                        route_from_safe = nx.shortest_path(G=G, source=safest_node, target=target_node[0], weight='length')
+                        entire_safest_route = route_to_safe[:-1] + route_from_safe
+                        print(entire_safest_route)
+                        
+                        route_to_safe_dist = nx.shortest_path_length(G=G, source=orig_node[0], target=safest_node, weight='length')
+                        route_from_safe_dist = nx.shortest_path_length(G=G, source=safest_node, target=target_node[0], weight='length')
+                        entire_safest_route_dist = route_to_safe_dist + route_from_safe_dist    
+                        print(entire_safest_route_dist)
+                    else:
+                        entire_safest_route = []
+                        entire_safest_route_dist = 0
                 except:
                     continue
  
                 # determine how many lights are near each node of the route
                 route_lights = []
+                entire_safest_route_lights = []
                 for node in route:
-                    if node in streetlight_nodes:
-                        route_lights += [(node, len(streetlight_nodes[node]))]
+                    if node in length_streetlight_nodes:
+                        route_lights += [(node, length_streetlight_nodes[node])]
+                for node in entire_safest_route:
+                    if node in length_streetlight_nodes:
+                        entire_safest_route_lights += [(node, length_streetlight_nodes[node])]
                 
                 temp_routes.append({
                     "mbta_coord": mbta_coord, 
                     "route": route, 
-                    "streetlights": route_lights
+                    "route_dist": route_dist,
+                    "streetlights": route_lights, 
+                    "safest_route": entire_safest_route,
+                    "safest_route_dist": entire_safest_route_dist,
+                    "safest_route_streetlights": entire_safest_route_lights
                 })
                 
             routes.append({
@@ -161,7 +191,7 @@ class getShortestPath(dml.Algorithm):
         return [p(t) for t in R]
 
 
-#getShortestPath.execute(True)
+#getShortestPath.execute()
 #doc = getShortestPath.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

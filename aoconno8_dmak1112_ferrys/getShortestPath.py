@@ -14,8 +14,8 @@ class getShortestPath(dml.Algorithm):
         and gets all of the streetlights on that path
     '''
     contributor = 'aoconno8_dmak1112_ferrys'
-    reads = ['aoconno8_dmak1112_ferrys.streetlights_in_radius_trial']
-    writes = ['aoconno8_dmak1112_ferrys.shortest_path_trial']
+    reads = ['aoconno8_dmak1112_ferrys.streetlights_in_radius']
+    writes = ['aoconno8_dmak1112_ferrys.shortest_path']
 
     @staticmethod
     def execute(trial = False):
@@ -30,6 +30,7 @@ class getShortestPath(dml.Algorithm):
         streetlights_in_radius = getShortestPath.project(streetlights_in_radius_cursor, lambda t: t)
         
         if trial:
+            print("Generating graph")
             streetlights_in_radius = streetlights_in_radius[:1]
             coordinate = streetlights_in_radius[0]['alc_coord']
             G = ox.graph_from_point(coordinate, 1000, network_type='drive')
@@ -94,12 +95,10 @@ class getShortestPath(dml.Algorithm):
                         route_to_safe = nx.shortest_path(G=G, source=orig_node[0], target=safest_node, weight='length')
                         route_from_safe = nx.shortest_path(G=G, source=safest_node, target=target_node[0], weight='length')
                         entire_safest_route = route_to_safe[:-1] + route_from_safe
-                        print(entire_safest_route)
                         
                         route_to_safe_dist = nx.shortest_path_length(G=G, source=orig_node[0], target=safest_node, weight='length')
                         route_from_safe_dist = nx.shortest_path_length(G=G, source=safest_node, target=target_node[0], weight='length')
                         entire_safest_route_dist = route_to_safe_dist + route_from_safe_dist    
-                        print(entire_safest_route_dist)
                     else:
                         entire_safest_route = []
                         entire_safest_route_dist = 0
@@ -131,17 +130,11 @@ class getShortestPath(dml.Algorithm):
                 "mbta_routes": temp_routes
             })
 
-#        repo.dropCollection("shortest_path")
-#        repo.createCollection("shortest_path")
-#        repo['aoconno8_dmak1112_ferrys.shortest_path'].insert_many(routes)
-#        repo['aoconno8_dmak1112_ferrys.shortest_path'].metadata({'complete':True})
-#        print(repo['aoconno8_dmak1112_ferrys.shortest_path'].metadata())
-
-        repo.dropCollection("shortest_path_trial")
-        repo.createCollection("shortest_path_trial")
-        repo['aoconno8_dmak1112_ferrys.shortest_path_trial'].insert_many(routes)
-        repo['aoconno8_dmak1112_ferrys.shortest_path_trial'].metadata({'complete':True})
-        print(repo['aoconno8_dmak1112_ferrys.shortest_path_trial'].metadata())
+        repo.dropCollection("shortest_path")
+        repo.createCollection("shortest_path")
+        repo['aoconno8_dmak1112_ferrys.shortest_path'].insert_many(routes)
+        repo['aoconno8_dmak1112_ferrys.shortest_path'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112_ferrys.shortest_path'].metadata())
         
         repo.logout()
         endTime = datetime.datetime.now()

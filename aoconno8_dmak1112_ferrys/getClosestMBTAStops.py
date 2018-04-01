@@ -14,7 +14,7 @@ class getClosestMBTAStops(dml.Algorithm):
     '''
     contributor = 'aoconno8_dmak1112_ferrys'
     reads = ['aoconno8_dmak1112_ferrys.mbta', 'aoconno8_dmak1112_ferrys.alc_licenses']
-    writes = ['aoconno8_dmak1112_ferrys.closest_mbta_stops_trial']
+    writes = ['aoconno8_dmak1112_ferrys.closest_mbta_stops']
 
     @staticmethod
     def execute(trial = False):
@@ -88,19 +88,12 @@ class getClosestMBTAStops(dml.Algorithm):
                         "mbta_coords":(mbta_coords)
                     })
 
-#        repo.dropCollection("closest_mbta_stops")
-#        repo.createCollection("closest_mbta_stops")
-#        repo['aoconno8_dmak1112_ferrys.closest_mbta_stops'].insert_many(mbta_dist)
-#        repo['aoconno8_dmak1112_ferrys.closest_mbta_stops'].metadata({'complete':True})
-#        print(repo['aoconno8_dmak1112_ferrys.closest_mbta_stops'].metadata())
+        repo.dropCollection("closest_mbta_stops")
+        repo.createCollection("closest_mbta_stops")
+        repo['aoconno8_dmak1112_ferrys.closest_mbta_stops'].insert_many(mbta_dist)
+        repo['aoconno8_dmak1112_ferrys.closest_mbta_stops'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112_ferrys.closest_mbta_stops'].metadata())
 
-        repo.dropCollection("closest_mbta_stops_trial")
-        repo.createCollection("closest_mbta_stops_trial")
-        repo['aoconno8_dmak1112_ferrys.closest_mbta_stops_trial'].insert_many(mbta_dist)
-        repo['aoconno8_dmak1112_ferrys.closest_mbta_stops_trial'].metadata({'complete':True})
-        print(repo['aoconno8_dmak1112_ferrys.closest_mbta_stops_trial'].metadata())
-
-        
         repo.logout()
         endTime = datetime.datetime.now()
 

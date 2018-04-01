@@ -14,8 +14,8 @@ import json
 
 class getStreetlightsInRadius(dml.Algorithm):
     contributor = 'aoconno8_dmak1112_ferrys'
-    reads = ['aoconno8_dmak1112_ferrys.streetlights', 'aoconno8_dmak1112_ferrys.closest_mbta_stops_trial']
-    writes = ['aoconno8_dmak1112_ferrys.streetlights_in_radius_trial']
+    reads = ['aoconno8_dmak1112_ferrys.streetlights', 'aoconno8_dmak1112_ferrys.closest_mbta_stops']
+    writes = ['aoconno8_dmak1112_ferrys.streetlights_in_radius']
 
     @staticmethod
     def execute(trial=False):
@@ -68,18 +68,11 @@ class getStreetlightsInRadius(dml.Algorithm):
             
             lights_geoql = copy.deepcopy(temp)
         
-#        repo.dropCollection("streetlights_in_radius")
-#        repo.createCollection("streetlights_in_radius")
-#        repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].insert_many(alcohol_streetlight_list)
-#        repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].metadata({'complete':True})
-#        print(repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].metadata())
-
-        repo.dropCollection("streetlights_in_radius_trial")
-        repo.createCollection("streetlights_in_radius_trial")
-        repo['aoconno8_dmak1112_ferrys.streetlights_in_radius_trial'].insert_many(alcohol_streetlight_list)
-        repo['aoconno8_dmak1112_ferrys.streetlights_in_radius_trial'].metadata({'complete':True})
-        print(repo['aoconno8_dmak1112_ferrys.streetlights_in_radius_trial'].metadata())
-        
+        repo.dropCollection("streetlights_in_radius")
+        repo.createCollection("streetlights_in_radius")
+        repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].insert_many(alcohol_streetlight_list)
+        repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].metadata({'complete':True})
+        print(repo['aoconno8_dmak1112_ferrys.streetlights_in_radius'].metadata())
         
         repo.logout()
         endTime = datetime.datetime.now()

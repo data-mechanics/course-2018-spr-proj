@@ -19,6 +19,7 @@ class getClosestMBTAStops(dml.Algorithm):
     @staticmethod
     def execute(trial = False):
         startTime = datetime.datetime.now()
+        print("Getting closest MBTA stops to every alcohol license...")
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()

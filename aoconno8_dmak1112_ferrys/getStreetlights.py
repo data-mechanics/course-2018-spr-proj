@@ -3,7 +3,6 @@ import prov.model
 import datetime
 import uuid
 import pandas as pd
-import json
 
 class getStreetlights(dml.Algorithm):
     contributor = 'aoconno8_dmak1112_ferrys'
@@ -13,6 +12,7 @@ class getStreetlights(dml.Algorithm):
     @staticmethod
     def execute(trial = False):
         startTime = datetime.datetime.now()
+        print("Getting streetlights...")
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()

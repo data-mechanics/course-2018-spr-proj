@@ -13,6 +13,7 @@ class getMBTAStops(dml.Algorithm):
     @staticmethod
     def execute(trial = False):
         startTime = datetime.datetime.now()
+        print("Getting MBTA stops...")
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()

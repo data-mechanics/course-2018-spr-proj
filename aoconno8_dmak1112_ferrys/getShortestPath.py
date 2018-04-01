@@ -1,4 +1,3 @@
-import json
 import dml
 import prov.model
 import datetime
@@ -20,6 +19,7 @@ class getShortestPath(dml.Algorithm):
     @staticmethod
     def execute(trial = False):
         startTime = datetime.datetime.now()
+        print("Getting shortest paths for each alcohol license...")
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
@@ -29,13 +29,12 @@ class getShortestPath(dml.Algorithm):
         streetlights_in_radius_cursor = repo.aoconno8_dmak1112_ferrys.streetlights_in_radius.find()
         streetlights_in_radius = getShortestPath.project(streetlights_in_radius_cursor, lambda t: t)
         
+        print("Generating graph...")
         if trial:
-            print("Generating graph")
             streetlights_in_radius = streetlights_in_radius[:1]
             coordinate = streetlights_in_radius[0]['alc_coord']
             G = ox.graph_from_point(coordinate, 1000, network_type='drive')
         else:
-            print("Generating graph")
             G = ox.graph_from_place('Boston, Massachusetts, USA', network_type='drive')
         
         graph_project = ox.project_graph(G)

@@ -8,7 +8,6 @@ import uuid
 import copy
 from geoql import geoql
 from tqdm import tqdm
-import json
 
 
 
@@ -22,16 +21,18 @@ class getStreetlightsInRadius(dml.Algorithm):
         def project(R, p):
             return [p(t) for t in R]
         startTime = datetime.datetime.now()
+        print("Getting streetlights in the radius of each alcohol license...")
+        
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')
-        streetlights_cursor = repo.aoconno8_dmak1112_ferrys.streetlights.find()
-        
+        repo.authenticate('aoconno8_dmak1112_ferrys', 'aoconno8_dmak1112_ferrys')        
         if trial:
             alcohol_mbta_stops = repo.aoconno8_dmak1112_ferrys.closest_mbta_stops.find().limit(1)
+            streetlights_cursor = repo.aoconno8_dmak1112_ferrys.streetlights.find().limit(10000)
         else:
             alcohol_mbta_stops = repo.aoconno8_dmak1112_ferrys.closest_mbta_stops.find()
+            streetlights_cursor = repo.aoconno8_dmak1112_ferrys.streetlights.find()
         
         alcohol_mbta_stops = project(alcohol_mbta_stops, lambda t: t)
         projected_lights = project(streetlights_cursor, lambda t: (t['Long'], t['Lat']))

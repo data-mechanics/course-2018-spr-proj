@@ -2,9 +2,6 @@ import dml
 import prov.model
 import datetime
 import uuid
-import pandas as pd
-import json
-import geojson
 import numpy as np
 
 class optimization(dml.Algorithm):
@@ -18,7 +15,8 @@ class optimization(dml.Algorithm):
             return [p(t) for t in R]
     
         startTime = datetime.datetime.now()
-
+        print("Getting optimal route for each alcohol license...")
+        
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo

@@ -3,7 +3,6 @@ import prov.model
 import datetime
 import uuid
 import pandas as pd
-import json
 
 class getAlcLicenses(dml.Algorithm):
     contributor = 'aoconno8_dmak1112_ferrys'
@@ -13,6 +12,7 @@ class getAlcLicenses(dml.Algorithm):
     @staticmethod
     def execute(trial = False):
         startTime = datetime.datetime.now()
+        print("Getting alcohol licenses...")
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()

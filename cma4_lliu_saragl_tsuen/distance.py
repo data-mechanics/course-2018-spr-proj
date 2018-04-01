@@ -32,9 +32,10 @@ class distances(dml.Algorithm):
             response = urllib.request.urlopen(url).read().decode("utf-8")
             r = json.loads(response)
             print(r)
+            s = json.dumps(r, sort_keys=True, indent=2)
 
-        r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
+
+        
         repo.dropCollection("cma4_lliu_saragl_tsuen.distances")
         repo.createCollection("cma4_lliu_saragl_tsuen.distances")
         repo['cma4_lliu_saragl_tsuen.distances'].insert_many(r)

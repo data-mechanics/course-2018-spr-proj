@@ -36,22 +36,15 @@ class findClosest(dml.Algorithm):
         stations = repo['cma4_lliu_saragl_tsuen.stationsProjected'].find()
 
         final = []
-        #i = 0
-        #h = 0 
+
         # finds closest station to each destination
         for d in destinations:
-            #if i == 3:
-            #    break
-            #i +=1
             destCoords = d['coords']
             closestStation = None
             minDist = sys.maxsize
             minStationCoords = (0, 0)
-            print(i)
             stations = repo['cma4_lliu_saragl_tsuen.stationsProjected'].find()
             for s in stations:
-                h += 1
-                print(i, h)
                 scoords = s['coords']
                 dist = findClosest.latLongDist(destCoords, scoords)
                 if dist < minDist:

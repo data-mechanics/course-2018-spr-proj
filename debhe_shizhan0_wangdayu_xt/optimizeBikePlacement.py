@@ -13,6 +13,9 @@ class optimizeBikePlacement(dml.Algorithm):
     reads = ['debhe_shizhan0_wangdayu_xt.schoolSubwayDistance', 'debhe_shizhan0_wangdayu_xt.subwayStop']
     writes = ['debhe_shizhan0_wangdayu_xt.optimizeBikePlacement']
 
+    #reads = ['debhe_shizhan0_wangdayu_xt.schoolSubwayDistanceTrial', 'debhe_shizhan0_wangdayu_xt.subwayStopTrial']
+    #writes = ['debhe_shizhan0_wangdayu_xt.optimizeBikePlacementTrial']
+
     @staticmethod
     def execute(trial = False):
 
@@ -34,6 +37,9 @@ class optimizeBikePlacement(dml.Algorithm):
         #schools = repo['debhe_shizhan0_wangdayu_xt.allSchool'].find()
         schools = repo['debhe_shizhan0_wangdayu_xt.schoolSubwayDistance'].find()
         subwayStop = repo['debhe_shizhan0_wangdayu_xt.subwayStop'].find()
+
+        #schools = repo['debhe_shizhan0_wangdayu_xt.schoolSubwayDistanceTrial'].find()
+        #subwayStop = repo['debhe_shizhan0_wangdayu_xt.subwayStopTrial'].find()
 
         # Need to make the deepcopy of record for further use
         schools_1 = copy.deepcopy(schools)
@@ -75,13 +81,22 @@ class optimizeBikePlacement(dml.Algorithm):
         allSchool_1 = copy.deepcopy(allSchool)
         solver.add(sum([sum(school) for school in allSchool_1]) > 0)
 
-
         for school in allSchool:
             solver.add(sum(school) > 0)
             for subStops in school:
                 solver.add(subStops < 2)
                 solver.add(subStops >= 0)
 
+        minPlacementPossible = 199
+        for i in range(199, -1, -1):
+            solver.push()
+            solver.add(sum([sum(school) for school in allSchool_1]) < 20)
+            if( str(solver.check()) == "sat"):
+                minPlacementPossible = i
+            solver.pop()
+
+        solver.add(sum([sum(school) for school in allSchool_1]) < minPlacementPossible)
+        print(minPlacementPossible)
         print(solver.check())
         placementResult = solver.model()
         #placementResult_1 = copy.deepcopy(placementResult)

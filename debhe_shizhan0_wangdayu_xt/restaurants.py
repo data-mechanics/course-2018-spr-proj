@@ -34,19 +34,35 @@ class restaurants(dml.Algorithm):
         cr = csv.reader(io.StringIO(response.read().decode('utf-8')), delimiter = ',')
         rs = []
         i = 0
-        for row in cr:
-            if(i != 0):
-                dic = {}
-                dic['restaurantName'] = row[0]
-                dic['Address'] = row[2]
-                dic['city'] = row[3]
-                dic['state'] = row[4]
-                dic['Descript'] = row[8]
-                x,y = row[12].split(",")
-                dic['Y'] = x[1:]
-                dic['X'] = y[:-1]
-                rs.append(dic)
-            i = i + 1
+
+        if(trial == False):
+            for row in cr:
+                if(i != 0):
+                    dic = {}
+                    dic['restaurantName'] = row[0]
+                    dic['Address'] = row[2]
+                    dic['city'] = row[3]
+                    dic['state'] = row[4]
+                    dic['Descript'] = row[8]
+                    x,y = row[12].split(",")
+                    dic['Y'] = x[1:]
+                    dic['X'] = y[:-1]
+                    rs.append(dic)
+                i = i + 1
+        else:
+            for row in cr:
+                if(i != 0 and i < 500):
+                    dic = {}
+                    dic['restaurantName'] = row[0]
+                    dic['Address'] = row[2]
+                    dic['city'] = row[3]
+                    dic['state'] = row[4]
+                    dic['Descript'] = row[8]
+                    x,y = row[12].split(",")
+                    dic['Y'] = x[1:]
+                    dic['X'] = y[:-1]
+                    rs.append(dic)
+                i = i + 1
 
         # Connect to database and store the data to the database
         repo.dropCollection("restaurants")

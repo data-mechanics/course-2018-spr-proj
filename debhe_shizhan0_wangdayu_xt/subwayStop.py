@@ -34,16 +34,29 @@ class subwayStop(dml.Algorithm):
         # parse the data
         subStop = []
         i = 0
-        for line in data:
-            if(i != 0):
-                line = line.split(',')
-                dic = {}
-                dic['stopName'] = line[2][2:-2]
-                dic['Y'] = line[4]
-                dic['X'] = line[5]
-                dic['id'] = i
-                subStop.append(dic)
-            i = i + 1
+
+        if(trial == False):
+            for line in data:
+                if(i != 0):
+                    line = line.split(',')
+                    dic = {}
+                    dic['stopName'] = ( line[2][2:-2] ).replace(".","")
+                    dic['Y'] = line[4]
+                    dic['X'] = line[5]
+                    dic['id'] = i
+                    subStop.append(dic)
+                i = i + 1
+        else:
+            for line in data:
+                if(i != 0 and i < 200):
+                    line = line.split(',')
+                    dic = {}
+                    dic['stopName'] = line[2][2:-2]
+                    dic['Y'] = line[4]
+                    dic['X'] = line[5]
+                    dic['id'] = i
+                    subStop.append(dic)
+                i = i + 1
 
         # connect to the database and store the data
         repo.dropCollection("subwayStop")

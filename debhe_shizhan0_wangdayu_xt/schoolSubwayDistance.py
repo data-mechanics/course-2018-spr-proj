@@ -18,6 +18,9 @@ class schoolSubwayDistance(dml.Algorithm):
     reads = ['debhe_shizhan0_wangdayu_xt.allSchool', 'debhe_shizhan0_wangdayu_xt.subwayStop']
     writes = ['debhe_shizhan0_wangdayu_xt.schoolSubwayDistance']
 
+    #reads = ['debhe_shizhan0_wangdayu_xt.allSchool', 'debhe_shizhan0_wangdayu_xt.subwayStopTrial']
+    #writes = ['debhe_shizhan0_wangdayu_xt.schoolSubwayDistanceTrial']
+
     @staticmethod
     def execute(trial = False):
         ''' Merging data sets

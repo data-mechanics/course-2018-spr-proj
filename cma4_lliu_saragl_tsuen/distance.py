@@ -27,7 +27,7 @@ class distances(dml.Algorithm):
         #url = 'https://data.boston.gov/export/458/2be/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c.json'
         k_means = repo['cma4_lliu_saragl_tsuen.closest'].find()
         for i in k_means:
-            url = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='+str(i['stationCoords'][0]) + ',' +str(i['stationCoords'][1]) + '&destinations=' + str(i['coords'][0]) + '%2C' + str(i['coords'][0]) + '&key=' + google_key
+            url = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='+str(i['stationCoords'][0]) + ',' +str(i['stationCoords'][1]) + '&destinations=' + str(i['coords'][0]) + '%2C' + str(i['coords'][1]) + '&key=' + google_key
             #print(url)
             response = urllib.request.urlopen(url).read().decode("utf-8")
             r = json.loads(response)

@@ -1,24 +1,22 @@
-import googlemaps
 import urllib.request
 import json
 import dml
 import prov.model
 import datetime
 import uuid
-import responses
 
-gmaps = googlemaps.Client(key='AIzaSyD_SNKUiwDVf_LjMGyIZxLf9MMaWB2IqH0')
 
-now = datetime.now()
-origin = 41.43206,-71.38992 #latitude and longitude, ensure that there is no space between numbers & comma
+google_key = 'AIzaSyD_SNKUiwDVf_LjMGyIZxLf9MMaWB2IqH0'
 
-class distance(dml.Algorithm):
-    contributor = "cma4_lliu_saragl_tsuen"
+
+class distances(dml.Algorithm):
+    contributor = 'cma4_lliu_saragl_tsuen'
     reads = ['cma4_lliu_saragl_tsuen.closest']
     writes = ['cma4_lliu_saragl_tsuen.distances']
 
+    @staticmethod
     def execute(trial = False):
-    	'''Retrieve some data sets (not using the API here for the sake of simplicity).'''
+        '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
@@ -27,32 +25,23 @@ class distance(dml.Algorithm):
         repo.authenticate('cma4_lliu_saragl_tsuen', 'cma4_lliu_saragl_tsuen')            
 
         #url = 'https://data.boston.gov/export/458/2be/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c.json'
-        food_data = []
+        k_means = repo['cma4_lliu_saragl_tsuen.closest'].find()
+        for i in k_means:
+            url = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='+str(i['stationCoords'][0]) + ',' +str(i['stationCoords'][1]) + '&destinations=' + str(i['coords'][0]) + '%2C' + str(i['coords'][0]) + '&key=' + google_key
+            #print(url)
+            response = urllib.request.urlopen(url).read().decode("utf-8")
+            r = json.loads(response)
+            print(r)
 
-
-        jsonfile = open("./data/food.json", 'r')
-        r = json.load(jsonfile)
-        
-        #r = json.load(jsonfile)
-        food_data = []
-        food_data.append([{"Business Name": field['businessName'], "Coords": field['Location']}
-        for field in r])
-
-
-        
-        #response = urllib.request.urlopen(url).read().decode("utf-8")
-        #r = json.load(jsonfile)
-        
-        #filtered food.py
-        
-        print(food_data)
-        
+        r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("cma4_lliu_saragl_tsuen.food")
-        repo.createCollection("cma4_lliu_saragl_tsuen.food")
-        repo['cma4_lliu_saragl_tsuen.food'].insert_many(r)
-        repo['cma4_lliu_saragl_tsuen.food'].metadata({'complete':True})
-        print(repo['cma4_lliu_saragl_tsuen.food'].metadata())
+        repo.dropCollection("cma4_lliu_saragl_tsuen.distances")
+        repo.createCollection("cma4_lliu_saragl_tsuen.distances")
+        repo['cma4_lliu_saragl_tsuen.distances'].insert_many(r)
+        repo['cma4_lliu_saragl_tsuen.distances'].metadata({'complete':True})
+        print(repo['cma4_lliu_saragl_tsuen.distances'].metadata())
+
+        
 
         repo.logout()
 
@@ -96,7 +85,7 @@ class distance(dml.Algorithm):
                   
         return doc
 #food.PartToParts()
-food.execute()
-doc = food.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+distances.execute()
+#doc = distance.provenance()
+#print(doc.get_provn())
+#print(json.dumps(json.loads(doc.serialize()), indent=4))

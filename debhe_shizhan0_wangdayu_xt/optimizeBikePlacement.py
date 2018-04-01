@@ -7,12 +7,7 @@ import uuid
 import copy
 import z3
 
-'''
-This is the file we are going to read two collections
-We are going to read the allschool collection and hubway collection
-For every school, it will calculate the distance to the closest hubway station
-and save it into the data base
-'''
+
 class optimizeBikePlacement(dml.Algorithm):
     contributor = 'debhe_shizhan0_wangdayu_xt'
     reads = ['debhe_shizhan0_wangdayu_xt.schoolSubwayDistance', 'debhe_shizhan0_wangdayu_xt.subwayStop']
@@ -20,8 +15,7 @@ class optimizeBikePlacement(dml.Algorithm):
 
     @staticmethod
     def execute(trial = False):
-        ''' Merging data sets
-        '''
+
         startTime = datetime.datetime.now()
 
         # Set up the database connection.
@@ -44,7 +38,19 @@ class optimizeBikePlacement(dml.Algorithm):
         # Need to make the deepcopy of record for further use
         schools_1 = copy.deepcopy(schools)
         schools_2 = copy.deepcopy(schools)
+        schools_3 = copy.deepcopy(schools)
         listSchool = []
+
+        totalDistance = 0
+        maxLength = 0
+        for i in schools_3:
+            temp = i['Distance']
+            totalDistance += temp
+            if(temp > maxLength):
+                maxLength = temp
+        distanceLo = totalDistance / schools.count()
+        distanceHi = maxLength + 0.000001
+        print(distanceLo)
 
         for row_1 in schools_1:
             if(row_1['Distance'] < distanceLo):
@@ -61,9 +67,14 @@ class optimizeBikePlacement(dml.Algorithm):
                             
 
 
-
+        #schoolDict_1 = copy.deepcopy(schoolDict)
+        #print(len(schoolDict))
         solver = z3.Solver()
         allSchool = [[z3.Int(subStops) for subStops in schoolDict[s]] for s in listSchool]
+
+        allSchool_1 = copy.deepcopy(allSchool)
+        solver.add(sum([sum(school) for school in allSchool_1]) > 0)
+
 
         for school in allSchool:
             solver.add(sum(school) > 0)
@@ -72,16 +83,31 @@ class optimizeBikePlacement(dml.Algorithm):
                 solver.add(subStops >= 0)
 
         print(solver.check())
-        print(solver.model())
-       
+        placementResult = solver.model()
+        #placementResult_1 = copy.deepcopy(placementResult)
+        print(placementResult)
+        print(len(placementResult))
+        print(placementResult[placementResult[0]])
+
+        finalResult = []
+        assignCount = 0
+        for i in range(len(placementResult)):
+            dic = {}
+            stopNameParsed = str(placementResult[i]).replace(".","")
+            assignment = str(placementResult[placementResult[i]])
+            dic[stopNameParsed] = assignment
+            if(assignment == "1"):
+                assignCount += 1
+            finalResult.append(dic)
+        print(assignCount)
 
         # save the information to the database
-        #repo.dropCollection("optimizeBikePlacement")
-        #repo.createCollection("optimizeBikePlacement")
+        repo.dropCollection("optimizeBikePlacement")
+        repo.createCollection("optimizeBikePlacement")
 
-        #repo['debhe_shizhan0_wangdayu_xt.optimizeBikePlacement'].insert_many(minDistance)
-        #repo['debhe_shizhan0_wangdayu_xt.optimizeBikePlacement'].metadata({'complete': True})
-        #print("Saved optimizeBikePlacement", repo['debhe_shizhan0_wangdayu_xt.optimizeBikePlacement'].metadata())
+        repo['debhe_shizhan0_wangdayu_xt.optimizeBikePlacement'].insert_many(finalResult)
+        repo['debhe_shizhan0_wangdayu_xt.optimizeBikePlacement'].metadata({'complete': True})
+        print("Saved optimizeBikePlacement", repo['debhe_shizhan0_wangdayu_xt.optimizeBikePlacement'].metadata())
 
         repo.logout()
 

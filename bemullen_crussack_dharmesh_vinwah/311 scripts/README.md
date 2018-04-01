@@ -4,11 +4,12 @@ The motivation for determining the minimum amount of dispatchers was prompted by
 
 This data will further be used to determine how students change the max and average load on the 311 central.
 
+---------------------------------------------------------------------------------------------------------------------
 
 RetrieveServiceRequests.py:
 Requests data over all 311 inquiries in the period 2016-02-01 to 2018-03-30 from data.boston.gov, and stores the data into the mongoDB collection 'bemullen_crussack_dharmesh_vinwah.service_requests'
 
-
+---------------------------------------------------------------------------------------------------------------------
 
 TransformServiceRequests.py:
 Imports the 311 data from the mongoDB and filters it on relevant categories. The relevant categories are all categories that concerns non-bussiness attributed reports. 
@@ -29,6 +30,7 @@ This data is stored into two mongoDB collections, 'bemullen_crussack_dharmesh_vi
     total_number_of_inquiries: <number of inquiries received in the period>
 }
 
+---------------------------------------------------------------------------------------------------------------------
 
 The TransformServiceRequests.intervalPartitioning(data) algorithm:
 The algorithm takes in a list of intervals describing jobs, sorts the intervals according to increasing starting time. For each job J[i], it assignes J[i] a resource and for all J[j] that has a starting time conflicting with the J[i] the resource assigned to J[i] is added to J[j]'s unavailable resource list. If no resource is available, the list of resources is extended by 1. After doing this for a period, the returned value is a tuple with:

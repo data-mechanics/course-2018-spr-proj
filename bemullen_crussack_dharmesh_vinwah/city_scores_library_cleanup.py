@@ -14,10 +14,10 @@ import datetime
 import uuid
 import xmltodict
 
-class RetrieveCityScores(dml.Algorithm):
+class city_scores_library_cleanup(dml.Algorithm):
     contributor = "bemullen_crussack_dharmesh_vinwah"
     reads = []
-    writes = ["bemullen_crussack_dharmesh_vinwah.cityscores"]
+    writes = ["bemullen_crussack_dharmesh_vinwah.libraries"] # change this reference everywhere else too
 
 # here we are reading the file
 
@@ -128,5 +128,6 @@ none_ = none[['CTY_SCR_DAY','CTY_SCR_NBR_DY_01']]
 # uncomment these to save CSV:
 # ----------
 
-# student_.to_csv('stu.csv')
-# none_.to_csv('non.csv')
+# What I need to do is go through and make sure that I have this in the standard format with DML 
+# (look at RetrieveCityScores.py between key =... and ...repo.logout(). Also, upload the ds non and student to 
+# cspeople/dharmesh/cs591 so that they are up ! )

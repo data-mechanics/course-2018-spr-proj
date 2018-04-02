@@ -22,28 +22,26 @@ class aggpublicschools(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
 
-        repo.dropCollection("aggpublicschools")
-        repo.createCollection("aggpublicschools")
+        repo.dropPermanent("aggpublicschools")
+        repo.createPermanent("aggpublicschools")
         
         publicschools = list(repo.ashleyyu_bzwtong.publicschools.find())
 
         zipCount= []
-        for entry in publicschools:
-            if "zipcode" in entry:
-                zipcd = entry["zipcode"]
+        for entry in publicschools[0]["features"]:
+            if "ZIPCODE" in entry["properties"]:
+                zipcd = entry["properties"]["ZIPCODE"]
                 zipCount += [(zipcd, 1)]
-                    
         keys = {r[0] for r in zipCount}
         agg_val= [(key, sum([n for (z,n) in zipCount if z == key])) for key in keys]
 
         final= []
         for entry in agg_val:
             final.append({'publicschoolsZipcode:':entry[0], 'publicschoolsCount':entry[1]})
-
         repo['ashleyyu_bzwtong.aggpublicschools'].insert_many(final)
         
-        for entry in repo.ashleyyu_bzwtong.aggpublicschools.find():
-             print(entry)
+        # for entry in repo.ashleyyu_bzwtong.aggpublicschools.find():
+        #      print(entry)
              
         repo.logout()
 
@@ -72,7 +70,7 @@ class aggpublicschools(dml.Algorithm):
 
         this_script = doc.agent('alg:ashleyyu_bzwtong#publicschoolsAgg', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource_properties = doc.entity('dat:ashleyyu_bzwtong#schools', {'prov:label':' Public Schools Aggregate Zips', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_publicschoolsAgg = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_aggpublicschools = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_aggpublicschools, this_script)
         doc.usage(get_aggpublicschools, resource_properties, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Computation'})
@@ -80,8 +78,8 @@ class aggpublicschools(dml.Algorithm):
 
         publicschoolsAgg = doc.entity('dat:ashleyyu_bzwtong#publicschoolsAgg', {prov.model.PROV_LABEL:' Public Schools Aggregate Zips', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(publicschoolsAgg, this_script)
-        doc.wasGeneratedBy(publicschoolsAgg, get_publicschoolsAgg, endTime)
-        doc.wasDerivedFrom(publicschoolsAgg, resource_properties, get_publicschoolsAgg, get_publicschoolsAgg, get_publicschoolsAgg)
+        doc.wasGeneratedBy(publicschoolsAgg, get_aggpublicschools, endTime)
+        doc.wasDerivedFrom(publicschoolsAgg, resource_properties, get_aggpublicschools, get_aggpublicschools, get_aggpublicschools)
 
 
 
@@ -89,7 +87,7 @@ class aggpublicschools(dml.Algorithm):
                   
         return doc
 
-#aggpublicschools.execute()
-#doc = aggpublicschools.provenance()
-#print(doc.get_provn())
-#print(json.dumps(json.loads(doc.serialize()), indent=4))
+aggpublicschools.execute()
+doc = aggpublicschools.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))

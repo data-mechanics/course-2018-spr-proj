@@ -22,30 +22,24 @@ class aggcoluni(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
 
-        repo.dropCollection("aggcoluni")
-        repo.createCollection("aggcoluni")
+        repo.dropPermanent("aggcoluni")
+        repo.createPermanent("aggcoluni")
         
+       
         collegeuni = list(repo.ashleyyu_bzwtong.collegeanduni.find())
 
         zipCount= []
-        for entry in collegeuni:
-            if "zipcode" in entry:
-                zipcd = entry["zipcode"]
+        for entry in collegeuni[0]["features"]:
+            if "Zipcode" in entry["properties"]:
+                zipcd = entry["properties"]["Zipcode"]
                 zipCount += [(zipcd, 1)]
-                
-                
-        keys = {k[0] for k in zipCount}
+        keys = {r[0] for r in zipCount}
         agg_val= [(key, sum([n for (z,n) in zipCount if z == key])) for key in keys]
 
         final= []
         for entry in agg_val:
-            final.append({'coluniZipcode:':entry[0], 'coluniCount':entry[1]})
-
+            final.append({'collegesZipcode:':entry[0], 'collegesCount':entry[1]})
         repo['ashleyyu_bzwtong.aggcoluni'].insert_many(final)
-        
-        for entry in repo.ashleyyu_bzwtong.aggcoluni.find():
-             print(entry)
-             
         repo.logout()
 
         endTime = datetime.datetime.now()

@@ -22,28 +22,27 @@ class aggnonpublicschools(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
 
-        repo.dropCollection("aggnonpublicschools")
-        repo.createCollection("aggnonpublicschools")
+        repo.dropPermanent("aggnonpublicschools")
+        repo.createPermanent("aggnonpublicschools")
         
 
+    
+        nonpublicschools = list(repo.ashleyyu_bzwtong.nonpublicschools.find())
+
         zipCount= []
-        for entry in repo.ashleyyu_bzwtong.nonpublicschools.find():
-            if "zipcode" in entry:
-                zipcd = entry["zipcode"]
+        for entry in nonpublicschools[0]["features"]:
+            if "ZIP" in entry["properties"]:
+                zipcd = entry["properties"]["ZIP"]
+                print(zipcd)
                 zipCount += [(zipcd, 1)]
-                
-                
-        keys = {k[0] for k in zipCount}
+        keys = {r[0] for r in zipCount}
         agg_val= [(key, sum([n for (z,n) in zipCount if z == key])) for key in keys]
 
         final= []
         for entry in agg_val:
             final.append({'nonpublicschoolsZipcode:':entry[0], 'nonpublicschoolsCount':entry[1]})
-
+        print (final)
         repo['ashleyyu_bzwtong.aggnonpublicschools'].insert_many(final)
-        
-        for entry in repo.ashleyyu_bzwtong.aggnonpublicschools.find():
-             print(entry)
              
         repo.logout()
 

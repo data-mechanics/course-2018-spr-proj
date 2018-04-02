@@ -56,6 +56,54 @@ class RetrieveFire(dml.Algorithm):
                 address[record['Incident Number']] = (month, g.latlng)
 #some long streets don't have an exact number attached to them - this could be a point of error 
 
+                may = []
+        sept = []
+        dec = []
+        for record in address.keys():
+            if address[record][1] == None or address[record][1] == 'null':
+                record = ""
+            elif address[record][0] == 'may':
+                may.append(address[record][1])
+            elif address[record][0] == 'september':
+                sept.append(address[record][1])
+            elif address[record][0] == 'december':
+                dec.append(address[record][1])
+            
+        df_may = pd.DataFrame.from_dict(may)
+        df_sept = pd.DataFrame.from_dict(sept)
+        df_dec = pd.DataFrame.from_dict(dec)
+
+
+        f1 = df_may[0].values
+        f2 = df_may[1].values
+        
+        y = zip(f1,f2)
+        X=np.matrix(y)
+        print(X)
+        kmeans = KMeans(n_clusters=2).fit_predict(X)
+        centroids = kmeans.cluster_centers_
+        print(centroids)
+
+        f3 = df_sept[0].values
+        f4 = df_sept[1].values
+
+        y = zip(f3,f4) 
+        X=np.matrix(y)
+        print(X)
+        kmeans2 = KMeans(n_clusters=2).fit(X)
+        centroids2 = kmeans2.cluster_centers_
+        print(centroids2)
+
+        f5 = df_dec[0].values
+        f6 = df_dec[1].values
+
+        y = zip(f5,f6)
+        X=np.matrix(y)
+        kmeans3 = KMeans(n_clusters=2).fit(X)
+        centroids3 = kmeans3.cluster_centers_
+        print(centroids3)
+
+
         repo.dropCollection(key)
         repo.createCollection(key)
         repo['bemullen_crussack_dharmesh_vinwah.' + key].insert_many([address])

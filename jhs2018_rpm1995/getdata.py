@@ -9,6 +9,7 @@ import prov.model
 import datetime
 import uuid
 import geojson
+import csv
 
 
 def fetch_json(url, item):
@@ -33,6 +34,7 @@ class getdata(dml.Algorithm):
     writes = ['jhs2018_rpm1995.hubway',
               'jhs2018_rpm1995.charge',
               'jhs2018_rpm1995.trees',
+              'jhs2018_rpm1995.budget',
               'jhs2018_rpm1995.openspaces']
 
     @staticmethod
@@ -52,7 +54,7 @@ class getdata(dml.Algorithm):
         repo.createCollection("hubway")
         repo['jhs2018_rpm1995.hubway'].insert_many(r)
 
-        # # This fetches a dataset with details about Trees in Boston
+        # This fetches a dataset with details about Trees in Boston
         r = fetch_geojson('http://datamechanics.io/data/Trees%20(1).geojson', "Trees")
         repo.dropCollection("trees")
         repo.createCollection("trees")
@@ -65,12 +67,27 @@ class getdata(dml.Algorithm):
         repo.createCollection("charge")
         repo['jhs2018_rpm1995.charge'].insert_many(r)
 
-        # This fetches a dataset with details about Open Spaces in Boston
-        r = fetch_geojson('http://bostonopendata-boston.opendata.arcgis.com/datasets/2868d370c55d4d458d4ae2224ef8cddd_7'
-                          '.geojson', "Open Spaces")
-        repo.dropCollection("openspaces")
-        repo.createCollection("openspaces")
-        repo['jhs2018_rpm1995.openspaces'].insert_many(r)
+        #         # This fetches a dataset with details about Open Spaces in Boston
+        #         r = fetch_geojson('http://bostonopendata-boston.opendata.arcgis.com/datasets
+        # /2868d370c55d4d458d4ae2224ef8cddd_7'
+        #                           '.geojson', "Open Spaces")
+        #         repo.dropCollection("openspaces")
+        #         repo.createCollection("openspaces")
+        #         repo['jhs2018_rpm1995.openspaces'].insert_many(r)
+
+        # This fetches a dataset with details about Budget Facilities in Boston
+        #         r = fetch_geojson('http://bostonopendata-boston.opendata.arcgis.com/datasets
+        # /106ab2544b3d4038ad110b531777931e_0.geojson', "Budget Facilities")
+        url = 'http://datamechanics.io/data/Budget_Facilities_FY2017.csv'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        reader = csv.DictReader(response.splitlines())          # This actually works
+        container = []
+        for row in reader:
+            container.append(row)
+        repo.dropCollection("budget")
+        repo.createCollection("budget")
+        repo['jhs2018_rpm1995.budget'].insert_many(container)
+
         repo.logout()
 
         endTime = datetime.datetime.now()
@@ -79,10 +96,9 @@ class getdata(dml.Algorithm):
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
-
-            # Create the provenance document describing everything happening
-            # in this script. Each run of the script will generate a new
-            # document describing that invocation event.
+        # Create the provenance document describing everything happening
+        # in this script. Each run of the script will generate a new
+        # document describing that invocation event.
 
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -98,11 +114,12 @@ class getdata(dml.Algorithm):
         doc.add_namespace('tree', 'http://datamechanics.io/data')
         doc.add_namespace('charge', 'http://bostonopendata-boston.opendata.arcgis.com/datasets')
         doc.add_namespace('openspace', 'http://bostonopendata-boston.opendata.arcgis.com/datasets')
+        doc.add_namespace('budget', 'http://bostonopendata-boston.opendata.arcgis.com/datasets')
 
         this_script = doc.agent('alg:jhs2018_rpm1995#getdata',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-# #######
+        # #######
 
         resource_hubway = doc.entity('hub: geojson', {'prov:label': 'Hubway stations in Boston',
                                                       prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension':
@@ -112,33 +129,43 @@ class getdata(dml.Algorithm):
         doc.usage(get_hubway, resource_hubway, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
 
         resource_trees = doc.entity('tree: geojson', {'prov:label': 'Trees in Boston',
-                                                prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'geojson'})
+                                                      prov.model.PROV_TYPE: 'ont:DataResource',
+                                                      'ont:Extension': 'geojson'})
         get_trees = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_trees, this_script)
         doc.usage(get_trees, resource_trees, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
 
         resource_charge = doc.entity('charge: json', {'prov:label': 'Charging Stations in Boston',
                                                       prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension':
-                                                      'json'})
+                                                          'json'})
         get_charge = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_charge, this_script)
         doc.usage(get_charge, resource_charge, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
 
+        resource_budget = doc.entity('budget: geojson', {'prov:label': 'Budget Facilities in Boston',
+                                                         prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension':
+                                                             'geojson'})
+        get_budget = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_budget, this_script)
+        doc.usage(get_budget, resource_budget, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
+
         resource_openspaces = doc.entity('openspace: geojson', {'prov:label': 'Open Spaces in Boston',
                                                                 prov.model.PROV_TYPE: 'ont:DataResource',
                                                                 'ont:Extension':
-                                                                'geojson'})
+                                                                    'geojson'})
         get_openspaces = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_openspaces, this_script)
         doc.usage(get_openspaces, resource_openspaces, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
-# #######
+        # #######
 
-        hubway = doc.entity('dat:jhs2018_rpm1995hubway', {prov.model.PROV_LABEL: 'hubway', prov.model.PROV_TYPE: 'ont:DataSet'})
+        hubway = doc.entity('dat:jhs2018_rpm1995hubway',
+                            {prov.model.PROV_LABEL: 'hubway', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(hubway, this_script)
         doc.wasGeneratedBy(hubway, get_hubway, endTime)
         doc.wasDerivedFrom(hubway, resource_hubway, get_hubway, get_hubway, get_hubway)
 
-        trees = doc.entity('dat:jhs2018_rpm1995trees', {prov.model.PROV_LABEL: 'trees', prov.model.PROV_TYPE: 'ont:DataSet'})
+        trees = doc.entity('dat:jhs2018_rpm1995trees',
+                           {prov.model.PROV_LABEL: 'trees', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(trees, this_script)
         doc.wasGeneratedBy(trees, get_trees, endTime)
         doc.wasDerivedFrom(trees, resource_trees, get_trees, get_trees, get_trees)
@@ -148,6 +175,12 @@ class getdata(dml.Algorithm):
         doc.wasAttributedTo(charge, this_script)
         doc.wasGeneratedBy(charge, get_charge, endTime)
         doc.wasDerivedFrom(charge, resource_charge, get_charge, get_charge, get_charge)
+
+        budget = doc.entity('dat:jhs2018_rpm1995budget',
+                            {prov.model.PROV_LABEL: 'budget', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(budget, this_script)
+        doc.wasGeneratedBy(budget, get_budget, endTime)
+        doc.wasDerivedFrom(budget, resource_budget, get_budget, get_budget, get_budget)
 
         openspaces = doc.entity('dat:jhs2018_rpm1995openspaces',
                                 {prov.model.PROV_LABEL: 'openspaces', prov.model.PROV_TYPE: 'ont:DataSet'})

@@ -121,7 +121,7 @@ class newSchoolSubDis(dml.Algorithm):
         this_script = doc.agent('alg:#newSchoolSubDis',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('bpd:1d9509a8b2fd485d9ad471ba2fdb1f90_0',
-                                             {'prov:label': 'minimum distance between school and Subway',
+                                             {'prov:label': 'find the new distance between school and new hub assignment',
                                               prov.model.PROV_TYPE: 'ont:DataSet', 'ont:Extension':'csv'})
 
         get_newSchoolSubDis = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
@@ -130,7 +130,7 @@ class newSchoolSubDis(dml.Algorithm):
                   {prov.model.PROV_TYPE: 'ont:Computation', 'ont:Query':'?type=delay+time$select=id, time'})
 
         newSchoolSubDis = doc.entity('dat:debhe_shizhan0_wangdayu_xt#newSchoolSubDis',
-                          {prov.model.PROV_LABEL: 'minmium distance between school and Subway after optimization',
+                          {prov.model.PROV_LABEL: 'find the new distance between school and new hub assignment',
                            prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(newSchoolSubDis, this_script)
         doc.wasGeneratedBy(newSchoolSubDis, get_newSchoolSubDis, endTime)

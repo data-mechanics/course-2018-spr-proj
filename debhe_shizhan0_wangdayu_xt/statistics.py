@@ -90,7 +90,7 @@ class statistics(dml.Algorithm):
         this_script = doc.agent('alg:#statistics',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('bpd:1d9509a8b2fd485d9ad471ba2fdb1f90_0',
-                                             {'prov:label': 'minimum distance between school and Subway',
+                                             {'prov:label': 'The statistics result for our problem',
                                               prov.model.PROV_TYPE: 'ont:DataSet', 'ont:Extension':'csv'})
 
         get_statistics = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
@@ -99,7 +99,7 @@ class statistics(dml.Algorithm):
                   {prov.model.PROV_TYPE: 'ont:Computation', 'ont:Query':'?type=delay+time$select=id, time'})
 
         statistics = doc.entity('dat:debhe_shizhan0_wangdayu_xt#statistics',
-                          {prov.model.PROV_LABEL: 'minmium distance between school and Subway',
+                          {prov.model.PROV_LABEL: 'The statistics result for our problem',
                            prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(statistics, this_script)
         doc.wasGeneratedBy(statistics, get_statistics, endTime)

@@ -27,8 +27,8 @@ class optimization(dml.Algorithm):
         shortest_paths = project(shortest_paths_cursor, lambda t: t)
         
         best_paths = []            
-        count = 0
-        other_count = 0
+        safest_count = 0
+        shortest_count = 0
         for path in shortest_paths:
             alc_coord = path["alc_coord"]
             mbta_routes = path["mbta_routes"]
@@ -68,31 +68,35 @@ class optimization(dml.Algorithm):
                 # append route and safest route
                 routes.append({
                         "alc_coord": alc_coord,
-                        "mbta_coord":mbta_coord,
-                        "route":route, 
-                        "route_dist":route_dist,
-                        "streetlights":streetlights
+                        "mbta_route": {
+                            "mbta_coord": mbta_coord,
+                            "route":route, 
+                            "route_dist":route_dist,
+                            "streetlights":streetlights
+                            }
                         })
                 routes.append({
                         "alc_coord": alc_coord,
-                        "mbta_coord":mbta_coord,
-                        "route":safest_route, 
-                        "route_dist":safest_route_dist,
-                        "streetlights":safest_route_streetlights
+                        "mbta_route": {
+                        "mbta_coord": mbta_coord,
+                            "route":safest_route, 
+                            "route_dist":safest_route_dist,
+                            "streetlights":safest_route_streetlights
+                            }
                         })
             
             # choose max score
             if (route_scores):
                 index_best = route_scores.index(max(route_scores))
                 if index_best % 2 == 1:
-                    count += 1
+                    safest_count += 1
                 else:
-                    other_count += 1
+                    shortest_count += 1
                 best_path = routes[index_best]
                 best_paths.append(best_path)
                 
-        print("Picked safest route ", count, " times.")
-        print("Picked shortest route ", other_count, " times.")
+        print("Picked safest route ", safest_count, " times.")
+        print("Picked shortest route ", shortest_count, " times.")
 
         repo.dropCollection("optimized_routes")
         repo.createCollection("optimized_routes")

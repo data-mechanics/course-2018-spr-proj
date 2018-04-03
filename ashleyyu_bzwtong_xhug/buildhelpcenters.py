@@ -135,7 +135,7 @@ class buildHelpCenters(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
 
-        this_script = doc.agent('alg:ashleyyu_bzwtong#aggnonpublicschools', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:ashleyyu_bzwtong#buildHelpCenters', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         resource_properties = doc.entity('dat:ashleyyu_bzwtong#buildHelpCenters', {'prov:label':' Non Public Schools Aggregate Zips', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_buildHelpCenters = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)

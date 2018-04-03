@@ -34,22 +34,16 @@ class RetrieveLibraries(dml.Algorithm):
         
 
         ############ Filters entires for library metrics ########
-        # https://s3-us-west-2.amazonaws.com/dsponsorascholar/591data/BosCityScore.json
-        # url = RetrieveLibraries.parseURL('''https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT * from "5bce8e71-5192-48c0-ab13-8faff8fef4d7" WHERE" CTY_SCR_NAME" = 'LIBRARY USERS' ''')
-        # url = RetrieveLibraries.parseURL(''' https://s3-us-west-2.amazonaws.com/dsponsorascholar/591data/BosCityScore.json ''')
-        
-        url = 'https://s3-us-west-2.amazonaws.com/dsponsorascholar/591data/BosCityScore.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
 
-        #url = RetrieveLibraries.parseURL('''https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20%225bce8e71-5192-48c0-ab13-8faff8fef4d7%22%20WHERE%20%22CTY_SCR_NAME%22%20=%20%27LIBRARY%20USERS%27%20 ''')
-        
-        #print(url)
-
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        #response = urllib.request.urlopen('''https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT%20*%20from%20%225bce8e71-5192-48c0-ab13-8faff8fef4d7%22%20WHERE%20%22CTY_SCR_NAME%22%20=%20%27LIBRARY%20USERS%27%20 ''').read().decode("utf-8")
+        json_url = 'https://s3-us-west-2.amazonaws.com/dsponsorascholar/591data/BostonCityScore.json'
+        response = urllib.request.urlopen(json_url).read().decode("utf-8")
         
         r = json.loads(response)
-        s = json.dumps(r,sort_keys=True,indent=2)
+        
+        results = [x for x in r if x["CTY_SCR_NAME"] == "LIBRARY USERS"]
+
+        s = json.dumps(results,sort_keys=True,indent=2)
+
         repo.dropCollection("libraries")
         repo.createCollection("libraries")
         repo['bemullen_crussack_dharmesh_vinwah.libraries'].insert_many(r)
@@ -101,11 +95,8 @@ class RetrieveLibraries(dml.Algorithm):
         doc.wasAssociatedWith(get_libraries, this_script)
 
         doc.usage(get_libraries, resource_libraries, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query': '?CITY_SCR_NAME=LIBRARY+USERS&$select=CITY_SCR_NAME,CTY_SCR_NBR_DY_01,CTY_SCR_NBR_WK_01,ETL_LOAD_DATE,CTY_SCR_WEEK,CTY_SCR_DAY'
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
                   })
-        
-        # what do i put for doc usage?
 
         libraries = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#Libraries', {prov.model.PROV_LABEL:'Libraries Metrics',
             prov.model.PROV_TYPE:'ont:DataSet'})
@@ -122,14 +113,3 @@ doc = RetrieveLibraries.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 
-#from urllib import request
-
-
-
-# ----------
-# uncomment these to save CSV:
-# ----------
-
-# What I need to do is go through and make sure that I have this in the standard format with DML 
-# (look at RetrieveCityScores.py between key =... and ...repo.logout(). Also, upload the ds non and student to 
-# cspeople/dharmesh/cs591 so that they are up ! )

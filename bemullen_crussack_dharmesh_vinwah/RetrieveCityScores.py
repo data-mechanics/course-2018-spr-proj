@@ -33,7 +33,6 @@ class RetrieveCityScores(dml.Algorithm):
 
         key = "cityscores"
         url = RetrieveCityScores.parseURL('''https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT * from "5bce8e71-5192-48c0-ab13-8faff8fef4d7" WHERE "ETL_LOAD_DATE" >= '2016-02-01 00:00:00' AND "ETL_LOAD_DATE" <= '2018-01-01 00:00:00' ''')
-        # url = RetrieveCityScores.parseURL(''' https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT * from "5bce8e71-5192-48c0-ab13-8faff8fef4d7" WHERE "CITY_SCR_NAME" = "LIBRARY USERS" ''')
 
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)['result']['records']

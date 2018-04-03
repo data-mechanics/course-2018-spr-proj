@@ -49,7 +49,7 @@ class count_evictions_crimes(dml.Algorithm):
 
 	@staticmethod
 	def execute(trial = False):
-		'''Retrieve Boston Approved Building Permits dataset'''
+		'''Aggregate evictions and crimes in Boston by census tract'''
 		startTime = datetime.datetime.now()
 
 		# Set up the database connection.
@@ -62,9 +62,11 @@ class count_evictions_crimes(dml.Algorithm):
 		boston_tracts = repo['agoncharova_lmckone.boston_tracts']
 		boston_crimes = repo['agoncharova_lmckone.boston_crimes']
 		boston_evictions = repo['agoncharova_lmckone.boston_evictions']
+		boston_businesses = repo['agoncharova_lmckone.boston_businesses']
 
+
+		#utilize the shapely library to count the number of evictions in each census tract
 		eviction_tracts = []
-
 		print("geocoding evictions...")
 		for feature in boston_tracts.find():
 			polygon = shape(feature['geometry'])
@@ -79,9 +81,8 @@ class count_evictions_crimes(dml.Algorithm):
 		evictions_by_tract = count_evictions_crimes.aggregate(eviction_tracts, sum)
 		print("evictions counted by tract")
 
-
+		#utilize the shapely library to count the number of crimes in each census tract
 		crime_tracts = []
-
 		print("geocoding crimes...")
 		for feature in boston_tracts.find():
 			polygon = shape(feature['geometry'])
@@ -92,14 +93,16 @@ class count_evictions_crimes(dml.Algorithm):
 					crime_tracts.append((geoid, 1))
 		print("crimes geocoded")
 
+		#aggregate count of crimes by summing the ones
 		crimes_by_tract = count_evictions_crimes.aggregate(crime_tracts, sum)
 		print("crimes counted by tract")
 
 		#merge the json field on evictions and crimes by geoid
 
+		#copy the collection into a list that we will manipulate and reinsert into the db
 		boston_tracts_with_counts = [x for x in boston_tracts.find()]
 
-		#insert evictions field
+		#insert evictions count into the census tracts collection, in 'properties'
 		print("inserting evictions count...")
 		for feature in boston_tracts_with_counts:
 			matches = [eviction_tract[1] for eviction_tract in evictions_by_tract if eviction_tract[0] == feature['properties']['GEOID']]
@@ -109,6 +112,8 @@ class count_evictions_crimes(dml.Algorithm):
 				feature['properties']['evictions'] = 0
 		print("evictions count inserted")
 
+
+		#insert crimes count into the census tracts collection, in 'properties'
 		print("inserting crimes count...")
 		#insert crimes field
 		for feature in boston_tracts_with_counts:
@@ -119,6 +124,34 @@ class count_evictions_crimes(dml.Algorithm):
 				feature['properties']['crimes'] = 0
 		print("crimes count inserted")
 
+		#utilize the shapely library to count the number of businesses in each census tract
+		business_tracts = []
+		print("geocoding businesses...")
+		for feature in boston_tracts.find():
+			polygon = shape(feature['geometry'])
+			for business in boston_businesses.find():
+				point = Point(business['location']['lng'], business['location']['lat'])
+				if polygon.contains(point):
+					geoid = feature['properties']['GEOID']
+					business_tracts.append((geoid, 1))
+		print("businesses geocoded")
+
+		#aggregate count of businesses by summing the ones
+		businesses_by_tract = count_evictions_crimes.aggregate(business_tracts, sum)
+		print("businesses counted by tract")
+
+		#insert business count into the census tracts collection, in 'properties'
+		print("inserting business count...")
+		#insert business field
+		for feature in boston_tracts_with_counts:
+			matches = [business_tract[1] for business_tract in businesses_by_tract if business_tract[0] == feature['properties']['GEOID']]
+			if matches:
+				feature['properties']['businesses'] = matches[0]
+			else:
+				feature['properties']['businesses'] = 0
+		print("businesses count inserted")
+
+
 		print("example:")
 		print(boston_tracts_with_counts[0])
 
@@ -126,7 +159,6 @@ class count_evictions_crimes(dml.Algorithm):
 		#insert data into repo
 		repo['agoncharova_lmckone.boston_tract_counts'].insert_many(boston_tracts_with_counts)
 		repo['agoncharova_lmckone.boston_tract_counts'].metadata({'complete':True})
-		#print(repo['agoncharova_lmckone.boston_permits'].metadata())
 		print("data inserted into the db")
 
 		repo.logout()

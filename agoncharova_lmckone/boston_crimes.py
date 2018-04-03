@@ -19,12 +19,14 @@ class boston_crimes(dml.Algorithm):
 		response = urllib.request.urlopen(url).read()
 		response = response.decode("utf-8").replace(']', "") + "]"
 		data = json.loads(response)
+		print(data)
 		return data
 
 	@staticmethod
 	def execute(trial = False):
 		'''Retrieve Boston Crime dataset for 2015-now'''
 		startTime = datetime.datetime.now()
+
 
 		client = dml.pymongo.MongoClient()
 		repo = client.repo

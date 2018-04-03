@@ -24,7 +24,7 @@ closest subway stations that are between the average and
 the longest distance, we define that these schools need  
 bike hubs. For each school that needs the bike hub, we 
 find all subway station that is under the 
-longest distance. We will create a system for z3 solver. 
+longest distance(by using modified K mean algorithm). We will create a system for z3 solver. 
 The z3 solves and finds the optimized placement for the 
 least number of bike hubs. After that, we compute the 
 distance of all schools to its closest subway station

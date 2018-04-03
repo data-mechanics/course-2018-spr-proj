@@ -98,6 +98,7 @@ class optimizeBikePlacement(dml.Algorithm):
 
         # Optimization
         # We want to find the minimum number of stations that get assigned
+        '''
         minPlacementPossible = 199
         for i in range(199, -1, -1):
             solver.push()
@@ -105,14 +106,26 @@ class optimizeBikePlacement(dml.Algorithm):
             if( str(solver.check()) == "sat"):
                 minPlacementPossible = i
             solver.pop()
+        '''
+
+        minPlacementPossible = 0
+        for i in range(9, -1, -1):
+            solver.push()
+            solver.add(sum([sum(school) for school in allSchool_1]) < (2**i + minPlacementPossible) )
+            print(2**i)
+            if( str(solver.check()) != 'unsat' ):
+                minPlacementPossible += 2**i
+                print(minPlacementPossible)
+            solver.pop()
+
 
         # Once we find the number, add it to the constraint
         solver.add(sum([sum(school) for school in allSchool_1]) < minPlacementPossible)
-        #print(minPlacementPossible)
+        print(minPlacementPossible)
         print(solver.check())
         placementResult = solver.model()
         #placementResult_1 = copy.deepcopy(placementResult)
-        #print(placementResult)
+        print(placementResult)
         #print(len(placementResult))
         #print(placementResult[placementResult[0]])
 
@@ -127,7 +140,7 @@ class optimizeBikePlacement(dml.Algorithm):
             if(assignment == "1"):
                 assignCount += 1
             finalResult.append(dic)
-        #print(assignCount)
+        print(assignCount)
 
         # save the information to the database
         repo.dropCollection("optimizeBikePlacement")

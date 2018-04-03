@@ -33,8 +33,9 @@ class statistics(dml.Algorithm):
 
         # Need to make the deepcopy of record for further use
         subway_1 = copy.deepcopy(subway)
+        #subway_2 = copy.deepcopy(subway)
         hubway_1 = copy.deepcopy(hubway)
-        
+
         subwaydist = []
         hubwaydist = []
         
@@ -46,6 +47,23 @@ class statistics(dml.Algorithm):
             temp = j['Distance']
             hubwaydist.append(temp)
 
+        subwaydist_1 = copy.deepcopy(subwaydist)
+        hubwaydist_1 = copy.deepcopy(hubwaydist)
+
+        oldAssignmentAvg = 0
+        newAssignmentAvg = 0
+
+        # compute the average distance for the new assignment
+        for i in subwaydist_1:
+            newAssignmentAvg += i
+        newAssignmentAvg = newAssignmentAvg / (len(subwaydist_1))
+
+        # compute the average distance for the old assignment
+        for i in hubwaydist_1:
+            oldAssignmentAvg += i
+        oldAssignmentAvg = oldAssignmentAvg / (len(hubwaydist_1))
+
+        # Compute the covariance and correlation coeffision 
         compute = np.stack((subwaydist, hubwaydist), axis=0)
         cov = np.cov(compute)
         cor = np.corrcoef(compute)
@@ -53,6 +71,8 @@ class statistics(dml.Algorithm):
         finalResult = {}
         finalResult['covariance'] = cov.tolist()
         finalResult['correlation'] = cor.tolist()
+        finalResult['Old Assignment Average Distance'] = oldAssignmentAvg
+        finalResult['New Assignment Average Distance'] = newAssignmentAvg
 
         # save the information to the database
         repo.dropCollection("statistics")

@@ -40,6 +40,8 @@ class newSchoolSubDis(dml.Algorithm):
         schools_3 = copy.deepcopy(schools)
         listSchool = []
 
+        # Find the average distance between school and its closest subway station
+        # Find the maximum distance between school and its closest subway station
         totalDistance = 0
         maxLength = 0
         for i in schools_3:
@@ -49,21 +51,24 @@ class newSchoolSubDis(dml.Algorithm):
                 maxLength = temp
         distanceLo = totalDistance / schools.count()
         distanceHi = maxLength + 0.000001
-        print(distanceLo)
+        #print(distanceLo)
 
 
         listSubway = {}
         for item in subwayStop:
             listSubway[item['stopName']] = (item['Y'], item['X'])
 
-
+        # Find the list of all subway station that has the bike assignment by our algorithm
         listSubwayOfo = []
         for dic in bikePlacement:
             for subStop, assignment in dic.items():
                 if (assignment == "1"):
                     listSubwayOfo += [subStop]
-        print(listSubwayOfo)
 
+        # For each school if it is "close" to its closest subway station, it is not our target
+        # for the bike hub station. So just add its distance to the closest subway station
+        # For the other schools, find its distance to the closes station that get assigned 
+        # a bike hub
         i = 0
         for row_1 in schools_1:
             schools_2[i]['schoolName'] = row_1['schoolName']
@@ -82,7 +87,6 @@ class newSchoolSubDis(dml.Algorithm):
                 schools_2[i]['Distance'] = minDis
                 schools_2[i]['subwayStation'] = minSub
             i += 1
-
 
 
         # save the information to the database

@@ -1,6 +1,10 @@
 # Project 2
 ## Justification
-Going to an establishment that allows alcohol consumption on premises can be fun, but getting home can be dangerous. Even if you are not driving, you can encounter difficulty getting to your destination by public transportation or by a driving service. This project hopes to uncover walking routes from the location of an alcohol-serving location to a public transportation stop which will be the most well-lit by streetlights. Additionally, I want to look at the impact that Uber could have on improving safety. Factors could include dropping their patrons off in well lit areas, making sure to be active when public transportation shuts down at night, or being active in areas where there are a lot of alcohol licenses provided.  
+Going to an establishment that allows alcohol consumption on the premises can be fun, but getting home can be dangerous. Even if you are not driving, you can encounter difficulty getting to your destination by public transportation or by a driving service. In Project #1, we incorporated datasets inlcuding Boston streetlight data, MBTA stops, and alcohol licenses, and performed transformations combining these datasets with the goal of taking the preliminary steps towards uncovering walking routes from the location of an alcohol-serving location to a public transportation stop which will be the most well-lit by streetlights.
+
+In Project #2, we take this idea a step further by performing optimization techniques to calculate routes from locations with alcohol licenses to MBTA stops. We first calculate both the shortest paths and the safest paths from each alcohol license to its 3 closest MBTA stops, where the safest path is the path that includes the node with the most streetlights. Then, we perform an optimization technique that scores all six of the paths based on a number of factors including distance, number of streetlights, and variance of streetlights along the path. By finding the highest scored path, we hope to be able to provide civilians with routes to nearby MBTA stops that provide a reasonable combination of convenience and safety.
+
+We also perform a statistical analysis....
 
 ## Datasets
 
@@ -11,13 +15,16 @@ Going to an establishment that allows alcohol consumption on premises can be fun
 
 ## Transformations
 
-* getClosestMBTAStops - Combines MBTA stops and alcohol licences and determines which public transportation stops are geographically close to each location of an alcohol license. Currently limits to 3.
+* getClosestMBTAStops - Combines MBTA stops and alcohol licenses and determines which public transportation stops are geographically close to each location of an alcohol license. Currently limits to 3.
 * getStreetlightsInRadius - Gets all of the streetlights near each alcohol license using the distance to the farthest "closest" MBTA stop as the radius.
 
 ## Optimizations
 
 * getShortestPath - Gets the shortest path and the "safest" path from each alcohol license  to its 3 closest MBTA stops. The "safest" path is the path that includes the node with the most streetlights.
 * optimization - Takes the 6 paths generated from each alcohol license and scores them based on variance of streetlights on the path, number of streetlights, and distance. It weights the distance of the "safest" path slightly less since we know that it is "safer" than the shortest path.
+
+## Statistical Analysis
+
 
 ## Requirements
 

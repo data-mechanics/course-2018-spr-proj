@@ -11,6 +11,8 @@ import uuid
 import prequest
 import geocoder
 from sklearn.cluster import KMeans
+import pandas as pd
+import numpy as np
 
 class RetrieveFire(dml.Algorithm):
     contributor = "bemullen_crussack_dharmesh_vinwah"
@@ -54,9 +56,9 @@ class RetrieveFire(dml.Algorithm):
                 streetAddress = record['Street Number'].strip() + " " + record['Street Name'].strip() + " " + record['Street Type'].strip() + " " +  record['Neighborhood'].strip()
                 g = geocoder.google(streetAddress)
                 address[record['Incident Number']] = (month, g.latlng)
-#some long streets don't have an exact number attached to them - this could be a point of error 
 
-                may = []
+#some long streets don't have an exact number attached to them - this could be a point of error 
+        may = []
         sept = []
         dec = []
         for record in address.keys():
@@ -76,33 +78,28 @@ class RetrieveFire(dml.Algorithm):
 
         f1 = df_may[0].values
         f2 = df_may[1].values
-        
-        y = zip(f1,f2)
+        y = list(zip(f1,f2))
         X=np.matrix(y)
-        print(X)
-        kmeans = KMeans(n_clusters=2).fit_predict(X)
-        centroids = kmeans.cluster_centers_
-        print(centroids)
+        kmeans = KMeans(n_clusters=2)
+        kmeans.fit(X)
+        print('May Centroids = ', kmeans.cluster_centers_)
+        
 
         f3 = df_sept[0].values
         f4 = df_sept[1].values
-
-        y = zip(f3,f4) 
-        X=np.matrix(y)
-        print(X)
-        kmeans2 = KMeans(n_clusters=2).fit(X)
-        centroids2 = kmeans2.cluster_centers_
-        print(centroids2)
+        x = list(zip(f3,f4)) 
+        W=np.matrix(x)
+        kmeans2 = KMeans(n_clusters=2)
+        kmeans2.fit(W)
+        print('September Centroids = ', kmeans2.cluster_centers_)
 
         f5 = df_dec[0].values
         f6 = df_dec[1].values
-
-        y = zip(f5,f6)
-        X=np.matrix(y)
-        kmeans3 = KMeans(n_clusters=2).fit(X)
-        centroids3 = kmeans3.cluster_centers_
-        print(centroids3)
-
+        w = list(zip(f5,f6))
+        Z=np.matrix(w)
+        kmeans3 = KMeans(n_clusters=2)
+        kmeans3.fit(Z)
+        print('December Centroids = ', kmeans3.cluster_centers_)
 
         repo.dropCollection(key)
         repo.createCollection(key)
@@ -157,4 +154,4 @@ class RetrieveFire(dml.Algorithm):
         repo.logout()
                   
         return doc
-RetrieveFire.execute()
+#RetrieveFire.execute()

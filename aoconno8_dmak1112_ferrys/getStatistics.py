@@ -31,89 +31,102 @@ class getStatistics(dml.Algorithm):
         shortest_paths = getStatistics.project(shortest_paths_cursor, lambda t: t)
 
         
+        #For the trail option, we insert our final statistical analysis results into mongo
+        #This is because is would not be possible to run statistical analysis with just 1 entry, so we wanted
+        #to provide full results.
+        if trial:
+            z_test = (5.699294269641882, 6.015220392929794e-9)
+            z_test2 = (-6.1422328473945305, 0.9999999995931527)
+            p_val = ( 0.20065674394142952, 6.589068993639861e-11)
+            endpoints_and_middle = (0.47919032063290945, 8.142344917137534e-61)
+            distance_corr = (0.16826429647847235, 4.793618794127263e-8)
+            my_avg = 3.9375
 
-        data = []
-        endpoints = []
-        middle = []
-        route_lengths = []
-        distances = []
+        else:
+            data = []
+            endpoints = []
+            middle = []
+            route_lengths = []
+            distances = []
 
 
-        for k in range(len(shortest_paths)):
-            lights = shortest_paths[k]['mbta_route']['streetlights']
-            dist = shortest_paths[k]['mbta_route']['route_dist']
-            route_lengths.append(len(lights))
-            distances.append(dist)
-            temp_endpoints = 0
-            temp_middle = 0
-            for j in range(len(lights)):
-                #pass if length 1 because endpoints and middle are the same
-                if len(lights) == 1:
-                    pass
-                elif len(lights) == 2:
-                    #Add endpoints and middle as the same
-                    temp_endpoints += lights[j][1]
-                    temp_middle += lights[j][1]
-                elif j == 0 or j == len(lights) - 1:
-                    temp_endpoints += lights[j][1]
-                else:
-                    temp_middle += lights[j][1]
-            endpoints.append(temp_endpoints)
-            middle.append(temp_middle)
-        
-
-        start = []
-        end = []
-        for k in range(len(shortest_paths)):
-            lights = shortest_paths[k]['mbta_route']['streetlights']
-            temp_start = 0
-            temp_end = 0
-            for j in range(len(lights)):
-                #pass if length 1 because endpoints and middle are the same
-                if len(lights) == 1:
+            for k in range(len(shortest_paths)):
+                lights = shortest_paths[k]['mbta_route']['streetlights']
+                dist = shortest_paths[k]['mbta_route']['route_dist']
+                route_lengths.append(len(lights))
+                distances.append(dist)
+                temp_endpoints = 0
+                temp_middle = 0
+                for j in range(len(lights)):
+                    #pass if length 1 because endpoints and middle are the same
+                    if len(lights) == 1:
                         pass
-                elif j == 0:
-                    temp_start += lights[j][1]
-                elif j == len(lights) - 1:
-                    temp_end += lights[j][1]            
-            data.append((temp_start, temp_end))
-            start.append(temp_start)
-            end.append(temp_end)
+                    elif len(lights) == 2:
+                        #Add endpoints and middle as the same
+                        temp_endpoints += lights[j][1]
+                        temp_middle += lights[j][1]
+                    elif j == 0 or j == len(lights) - 1:
+                        temp_endpoints += lights[j][1]
+                    else:
+                        temp_middle += lights[j][1]
+                endpoints.append(temp_endpoints)
+                middle.append(temp_middle)
+            
+
+            start = []
+            end = []
+            for k in range(len(shortest_paths)):
+                lights = shortest_paths[k]['mbta_route']['streetlights']
+                temp_start = 0
+                temp_end = 0
+                for j in range(len(lights)):
+                    #pass if length 1 because endpoints and middle are the same
+                    if len(lights) == 1:
+                            pass
+                    elif j == 0:
+                        temp_start += lights[j][1]
+                    elif j == len(lights) - 1:
+                        temp_end += lights[j][1]            
+                data.append((temp_start, temp_end))
+                start.append(temp_start)
+                end.append(temp_end)
 
 
 
 
-        #HYPOTHESIS TEST 1
-        # Ho: u(streetlights at route starting node) - u(streetlights at route ending node) > 0
-        # Ha: u(streetlights at route starting node) - u(streetlights at route ending node) <= 0
-        # alpha = .01
-        # Reject Ho if p < alpha
+            #HYPOTHESIS TEST 1
+            # Ho: u(streetlights at route starting node) - u(streetlights at route ending node) > 0
+            # Ha: u(streetlights at route starting node) - u(streetlights at route ending node) <= 0
+            # alpha = .01
+            # Reject Ho if p < alpha
 
-        z_test = sm.ztest(start, end,value=0, alternative='larger')
- 
-
-
-        #HYPOTHESIS TEST 2
-        # Ho: u(sum of streetlights at route endpoints) - u(sum of streetlights at route middle nodes) > 0
-        # Ha: u(sum of streetlights at route endpoints) - u(sum of streetlights at route middle nodes) <= 0
-        # alpha = .01
-        # Reject Ho if p < alpha
-
-        z_test2 = sm.ztest(endpoints, middle, value=0, alternative='larger')
-
-        x = [xi for (xi, yi) in data]
-        y = [yi for (xi, yi) in data]
-
-        p_val = stats.pearsonr(x,y)
-
-
-        endpoints_and_middle = stats.pearsonr(endpoints, middle)
-
-
+            z_test = sm.ztest(start, end,value=0, alternative='larger')
      
-        distance_corr = stats.pearsonr(route_lengths, distances)
 
-        my_avg = getStatistics.avg(route_lengths)
+
+            #HYPOTHESIS TEST 2
+            # Ho: u(sum of streetlights at route endpoints) - u(sum of streetlights at route middle nodes) > 0
+            # Ha: u(sum of streetlights at route endpoints) - u(sum of streetlights at route middle nodes) <= 0
+            # alpha = .01
+            # Reject Ho if p < alpha
+
+            z_test2 = sm.ztest(endpoints, middle, value=0, alternative='larger')
+
+            x = [xi for (xi, yi) in data]
+            y = [yi for (xi, yi) in data]
+
+            p_val = stats.pearsonr(x,y)
+
+
+            endpoints_and_middle = stats.pearsonr(endpoints, middle)
+
+
+         
+            distance_corr = stats.pearsonr(route_lengths, distances)
+
+            my_avg = getStatistics.avg(route_lengths)
+
+
         for_db = []
 
         for_db.append({

@@ -21,7 +21,7 @@ Yields the form {DISTRICT: {"street1": {Lat: #, Long: #}, "street2": {Lat: #, Lo
 class sortCorrelations(dml.Algorithm):
     contributor = 'janellc_rstiffel_yash'
     reads = ['janellc_rstiffel_yash.sortedNeighborhoods']
-    writes = []
+    writes = ['janellc_rstiffel_yash.coorelations']
 
 
     @staticmethod

@@ -8,6 +8,7 @@ import uuid
 import pandas as pd
 import shapely 
 from shapely.geometry import shape, Point, Polygon
+import random
 import geopandas as geo
 """
 Finds average point (lat, long) for each street in each district where crimes existed.
@@ -50,8 +51,12 @@ class sortNeighborhoods(dml.Algorithm):
         repo.authenticate('janellc_rstiffel_yash', 'janellc_rstiffel_yash')
         crimesData = list(repo.janellc_rstiffel_yash.crimesData.find())
         neighborhoods = list(repo['janellc_rstiffel_yash.neighborhoods'].find())
-        streetLights = list((repo.ferrys.streetlights.find()))
+        streetLights = list(repo.ferrys.streetlights.find())
 
+        if trial:
+            print("you are gere")
+            streetLights = random.sample(streetLights, 2000)
+            print(len(streetLights))
         n_count = {}
         
 
@@ -167,7 +172,7 @@ class sortNeighborhoods(dml.Algorithm):
                   
         return doc
 
-sortNeighborhoods.execute()
+sortNeighborhoods.execute(True)
 #doc = transformCrimesData.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

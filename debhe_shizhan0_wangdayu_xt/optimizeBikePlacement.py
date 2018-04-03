@@ -56,8 +56,11 @@ class optimizeBikePlacement(dml.Algorithm):
                 maxLength = temp
         distanceLo = totalDistance / schools.count()
         distanceHi = maxLength + 0.000001
-        print(distanceLo)
+        #print(distanceLo)
 
+        # Compute all the schools that need a bike hub
+        # For each school get the list of all the subway station that is in the certain range
+        # create the system for the z3 solver
         for row_1 in schools_1:
             if(row_1['Distance'] < distanceLo):
                 continue
@@ -76,17 +79,25 @@ class optimizeBikePlacement(dml.Algorithm):
         #schoolDict_1 = copy.deepcopy(schoolDict)
         #print(len(schoolDict))
         solver = z3.Solver()
+
+        # Create the variables for the z3 solver
         allSchool = [[z3.Int(subStops) for subStops in schoolDict[s]] for s in listSchool]
 
         allSchool_1 = copy.deepcopy(allSchool)
+
+        # Add the constraint (There must be at least one station that get assigned by a hub)
         solver.add(sum([sum(school) for school in allSchool_1]) > 0)
 
+        # Add the constraint
+        # For each school, there must be at least one station that get assigned by a hub
         for school in allSchool:
             solver.add(sum(school) > 0)
             for subStops in school:
                 solver.add(subStops < 2)
                 solver.add(subStops >= 0)
 
+        # Optimization
+        # We want to find the minimum number of stations that get assigned
         minPlacementPossible = 199
         for i in range(199, -1, -1):
             solver.push()
@@ -95,15 +106,17 @@ class optimizeBikePlacement(dml.Algorithm):
                 minPlacementPossible = i
             solver.pop()
 
+        # Once we find the number, add it to the constraint
         solver.add(sum([sum(school) for school in allSchool_1]) < minPlacementPossible)
-        print(minPlacementPossible)
+        #print(minPlacementPossible)
         print(solver.check())
         placementResult = solver.model()
         #placementResult_1 = copy.deepcopy(placementResult)
-        print(placementResult)
-        print(len(placementResult))
-        print(placementResult[placementResult[0]])
+        #print(placementResult)
+        #print(len(placementResult))
+        #print(placementResult[placementResult[0]])
 
+        # store the assignment to the database 
         finalResult = []
         assignCount = 0
         for i in range(len(placementResult)):
@@ -114,7 +127,7 @@ class optimizeBikePlacement(dml.Algorithm):
             if(assignment == "1"):
                 assignCount += 1
             finalResult.append(dic)
-        print(assignCount)
+        #print(assignCount)
 
         # save the information to the database
         repo.dropCollection("optimizeBikePlacement")
@@ -152,7 +165,7 @@ class optimizeBikePlacement(dml.Algorithm):
         this_script = doc.agent('alg:#optimizeBikePlacement',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('bpd:1d9509a8b2fd485d9ad471ba2fdb1f90_0',
-                                             {'prov:label': 'minimum distance between school and Subway',
+                                             {'prov:label': 'z3 assginment for bike hub assignment',
                                               prov.model.PROV_TYPE: 'ont:DataSet', 'ont:Extension':'csv'})
 
         get_optimizeBikePlacement = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
@@ -161,7 +174,7 @@ class optimizeBikePlacement(dml.Algorithm):
                   {prov.model.PROV_TYPE: 'ont:Computation', 'ont:Query':'?type=delay+time$select=id, time'})
 
         optimizeBikePlacement = doc.entity('dat:debhe_shizhan0_wangdayu_xt#optimizeBikePlacement',
-                          {prov.model.PROV_LABEL: 'minmium distance between school and Subway',
+                          {prov.model.PROV_LABEL: 'z3 assginment for bike hub assignmenty',
                            prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(optimizeBikePlacement, this_script)
         doc.wasGeneratedBy(optimizeBikePlacement, get_optimizeBikePlacement, endTime)

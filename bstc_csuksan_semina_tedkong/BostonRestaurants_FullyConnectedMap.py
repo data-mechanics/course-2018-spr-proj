@@ -25,7 +25,7 @@ class getBostonYelpRestaurantData(dml.Algorithm):
     def execute(trial = False):
         startTime = datetime.datetime.now()
         
-         """
+        """
         
         First read in the merged Rating and Health Violation data and form a 
         box around the city of Boston to cut out blatantly wrong data
@@ -49,7 +49,7 @@ class getBostonYelpRestaurantData(dml.Algorithm):
         #print(arr)
         arr = arr.drop_duplicates()
         arr = arr.sort_values(by='name')
-        data = np.array(arr[['name', 'latitude','longitude', 'ave_violation_severity']])
+        data = np.array(arr[['name', 'latitude','longitude', 'ave_violation_severity', 'rating']])
         
         """
         
@@ -67,11 +67,18 @@ class getBostonYelpRestaurantData(dml.Algorithm):
                 if (i[0] == j[0]):
                     val.update({i[0] + ' | ' + str(j[3] + j[1] + j[2]) :10000000})
                 else:
-                    x1 = i[2] * 100
-                    x2 = j[2] * 100
-                    y1 = i[1] * 100
-                    y2 = j[1] * 100
-                    d = np.sqrt(np.power(x1-x2, 2) + np.power(y1-y2, 2))
+                    x1 = i[2] * 10000
+                    x2 = j[2] * 10000
+                    y1 = i[1] * 10000
+                    y2 = j[1] * 10000
+                    #rating distance
+                    rat1 = i[4] 
+                    rat2 = j[4]
+                    #severity distance
+                    sev1 = i[3]
+                    sev2 = j[3]
+                    #euclidean distance formula
+                    d = np.sqrt(np.power(x1-x2, 2) + np.power(y1-y2, 2) + np.power(rat1-rat2, 2) + np.power(sev1-sev2, 2))
                     val.update({(j[0]+ ' | ' +str(j[3] + j[1] + j[2])) : d})
             di = pd.DataFrame([val])
             distance = pd.concat([distance, di])

@@ -1,14 +1,10 @@
 import urllib.request
 import json
-import geojson
 import dml
 import prov.model
 import datetime
 import uuid
 import pandas as pd
-import shapely 
-from shapely.geometry import shape, Point, Polygon
-import geopandas as geo
 """
 Finds average point (lat, long) for each street in each district where crimes existed.
 This is for finding the "middle" of the street - used in findCrimeStats.
@@ -19,17 +15,13 @@ Yields the form {DISTRICT: {"street1": {Lat: #, Long: #}, "street2": {Lat: #, Lo
 
 """
 
-def merge_dicts(x, y):
-    ''' Helper function to merge 2 dictionaries '''
-    z = x.copy()   # start with x's keys and values
-    z.update(y)    # modifies z with y's keys and values & returns None
-    return z
 
 
-class sortNeighborhoods(dml.Algorithm):
+
+class sortCorrelations(dml.Algorithm):
     contributor = 'janellc_rstiffel_yash'
-    reads = ['janellc_rstiffel_yash.neighborhoods', 'ferrys.streetlights']
-    writes = ['janellc_rstiffel_yash.idk___']
+    reads = ['janellc_rstiffel_yash.sortedNeighborhoods']
+    writes = []
 
 
     @staticmethod
@@ -48,74 +40,22 @@ class sortNeighborhoods(dml.Algorithm):
         repo = client.repo
 
         repo.authenticate('janellc_rstiffel_yash', 'janellc_rstiffel_yash')
-        crimesData = list(repo.janellc_rstiffel_yash.crimesData.find())
-        neighborhoods = list(repo['janellc_rstiffel_yash.neighborhoods'].find())
-        streetLights = list((repo.ferrys.streetlights.find()))
-
-        n_count = {}
-        
-
+        df = list(repo.janellc_rstiffel_yash.sortedNeighborhoods.find())
+        items = []
+        for item in df:
+        	items.append(item.get('data'))
+        items = pd.DataFrame(items)
         # @staticmethod
 
-        def count(data, name, N, figure):
-            counter = 0
-            for item in data:
-                # Filters out empty rows
-                if (item['Long'] == None or item['Lat'] == None):
-                    continue
-                point = Point(float(item['Long']), float(item['Lat']))
-                if figure.contains(point):
-                    counter += 1
-            return(counter)
+        corr = pd.DataFrame(items.corr())
 
-        ## def getCrime(data, N, figure):
-        ##     for crime in crimesData:
-        ##         # Filters out empty rows
-        ##         if (crime['Long'] == None or crime['Lat'] == None):
-        ##             continue
-        ##         point = Point(float(crime['Long']), float(crime['Lat']))
-        ##         if figure.contains(point):
-        ##             # n_count[N] = {'crimes': 1}
-        ##             if N not in n_count:
-        ##                 n_count[N] = {'crimes': 1}
-        ##             else:
-        ##                 n_count[N]['crimes'] += 1
-        
-        ## # @staticmethod
-        ## def getLights(data, N, figure):
-        ##     for light in streetLights:
-        ##         if (light['Long'] == None or light['Lat'] == None):
-        ##             continue
-        ##         point = Point(float(light['Long']), float(light['Lat']))
-        ##         if figure.contains(point):
-        ##             if N not in n_count:
-        ##                 n_count[N] = {'lights': 1}
-        ##             else:
-        ##                 n_count[N]['lights'] += 1
+        repo.dropCollection("coorelations")
+        repo.createCollection("coorelations")
 
-
-        ##new = sortNeighborhoods.aggregate(streetLights, lambda t: [counter(x) for x in streetLights])
-        ## print(new)
-        n_count = {}
-        for polygon in neighborhoods:
-            figure = shape(polygon['Polygon'])
-            N = polygon['Neighborhood']
-
-            lightcount = count(streetLights, 'lights', N, figure)
-            crimecount = count(crimesData, 'crimes', N, figure)
-            n_count[N] = {'neighborhood': N, 'lights': lightcount, 'crimes': crimecount}
-            print(n_count)
-
-
-        # Store in DB
-        repo.dropCollection("sortedNeighborhoods")
-        repo.createCollection("sortedNeighborhoods")
-
-        for key,value in n_count.items():
-             r = {'data':value}
-             repo['janellc_rstiffel_yash.sortedNeighborhoods'].insert(r)
-        repo['janellc_rstiffel_yash.sortedNeighborhoods'].metadata({'complete':True})
-        print(repo['janellc_rstiffel_yash.sortedNeighborhoods'].metadata())
+        r = {'field1': 'crimes', 'field2': 'streetlights', 'value': corr['lights']['crimes']}
+        repo['janellc_rstiffel_yash.coorelations'].insert(r)
+        repo['janellc_rstiffel_yash.coorelations'].metadata({'complete':True})
+        print(repo['janellc_rstiffel_yash.coorelations'].metadata())
 
 
         repo.logout()
@@ -167,7 +107,7 @@ class sortNeighborhoods(dml.Algorithm):
                   
         return doc
 
-sortNeighborhoods.execute()
+sortCorrelations.execute()
 #doc = transformCrimesData.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

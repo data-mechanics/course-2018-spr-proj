@@ -78,7 +78,7 @@ class optimization(dml.Algorithm):
                 routes.append({
                         "alc_coord": alc_coord,
                         "mbta_route": {
-                        "mbta_coord": mbta_coord,
+                            "mbta_coord": mbta_coord,
                             "route":safest_route, 
                             "route_dist":safest_route_dist,
                             "streetlights":safest_route_streetlights

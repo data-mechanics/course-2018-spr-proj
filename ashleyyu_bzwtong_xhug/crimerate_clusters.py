@@ -10,11 +10,26 @@ import dml
 import prov.model
 import urllib.request
 import uuid
+from math import *
+
+def distanceToPolice(coord1,coord2):
+  def haversin(x):
+    return sin(x/2)**2 
+  return 2 * asin(sqrt(
+      haversin(radians(coord2[0])-radians(coord1[0])) +
+      cos(radians(coord1[0])) * cos(radians(coord2[0])) * haversin(radians(coord2[1])-radians(coord1[1]))))*6371
+
+def notWithinOneKm(a,listb):
+    for j in listb:
+        if distanceToPolice(a,j) >= 1:
+            return True
 
 class get_crimerate_clusters(dml.Algorithm):
         contributor = 'ashleyyu_bzwtong_xhug'
         reads = ['ashleyyu_bzwtong.crimerate']
         writes = ['ashleyyu_bzwtong_xhug.crimerate_clusters']
+
+
 
         @staticmethod
         def execute(trial=False, logging=True, cluster_divisor=300):
@@ -29,7 +44,16 @@ class get_crimerate_clusters(dml.Algorithm):
             repo = client.repo
             repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
 
+            # Get the coordinates of Boston Police Stations
+            url = 'http://datamechanics.io/data/ashleyyu_bzwtong/cityOfBostonPolice.json'
+            response = urllib.request.urlopen(url).read().decode("utf-8")
+            police = json.loads(response)
+            policeStation = police['data']['fields'][3]['statistics']['values']
+            coordinates = []
+            for i in policeStation:
+                coordinates.append((i['lat'],i['long']))
 
+            # Get crime incident locations
             crimerate = repo['ashleyyu_bzwtong.crimerate'].find()
             coords_input = [tuple(row['Location'].replace('(', '').replace(')', '').split(','))
                             for row in crimerate if row['Location'] != '(0.00000000, 0.00000000)'
@@ -43,8 +67,11 @@ class get_crimerate_clusters(dml.Algorithm):
 
             kmeans_output = KMeans(n_clusters, random_state=0).fit(X)
             centroids = kmeans_output.cluster_centers_.tolist()
-            del(centroids[1])
-            crimerate_clusters_dict = {'crimerate_clusters': centroids}
+            newcentroids = [(a,b) for [a,b] in centroids]
+            print(newcentroids)
+            helpcenters = [(a,b) for (a,b) in newcentroids if notWithinOneKm((a,b),coordinates)]
+            print(helpcenters)
+            crimerate_clusters_dict = {'crimerate_clusters': helpcenters}
 
             repo.dropCollection("crimerate_clusters")
             repo.createCollection("crimerate_clusters")

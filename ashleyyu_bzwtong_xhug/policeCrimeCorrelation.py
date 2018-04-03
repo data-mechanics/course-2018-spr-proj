@@ -7,13 +7,12 @@ import uuid
 from math import *
 import random
 
-#calculations to get correlation for # crimes per street : # of properties per street
+#find the correlation between crimerate and distance to closest police stations.
 class policeCrimeCorrelation(dml.Algorithm):
     contributor = 'ashleyyu_bzwtong_xhug'
     reads = ['ashleyyu_bzwtong_xhug.crimerate']
     writes = ['ashleyyu_bzwtong_xhug.policeCrimeCorrelation']
 
-    # Taking all the helper functions given in class by Professor Lapets
 
     def avg(x): # Average
         return sum(x)/len(x)
@@ -36,6 +35,7 @@ class policeCrimeCorrelation(dml.Algorithm):
     
         return diffprod / sqrt(xdiff2 * ydiff2)
     
+    #takes two coordinates and calcualtes the distance between them in kilometers
     def distanceToPolice(coord1,coord2):
       def haversin(x):
         return sin(x/2)**2 
@@ -46,7 +46,7 @@ class policeCrimeCorrelation(dml.Algorithm):
         
     @staticmethod
     def execute(trial):
-        '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
+
         startTime = datetime.datetime.now()
 
         client = dml.pymongo.MongoClient()
@@ -88,15 +88,18 @@ class policeCrimeCorrelation(dml.Algorithm):
         #print(max(distanceToCops),min(distanceToCops))
         
         #group distances into different ranges
-
+        #distanceRangeCount: (in the area of less than 0.5km away from police stations, x number of crime happened),
+        #(in the area of 0.5~1km away from police stations, y number of crime happened), (1~1.5km away)......
         distanceRangeCount = [[0.5,0],[1,0],[1.5,0],[2,0],[2.5,0],[3,0],[3.5,0],[4,0],[4.5,0],[5,0],[5.5,0]]
 
+        #count the crime frequency for each distance range
         for i in distanceToCops:
             index = int(i//0.5)
             if index>10: index = 10
             distanceRangeCount[index][1]+=1
         #print(distanceRangeCount)
 
+        #calculate correlation coefficient
         rangeCountTuples = [(a,b) for [a,b] in distanceRangeCount]
         x_distance = [a for (a,b) in rangeCountTuples]
         y_frequency = [b for (a,b) in rangeCountTuples]

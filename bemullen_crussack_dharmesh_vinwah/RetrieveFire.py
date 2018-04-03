@@ -51,13 +51,13 @@ class RetrieveFire(dml.Algorithm):
                 month = 'december'
             else:
                 month = 'may' 
-
+# appended the month of the incident to each record
             for record in r['result']['records']:
                 streetAddress = record['Street Number'].strip() + " " + record['Street Name'].strip() + " " + record['Street Type'].strip() + " " +  record['Neighborhood'].strip() + "MA " + record['Zip'].strip()
                 g = geocoder.google(streetAddress)
                 g = geocoder.google(streetAddress)
                 address[record['Incident Number']] = (month, g.latlng)
-
+# selected the fields for addresses and ran it through google's geocoder to append the lat/lng points.
 #some long streets don't have an exact number attached to them - this could be a point of error 
         may = []
         sept = []
@@ -71,7 +71,7 @@ class RetrieveFire(dml.Algorithm):
                 sept.append(address[record][1])
             elif address[record][0] == 'december':
                 dec.append(address[record][1])
-            
+# separated the data by month            
         df_may = pd.DataFrame.from_dict(may)
         df_sept = pd.DataFrame.from_dict(sept)
         df_dec = pd.DataFrame.from_dict(dec)

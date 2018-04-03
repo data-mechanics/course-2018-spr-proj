@@ -56,7 +56,7 @@ class busHubwayDistance(dml.Algorithm):
                         allDistance.append(s)
                 temp += 1
         else:
-            for row_1 in busStop_1:
+            for row_1 in busStops_1:
                 bikeStations_1 = copy.deepcopy(bikeStations)
                 for row_2 in bikeStations_1:
                     s = (row_1['stopName'], row_2['station'], (float(row_1['X']) - float(row_2['X']))**2 + ( float(row_1['Y']) - float(row_2['Y']) )**2, row_2['dock_num'])

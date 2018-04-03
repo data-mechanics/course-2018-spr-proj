@@ -47,7 +47,7 @@ class busHubwayDistance(dml.Algorithm):
         # There are too much busStops in Boston, so we are going to calculate the first 2000 of them
         allDistance = []
         temp = 0
-        if(trial == true):
+        if(trial == True):
             for row_1 in busStops_1:
                 bikeStations_1 = copy.deepcopy(bikeStations)
                 if(temp < 1000):

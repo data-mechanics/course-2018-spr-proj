@@ -64,6 +64,9 @@ class getBostonYelpRestaurantData(dml.Algorithm):
         
         
         file = pd.read_json("merged_datasets/RestaurantRatingsAndHealthViolations_Boston.json", lines=True)
+        if trial == True:
+            splitted = np.array_split(file, 3)
+            file = splitted[0]
 #        severity = file['ave_violation_severity']
 #        rating = file['rating']
 #        longitude = file['longitude']
@@ -353,7 +356,7 @@ class getBostonYelpRestaurantData(dml.Algorithm):
                   
         return doc
     
-getBostonYelpRestaurantData.execute()
+getBostonYelpRestaurantData.execute(True)
 doc = getBostonYelpRestaurantData.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

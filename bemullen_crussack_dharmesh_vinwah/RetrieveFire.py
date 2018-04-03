@@ -53,7 +53,8 @@ class RetrieveFire(dml.Algorithm):
                 month = 'may' 
 
             for record in r['result']['records']:
-                streetAddress = record['Street Number'].strip() + " " + record['Street Name'].strip() + " " + record['Street Type'].strip() + " " +  record['Neighborhood'].strip()
+                streetAddress = record['Street Number'].strip() + " " + record['Street Name'].strip() + " " + record['Street Type'].strip() + " " +  record['Neighborhood'].strip() + "MA " + record['Zip'].strip()
+                g = geocoder.google(streetAddress)
                 g = geocoder.google(streetAddress)
                 address[record['Incident Number']] = (month, g.latlng)
 

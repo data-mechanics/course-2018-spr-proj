@@ -24,7 +24,7 @@ have any similarity. And try to see which one is better.)
 ### Constraint Optimization
 
 The following part inplement in the file optimizedBikePlacement.py and the new assignment is 
-stored in the data collection debhe_shizhan0_wangdayu_xt.optimizeBikePlacement\
+stored in the data collection debhe_shizhan0_wangdayu_xt.optimizeBikePlacement.
 
 We are going to do following steps in this part: 
 1. We are going to find the list schools that is "far away" to its closest subway station. We 

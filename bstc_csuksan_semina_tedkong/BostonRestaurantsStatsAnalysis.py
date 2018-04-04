@@ -49,7 +49,7 @@ class BostonRestaurantStatsAnalysis(dml.Algorithm):
         and because it didnt do anything for our understanding other than look nice.
         
         """
-        #google_api_key = dml.auth['services']['google']['key']
+        google_api_key = dml.auth['services']['google']['key']
 
 
         """

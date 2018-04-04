@@ -13,4 +13,11 @@ The database used was:
 
 ## Analysis
 
-The analysis done in this file is done in 'StatLibrary.py.' After splitting our information into in session and not in session, we calculated the correlation between the city scores and the library attendence. This analysis was prompted by 'scatter_library.png' which is a plot of this data showing that there may be questionable correlation. The result was that when students were not in session, there was a .3558 correlation and in session there was a .7470 correlation. This means that there a strong correlation to the score when students are in session. 
+The analysis done in this file is done in 'StatLibrary.py.' After splitting our information into in session and not in session, we calculated the correlation between the city scores and the library attendence. This analysis was prompted by the following plot:
+
+<center>
+	<img src="https://cs-people.bu.edu/dharmesh/cs591/591data/city_score_scatter.png"/>
+</center>
+which suggests that there may be a questionable correlation. 
+
+The result was that when students were not in session, there was a .3558 correlation and in session there was a .7470 correlation. This means that there a strong correlation to the score when students are in session. 

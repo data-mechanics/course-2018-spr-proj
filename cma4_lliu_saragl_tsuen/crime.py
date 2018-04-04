@@ -11,7 +11,7 @@ class crime(dml.Algorithm):
     writes = ['cma4_lliu_saragl_tsuen.crime']
 
     @staticmethod
-    def execute(trial = True):
+    def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
@@ -29,15 +29,7 @@ class crime(dml.Algorithm):
 
         repo.dropCollection("cma4_lliu_saragl_tsuen.crime")
         repo.createCollection("cma4_lliu_saragl_tsuen.crime")
-
-        final = []
-
-        if trial:
-            final = repo['cma4_lliu_saragl_tsuen.entertainment'].aggregate([{'$sample': {'size': 1000}}], allowDiskUse=True)
-        else:
-            final = repo['cma4_lliu_saragl_tsuen.entertainment'].find()
-
-        repo['cma4_lliu_saragl_tsuen.crime'].insert_many(trial)
+        repo['cma4_lliu_saragl_tsuen.crime'].insert_many(r)
         repo['cma4_lliu_saragl_tsuen.crime'].metadata({'complete':True})
         print(repo['cma4_lliu_saragl_tsuen.crime'].metadata())
 
@@ -46,7 +38,7 @@ class crime(dml.Algorithm):
         endTime = datetime.datetime.now()
 
         return {"start":startTime, "end":endTime}
-
+    
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''
@@ -79,7 +71,7 @@ class crime(dml.Algorithm):
         doc.wasDerivedFrom(crime, resource, get_crime, get_crime, get_crime)
 
         repo.logout()
-
+                  
         return doc
 
 crime.execute()

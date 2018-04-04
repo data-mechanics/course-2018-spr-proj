@@ -63,7 +63,7 @@ class BostonRestaurantStatsAnalysis(dml.Algorithm):
         file = pd.read_json("merged_datasets/RestaurantRatingsAndHealthViolations_Boston.json", lines=True)
         if trial == True:
             splitted = np.array_split(file, 3)
-            file = splitted[0]
+            file = splitted[2]
 
         arr = file[['ave_violation_severity', 'rating','latitude','longitude']].copy()
 
@@ -349,7 +349,7 @@ class BostonRestaurantStatsAnalysis(dml.Algorithm):
 
         return doc
 
-BostonRestaurantStatsAnalysis.execute(True)
+BostonRestaurantStatsAnalysis.execute()
 doc = BostonRestaurantStatsAnalysis.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

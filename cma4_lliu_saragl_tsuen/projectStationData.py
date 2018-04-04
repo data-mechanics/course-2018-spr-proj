@@ -6,9 +6,9 @@ import datetime
 import uuid
 
 class projectDestinationData(dml.Algorithm):
-    contributor = 'cma4_tsuen'
-    reads = ['cma4_tsuen.mbta', 'cma4_tsuen.hubway']
-    writes = ['cma4_tsuen.stationsProjected']
+    contributor = 'cma4_lliu_saragl_tsuen'
+    reads = ['cma4_lliu_saragl_tsuen.mbta', 'cma4_lliu_saragl_tsuen.hubway']
+    writes = ['cma4_lliu_saragl_tsuen.stationsProjected']
 
     @staticmethod
     def execute(trial = False):
@@ -18,11 +18,11 @@ class projectDestinationData(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('cma4_tsuen', 'cma4_tsuen')
+        repo.authenticate('cma4_lliu_saragl_tsuen', 'cma4_lliu_saragl_tsuen')
 
         dataSet = []
 
-        collection = repo['cma4_tsuen.hubway'].find()
+        collection = repo['cma4_lliu_saragl_tsuen.hubway'].find()
 
         # projection
         dataSet = [
@@ -32,7 +32,7 @@ class projectDestinationData(dml.Algorithm):
         ]
 
 
-        collection2 = repo['cma4_tsuen.mbta'].find()
+        collection2 = repo['cma4_lliu_saragl_tsuen.mbta'].find()
         mbta_dataset = []
         # more projection
         mbta_dataset = [{'key': ('mbta', row['Stop_Name']),'coords': (row['Coords:'][0], row['Coords:'][1])} for row in collection2]
@@ -47,11 +47,11 @@ class projectDestinationData(dml.Algorithm):
 
         print(final)
 
-        repo.dropCollection("cma4_tsuen.stationsProjected")
-        repo.createCollection("cma4_tsuen.stationsProjected")
-        repo['cma4_tsuen.stationsProjected'].insert_many(final)
-        repo['cma4_tsuen.stationsProjected'].metadata({'complete':True})
-        print(repo['cma4_tsuen.stationsProjected'].metadata())
+        repo.dropCollection("cma4_lliu_saragl_tsuen.stationsProjected")
+        repo.createCollection("cma4_lliu_saragl_tsuen.stationsProjected")
+        repo['cma4_lliu_saragl_tsuen.stationsProjected'].insert_many(final)
+        repo['cma4_lliu_saragl_tsuen.stationsProjected'].metadata({'complete':True})
+        print(repo['cma4_lliu_saragl_tsuen.stationsProjected'].metadata())
 
         repo.logout()
 
@@ -70,14 +70,14 @@ class projectDestinationData(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('cma4_tsuen', 'cma4_tsuen')
+        repo.authenticate('cma4_lliu_saragl_tsuen', 'cma4_lliu_saragl_tsuen')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('stations', 'http://datamechanics.io/')
 
-        this_script = doc.agent('alg:cma4_tsuen#stations', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:cma4_lliu_saragl_tsuen#stations', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         resource = doc.entity('dat:mbta', {'prov:label':'MBTA Station Names and Coords Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_mbta_stations = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
@@ -87,7 +87,7 @@ class projectDestinationData(dml.Algorithm):
                   }
                   )
 
-        mbta_stations = doc.entity('dat:cma4_tsuen#mbta', {prov.model.PROV_LABEL:'MBTA Stations', prov.model.PROV_TYPE:'ont:DataSet'})
+        mbta_stations = doc.entity('dat:cma4_lliu_saragl_tsuen#mbta', {prov.model.PROV_LABEL:'MBTA Stations', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(mbta_stations, this_script)
         doc.wasGeneratedBy(mbta_stations, get_mbta_stations, endTime)
         doc.wasDerivedFrom(mbta_stations, resource, get_mbta_stations, get_mbta_stations, get_mbta_stations)
@@ -100,7 +100,7 @@ class projectDestinationData(dml.Algorithm):
                   }
                   )
 
-        hubway_stations = doc.entity('dat:cma4_tsuen#hubway', {prov.model.PROV_LABEL:'Hubway Stations', prov.model.PROV_TYPE:'ont:DataSet'})
+        hubway_stations = doc.entity('dat:cma4_lliu_saragl_tsuen#hubway', {prov.model.PROV_LABEL:'Hubway Stations', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(hubway_stations, this_script)
         doc.wasGeneratedBy(hubway_stations, get_hubway_stations, endTime)
         doc.wasDerivedFrom(hubway_stations, resource, get_hubway_stations, get_hubway_stations, get_hubway_stations)

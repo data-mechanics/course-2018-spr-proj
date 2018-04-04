@@ -2,7 +2,7 @@ import dml
 import prov.model
 import datetime
 import uuid
-import requests
+import prequest as requests
 
 
 class getTricklingData(dml.Algorithm):

@@ -9,7 +9,7 @@ import pandas as pd
 import shapely 
 from shapely.geometry import shape, Point, Polygon
 import random
-import geopandas as geo
+#import geopandas as geo
 """
 Finds average point (lat, long) for each street in each district where crimes existed.
 This is for finding the "middle" of the street - used in findCrimeStats.
@@ -29,8 +29,8 @@ def merge_dicts(x, y):
 
 class sortNeighborhood(dml.Algorithm):
     contributor = 'janellc_rstiffel_yash'
-    reads = ['janellc_rstiffel_yash.neighborhoods', 'ferrys.streetlights', 'janellc_rstiffel_yash.crimesData']
-    writes = ['janellc_rstiffel_yash.sortedNeighborhoods']
+    reads = ['janellc_rstiffel_yash.neighborhoods','janellc_rstiffel_yash.crimesData'] #NOTE: ALSO READS FROM ferrys.streetlights
+    writes = ['janellc_rstiffel_yash.sortedNeighborhoods'] 
 
 
     @staticmethod

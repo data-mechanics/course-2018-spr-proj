@@ -37,13 +37,12 @@ We aimed to uncover correlation between number of streetlights and number of cri
 You will need some libraries and packages.
 ```
 python -m pip install shapely
-python -m pip install pandas
-python -m pip install geopandas
 install z3 via github instructions
 
 ```
 
 
 **To run in trial mode**
+* Note: Must run getStreetlights.py from ferrys (borrowed dataset from their team)
 * python execute.py janellc_rstiffel_yash --trial
 

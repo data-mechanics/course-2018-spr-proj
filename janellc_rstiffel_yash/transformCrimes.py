@@ -22,7 +22,7 @@ def merge_dicts(x, y):
     return z
 
 
-class transformCrimesData(dml.Algorithm):
+class transformCrimes(dml.Algorithm):
     contributor = 'janellc_rstiffel_yash'
     reads = ['janellc_rstiffel_yash.crimesData']
     writes = ['janellc_rstiffel_yash.crimeDistricts']

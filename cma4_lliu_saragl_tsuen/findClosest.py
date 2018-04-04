@@ -27,6 +27,9 @@ class findClosest(dml.Algorithm):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
+        if trial:
+            count = 0
+        
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -51,9 +54,14 @@ class findClosest(dml.Algorithm):
                     closestStation = s['key']
                     minDist = dist
                     minStationCoords = scoords
+        
+                if trial:
+                    count += 1
+                    if count > 100
             d['closestStation'] = closestStation
             d['stationCoords'] = minStationCoords
             final.append(d)
+            
 
         print(final)
             

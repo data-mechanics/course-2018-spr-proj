@@ -17,7 +17,8 @@ import xmltodict
 class city_scores_library_cleanup(dml.Algorithm):
     contributor = "bemullen_crussack_dharmesh_vinwah"
     reads = []
-    writes = ["bemullen_crussack_dharmesh_vinwah.libraries"] # change this reference everywhere else too
+    # change this reference everywhere else too
+    writes = ["bemullen_crussack_dharmesh_vinwah.libraries"] 
 
     @staticmethod
     def parseURL(url):
@@ -40,7 +41,8 @@ class city_scores_library_cleanup(dml.Algorithm):
 
         data_new = d[d['CTY_SCR_NAME'] == 'LIBRARY USERS']
 
-        data_new = data_new[['CTY_SCR_NBR_DY_01','CTY_SCR_NBR_WK_01','ETL_LOAD_DATE','CTY_SCR_WEEK','CTY_SCR_DAY','CTY_SCR_DAY_NAME',]]
+        data_new = data_new[['CTY_SCR_NBR_DY_01','CTY_SCR_NBR_WK_01','ETL_LOAD_DATE',\
+        'CTY_SCR_WEEK','CTY_SCR_DAY','CTY_SCR_DAY_NAME',]]
 
 
         def date_cleaner(row):

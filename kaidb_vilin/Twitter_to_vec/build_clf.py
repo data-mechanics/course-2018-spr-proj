@@ -17,7 +17,7 @@ from keras.layers.core import Dense, Dropout, Flatten
 from keras.layers.convolutional import Conv1D
 from keras.optimizers import Adam
 import time
-
+import multiprocessing
 
 
 
@@ -106,6 +106,17 @@ def main():
     max_tweet_length = 30
     vector_size = 512
     # generate model 
+
+
+    use_gpu = True
+    config = tf.ConfigProto(intra_op_parallelism_threads=multiprocessing.cpu_count(), 
+                            inter_op_parallelism_threads=multiprocessing.cpu_count(), 
+                            allow_soft_placement=True, 
+                            device_count = {'CPU' : multiprocessing.cpu_count(), 
+                                            'GPU' : 1 if use_gpu else 0})
+
+    session = tf.Session(config=config)
+    K.set_session(session)
     model = build_model(max_tweet_length, vector_size)
     # static names 
     dataset_location = './Sentiment Analysis Dataset.csv'

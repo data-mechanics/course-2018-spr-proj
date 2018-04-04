@@ -23,28 +23,28 @@ have any similarity. And try to see which one is better.)
 
 ### Constraint Optimization
 
-We are going to do following steps in this part: \
+We are going to do following steps in this part: 
 1. We are going to find the list schools that is "far away" to its closest subway station. We 
-consume these are the schools that need the bike to the subway station. \
+consume these are the schools that need the bike to the subway station. 
 2. For each of the school, for a series of subway station that is in a certain range. Because 
-these subway stations are our potential location to place the bike hubs.(by using modified K mean algorithm)  \
-3. We are going to set the constraint for the z3 solver as following: \
+these subway stations are our potential location to place the bike hubs.(by using modified K mean algorithm)  
+3. We are going to set the constraint for the z3 solver as following: 
 For each of the target school, there must exist a subways station(in a certain range to that school) 
 get assigned for a bike hub. Note that a assignment to a subway station could be able to fit the requirement
-for multiple schools. \
-4. We are going to use the z3 solver to test if there is a satisfaction assignment for all the school. \
+for multiple schools. 
+4. We are going to use the z3 solver to test if there is a satisfaction assignment for all the school. 
 5. Once we find it is possible to do, we are going to use the z3 solver to optimized the bike hub replacement.
-(In our case, we consider to find the minimum numbers of bike hubs that can fit the constraint for all the schools.)\
+(In our case, we consider to find the minimum numbers of bike hubs that can fit the constraint for all the schools.)
 6. Then we are able to get the optimized assignment(minimum number of bike hub) that can fit the requirement for all 
-the schools.\
+the schools.
 
 ### Statistics
-Once we get the assignment, we are going to do the following: \
+Once we get the assignment, we are going to do the following: 
 1. From the z3 solver, it will give us the list of optimized (minimum number) assignment of bike hubs based on the
-location of the subway station. We are going to find the list of subway stations that get assigned.  \
+location of the subway station. We are going to find the list of subway stations that get assigned.  
 2. Then for those schools that is "far away" to its closest subway station, we are going to find the closest new bike 
-hub (also subway station since we place bike hubs on subway station) and get their locations. \
-3. Then we are going to use this new data and the old hubway station's data to compute the correlation coefficient and covarience. \
+hub (also subway station since we place bike hubs on subway station) and get their locations. 
+3. Then we are going to use this new data and the old hubway station's data to compute the correlation coefficient and covarience. 
 
 ### Project justification
 In our project, we are trying to give the students in the school a better choice of transportation. Our way to set up the z3 problem
@@ -52,9 +52,12 @@ system can make sure that for all the school that is far from its closest subway
 in a small range. By the statistics, it shows that our new data gets a lot different with the existing hubway stations. On 
 the other hand, it shows us that our way of placing is totally different from the existing one. It might not be the best
 algorithm for now, but this way of setting up should work if we can optimize our algorithm a bit. 
-\   
 
 ### How to run 
+
+```
+python execute.py debhe_shizhan0_wangdayu_xt 
+```
 
 Using trial mode saves a lot of time 
 ```

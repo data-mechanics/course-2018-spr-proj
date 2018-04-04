@@ -15,10 +15,10 @@ construct a fully end to end ML pipeline for predicting aggregate sentiment by r
 - Verry high dimensional feature space 
 - Difficult to fit entire dataset into memory, batch training is a must 
 - The dataset is highly non-linear 
-    - Logistic Regression was pretty poor at identifying 
+    - Logistic Regression was pretty poor at identifying and meaningul trends 
 - Insufficient computational Resources
-    - The new Macbooks for god knows what reason don't use a Nvidia GPU and are therefore incompatible with Tensorflow GPU integration
-        - Training is prohibitively slow as a result  [much salt]
+    - (Me complaining) The new Macbooks for god knows what reason don't use a Nvidia GPU and are therefore incompatible with Tensorflow GPU integration...buyer beware
+        - Training is prohibitively slow as a result  (30 minutes per epoch)
         - As a result, we could only itterate through 5 epochs 
 - Bots, Bots, and more freaken bots
     - Using a super crude methidology, we determined that at least 1/10 of all of our tweets are bot generated
@@ -54,6 +54,12 @@ construct a fully end to end ML pipeline for predicting aggregate sentiment by r
     - to run in trial mode, </code> $ python get_clean_twitter_sentiment.py t </code>
         - Trial mode will only tokenize and stem the first few tweets for illustrative purposes
     - The model is incredibly effective at identifying useful embeddings for profaninty, slang, and spelling associations..etc and is not useful for word embeddings for arbitrary texts. 
+- Full pipeline is 
+```bash 
+get_clean_twitter_sentiment.py
+build_twitter_tweet_2_vec.py
+build_clf.py
+```
 
 ## Tweet Word Embedding Examples 
 ** Disclaimer: These asosciations are constructed by the tweet. word2vec model. These associations are not reflective of our views. **
@@ -85,7 +91,20 @@ print(word2vec.wv.similar_by_word("dumb"))
 ##
 
 # News API 
-
+- We created 4 api keys and cycle through them when throttled (only 1 is required. )
+    ```python
+{
+"news1": "",
+"news2": "",
+"news3": "",
+"news4": ""
+}
+    ```
+    - TODO: Aws lambda would be an awesome way to generate new keys. 
+- We crawled articles from multiple national and local news sources and tried to apply the twitter sentiment classifer to them (shocker of the day, it did not transfer well)
+- To remedy this, we constructed a W2vec model on the entire wikipedia corpus. 
+- Unfortunetly, due to computational and timming constraints, we were unabe to apply this directly to the transformed news data. As such, the news sentiment analysis is in need of improvement. 
+- 
 
 ## Optimization: 
 - Word2Vec using Gensim 

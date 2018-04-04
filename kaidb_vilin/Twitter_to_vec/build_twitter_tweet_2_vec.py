@@ -25,19 +25,24 @@ def load_corpus(model_location, corp_filename):
 
 
 def main():
-	# we assume that the model data has already been downloaed 
-	# and that the files have been stemmed
-	# If not, please run get_clean_twitter_sentiment.py
-	start = time.time()
-	model_location = './model/'
-	tokenized_corpus_name = "tokenized_tweet_corpus.dill"
-	print("Loading Data....")
-	tokenized_tweet_corpus = load_corpus( model_location, tokenized_corpus_name)
-	print("Data loaded")
-	print()
-	print("Building Word2Vec Model....")
-	# Train the model
-	word2vec = Word2Vec(sentences=tokenized_tweet_corpus,
+    # we assume that the model data has already been downloaed 
+    # and that the files have been stemmed
+    # If not, please run get_clean_twitter_sentiment.py
+    start = time.time()
+    model_location = './model/'
+    tokenized_corpus_name = "tokenized_tweet_corpus.dill"
+    print("Loading Data....")
+    tokenized_tweet_corpus = load_corpus( model_location, tokenized_corpus_name)
+    print("Data loaded")
+    print()
+    print("Building Word2Vec Model....")
+    # Train the model
+    # w2vec word embeding for tweet corpus
+    # TODO: enhance with wikepedia dataset
+    # Maybe consider using H2o-- this is slow as fuck 
+    # IF you need something to do while you wait...illicit substances optional
+    # https://www.youtube.com/watch?v=pCpLWbHVNhk
+    word2vec = Word2Vec(sentences=tokenized_tweet_corpus,
                     # vector size--max size of a tweet
                     size=512, 
                     # Window size
@@ -47,11 +52,11 @@ def main():
                     seed=6969,
                     # paralellize this or it will take legit forever 
                     workers=multiprocessing.cpu_count())
-	elapsed_time = time.time() - start
-	print("model completed  in {}".format( elapsed_time))
-	# just to prevent overwriting a new one 
-	word2vec.save(model_location +  str(time.time()) + '_tweet_word2vec.model')
-	print("Model succsesfully saved")
+    elapsed_time = time.time() - start
+    print("model completed  in {}".format( elapsed_time))
+    # just to prevent overwriting a new one 
+    word2vec.save(model_location +  str(time.time()) + '_tweet_word2vec.model')
+    print("Model succsesfully saved")
 
 if __name__ == "__main__":
-	main()
+    main()

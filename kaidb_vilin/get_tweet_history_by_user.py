@@ -11,10 +11,13 @@ import pandas as pd
 
 #Twitter API credentials
 # Do not leave values hardcoded 
-consumer_key = "fm6ta9Ixfhzn7FdkmIL2VRowh"
-consumer_secret = "3I3m6BWs380cN5aRN3Sz5vAZNqAddv5GUBoSu14mjb1FL1Eve5"
-access_key = "967989243674062848-5LuNrFlSZxopGdleeW3iszkNigUeuI0"
-access_secret = "HYc0kOOhclP0FWZ5xhr3bOx0SsatVVcBQrzADBTN9dG60"
+
+
+auth_df = eval(open("auth.json").read())
+consumer_key = auth_df['consumer_key']
+consumer_secret = auth_df['consumer_secret']
+access_key = auth_df['access_key']
+access_secret = auth_df['access_secret']
 
 def get_all_tweets(screen_name, use_pandas = False):
 	"""Retrieve all tweets froma. particular users by their username

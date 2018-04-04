@@ -109,7 +109,7 @@ class sortNeighborhoods(dml.Algorithm):
             lightcount = count(streetLights, 'lights', N, figure)
             crimecount = count(crimesData, 'crimes', N, figure)
             n_count[N] = {'neighborhood': N, 'lights': lightcount, 'crimes': crimecount}
-            print(n_count)
+            # print(n_count)
 
 
         # Store in DB

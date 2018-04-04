@@ -29,7 +29,8 @@ The second approach involves a visualization step where top 6 closest restaurant
 (BostonScoring_Map.py)
 (BostonScoringEvaluations.py)
 
-Order of Algorithms to run:  BostonRestaurantsStatsAnalysis.py
+Order of Algorithms to run:
+  BostonRestaurantsStatsAnalysis.py
 
 Algorithm A) BostonRestaurants_FullyConnectedMap.py then BostonRestaurantsScoreComparisonAll3.py  
 Algorithm B) BostonScoring_Map.py then BostonScoringEvaluations.py

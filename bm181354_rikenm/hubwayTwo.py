@@ -6,10 +6,10 @@ import prov.model
 import datetime
 import uuid
 
-class hubwayOne(dml.Algorithm):
+class hubwayTwo(dml.Algorithm):
     contributor = 'bm181354_rikenm'
     reads = []
-    writes = ['bm181354_rikenm.hubwayOne']
+    writes = ['bm181354_rikenm.hubwayTwo']
     
     @staticmethod
     def execute(trial = False):
@@ -22,7 +22,7 @@ class hubwayOne(dml.Algorithm):
         repo.authenticate('bm181354_rikenm', 'bm181354_rikenm')
         
         # Dataset01
-        url = 'http://datamechanics.io/data/bm181354_rikenm/201701-hubway-tripdata.csv'
+        url = 'http://datamechanics.io/data/bm181354_rikenm/201702-hubway-tripdata.csv'
  
         hubway_df = pd.read_csv(url)
         # creating df that only contains city, total number of service, EMS_INDEX
@@ -31,9 +31,9 @@ class hubwayOne(dml.Algorithm):
         s = json.dumps(r, sort_keys=True, indent=2)
 
         # clear
-        repo.dropPermanent('hubwayOne')
-        repo.createPermanent('hubwayOne')
-        repo['bm181354_rikenm.hubwayOne'].insert_many(r)
+        repo.dropPermanent('hubwayTwo')
+        repo.createPermanent('hubwayTwo')
+        repo['bm181354_rikenm.hubwayTwo'].insert_many(r)
 
 
         # logout
@@ -60,23 +60,23 @@ class hubwayOne(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp','http://datamechanics.io/?prefix=bm181354_rikenm/')
         
-        this_script = doc.agent('alg:bm181354_rikenm#hubwayOne', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:bm181354_rikenm#hubwayTwo', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         # change this
         resource = doc.entity('bdp:Emergency_Medical_Service_EMS_Stations', {'prov:label':'dataset of medical service in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         
-        get_hubwayOne = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_hubwayTwo = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         
-        doc.wasAssociatedWith(get_hubwayOne, this_script)
+        doc.wasAssociatedWith(get_hubwayTwo, this_script)
         
         #change this
-        doc.usage(get_hubwayOne, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval'})
+        doc.usage(get_hubwayTwo, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval'})
                   
-        hubwayOne = doc.entity('dat:bm181354_rikenm#hubwayOne', {prov.model.PROV_LABEL:'HubwayOne', prov.model.PROV_TYPE:'ont:DataSet'})
+        hubwayTwo = doc.entity('dat:bm181354_rikenm#hubwayTwo', {prov.model.PROV_LABEL:'hubwayTwo', prov.model.PROV_TYPE:'ont:DataSet'})
         
-        doc.wasAttributedTo(hubwayOne, this_script)
-        doc.wasGeneratedBy(hubwayOne, get_hubwayOne, endTime)
-        doc.wasDerivedFrom(hubwayOne, resource, get_hubwayOne, get_hubwayOne, get_hubwayOne)
+        doc.wasAttributedTo(hubwayTwo, this_script)
+        doc.wasGeneratedBy(hubwayTwo, get_hubwayTwo, endTime)
+        doc.wasDerivedFrom(hubwayTwo, resource, get_hubwayTwo, get_hubwayTwo, get_hubwayTwo)
         
                   
         repo.logout()

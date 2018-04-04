@@ -35,10 +35,10 @@ class BostonRestaurantStatsAnalysis(dml.Algorithm):
     @staticmethod
     def execute(trial = False):
         startTime = datetime.datetime.now()
-#
-#        client = dml.pymongo.MongoClient()
-#        repo = client.repo
-#        repo.authenticate('bstc_csuksan_semina_tedkong', 'bstc_csuksan_semina_tedkong')
+
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('bstc_csuksan_semina_tedkong', 'bstc_csuksan_semina_tedkong')
 
         #collection = repo.bstc_csuksan_semina_tedkong.RestaurantRatingAndHealthViolations
         #cursor = collection.find({})
@@ -49,7 +49,7 @@ class BostonRestaurantStatsAnalysis(dml.Algorithm):
         and because it didnt do anything for our understanding other than look nice.
         
         """
-        google_api_key = dml.auth['services']['google']['key']
+        #google_api_key = dml.auth['services']['google']['key']
 
 
         """
@@ -58,12 +58,14 @@ class BostonRestaurantStatsAnalysis(dml.Algorithm):
         box around the city of Boston to cut out blatantly wrong data
 
         """
+
+
         urls = 'http://datamechanics.io/data/RestaurantRatingsAndHealthViolations_Boston.json'
         with urllib.request.urlopen(urls) as url:
             data = json.dumps(url.read().decode())
         temp = json.loads(data)
         file = pd.read_json(temp, lines=True)
-
+        
         if trial == True:
             splitted = np.array_split(file, 3)
             file = splitted[2]
@@ -104,15 +106,13 @@ class BostonRestaurantStatsAnalysis(dml.Algorithm):
 
         #convert np to list
         centroids1_to_list = centroids.tolist()
-        centroids2_to_list = centroids.tolist()
+        centroids2_to_list = centroids2.tolist()
 
-        #create dict of centroids to be written as json
-        centroids_dict = {'KmeansCentroids': [{'SeverityAndRatingCentroids': centroids1_to_list,
-        'SeverityRatingLongLatCentroids': centroids2_to_list}]}
+
 
         #write as json
-        with open('kmeans_centroids.json', 'w') as outfile:
-            json.dump(centroids_dict, outfile)
+#        with open('kmeans_centroids.json', 'w') as outfile:
+#            json.dump(centroids_dict, outfile)
 
         """
 
@@ -153,9 +153,28 @@ class BostonRestaurantStatsAnalysis(dml.Algorithm):
         #save spearman's correlation to json
         spearman_dict = {"Correlation": [{"Spearman1": spear1_result[0], "P-Value1":spear1_result[1]}, 
         {"Spearman2": spear2_result[0], "P-Value2":spear2_result[1]}] }
+    
+        #create dict of centroids to be written as json
+        centroids_dict = {'KmeansCentroids': [{'SeverityAndRatingCentroids': centroids1_to_list,
+        'SeverityRatingLongLatCentroids': centroids2_to_list}]}
+    
+        new_collection_name = 'SpearmanRatingVsSeverity'
+    
+        repo.dropCollection('bstc_csuksan_semina_tedkong.'+new_collection_name)
+        repo.createCollection('bstc_csuksan_semina_tedkong.'+new_collection_name)
+        records = json.loads(pd.DataFrame(spearman_dict).to_json(orient='records'))
+        repo['bstc_csuksan_semina_tedkong.'+new_collection_name].insert_many(records)
+        
+        new_collection_name = 'CentroidsKmeans'
+    
+        repo.dropCollection('bstc_csuksan_semina_tedkong.'+new_collection_name)
+        repo.createCollection('bstc_csuksan_semina_tedkong.'+new_collection_name)
+        records = json.loads(pd.DataFrame(centroids_dict).to_json(orient='records'))
+        repo['bstc_csuksan_semina_tedkong.'+new_collection_name].insert_many(records)
+        
 
-        with open('spearman_correlation_score.json', 'w') as fp:
-            json.dump(spearman_dict, fp)
+#        with open('spearman_correlation_score.json', 'w') as fp:
+#            json.dump(spearman_dict, fp)
   
         """
 

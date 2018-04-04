@@ -24,16 +24,13 @@ class projectDestinationData(dml.Algorithm):
 
         dataSet = []
 
-        collection1 = repo['cma4_lliu_saragl_tsuen.entertainment'].find()
-        collection1 = list(collection1)
-        random.shuffle(collection1)
 
-        collection = []
-        count = 0
-        for e in collection1:
-            if count > 1000:
-                break
-            collection.append(e)
+        collection = None
+        
+        if trial:
+            collection = repo['cma4_lliu_saragl_tsuen.entertainment'].aggregate([{'$sample': {'size': 1000}}], allowDiskUse=True)
+        else:
+            collection = repo['cma4_lliu_saragl_tsuen.entertainment'].find()
         # projection
         dataSet = [
         	{'name': row["BUSINESSNAME"],
@@ -41,7 +38,11 @@ class projectDestinationData(dml.Algorithm):
         	for row in collection
         ]
 
-        collection2 = repo['cma4_lliu_saragl_tsuen.food'].find()
+        collection2 = None
+        if trial:
+            collection2 = repo['cma4_lliu_saragl_tsuen.food'].aggregate([{'$sample': {'size': 1000}}], allowDiskUse=True)
+        else:
+            collection2 = repo['cma4_lliu_saragl_tsuen.food'].find()
 
         food_data = []
         # joining food.py while filtering it
@@ -58,9 +59,6 @@ class projectDestinationData(dml.Algorithm):
         # create tuples out of string coordinates
         Completion = 0
         for entry in dataSet:
-            if trial == True:
-                if i == 50000:
-                    break
             #if i == 2:
             #    break
             

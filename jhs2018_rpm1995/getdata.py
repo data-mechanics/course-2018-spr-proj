@@ -35,7 +35,8 @@ class getdata(dml.Algorithm):
               'jhs2018_rpm1995.charge',
               'jhs2018_rpm1995.trees',
               'jhs2018_rpm1995.budget',
-              'jhs2018_rpm1995.openspaces']
+              'jhs2018_rpm1995.openspaces',
+              'jhs2018_rpm1995.crime']
 
     @staticmethod
     def execute(trial=False):
@@ -88,6 +89,20 @@ class getdata(dml.Algorithm):
         repo.createCollection("budget")
         repo['jhs2018_rpm1995.budget'].insert_many(container)
 
+
+        #### Jonathan Stuff ####
+
+        url = 'http://datamechanics.io/data/crime.csv'
+        response = urllib.request.urlopen(url).read().decode('windows-1252')
+        reader = csv.DictReader(response.splitlines())
+        container = []
+        for row in reader:
+            container.append(row)
+        repo.dropCollection("crime")
+        repo.createCollection("crime")
+        repo['jhs2018_rpm1995.crime'].insert_many(container)
+
+        ########################
         repo.logout()
 
         endTime = datetime.datetime.now()

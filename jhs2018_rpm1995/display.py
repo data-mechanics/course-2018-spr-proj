@@ -43,7 +43,7 @@ class display(dml.Algorithm):
         print("Now running display.py")
 
         #         dir_path = os.path.dirname(os.path.abspath(__file__))
-        dir_path = "C://Users//H//Desktop//course-2018-spr-proj//jhs2018_rpm1995"
+        dir_path = "C://cs591//course-2018-spr-proj//jhs2018_rpm1995"
         filenamemap = os.path.join(dir_path, "assets.html")
         map_osm = folium.Map(location=[39, -98.1], zoom_start=4)
 
@@ -66,7 +66,7 @@ class display(dml.Algorithm):
                 coords = (j, i)
                 # folium.Marker(coords, popup=str(coords)).add_to(map_osm)      # Uncomment to see grid on map
                 # grid[coords] = 0                                              # For overall counts
-                grid[coords] = [[0], [0], [0], [0], [0]]  # [[charge], [hubway], [open spaces], [trees], [budget]]
+                grid[coords] = [[0], [0], [0], [0], [0], [0]]  # [[charge], [hubway], [open spaces], [trees], [budget], [crime]]
                 cells.append(coords)
                 j += 0.01
             i += 0.01
@@ -113,10 +113,12 @@ class display(dml.Algorithm):
                     grid[(ycell, xcell)][2][0] += 1
                 elif typekind == "tree":
                     grid[(ycell, xcell)][3][0] += 1
+                elif typekind == "crime":
+                    grid[(ycell,xcell)][5][0] += 1
 
         for coords, counts in grid.items():  # Gonna save to database and display on map
             megalist.append({"coordinates": coords, "charge_count": counts[0][0], "hubway_count": counts[1][0],
-                             "open_count" : counts[2][0], "tree_count": counts[3][0], "budget": counts[4][0]})
+                             "open_count" : counts[2][0], "tree_count": counts[3][0], "budget": counts[4][0], "crime_count": counts[5][0]})
             folium.Marker(coords, popup=str(counts)).add_to(map_osm)
 
         repo.dropCollection("kmeansdata")

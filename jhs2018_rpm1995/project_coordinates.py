@@ -12,7 +12,8 @@ class project_coordinates(dml.Algorithm):
     reads = ['jhs2018_rpm1995.hubway',                  # We will combine 3 datasets into dataset greenobjects, which
              'jhs2018_rpm1995.trees',                   # will have the type of objects (tree, charging station...)
              'jhs2018_rpm1995.charge',                  # and its geographical coordinates
-             'jhs2018_rpm1995.budget']
+             'jhs2018_rpm1995.budget',
+             'jhs2018_rpm1995.crime']
     writes = ['jhs2018_rpm1995.greenobjects']
 
     @staticmethod
@@ -41,6 +42,7 @@ class project_coordinates(dml.Algorithm):
         charge = repo.jhs2018_rpm1995.charge.find()
         # openspaces = repo.jhs2018_rpm1995.openspaces.find()
         budget = repo.jhs2018_rpm1995.budget.find()
+        crime = repo.jhs2018_rpm1995.crime.find()
 
         objects = project_coordinates.extract(hubway, "hubway", objects)
         objects = project_coordinates.extract(trees, "tree", objects)
@@ -50,6 +52,17 @@ class project_coordinates(dml.Algorithm):
             if items['City_Department'] == "School Department":
                 objects.append({"Type": "budget", "Location": [float(items['Longitude']), float(items['Latitude'])],
                                 "Budget": items['Total_Project_Budget']})
+
+        for items in crime:
+            try:
+                if items['Lat'] == None or items['Long'] == None:
+                    continue
+                elif float(items['Lat']) <= 30.0 or float(items['Long']) >= -60.0:
+                    continue
+                else:
+                    objects.append({"Type":"crime", "Location": [float(items['Long']), float(items['Lat'])]})
+            except:
+                continue
         repo.dropCollection("greenobjects")
         repo.createCollection("greenobjects")
         repo['jhs2018_rpm1995.greenobjects'].insert_many(objects)

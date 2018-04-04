@@ -93,7 +93,8 @@ class getFullyConnectedMap(dml.Algorithm):
                 key = key
                 record[key.replace('.','~')] = record.pop(key)  # replace each key with a version that has . replaced with ~
             records_no_period.append(record)
-
+            
+        
         repo['bstc_csuksan_semina_tedkong.'+new_collection_name].insert_many(records_no_period)
 
         repo.logout()

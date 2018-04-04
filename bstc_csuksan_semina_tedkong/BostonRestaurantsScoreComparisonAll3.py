@@ -8,24 +8,13 @@ import json
 import matplotlib.pyplot as plt
 
 class BostonRestaurantsScoreComparison(dml.Algorithm):
-<<<<<<< HEAD
-    
-    contributor = "bstc_csuksan_semina_tedkong"
-    reads = []
-    writes = ['bstc_csuksan_semina_tedkong.BostonRestaurantsScoreComparison']
-    
-    
-    
-    
-=======
 
     contributor = "bstc_csuksan_semina_tedkong"
     reads = []
     writes = ['bstc_csuksan_semina_tedkong.ScoreComparison_RatingAndViolation',
                 'bstc_csuksan_semina_tedkong.ScoreComparison_Rating',
                 'bstc_csuksan_semina_tedkong.ScoreComparison_Violation']
-
->>>>>>> aa11b4c5f2aa920f19d9789747119b29143f1074
+    
     @staticmethod
     def execute(trial = False):
         startTime = datetime.datetime.now()
@@ -54,7 +43,6 @@ class BostonRestaurantsScoreComparison(dml.Algorithm):
         sort dataframe
 
         """
-
         names = np.array(file.columns.values)
         file = file.sort_values(by='name')
         arr = np.array(file)
@@ -101,8 +89,9 @@ class BostonRestaurantsScoreComparison(dml.Algorithm):
             temp = names[counter].split(' | ')
             temp = [s.replace('~','.') for s in temp]
 
-            if(temp[0] == 'name'): #if found 'name', skip
+            if(temp[0] == 'name' or temp[0] == '_id'): #if found 'name', skip
                 continue
+            #print(temp)
             my_score_combined =  float(temp[4]) + float(temp[3])
             my_score_rating = float(temp[4])
             my_score_violation = float(temp[3])
@@ -125,7 +114,6 @@ class BostonRestaurantsScoreComparison(dml.Algorithm):
 
         #print(top_connections)
 
-<<<<<<< HEAD
         #Putting the scores comparison into dataframe                  
         df1 = pd.DataFrame({'My_Score':my_score_arr_combined, 'Their_Score':their_score_arr_combined})
         df2 = pd.DataFrame({'My_Score':my_score_arr_rating, 'Their_Score':their_score_arr_rating})
@@ -144,17 +132,11 @@ class BostonRestaurantsScoreComparison(dml.Algorithm):
         {"Score": "Rating", "Correlation": corr2}, 
         {"Score": "Violation Severity", "Correlation": corr3} ] }
 
-        with open('correlation_score.json', 'w') as fp:
-            json.dump(correlation, fp)
+#        with open('correlation_score.json', 'w') as fp:
+#            json.dump(correlation, fp)
 
 
         #print(correlation)
-=======
-        #need score, severity
-        df1 = pd.DataFrame({'My_Score':my_score_arr_combined, 'Their_Score':their_score_arr_combined})
-        df2 = pd.DataFrame({'My_Score':my_score_arr_rating, 'Their_Score':their_score_arr_rating})
-        df3 = pd.DataFrame({'My_Score':my_score_arr_violation, 'Their_Score':their_score_arr_violation})
->>>>>>> aa11b4c5f2aa920f19d9789747119b29143f1074
 
         # df1.to_csv("CombinedScoreComparison.csv", encoding = 'utf-8')
         # df2.to_csv("RatingScoreComparison.csv", encoding = 'utf-8')
@@ -176,6 +158,12 @@ class BostonRestaurantsScoreComparison(dml.Algorithm):
         repo.dropCollection('bstc_csuksan_semina_tedkong.'+new_collection_name)
         repo.createCollection('bstc_csuksan_semina_tedkong.'+new_collection_name)
         records = json.loads(df3.to_json(orient='records'))
+        repo['bstc_csuksan_semina_tedkong.'+new_collection_name].insert_many(records)
+        
+        new_collection_name = 'CorrelationData'
+        repo.dropCollection('bstc_csuksan_semina_tedkong.'+new_collection_name)
+        repo.createCollection('bstc_csuksan_semina_tedkong.'+new_collection_name)
+        records = json.loads(pd.DataFrame(correlation).to_json(orient='records'))
         repo['bstc_csuksan_semina_tedkong.'+new_collection_name].insert_many(records)
 
         """
@@ -214,11 +202,7 @@ class BostonRestaurantsScoreComparison(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
         this_script = doc.agent('alg:bstc_csuksan_semina_tedkong#BostonRestaurantsScoreComparison', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-<<<<<<< HEAD
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'Reviews', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-=======
         resource = doc.entity('dat:bstc_csuksan_semina_tedkong#FullyConnectedMap', {'prov:label':'Visualization', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
->>>>>>> aa11b4c5f2aa920f19d9789747119b29143f1074
         get_rate = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_rate, this_script)
         doc.usage(get_rate, resource, startTime, None,
@@ -227,11 +211,7 @@ class BostonRestaurantsScoreComparison(dml.Algorithm):
                   }
                   )
 
-<<<<<<< HEAD
-        rate = doc.entity('dat:bstc_csuksan_semina_tedkong#BostonRestaurantsScoreComparison', {prov.model.PROV_LABEL:'Yelp Ratings', prov.model.PROV_TYPE:'ont:DataSet'})
-=======
         rate = doc.entity('dat:bstc_csuksan_semina_tedkong#BostonRestaurantsScoreComparison', {prov.model.PROV_LABEL:'Data Visuals', prov.model.PROV_TYPE:'ont:DataSet'})
->>>>>>> aa11b4c5f2aa920f19d9789747119b29143f1074
         doc.wasAttributedTo(rate, this_script)
         doc.wasGeneratedBy(rate, get_rate, endTime)
         doc.wasDerivedFrom(rate, resource, get_rate, get_rate, get_rate)

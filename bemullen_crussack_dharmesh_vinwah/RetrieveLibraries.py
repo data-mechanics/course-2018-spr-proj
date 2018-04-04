@@ -1,3 +1,6 @@
+# CS591 L1
+# Author: Brooke E Mullen
+
 # Library data clean up 
 import urllib.request
 from urllib.request import quote 
@@ -46,7 +49,7 @@ class RetrieveLibraries(dml.Algorithm):
 
         repo.dropCollection("libraries")
         repo.createCollection("libraries")
-        repo['bemullen_crussack_dharmesh_vinwah.libraries'].insert_many(r)
+        repo['bemullen_crussack_dharmesh_vinwah.libraries'].insert_many(results)
         repo['bemullen_crussack_dharmesh_vinwah.libraries'].metadata({'complete':True})
         print(repo['bemullen_crussack_dharmesh_vinwah.libraries'].metadata())
 

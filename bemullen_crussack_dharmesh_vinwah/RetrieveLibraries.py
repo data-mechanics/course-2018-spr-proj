@@ -1,5 +1,5 @@
 # Filename: RetrieveLibraries.py
-# Author: Brooke Mullen <bemullen@bu.edu>
+# Author: Brooke E Mullen <bemullen@bu.edu>
 # Description: Library data clean up 
 import urllib.request
 from urllib.request import quote 
@@ -47,7 +47,7 @@ class RetrieveLibraries(dml.Algorithm):
 
         repo.dropCollection("libraries")
         repo.createCollection("libraries")
-        repo['bemullen_crussack_dharmesh_vinwah.libraries'].insert_many(r)
+        repo['bemullen_crussack_dharmesh_vinwah.libraries'].insert_many(results)
         repo['bemullen_crussack_dharmesh_vinwah.libraries'].metadata({'complete':True})
 
         repo.logout()

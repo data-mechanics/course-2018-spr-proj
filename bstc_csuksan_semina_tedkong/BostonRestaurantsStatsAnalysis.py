@@ -99,6 +99,17 @@ class BostonRestaurantStatsAnalysis(dml.Algorithm):
         centroids2 = kmeans2.cluster_centers_
         labels2 = kmeans2.labels_
 
+        #convert np to list
+        centroids1_to_list = centroids.tolist()
+        centroids2_to_list = centroids.tolist()
+
+        #create dict of centroids to be written as json
+        centroids_dict = {'KmeansCentroids': [{'SeverityAndRatingCentroids': centroids1_to_list,
+        'SeverityRatingLongLatCentroids': centroids2_to_list}]}
+
+        #write as json
+        with open('kmeans_centroids.json', 'w') as outfile:
+            json.dump(centroids_dict, outfile)
 
         """
 
@@ -131,9 +142,18 @@ class BostonRestaurantStatsAnalysis(dml.Algorithm):
                                 np.average(data[np.where(data[:,1] == 4)][:,0]),
                                      np.average(data[np.where(data[:,1] == 5)][:,0])]
 
-        print(scipy.stats.spearmanr(spear, range(9)))
-        print(scipy.stats.spearmanr(spear2, range(5)))
+        spear1_result = scipy.stats.spearmanr(spear, range(9))
+        spear2_result = scipy.stats.spearmanr(spear2, range(5))
+        print(spear1_result)
+        print(spear2_result)
 
+        #save spearman's correlation to json
+        spearman_dict = {"Correlation": [{"Spearman1": spear1_result[0], "P-Value1":spear1_result[1]}, 
+        {"Spearman2": spear2_result[0], "P-Value2":spear2_result[1]}] }
+
+        with open('spearman_correlation_score.json', 'w') as fp:
+            json.dump(spearman_dict, fp)
+  
         """
 
         This section is commented out because it requires a google api key.

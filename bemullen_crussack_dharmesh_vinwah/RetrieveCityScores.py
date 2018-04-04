@@ -66,6 +66,7 @@ class RetrieveCityScores(dml.Algorithm):
         doc.add_namespace('bdpr', 'https://data.boston.gov/api/3/action/datastore_search_sql')
         doc.add_namespace('bdpm', 'https://data.boston.gov/datastore/odata3.0/')
         doc.add_namespace('datp', 'http://datamechanics.io/data/bemullen_crussack_dharmesh_vinwah/data/')
+        doc.add_namespace('csdt', 'https://cs-people.bu.edu/dharmesh/cs591/591data/')
 
         this_script = doc.agent('alg:bemullen_crussack_dharmesh_vinwah#RetrieveCityScores',\
             {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})

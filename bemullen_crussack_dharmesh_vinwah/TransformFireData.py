@@ -55,7 +55,6 @@ class TransformFireData(dml.Algorithm):
                     df_sept = pd.DataFrame.from_dict(sept)
                     df_dec = pd.DataFrame.from_dict(dec)
 
-
                     fires_monthly_centroids = {}
 
 
@@ -100,7 +99,38 @@ class TransformFireData(dml.Algorithm):
 
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-        pass
+        '''
+        Create the provenance document describing everything happening
+        in this script. Each run of the script will generate a new
+        document describing that invocation event.
+        '''
 
-if __name__ == "__main__":
-    TransformFireData.execute()
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
+
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') 
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') 
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#')
+        doc.add_namespace('log', 'http://datamechanics.io/log/')
+        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('bdpr', 'https://data.boston.gov/api/3/action/datastore_search_sql')
+        doc.add_namespace('bdpm', 'https://data.boston.gov/datastore/odata3.0/')
+        doc.add_namespace('csdt', 'https://cs-people.bu.edu/dharmesh/cs591/591data/')
+        doc.add_namespace('datp', 'http://datamechanics.io/data/bemullen_crussack_dharmesh_vinwah/data/')
+
+
+        this_script = doc.agent('alg:bemullen_crussack_dharmesh_vinwah#TransformFireData',\
+            {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+        fires = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#fires',\
+            {prov.model.PROV_LABEL:'Fire Data for Boston city',\
+            prov.model.PROV_TYPE:'ont:DataSet'})        
+        get_fires = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime,
+            {'prov:label':'Fire Data for Boston City'})        
+        doc.wasAssociatedWith(get_fires, this_script)
+        doc.used(get_fires, fires, startTime)
+        doc.wasAttributedTo(get_fires, this_script)
+        doc.wasGeneratedBy(fires, get_fires, endTime)        
+        
+        repo.logout()
+        return doc

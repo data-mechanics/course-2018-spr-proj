@@ -49,7 +49,6 @@ class RetrieveLibraries(dml.Algorithm):
         repo.createCollection("libraries")
         repo['bemullen_crussack_dharmesh_vinwah.libraries'].insert_many(r)
         repo['bemullen_crussack_dharmesh_vinwah.libraries'].metadata({'complete':True})
-        print(repo['bemullen_crussack_dharmesh_vinwah.libraries'].metadata())
 
         repo.logout()
 

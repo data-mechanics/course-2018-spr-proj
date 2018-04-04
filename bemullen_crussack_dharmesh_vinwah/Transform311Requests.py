@@ -14,6 +14,7 @@ import dml
 import prov.model
 import pandas as pd 
 import matplotlib.pyplot as plt 
+import uuid
 
 class Transform311Requests(dml.Algorithm):
 

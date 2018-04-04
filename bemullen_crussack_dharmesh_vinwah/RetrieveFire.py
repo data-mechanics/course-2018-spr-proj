@@ -44,13 +44,13 @@ class RetrieveFire(dml.Algorithm):
         december_data_url = ('https://data.boston.gov/api/3/action/datastore_search?'
             'resource_id=ce5cb864-bd01-4707-b381-9e204b4db73f')
 
-        may_dat_url = ('https://data.boston.gov/api/3/action/datastore_search?'
+        may_data_url = ('https://data.boston.gov/api/3/action/datastore_search?'
             'resource_id=9d91dbc7-9875-4cd9-a772-3b363a4b193f')
 
         urls.append(RetrieveFire.parseURL(september_data_url)) 
         urls.append(RetrieveFire.parseURL(december_data_url))
-        urls.append(RetrieveFire.parseURL())  #may
-        #print(response)
+        urls.append(RetrieveFire.parseURL(may_data_url))
+
         for url in urls:
             r = json.loads(prequest.get(url).text)
             month = ""
@@ -62,10 +62,11 @@ class RetrieveFire(dml.Algorithm):
                 month = 'may' 
             # appended the month of the incident to each record
             for record in r['result']['records']:
-                streetAddress = record['Street Number'].strip() + " " +\
-                record['Street Name'].strip() + " " + record['Street Type'].strip() + " " +\
-                record['Neighborhood'].strip() + "MA " + record['Zip'].strip()
-                g = geocoder.google(streetAddress)
+                streetAddress = (record['Street Number'].strip() + " " + 
+                    record['Street Name'].strip() + " " + 
+                    record['Street Type'].strip() + " " + 
+                    record['Neighborhood'].strip() + "MA " + 
+                    record['Zip'].strip())
                 g = geocoder.google(streetAddress)
                 address[record['Incident Number']] = (month, g.latlng)
 

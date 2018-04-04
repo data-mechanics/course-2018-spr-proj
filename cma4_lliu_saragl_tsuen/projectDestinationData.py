@@ -4,6 +4,7 @@ import dml
 import prov.model
 import datetime
 import uuid
+import random
 from ast import literal_eval
 
 class projectDestinationData(dml.Algorithm):
@@ -23,8 +24,16 @@ class projectDestinationData(dml.Algorithm):
 
         dataSet = []
 
-        collection = repo['cma4_lliu_saragl_tsuen.entertainment'].find()
+        collection1 = repo['cma4_lliu_saragl_tsuen.entertainment'].find()
+        collection1 = list(collection1)
+        random.shuffle(collection1)
 
+        collection = []
+        count = 0
+        for e in collection1:
+            if count > 1000:
+                break
+            collection.append(e)
         # projection
         dataSet = [
         	{'name': row["BUSINESSNAME"],
@@ -49,8 +58,13 @@ class projectDestinationData(dml.Algorithm):
         # create tuples out of string coordinates
         Completion = 0
         for entry in dataSet:
+            if trial == True:
+                if i == 50000:
+                    break
             #if i == 2:
             #    break
+            
+            
             i += 1
             if  i % 170571 == 0:
                 Completion += 33

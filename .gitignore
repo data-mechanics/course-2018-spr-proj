@@ -6,7 +6,7 @@ Untitled.ipynb
 provenance.html
 kaidb_vilin/Twitter_to_vec/model/tokenized_tweet_corpus.dill
 tokenized_tweet_corpus.dill
-
+auth.json
 # Common operating system files.
 .DS_Store
 .Rhistory

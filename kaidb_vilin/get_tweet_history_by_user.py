@@ -13,16 +13,17 @@ import pandas as pd
 # Do not leave values hardcoded 
 
 
-auth_df = eval(open("auth.json").read())
+auth_df = eval(open("../auth.json").read())
+print(auth_df.keys())
 consumer_key = auth_df['consumer_key']
 consumer_secret = auth_df['consumer_secret']
 access_key = auth_df['access_key']
 access_secret = auth_df['access_secret']
 
 def get_all_tweets(screen_name, use_pandas = False):
-	"""Retrieve all tweets froma. particular users by their username
-	- Notes: Twitter will on ly store the last 3,240 tweets from a particular 
-	user using standard Dev creds. """
+    """Retrieve all tweets froma. particular users by their username
+    - Notes: Twitter will on ly store the last 3,240 tweets from a particular 
+    user using standard Dev creds. """
     
     # Authorization and initialization
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -59,8 +60,13 @@ def get_all_tweets(screen_name, use_pandas = False):
         
         print( "...{} tweets downloaded so far".format(len(alltweets)))
     if use_pandas:
-    	AT = [alltweets[i]._json for i in range(len(alltweets))]
-    	data = pd.DataFrame(AT)
-    	return data 
+        AT = [alltweets[i]._json for i in range(len(alltweets))]
+        data = pd.DataFrame(AT)
+        return data 
 
     return alltweets
+
+def test():
+    # Prepare to get mad.
+    get_all_tweets("realDonaldTrump", use_pandas=True).to_csv("DJT.csv")
+test()

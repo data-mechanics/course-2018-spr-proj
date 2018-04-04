@@ -31,10 +31,13 @@ class food(dml.Algorithm):
                      
 
     @staticmethod
-    def execute(trial = False):
+    def execute(trial = True):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
-
+        
+        if trial:
+            count = 0
+        
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -49,15 +52,22 @@ class food(dml.Algorithm):
         
         #r = json.load(jsonfile)
         food_data = []
-        food_data.append([{"Business Name": field['businessName'], "Coords": field['Location']}
-        for field in r])
+#        food_data.append([{"Business Name": field['businessName'], "Coords": field['Location']}
+#        for field in r])
 
-
+        for field in r:
+            food_data.append({"Business Name": field['businessName'], "Coords": field['Location']})
         
+            if trial:
+                count += 1
+                if count > 100:
+                    break
+
         #response = urllib.request.urlopen(url).read().decode("utf-8")
         #r = json.load(jsonfile)
         
         #filtered food.py
+
         
         print(food_data)
         

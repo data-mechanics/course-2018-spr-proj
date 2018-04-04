@@ -18,7 +18,8 @@ class distances(dml.Algorithm):
     def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
-
+        
+        
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -34,8 +35,7 @@ class distances(dml.Algorithm):
             print(r)
             s = json.dumps(r, sort_keys=True, indent=2)
 
-
-        
+        s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("cma4_lliu_saragl_tsuen.distances")
         repo.createCollection("cma4_lliu_saragl_tsuen.distances")
         repo['cma4_lliu_saragl_tsuen.distances'].insert_many(r)

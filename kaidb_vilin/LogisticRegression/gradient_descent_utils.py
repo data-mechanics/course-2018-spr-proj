@@ -58,9 +58,8 @@ def compute_update_with_momentum(b,w, grads, v, beta, learning_rate):
     Update parameters using Momentum
     
     Arguments:
-    parameters -- python dictionary containing your parameters:
-                    parameters['W' + str(l)] = Wl
-                    parameters['b' + str(l)] = bl
+    b -- bias
+    w -- weight vector 
     grads -- python dictionary containing your gradients for each parameters:
                     grads['dW' + str(l)] = dWl
                     grads['db' + str(l)] = dbl

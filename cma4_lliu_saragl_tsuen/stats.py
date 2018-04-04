@@ -28,7 +28,7 @@ class stats(dml.Algorithm):
         #url = 'https://data.boston.gov/export/458/2be/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c.json'
         k_means = None
         if trial:
-            k_means = repo['cma4_lliu_saragl_tsuen.closest'].aggregate([{'$sample': {'size': 1000}}], allowDiskUse=True)
+            k_means = repo['cma4_lliu_saragl_tsuen.closest'].aggregate([{'$sample': {'size': 1}}], allowDiskUse=True)
         else:
             k_means = repo['cma4_lliu_saragl_tsuen.closest'].find()
 
@@ -111,27 +111,25 @@ class stats(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('food', 'https://data.boston.gov/export/458/2be/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c.json')
 
-        this_script = doc.agent('alg:cma4_lliu_saragl_tsuen#food', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dat:food', {'prov:label':'Food Locations Data', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        get_places = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_places, this_script)
-        doc.usage(get_places, resource, startTime, None,
+        this_script = doc.agent('alg:cma4_lliu_saragl_tsuen#stats', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        resource = doc.entity('dat:stats', {'prov:label':'Final Data with Stats', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        get_final = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_final, this_script)
+        doc.usage(get_final, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
 
-        food = doc.entity('dat:cma4_lliu_saragl_tsuen#food', {prov.model.PROV_LABEL:'Food Places', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(food, this_script)
-        doc.wasGeneratedBy(food, get_places, endTime)
-        doc.wasDerivedFrom(food, resource, get_places, get_places, get_places)
+        stats = doc.entity('dat:cma4_lliu_saragl_tsuen#stats', {prov.model.PROV_LABEL:'Food Places', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(stats, this_script)
+        doc.wasGeneratedBy(stats, get_final, endTime)
+        doc.wasDerivedFrom(stats, resource, get_final, get_final, get_final)
 
         repo.logout()
                   
         return doc
-#food.PartToParts()
 stats.execute()
-#doc = distance.provenance()
-#print(doc.get_provn())
-#print(json.dumps(json.loads(doc.serialize()), indent=4))
+doc = stats.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))

@@ -27,15 +27,20 @@ class findClosest(dml.Algorithm):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
-        if trial:
-            count = 0
+
         
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('cma4_lliu_saragl_tsuen', 'cma4_lliu_saragl_tsuen')
 
-        destinations = repo['cma4_lliu_saragl_tsuen.destinationsProjected'].find()
+        destinations = None
+
+        if trial:
+            destinations = repo['cma4_lliu_saragl_tsuen.destinationsProjected'].aggregate([{'$sample': {'size': 1000}}], allowDiskUse=True)
+        else:
+            collection = repo['cma4_lliu_saragl_tsuen.destinationsProjected'].find()
+            
         stations = repo['cma4_lliu_saragl_tsuen.stationsProjected'].find()
 
         final = []
@@ -54,9 +59,6 @@ class findClosest(dml.Algorithm):
                     closestStation = s['key']
                     minDist = dist
                     minStationCoords = scoords
-        
-                if trial:
-                    count += 1
             d['closestStation'] = closestStation
             d['stationCoords'] = minStationCoords
             final.append(d)

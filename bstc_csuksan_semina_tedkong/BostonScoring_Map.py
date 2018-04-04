@@ -12,6 +12,7 @@ import uuid
 import pandas as pd
 import numpy as np
 import json
+import urllib
 
 class BostonScoringMap(dml.Algorithm):
 
@@ -29,8 +30,17 @@ class BostonScoringMap(dml.Algorithm):
         box around the city of Boston to cut out blatantly wrong data
 
         """
+        
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('bstc_csuksan_semina_tedkong', 'bstc_csuksan_semina_tedkong')
 
-        file = pd.read_json("merged_datasets/RestaurantRatingsAndHealthViolations_Boston.json", lines=True)
+#        file = pd.read_json("merged_datasets/RestaurantRatingsAndHealthViolations_Boston.json", lines=True)
+        urls = 'http://datamechanics.io/data/RestaurantRatingsAndHealthViolations_Boston.json'
+        with urllib.request.urlopen(urls) as url:
+            data = json.dumps(url.read().decode())
+        temp = json.loads(data)
+        file = pd.read_json(temp, lines=True)
         if(trial):
             splitted = np.array_split(file, 3)
             file = splitted[0]
@@ -70,11 +80,18 @@ class BostonScoringMap(dml.Algorithm):
             distance = pd.concat([distance, di])
 
         ## write to json file
-        js = distance.to_json(orient='records')[:].replace('},{', '}\n{')
-        js = js.replace('[','')
-        js = js.replace(']','')
-        with open("BostonScoring_Map.json", 'w') as jf:
-            jf.write(js)
+        js = distance.to_json(orient='records')#[:].replace('},{', '}\n{')
+#        js = js.replace('[','')
+#        js = js.replace(']','')
+        
+        new_collection_name = 'BostonScoring_Map'
+        repo.dropCollection('bstc_csuksan_semina_tedkong.'+new_collection_name)
+        repo.createCollection('bstc_csuksan_semina_tedkong.'+new_collection_name)
+        records = json.loads(js)
+        repo['bstc_csuksan_semina_tedkong.'+new_collection_name].insert_many(records)
+
+#        with open("BostonScoring_Map.json", 'w') as jf:
+#            jf.write(js)
 
         ## TODO: insert into mongodb
 #        repo.logout()

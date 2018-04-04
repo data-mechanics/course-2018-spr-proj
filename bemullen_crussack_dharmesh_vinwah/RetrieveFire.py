@@ -68,52 +68,6 @@ class RetrieveFire(dml.Algorithm):
                 g = geocoder.google(streetAddress)
                 g = geocoder.google(streetAddress)
                 address[record['Incident Number']] = (month, g.latlng)
-            # selected the fields for addresses and ran it through 
-            # google's geocoder to append the lat/lng points.
-        # some long streets don't have an exact number attached 
-        # to them - this could be a point of error 
-        may = []
-        sept = []
-        dec = []
-        for record in address.keys():
-            if address[record][1] == None or address[record][1] == 'null':
-                record = ""
-            elif address[record][0] == 'may':
-                may.append(address[record][1])
-            elif address[record][0] == 'september':
-                sept.append(address[record][1])
-            elif address[record][0] == 'december':
-                dec.append(address[record][1])
-        # separated the data by month            
-        df_may = pd.DataFrame.from_dict(may)
-        df_sept = pd.DataFrame.from_dict(sept)
-        df_dec = pd.DataFrame.from_dict(dec)
-
-
-        f1 = df_may[0].values
-        f2 = df_may[1].values
-        y = list(zip(f1,f2))
-        X=np.matrix(y)
-        kmeans = KMeans(n_clusters=2)
-        kmeans.fit(X)
-        # print('May Centroids = ', kmeans.cluster_centers_)
-        
-
-        f3 = df_sept[0].values
-        f4 = df_sept[1].values
-        x = list(zip(f3,f4)) 
-        W=np.matrix(x)
-        kmeans2 = KMeans(n_clusters=2)
-        kmeans2.fit(W)
-        # print('September Centroids = ', kmeans2.cluster_centers_)
-
-        f5 = df_dec[0].values
-        f6 = df_dec[1].values
-        w = list(zip(f5,f6))
-        Z=np.matrix(w)
-        kmeans3 = KMeans(n_clusters=2)
-        kmeans3.fit(Z)
-        # print('December Centroids = ', kmeans3.cluster_centers_)
 
         repo.dropCollection(key)
         repo.createCollection(key)

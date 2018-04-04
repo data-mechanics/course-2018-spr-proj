@@ -1,0 +1,92 @@
+import urllib.request
+import json
+import pandas as pd
+import dml
+import prov.model
+import datetime
+import uuid
+
+class hubwayOne(dml.Algorithm):
+    contributor = 'bm181354_rikenm'
+    reads = []
+    writes = ['bm181354_rikenm.hubwayOne']
+    
+    @staticmethod
+    def execute(trial = False):
+        '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
+        startTime = datetime.datetime.now()
+        
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('bm181354_rikenm', 'bm181354_rikenm')
+        
+        # Dataset01
+        url = 'http://datamechanics.io/data/bm181354_rikenm/201701-hubway-tripdata.csv'
+ 
+        hubway_df = pd.read_csv(url)
+        # creating df that only contains city, total number of service, EMS_INDEX
+        '''
+        n = pd.DataFrame(
+                 {
+                 'CITY_SERVICE':mass_df,
+                 'EMS_INDEX': mass_em_index
+                 })
+        '''
+        r = json.loads(hubway_df.to_json( orient='records'))
+        s = json.dumps(r, sort_keys=True, indent=2)
+
+        # clear
+        repo.dropPermanent('hubwayOne')
+        repo.createPermanent('hubwayOne')
+        repo['bm181354_rikenm.hubwayOne'].insert_many(r)
+
+
+        # logout
+        repo.logout()
+        endTime = datetime.datetime.now()
+        return {"start":startTime, "end":endTime}
+    
+    @staticmethod
+    def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
+        '''
+            Create the provenance document describing everything happening
+            in this script. Each run of the script will generate a new
+            document describing that invocation event.
+            '''
+        
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        
+        repo.authenticate('bm181354_rikenm', 'bm181354_rikenm')
+        doc.add_namespace('alg', 'http://datamechanics.io/?prefix=bm181354_rikenm/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('bdp','http://datamechanics.io/?prefix=bm181354_rikenm/')
+        
+        this_script = doc.agent('alg:bm181354_rikenm#hubwayOne', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        
+        resource = doc.entity('bdp:Emergency_Medical_Service_EMS_Stations', {'prov:label':'dataset of medical service in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        
+        get_ems = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        
+        doc.wasAssociatedWith(get_ems, this_script)
+        
+        #change this
+        doc.usage(get_ems, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval'})
+                  
+        ems = doc.entity('dat:bm181354_rikenm#emsdb', {prov.model.PROV_LABEL:'Emergency index', prov.model.PROV_TYPE:'ont:DataSet'})
+        
+        doc.wasAttributedTo(ems, this_script)
+        doc.wasGeneratedBy(ems, get_ems, endTime)
+        doc.wasDerivedFrom(ems, resource, get_ems, get_ems, get_ems)
+        
+                  
+        repo.logout()
+        return doc
+
+## eof
+
+

@@ -31,7 +31,7 @@ class food(dml.Algorithm):
                      
 
     @staticmethod
-    def execute(trial = True):
+    def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
         
@@ -46,17 +46,42 @@ class food(dml.Algorithm):
         #url = 'https://data.boston.gov/export/458/2be/4582bec6-2b4f-4f9e-bc55-cbaa73117f4c.json'
         food_data = []
 
-
+        '''
         jsonfile = open("./data/food.json", 'r')
         r = json.load(jsonfile)
         
-        #r = json.load(jsonfile)
-        food_data = []
-#        food_data.append([{"Business Name": field['businessName'], "Coords": field['Location']}
-#        for field in r])
+        
+        newdata = []
+        business = []
+        address = []
+        counter = 0
+        with open('./data/newdata.json', 'w') as partfile:
+            for i in r:
+                counter +=1
+                print(counter)
+                if i['businessName'] not in business:
+                    if i['Location'] not in address:
+                        
+                        address.append(i['Location'])
+                        business.append(i['businessName'])
+                        newdata.append(i)
 
+            json.dump(newdata,partfile)
+                        
+                        
+                        
+            '''
+        
+        url = 'http://datamechanics.io/data/cma4_tsuen/newdata.json'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
+        food_data = []
+#       food_data.append([{"Business Name": field['businessName'], "Coords": field['Location']}
+    #        for field in r])
         for field in r:
             food_data.append({"Business Name": field['businessName'], "Coords": field['Location']})
+        print(food_data)
+        '''
         
             if trial:
                 count += 1
@@ -69,8 +94,8 @@ class food(dml.Algorithm):
         #filtered food.py
 
         
-        print(food_data)
         
+        '''
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("cma4_lliu_saragl_tsuen.food")
         repo.createCollection("cma4_lliu_saragl_tsuen.food")

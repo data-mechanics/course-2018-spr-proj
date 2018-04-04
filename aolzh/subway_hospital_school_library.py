@@ -6,7 +6,7 @@ import datetime
 import uuid
 from vincenty import vincenty
 
-class subway_hospital(dml.Algorithm):
+class subway_hospital_school_library(dml.Algorithm):
     contributor = 'aolzh'
     reads = ['aolzh.NewYorkSubway', 'aolzh.NewYorkHospitals','aolzh.NewYorkSchool', 'aolzh.NewYorkLibrary']
     writes = ['aolzh.NewYorkSubway_Hospitals_School_Library']
@@ -96,10 +96,31 @@ class subway_hospital(dml.Algorithm):
         newyorklibrary = doc.entity('dat:aolzh#NewYorkLibrary', {prov.model.PROV_LABEL:'NewYork Library', prov.model.PROV_TYPE:'ont:DataSet'})
         newyork_subway_hospital_school_library = doc.entity('dat:aolzh#NewYorkSubway_Hospitals_School_Library', {prov.model.PROV_LABEL:'NewYork Subway Hospital School Library', prov.model.PROV_TYPE:'ont:DataSet'})
 
+        doc.wasAssociatedWith(get_newyork_subway_hospital_school_library, subway_hospital_school_library_script)
+
+        doc.usage(get_newyork_subway_hospital_school_library, newyorksubway, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
+                  }
+                  )
+        doc.usage(get_newyork_subway_hospital_school_library, newyorkhospital, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
+                  }
+                  )
+        doc.usage(get_newyork_subway_hospital_school_library, newyorkschool, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
+                  }
+                  )
+        doc.usage(get_newyork_subway_hospital_school_library, newyorklibrary, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
+                  }
+                  )
         
         doc.wasAttributedTo(newyork_subway_hospital_school_library, subway_hospital_school_library_script)
         doc.wasGeneratedBy(newyork_subway_hospital_school_library, get_newyork_subway_hospital_school_library, endTime)
-        doc.wasDerivedFrom(newyorksubway, newyorkhospital,get_newyork_subway_hospital_school_library, get_newyork_subway_hospital_school_library, get_newyork_subway_hospital_school_library)
+        doc.wasDerivedFrom(newyork_subway_hospital_school_library, newyorksubway,get_newyork_subway_hospital_school_library, get_newyork_subway_hospital_school_library, get_newyork_subway_hospital_school_library)
+        doc.wasDerivedFrom(newyork_subway_hospital_school_library, newyorkhospital,get_newyork_subway_hospital_school_library, get_newyork_subway_hospital_school_library, get_newyork_subway_hospital_school_library)
+        doc.wasDerivedFrom(newyork_subway_hospital_school_library, newyorkschool,get_newyork_subway_hospital_school_library, get_newyork_subway_hospital_school_library, get_newyork_subway_hospital_school_library)
+        doc.wasDerivedFrom(newyork_subway_hospital_school_library, newyorklibrary,get_newyork_subway_hospital_school_library, get_newyork_subway_hospital_school_library, get_newyork_subway_hospital_school_library)
 
        
 
@@ -107,8 +128,8 @@ class subway_hospital(dml.Algorithm):
                   
         return doc
 
-subway_hospital.execute()
-doc = subway_hospital.provenance()
+subway_hospital_school_library.execute()
+doc = subway_hospital_school_library.provenance()
 print(doc.get_provn())
 print(json.dumps(json.loads(doc.serialize()), indent=4))
 

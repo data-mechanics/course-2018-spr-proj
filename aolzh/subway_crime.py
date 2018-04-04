@@ -76,10 +76,20 @@ class subway_crime(dml.Algorithm):
         newyorkcrime = doc.entity('dat:aolzh#NewYorkCrime', {prov.model.PROV_LABEL:'NewYork Crime', prov.model.PROV_TYPE:'ont:DataSet'})
         newyork_subway_crime = doc.entity('dat:aolzh#NewYorkSubway_Crime', {prov.model.PROV_LABEL:'NewYork Subway Crime', prov.model.PROV_TYPE:'ont:DataSet'})
 
+        doc.wasAssociatedWith(get_newyork_subway_crime, subway_crime_script)
+        doc.usage(get_newyork_subway_crime, newyorksubway, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
+                  }
+                  )
+        doc.usage(get_newyork_subway_crime, newyorkcrime, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
+                  }
+                  )
         
         doc.wasAttributedTo(newyork_subway_crime, subway_crime_script)
         doc.wasGeneratedBy(newyork_subway_crime, get_newyork_subway_crime, endTime)
-        doc.wasDerivedFrom(newyorksubway, newyorkcrime,get_newyork_subway_crime, get_newyork_subway_crime, get_newyork_subway_crime)
+        doc.wasDerivedFrom(newyork_subway_crime, newyorkcrime,get_newyork_subway_crime, get_newyork_subway_crime, get_newyork_subway_crime)
+        doc.wasDerivedFrom(newyork_subway_crime, newyorksubway,get_newyork_subway_crime, get_newyork_subway_crime, get_newyork_subway_crime)
 
        
 

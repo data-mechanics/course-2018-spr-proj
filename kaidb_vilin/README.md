@@ -39,14 +39,14 @@ construct a fully end to end ML pipeline for predicting aggregate sentiment by r
     - Tweets by User
 - For either usecase, you are required to create a twitter app an input the following into ```auth.json```:
 
-<code> 
+```python
 { 
     "consumer_key": "",
     "consumer_secret": "",
     "access_key": "",
     "access_secret": "",
 }
-</code>
+```
 
 ## Twitter Pre-labled Sentiment Dataset 
 - Prelabled Twitter Dataset complete with a sentiment Label 
@@ -61,15 +61,17 @@ construct a fully end to end ML pipeline for predicting aggregate sentiment by r
 
 ```python 
 print(word2vec.wv.similar_by_word("lol"))
-[('hah', 0.7501074075698853), ('lmao', 0.7403647899627686), ('hahah', 0.6293175220489502), ('hahahah', 0.4980482757091522), ('lmfao', 0.4653286337852478), ('heh', 0.46210041642189026), ('cuz', 0.4489451050758362), ('ha', 0.4350995123386383), ('jus', 0.4144180417060852), ('u', 0.41266563534736633)] </code>
+[('hah', 0.7501074075698853), ('lmao', 0.7403647899627686), ('hahah', 0.6293175220489502), ('hahahah', 0.4980482757091522), ('lmfao', 0.4653286337852478), ('heh', 0.46210041642189026), ('cuz', 0.4489451050758362), ('ha', 0.4350995123386383), ('jus', 0.4144180417060852), ('u', 0.41266563534736633)] 
 ```
+
 ```python
 print(word2vec.wv.similar_by_word("fuck"))
 [('fuckin', 0.5401198863983154), ('shit', 0.47455620765686035), ('damn', 0.47374287247657776), ('eff', 0.4427247643470764), ('ugh', 0.42223554849624634), ('bitch', 0.41461408138275146), ('stupid', 0.39982643723487854), ('screw', 0.37740325927734375), ('wtf', 0.3753121793270111), ('freakin', 0.37031519412994385)]
 ```
+
 ```python
-    print(word2vec.wv.similar_by_word("dumb"))
-    [('stupid', 0.4474240839481354), ('lam', 0.44008922576904297), ('retard', 0.3861704468727112), ('smart', 0.3855532705783844), ('weird', 0.37820345163345337), ('gay', 0.3473893404006958), ('funny', 0.33632892370224), ('confus', 0.3293963372707367), ('annoy', 0.3184397220611572), ('bad', 0.2968796491622925)]
+print(word2vec.wv.similar_by_word("dumb"))
+[('stupid', 0.4474240839481354), ('lam', 0.44008922576904297), ('retard', 0.3861704468727112), ('smart', 0.3855532705783844), ('weird', 0.37820345163345337), ('gay', 0.3473893404006958), ('funny', 0.33632892370224), ('confus', 0.3293963372707367), ('annoy', 0.3184397220611572), ('bad', 0.2968796491622925)]
 ```
 ## Wikipedia Corpus
 - The latest wikipedia dataset is located at   -https://dumps.wikimedia.org/enwiki/latest/

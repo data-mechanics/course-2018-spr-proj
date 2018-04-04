@@ -26,7 +26,7 @@ class TransformCityScores(dml.Algorithm):
 
         subprocess.check_output(('mongo repo -u bemullen_crussack_dharmesh_vinwah -p '
             'bemullen_crussack_dharmesh_vinwah --authenticationDatabase "repo" '
-            'bemullen_crussack_dharmesh_vinwah/transformCityScores.js'), shell=True)
+            'bemullen_crussack_dharmesh_vinwah/scripts/transformCityScores.js'), shell=True)
 
         endTime = datetime.datetime.now()
 

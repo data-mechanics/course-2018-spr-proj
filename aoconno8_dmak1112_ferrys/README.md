@@ -73,7 +73,7 @@ We found that the average number of nodes was 3.9375, and the average distance w
 
 ## Trial Method
 
-To provide a quick way to test our transformations, we provide a Trial method that runs our algorithms on a subset of the data. Our trial method takes approximately 20 seconds to complete. It runs through the entire algorithm with a pre-picked coordinate of an alcohol license location and 3 pre-picked MBTA stop coordinates. It does not run through the statistical analysis since the trial algorithm only outputs one route, but we append the results of the statistical analysis on the entire collection of optimized routes instead.
+To provide a quick way to test our transformations, we provide a trial method that runs our algorithms on a subset of the data. Our trial method takes approximately 20 seconds to complete. It runs through the entire algorithm with a pre-picked coordinate of an alcohol license location and 3 pre-picked MBTA stop coordinates. It does not run through the statistical analysis since the trial algorithm only outputs one route, but we append the results of the statistical analysis on the entire collection of optimized routes instead.
 
 ## Requirements
 

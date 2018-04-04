@@ -23,8 +23,8 @@ class crimerate(dml.Algorithm):
 
         url = 'https://data.boston.gov/export/12c/b38/12cb3883-56f5-47de-afa5-3b1cf61b257b.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        crime_json = [json.loads(response)]
-        s = json.dumps(r, sort_keys=True, indent=2)
+        crime_json = json.loads(response)
+        #s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("crimerate")
         repo.createCollection("crimerate")
         repo['ashleyyu_bzwtong.crimerate'].insert_many(crime_json)
@@ -75,9 +75,9 @@ class crimerate(dml.Algorithm):
         return doc
 
 
-#crimerate.execute()
-#doc = crimerate.provenance()
-#print(doc.get_provn())
-#print(json.dumps(json.loads(doc.serialize()), indent=4))
+crimerate.execute()
+doc = crimerate.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof

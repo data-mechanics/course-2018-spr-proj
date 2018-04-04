@@ -15,7 +15,7 @@ import requests
 class Retrieve311Requests(dml.Algorithm):
     contributor = "bemullen_crussack_dharmesh_vinwah"
     reads = []
-    writes = []
+    writes = ["bemullen_crussack_dharmesh_vinwah.service_requests"]
 
     @staticmethod
     def parseURL(url):

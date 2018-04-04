@@ -13,11 +13,11 @@ import pandas as pd
 import numpy as np
 import json
 
-class getBostonYelpRestaurantData(dml.Algorithm):
+class BostonScoringMap(dml.Algorithm):
     
     contributor = "bstc_semina"
     reads = []
-    writes = ['bstc_semina.getBostonYelpRestaurantData']
+    writes = ['bstc_semina.BostonScoringMap']
     
     
     
@@ -35,7 +35,9 @@ class getBostonYelpRestaurantData(dml.Algorithm):
         
         
         file = pd.read_json("merged_datasets/RestaurantRatingsAndHealthViolations_Boston.json", lines=True)
-        
+        if trial == True:
+            splitted = np.array_split(file, 3)
+            file = splitted[0]
         
         
         arr = file[['name', 'ave_violation_severity', 'rating','latitude','longitude']].copy()
@@ -147,7 +149,7 @@ class getBostonYelpRestaurantData(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://www.yelp.com/developers/')
 
-        this_script = doc.agent('alg:bstc_semina#getBostonYelpRestaurantData', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:bstc_semina#BostonScoringMap', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'Reviews', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_rate = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_rate, this_script)
@@ -157,7 +159,7 @@ class getBostonYelpRestaurantData(dml.Algorithm):
                   }
                   )
 
-        rate = doc.entity('dat:bstc_semina#getBostonYelpRestaurantData', {prov.model.PROV_LABEL:'Yelp Ratings', prov.model.PROV_TYPE:'ont:DataSet'})
+        rate = doc.entity('dat:bstc_semina#BostonScoringMap', {prov.model.PROV_LABEL:'Yelp Ratings', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(rate, this_script)
         doc.wasGeneratedBy(rate, get_rate, endTime)
         doc.wasDerivedFrom(rate, resource, get_rate, get_rate, get_rate)
@@ -167,7 +169,7 @@ class getBostonYelpRestaurantData(dml.Algorithm):
                   
         return doc
     
-getBostonYelpRestaurantData.execute()
-doc = getBostonYelpRestaurantData.provenance()
+BostonScoringMap.execute()
+doc = BostonScoringMap.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

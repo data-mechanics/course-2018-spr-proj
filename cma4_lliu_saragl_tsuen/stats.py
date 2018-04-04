@@ -6,7 +6,7 @@ import datetime
 import uuid
 
 
-google_key = 'AIzaSyCs83Y5ODrwAOEko3-tJbZlNssYw56yd4A'
+google_key = 'AIzaSyCRhIpYotXl7fnbWECpvSkau3wIwZ0qrLM'
 
 
 class stats(dml.Algorithm):
@@ -41,7 +41,7 @@ class stats(dml.Algorithm):
             #print(url)
             response = urllib.request.urlopen(url).read().decode("utf-8")
             r = json.loads(response)
-            #print(r)
+            print(r)
             #repo['cma4_lliu_saragl_tsuen.closest'].update_many({'name':i['name']}, {"$set":{'googlemaps': (r['rows'][0]['elements'][0]['distance']['value'], r['rows'][0]['elements'][0]['duration']['value'])}})
             i['googlemaps'] = (r['rows'][0]['elements'][0]['distance']['value'], r['rows'][0]['elements'][0]['duration']['value'])
 

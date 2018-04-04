@@ -22,7 +22,12 @@ class projectDestinationData(dml.Algorithm):
 
         dataSet = []
 
-        collection = repo['cma4_lliu_saragl_tsuen.hubway'].find()
+        collection = []
+
+        if trial:
+            collection = repo['cma4_lliu_saragl_tsuen.hubway'].aggregate([{'$sample': {'size': 25}}], allowDiskUse=True)
+        else:
+            collection = repo['cma4_lliu_saragl_tsuen.hubway'].find()
 
         # projection
         dataSet = [
@@ -31,8 +36,13 @@ class projectDestinationData(dml.Algorithm):
         	for row in collection
         ]
 
+        collection2 = None
 
-        collection2 = repo['cma4_lliu_saragl_tsuen.mbta'].find()
+        if trial:
+            collection2 = repo['cma4_lliu_saragl_tsuen.mbta'].aggregate([{'$sample': {'size': 1000}}], allowDiskUse=True)
+        else:
+            collection2 = repo['cma4_lliu_saragl_tsuen.mbta'].find()
+
         mbta_dataset = []
         # more projection
         mbta_dataset = [{'key': ('mbta', row['Stop_Name']),'coords': (row['Coords:'][0], row['Coords:'][1])} for row in collection2]

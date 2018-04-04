@@ -58,12 +58,14 @@ class BostonRestaurantStatsAnalysis(dml.Algorithm):
         box around the city of Boston to cut out blatantly wrong data
 
         """
+
+
         urls = 'http://datamechanics.io/data/RestaurantRatingsAndHealthViolations_Boston.json'
         with urllib.request.urlopen(urls) as url:
             data = json.dumps(url.read().decode())
         temp = json.loads(data)
         file = pd.read_json(temp, lines=True)
-
+        
         if trial == True:
             splitted = np.array_split(file, 3)
             file = splitted[2]

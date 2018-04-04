@@ -38,9 +38,18 @@ class RetrieveFire(dml.Algorithm):
         address = {}
         urls = []
         
-        urls.append(RetrieveFire.parseURL('https://data.boston.gov/api/3/action/datastore_search?resource_id=14683ec2-c53a-46e0-b6de-67ec123629f0')) #september
-        urls.append(RetrieveFire.parseURL('https://data.boston.gov/api/3/action/datastore_search?resource_id=ce5cb864-bd01-4707-b381-9e204b4db73f'))  #december
-        urls.append(RetrieveFire.parseURL('https://data.boston.gov/api/3/action/datastore_search?resource_id=9d91dbc7-9875-4cd9-a772-3b363a4b193f'))  #may
+        september_data_url = ('https://data.boston.gov/api/3/action/datastore_search?'
+            'resource_id=14683ec2-c53a-46e0-b6de-67ec123629f0')
+
+        december_data_url = ('https://data.boston.gov/api/3/action/datastore_search?'
+            'resource_id=ce5cb864-bd01-4707-b381-9e204b4db73f')
+
+        may_dat_url = ('https://data.boston.gov/api/3/action/datastore_search?'
+            'resource_id=9d91dbc7-9875-4cd9-a772-3b363a4b193f')
+
+        urls.append(RetrieveFire.parseURL(september_data_url)) 
+        urls.append(RetrieveFire.parseURL(december_data_url))
+        urls.append(RetrieveFire.parseURL())  #may
         #print(response)
         for url in urls:
             r = json.loads(prequest.get(url).text)
@@ -51,14 +60,18 @@ class RetrieveFire(dml.Algorithm):
                 month = 'december'
             else:
                 month = 'may' 
-# appended the month of the incident to each record
+            # appended the month of the incident to each record
             for record in r['result']['records']:
-                streetAddress = record['Street Number'].strip() + " " + record['Street Name'].strip() + " " + record['Street Type'].strip() + " " +  record['Neighborhood'].strip() + "MA " + record['Zip'].strip()
+                streetAddress = record['Street Number'].strip() + " " +\
+                record['Street Name'].strip() + " " + record['Street Type'].strip() + " " +\
+                record['Neighborhood'].strip() + "MA " + record['Zip'].strip()
                 g = geocoder.google(streetAddress)
                 g = geocoder.google(streetAddress)
                 address[record['Incident Number']] = (month, g.latlng)
-# selected the fields for addresses and ran it through google's geocoder to append the lat/lng points.
-#some long streets don't have an exact number attached to them - this could be a point of error 
+            # selected the fields for addresses and ran it through 
+            # google's geocoder to append the lat/lng points.
+        # some long streets don't have an exact number attached 
+        # to them - this could be a point of error 
         may = []
         sept = []
         dec = []
@@ -71,7 +84,7 @@ class RetrieveFire(dml.Algorithm):
                 sept.append(address[record][1])
             elif address[record][0] == 'december':
                 dec.append(address[record][1])
-# separated the data by month            
+        # separated the data by month            
         df_may = pd.DataFrame.from_dict(may)
         df_sept = pd.DataFrame.from_dict(sept)
         df_dec = pd.DataFrame.from_dict(dec)
@@ -83,7 +96,7 @@ class RetrieveFire(dml.Algorithm):
         X=np.matrix(y)
         kmeans = KMeans(n_clusters=2)
         kmeans.fit(X)
-        print('May Centroids = ', kmeans.cluster_centers_)
+        # print('May Centroids = ', kmeans.cluster_centers_)
         
 
         f3 = df_sept[0].values
@@ -92,7 +105,7 @@ class RetrieveFire(dml.Algorithm):
         W=np.matrix(x)
         kmeans2 = KMeans(n_clusters=2)
         kmeans2.fit(W)
-        print('September Centroids = ', kmeans2.cluster_centers_)
+        # print('September Centroids = ', kmeans2.cluster_centers_)
 
         f5 = df_dec[0].values
         f6 = df_dec[1].values
@@ -100,7 +113,7 @@ class RetrieveFire(dml.Algorithm):
         Z=np.matrix(w)
         kmeans3 = KMeans(n_clusters=2)
         kmeans3.fit(Z)
-        print('December Centroids = ', kmeans3.cluster_centers_)
+        # print('December Centroids = ', kmeans3.cluster_centers_)
 
         repo.dropCollection(key)
         repo.createCollection(key)
@@ -123,10 +136,10 @@ class RetrieveFire(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') 
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') 
+        doc.add_namespace('log', 'http://datamechanics.io/log/')
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
         doc.add_namespace('bdpr', 'https://data.boston.gov/api/3/action/datastore_search_sql')
         doc.add_namespace('bdpm', 'https://data.boston.gov/datastore/odata3.0/')
@@ -140,19 +153,22 @@ class RetrieveFire(dml.Algorithm):
         get_fires = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime, 
             {'prov:label': 'Retrieve Fire Incidents from September 2017'})
         doc.wasAssociatedWith(get_fires, this_script)
+        ont_query = ('''?sql=SELECT * from "5bce8e71-5192-48c0-ab13-8faff8fef4d7" WHERE'''
+            '''"ETL_LOAD_DATE" >= '2016-02-01 00:00:00' AND "ETL_LOAD_DATE" <= '2018-01-01 00:00:00' ''')
         doc.usage(get_fires, resource_fires, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'''?sql=SELECT * from "5bce8e71-5192-48c0-ab13-8faff8fef4d7" WHERE "ETL_LOAD_DATE" >= '2016-02-01 00:00:00' AND "ETL_LOAD_DATE" <= '2018-01-01 00:00:00' '''
+                  'ont:Query': ont_query
                   })
 
-        fires = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#fires', {prov.model.PROV_LABEL:'Fire Incidents',
-            prov.model.PROV_TYPE:'ont:DataSet'})
+        fires = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#fires',\
+            {prov.model.PROV_LABEL:'Fire Incidents', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(fires, this_script)
         doc.wasGeneratedBy(fires, get_fires, endTime)
-        doc.wasDerivedFrom(fires, resource_fires, get_fires,
-            get_fires, get_fires)
+        doc.wasDerivedFrom(fires, resource_fires, get_fires, get_fires, get_fires)
 
         repo.logout()
                   
         return doc
-#RetrieveFire.execute()
+
+if __name__ == "__main__":
+    RetrieveFire.execute()

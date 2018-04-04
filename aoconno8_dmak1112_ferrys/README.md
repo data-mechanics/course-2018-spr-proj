@@ -29,27 +29,40 @@ We also perform various statistical analyses to test two hypotheses and to check
 For our Statistical Analyses, we tested two hypotheses and checked for correlation:
 
 The first hypothesis that we tested was to see if the mean number of streetlights at the starting node along the route from alcohol licenses to MBTA stops is greater than the mean number of streetlights at the ending node of the paths:
+
 HO: u(starting node) - u(ending node) > 0
+
 HA: u(starting node) - u(ending node) <= 0
+
 alpha = .01
+
 We reject the null hypothesis if p < alpha.
+
 Results: z = 5.70, p < .0001
 
 With a p value of <.01, we are able to reject our null hypothesis and conclude that there is sufficient evidence at alpha = .01 that the mean number of streetlights at the ending node of a route is >= the mean number of streetlights at the starting node.
 
 
 The second hypothesis we tested was to see if the mean number of streetlights at the start and end nodes of a route was greater than the mean number of streetlights at all of the middle nodes in the route. 
+
 HO: u(start+end nodes) - u(middle nodes) > 0
+
 HA: u(start+end nodes) - u(middle nodes) <= 0
+
 alpha = .01
+
 We reject the null hypothesis if p < alpha
+
 Z = -6.14, p = .9998
 
 With a p value that is much greater than .01, we are unable to reject the null hypothesis, meaning that there is not sufficient evidence at alpha = .01 that the mean number of streetlights at the starting and ending  nodes in a route is less than or equal to the mean number of streetlights at all middle nodes in the route.
 
 Finally, we ran three tests to ccheck for correlation:
+
 i.) Streetlights at starting node vs ending node, r= .2007
+
 ii.) Steetlights at ending nodes vs middle nodes, r=.4792
+
 iii.) Number of nodes in a route vs total distance of route, r = .1683
 
 All three tests for correlation did not yield convincing results, and none of these tests show strong correlation between the factors.

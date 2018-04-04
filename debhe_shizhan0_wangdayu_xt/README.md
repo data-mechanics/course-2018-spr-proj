@@ -64,6 +64,8 @@ algorithm for now, but this way of setting up should work if we can optimize our
 
 ### How to run 
 
+install z3
+
 ```
 python execute.py debhe_shizhan0_wangdayu_xt 
 ```

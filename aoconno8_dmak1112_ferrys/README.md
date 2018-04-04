@@ -4,7 +4,7 @@ Going to an establishment that allows alcohol consumption on the premises can be
 
 In Project #2, we take this idea a step further by performing optimization techniques to calculate routes from locations with alcohol licenses to MBTA stops. We first calculate both the shortest paths and the safest paths from each alcohol license to its 3 closest MBTA stops, where the safest path is the path that includes the node with the most streetlights. Then, we perform an optimization technique that scores all six of the paths based on a number of factors including distance, number of streetlights, and variance of streetlights along the path. By finding the highest scored path, we hope to be able to provide civilians with routes to nearby MBTA stops that provide a reasonable combination of convenience and safety.
 
-We also perform various statistical analyses to test two hypotheses and to check for correlation, and from these statistical analyses we were able to glean valuable information about the distribution of streetlights, for example that the mean number of streetlights near locations with alcohol licenses is greater than the mean number of streetlights near MBTA stops. More details about our results can be found below in the Statistical Analysis section.
+We also perform various statistical analyses to test two hypotheses and to check for correlation, and from these statistical analyses we were able to glean valuable information about the distribution of streetlights, for example that the mean number of streetlights near locations with alcohol licenses is greater than the mean number of streetlights near MBTA stops. More details about our results can be found below in the Statistical Analyses section.
 
 
 ## Datasets

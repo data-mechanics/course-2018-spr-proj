@@ -66,7 +66,7 @@ algorithm for now, but this way of setting up should work if we can optimize our
 python execute.py debhe_shizhan0_wangdayu_xt 
 ```
 
-Using trial mode saves a lot of time 
+Using trial mode saves some time 
 ```
 python execute.py debhe_shizhan0_wangdayu_xt --trial
 ```

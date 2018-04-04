@@ -1,4 +1,6 @@
-# Library data clean up 
+# Filename: RetrieveLibraries.py
+# Author: Brooke Mullen <bemullen@bu.edu>
+# Description: Library data clean up 
 import urllib.request
 from urllib.request import quote 
 import numpy as np
@@ -9,7 +11,6 @@ import dml
 import prov.model
 import datetime
 import uuid
-import xmltodict
 
 class RetrieveLibraries(dml.Algorithm):
     contributor = "bemullen_crussack_dharmesh_vinwah"
@@ -35,7 +36,7 @@ class RetrieveLibraries(dml.Algorithm):
 
         ############ Filters entires for library metrics ########
 
-        json_url = 'https://s3-us-west-2.amazonaws.com/dsponsorascholar/591data/BostonCityScore.json'
+        json_url = 'https://cs-people.bu.edu/dharmesh/cs591/591data/BostonCityScore.json'
         response = urllib.request.urlopen(json_url).read().decode("utf-8")
         
         r = json.loads(response)
@@ -76,6 +77,7 @@ class RetrieveLibraries(dml.Algorithm):
         doc.add_namespace('bdpr', 'https://data.boston.gov/api/3/action/datastore_search_sql')
         doc.add_namespace('bdpm', 'https://data.boston.gov/datastore/odata3.0/')
         doc.add_namespace('datp', 'http://datamechanics.io/data/bemullen_crussack_dharmesh_vinwah/data/')
+        doc.add_namespace('csdt', 'https://cs-people.bu.edu/dharmesh/cs591/591data/')
 
         ###### this_script ##########
         
@@ -84,7 +86,7 @@ class RetrieveLibraries(dml.Algorithm):
 
         ###### rescource_libraries ##########
         
-        resource_libraries = doc.entity('bdp:5bce8e71-5192-48c0-ab13-8faff8fef4d7',
+        resource_libraries = doc.entity('csdt:BostonCityScore',
             {'prov:label':'Libraries', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         
         ####### get_libraries ##########
@@ -98,7 +100,8 @@ class RetrieveLibraries(dml.Algorithm):
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   })
 
-        libraries = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#Libraries', {prov.model.PROV_LABEL:'Libraries Metrics',
+        libraries = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#Libraries',\
+            {prov.model.PROV_LABEL:'Libraries Metrics',
             prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(libraries, this_script)
         doc.wasGeneratedBy(libraries, get_libraries, endTime)
@@ -107,9 +110,3 @@ class RetrieveLibraries(dml.Algorithm):
         repo.logout()
                   
         return doc
-
-RetrieveLibraries.execute()
-doc = RetrieveLibraries.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
-

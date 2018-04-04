@@ -82,33 +82,40 @@ class sortCorrelations(dml.Algorithm):
 
         
         # Agent, entity, activity
-        this_script = doc.agent('alg:janellc_rstiffel_yash#transformCrimes', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:janellc_rstiffel_yash#sortCorrelations', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         # Resource = crimesData
-        resource1 = doc.entity('dat:janellc_rstiffel_yash#crimesData', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource1 = doc.entity('dat:ferrys#streetlights', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        # Resource = crimesData
+        resource2 = doc.entity('dat:janellc_rstiffel_yash#sortedNeighborhoods', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
 
         #Activity
-        transform_crimes = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(transform_crimes, this_script)
+        find_correlation = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(find_correlation, this_script)
 
-        doc.usage(transform_crimes, resource1, startTime, None,
+        doc.usage(find_correlation, resource1, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Calculation',
+                  'ont:Query':''
+                  }
+                  )
+        doc.usage(find_correlation, resource2, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Calculation',
                   'ont:Query':''
                   }
                   )
 
 
-        crimesDist = doc.entity('dat:janellc_rstiffel_yash#crimesDistrict', {prov.model.PROV_LABEL:'Avg Loc Streets per District', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(crimesDist, this_script)
-        doc.wasGeneratedBy(crimesDist, transform_crimes, endTime)
-        doc.wasDerivedFrom(crimesDist, resource1, transform_crimes, transform_crimes, transform_crimes)
+        corr = doc.entity('dat:janellc_rstiffel_yash#coorelation', {prov.model.PROV_LABEL:'Correlation between streetlights and crimes', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(corr, this_script)
+        doc.wasGeneratedBy(corr, find_correlation, endTime)
+        doc.wasDerivedFrom(corr, resource1, resource2, find_correlation, find_correlation)
 
         repo.logout()
                   
         return doc
 
-sortCorrelations.execute()
-#doc = transformCrimesData.provenance()
+#sortCorrelations.execute()
+#doc = sortCorrelations.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))
 

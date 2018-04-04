@@ -55,41 +55,42 @@ class getNeighborhoods(dml.Algorithm):
             in this script. Each run of the script will generate a new
             document describing that invocation event.
             '''
-
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-
         repo.authenticate('janellc_rstiffel_yash', 'janellc_rstiffel_yash')
-        doc.add_namespace('alg',
-                          'http://datamechanics.io/algorithm/janellc_rstiffel_yash#')  # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat',
-                          'http://datamechanics.io/data/janellc_rstiffel_yash#')  # The data sets are in <user>#<collection> format.
-        doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('log', 'http://datamechanics.io/data/')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
-        this_script = doc.agent('alg:getNeighborhoods', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+        
+        # Agent, entity, activity
+        this_script = doc.agent('alg:janellc_rstiffel_yash#getNeighborhoods', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        
+        # Resource = crimesData
+        resource1 = doc.entity('dat:jb_rfb_dm_proj2data', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
 
-        resource = doc.entity('cri:jb_rfb_dm_proj2data',
-                              {'prov:label': 'Neighborhoods', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'json'})
-        get_neighborhoods = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        #Activity
+        get_neighborhood = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_neighborhood, this_script)
 
-        doc.wasAssociatedWith(get_neighborhoods, this_script)
+        doc.usage(get_neighborhood, resource1, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Calculation',
+                  'ont:Query':''
+                  }
+                  )
 
-        doc.usage(get_neighborhoods, resource, startTime, None,
-                  {prov.model.PROV_TYPE: 'ont:Retrieval',
-                   'ont:Query':''
-                   }
 
-        neighbs_dat = doc.entity('dat:neighborhoods',
-                                {prov.model.PROV_LABEL: 'Neighborhood Data', prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(neighbs_dat, this_script)
-        doc.wasGeneratedBy(neighbs_dat, get_neighborhoods, endTime)
-        doc.wasDerivedFrom(neighbs_dat, resource, get_neighborhoods)
+        neighbors = doc.entity('dat:janellc_rstiffel_yash#crimesDistrict', {prov.model.PROV_LABEL:'Avg Loc Streets per District', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(neighbors, this_script)
+        doc.wasGeneratedBy(neighbors, get_neighborhood, endTime)
+        doc.wasDerivedFrom(neighbors, resource1, get_neighborhood, get_neighborhood, get_neighborhood)
 
         repo.logout()
-
+                  
         return doc
 
-getNeighborhoods.execute()
+#getNeighborhoods.execute()
+#doc = getNeighborhoods.provenance()
+#print(doc.get_provn())

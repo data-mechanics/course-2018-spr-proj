@@ -38,6 +38,7 @@ You will need some libraries and packages.
 ```
 python -m pip install shapely
 python -m pip install pandas
+python -m pip install geopandas
 install z3 via github instructions
 
 ```

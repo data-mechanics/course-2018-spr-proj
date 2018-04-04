@@ -27,10 +27,10 @@ def merge_dicts(x, y):
     return z
 
 
-class sortNeighborhoods(dml.Algorithm):
+class sortNeighborhood(dml.Algorithm):
     contributor = 'janellc_rstiffel_yash'
-    reads = ['janellc_rstiffel_yash.neighborhoods', 'ferrys.streetlights']
-    writes = ['janellc_rstiffel_yash.idk___']
+    reads = ['janellc_rstiffel_yash.neighborhoods', 'ferrys.streetlights', 'janellc_rstiffel_yash.crimesData']
+    writes = ['janellc_rstiffel_yash.sortedNeighborhoods']
 
 
     @staticmethod
@@ -54,9 +54,9 @@ class sortNeighborhoods(dml.Algorithm):
         streetLights = list(repo.ferrys.streetlights.find())
 
         if trial:
-            print("you are gere")
+            #print("you are gere")
             streetLights = random.sample(streetLights, 2000)
-            print(len(streetLights))
+            #print(len(streetLights))
         n_count = {}
         
 
@@ -147,33 +147,48 @@ class sortNeighborhoods(dml.Algorithm):
 
         
         # Agent, entity, activity
-        this_script = doc.agent('alg:janellc_rstiffel_yash#transformCrimes', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:janellc_rstiffel_yash#sortNeighborhood', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         # Resource = crimesData
         resource1 = doc.entity('dat:janellc_rstiffel_yash#crimesData', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        # Resource = crimesData
+        resource2 = doc.entity('dat:ferrys#streetlights', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        # Resource = crimesData
+        resource3 = doc.entity('dat:ferrys#neighborhoods', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+
 
         #Activity
-        transform_crimes = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(transform_crimes, this_script)
+        sort_neighborhoods = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(sort_neighborhoods, this_script)
 
-        doc.usage(transform_crimes, resource1, startTime, None,
+        doc.usage(sort_neighborhoods, resource1, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Calculation',
+                  'ont:Query':''
+                  }
+                  )
+        doc.usage(sort_neighborhoods, resource2, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Calculation',
+                  'ont:Query':''
+                  }
+                  )
+        doc.usage(sort_neighborhoods, resource3, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Calculation',
                   'ont:Query':''
                   }
                   )
 
 
-        crimesDist = doc.entity('dat:janellc_rstiffel_yash#crimesDistrict', {prov.model.PROV_LABEL:'Avg Loc Streets per District', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(crimesDist, this_script)
-        doc.wasGeneratedBy(crimesDist, transform_crimes, endTime)
-        doc.wasDerivedFrom(crimesDist, resource1, transform_crimes, transform_crimes, transform_crimes)
+        sorted_neighborhoods = doc.entity('dat:janellc_rstiffel_yash#crimesDistrict', {prov.model.PROV_LABEL:'Counts streetlights and crimes per neighborhood', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(sorted_neighborhoods, this_script)
+        doc.wasGeneratedBy(sorted_neighborhoods, sort_neighborhoods, endTime)
+        doc.wasDerivedFrom(sorted_neighborhoods, resource1, resource2, resource3, sort_neighborhoods)
 
         repo.logout()
                   
         return doc
 
-sortNeighborhoods.execute(True)
-#doc = transformCrimesData.provenance()
+#sortNeighborhood.execute(True)
+#doc = sortNeighborhood.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))
 

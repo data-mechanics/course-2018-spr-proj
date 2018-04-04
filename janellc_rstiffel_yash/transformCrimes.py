@@ -127,7 +127,7 @@ class transformCrimesData(dml.Algorithm):
                   
         return doc
 
-transformCrimesData.execute()
+#transformCrimesData.execute()
 #doc = transformCrimesData.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

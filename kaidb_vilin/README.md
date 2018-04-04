@@ -31,7 +31,7 @@ construct a fully end to end ML pipeline for predicting aggregate sentiment by r
 
 
 
-#Datasets
+# Datasets
 
 ## Twitter Live stream using tweepy
 - We provide several high level  scripts to allow for easy retrieving of tweets
@@ -92,14 +92,14 @@ print(word2vec.wv.similar_by_word("dumb"))
 
 # News API 
 - We created 4 api keys and cycle through them when throttled (only 1 is required. )
-    ```python
+```python
 {
 "news1": "",
 "news2": "",
 "news3": "",
 "news4": ""
 }
-    ```
+```
     - TODO: Aws lambda would be an awesome way to generate new keys. 
 - We crawled articles from multiple national and local news sources and tried to apply the twitter sentiment classifer to them (shocker of the day, it did not transfer well)
 - To remedy this, we constructed a W2vec model on the entire wikipedia corpus. 

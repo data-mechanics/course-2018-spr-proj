@@ -197,8 +197,38 @@ class Transform311Requests(dml.Algorithm):
 
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-        pass
+        '''
+        Create the provenance document describing everything happening
+        in this script. Each run of the script will generate a new
+        document describing that invocation event.
+        '''
+
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
+
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') 
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') 
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#')
+        doc.add_namespace('log', 'http://datamechanics.io/log/')
+        doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
+        doc.add_namespace('bdpr', 'https://data.boston.gov/api/3/action/datastore_search_sql')
+        doc.add_namespace('bdpm', 'https://data.boston.gov/datastore/odata3.0/')
+        doc.add_namespace('csdt', 'https://cs-people.bu.edu/dharmesh/cs591/591data/')
+        doc.add_namespace('datp', 'http://datamechanics.io/data/bemullen_crussack_dharmesh_vinwah/data/')
 
 
-if __name__ == "__main__":
-    Transform311Requests.execute()
+        this_script = doc.agent('alg:bemullen_crussack_dharmesh_vinwah#Transform311Requests',\
+            {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+        service_requests = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#service_requests',\
+            {prov.model.PROV_LABEL:'311 Service Requests for Boston city',\
+            prov.model.PROV_TYPE:'ont:DataSet'})        
+        get_service_requests = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime,
+            {'prov:label':'311 Service Requests for Boston City'})        
+        doc.wasAssociatedWith(get_service_requests, this_script)
+        doc.used(get_service_requests, service_requests, startTime)
+        doc.wasAttributedTo(get_service_requests, this_script)
+        doc.wasGeneratedBy(service_requests, get_service_requests, endTime)        
+        
+        repo.logout()
+        return doc

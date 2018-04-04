@@ -6,7 +6,11 @@ import datetime
 import uuid
 
 
+<<<<<<< HEAD
+
+=======
 google_key = 'AIzaSyCRhIpYotXl7fnbWECpvSkau3wIwZ0qrLM'
+>>>>>>> bc5c0242b05f59d14db131a25f080ae5d0c00474
 
 
 class stats(dml.Algorithm):
@@ -34,7 +38,10 @@ class stats(dml.Algorithm):
 
 
         k_means = list(k_means)
-
+        google_key = None
+        with open('./auth.json', 'r') as partfile:
+            r = json.load(partfile)
+            google_key = r["GOOGLE_MAPS_API_KEY"]
         for i in k_means:
             #print(i)
             url = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='+str(i['stationCoords'][0]) + ',' +str(i['stationCoords'][1]) + '&destinations=' + str(i['coords'][0]) + '%2C' + str(i['coords'][1]) + '&key=' + google_key

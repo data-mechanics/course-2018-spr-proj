@@ -4,6 +4,7 @@ import dml
 import prov.model
 import datetime
 import uuid
+import random
 
 class food(dml.Algorithm):
     contributor = 'cma4_lliu_saragl_tsuen'
@@ -81,6 +82,9 @@ class food(dml.Algorithm):
         for field in r:
             food_data.append({"Business Name": field['businessName'], "Coords": field['Location']})
         print(food_data)
+
+        
+
         '''
         
             if trial:

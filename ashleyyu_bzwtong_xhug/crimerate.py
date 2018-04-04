@@ -21,10 +21,24 @@ class crimerate(dml.Algorithm):
         repo = client.repo
         repo.authenticate('ashleyyu_bzwtong', 'ashleyyu_bzwtong')
 
-        url = 'https://data.boston.gov/export/12c/b38/12cb3883-56f5-47de-afa5-3b1cf61b257b.json'
+        url = 'http://datamechanics.io/data/ashleyyu_bzwtong/crime.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
+<<<<<<< HEAD:ashleyyu_bzwtong_xhug/crimerate.py
         crime_json = json.loads(response)
         #s = json.dumps(r, sort_keys=True, indent=2)
+=======
+        # print(type(response))
+        # print(response[:2000])
+        # crimeData = []
+        # for objects in response:
+        #     crimeData.append(objects)
+        #with open('response', 'r') as crimeData:
+            #crime = crimeData.read()
+        crime_json = json.loads(response)
+        #s = json.dumps(r, sort_keys=True, indent=2)
+        # print(type(crimeData))
+        # print(crimeData[:10])
+>>>>>>> e908f49301ef2b4a9cbbb32cd06ca852718f1f58:ashleyyu_bzwtong_xhug/crimerate.py
         repo.dropCollection("crimerate")
         repo.createCollection("crimerate")
         repo['ashleyyu_bzwtong.crimerate'].insert_many(crime_json)

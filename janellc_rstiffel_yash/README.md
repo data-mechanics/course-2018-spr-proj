@@ -28,7 +28,7 @@ What makes some Boston neighborhoods safer than other? What can the city of Bost
 We used Z3 constraint satisfaction to determine a model for each district (neighborhood). The model will tell us
 the minimum number of night patrols needed in each district such that every street will be covered. Multiple streets can be covered by a night patrol if they're less than 1 block away (approx 800 ft. or 0.15 miles). We will use z3 to find a satisfiable model given these constraints. (similar to edge cover).
 
-### Correlation between Streetlights and Crime (scoringLocation.py)
+### Correlation between Streetlights and Crime (sortCorrelations.py)
 We aimed to uncover correlation between number of streetlights and number of crimes that occur in Boston neighborhoods.
 
 
@@ -43,7 +43,6 @@ install z3 via github instructions
 ```
 
 
-**How to obtain new transformed datasets:**
+**To run in trial mode**
+* python execute.py janellc_rstiffel_yash --trial
 
-* python execute.py janellc_rstiffel
-* This will create 3 json files in janellc_rstiffel/transformed_datasets

@@ -50,7 +50,7 @@ The second hypothesis we tested was to see if the mean number of streetlights at
 
 Results: z = -6.14, p = .9998
 
-With a p value that is much greater than .01, we are unable to reject the null hypothesis, meaning that there is not sufficient evidence at alpha = .01, so the mean number of streetlights at the starting and ending nodes in a route is less than or equal to the mean number of streetlights at all middle nodes in the route.
+With a p value that is much greater than .01, we are unable to reject the null hypothesis, meaning that there is not sufficient evidence at alpha = .01, so the mean number of streetlights at the starting and ending nodes in a route is greater than the mean number of streetlights at all middle nodes in the route.
 
 Additionally, we ran three tests to check for correlation:
 1. Number of streetlights at starting node vs ending node, r = .2007

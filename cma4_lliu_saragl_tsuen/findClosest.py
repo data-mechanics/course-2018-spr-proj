@@ -23,7 +23,7 @@ class findClosest(dml.Algorithm):
         return 6373 * c
 
     @staticmethod
-    def execute(trial = False):
+    def execute(trial = True):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
@@ -57,7 +57,6 @@ class findClosest(dml.Algorithm):
         
                 if trial:
                     count += 1
-                    if count > 100
             d['closestStation'] = closestStation
             d['stationCoords'] = minStationCoords
             final.append(d)

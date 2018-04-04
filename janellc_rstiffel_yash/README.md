@@ -1,24 +1,27 @@
 # Project 2: Factors Influencing Crime in Boston
 
-We aimed 
 
 ## Authors
-Janell Chen (janellc)
-Rebecca Stiffelman (rstiffel)
-Yash (yash)
+* Janell Chen (janellc)
+* Rebecca Stiffelman (rstiffel)
+* Yash (yash)
 
 **Question:**
 
-What kinds of opportunities does Boston provide to help its population maintain active, healthy lifestyles? Does it provide those opportunities equally for the whole population? Particularly for parts of the population where obesity is more prevalent, how accessibe are these opportunities?
-
-Our first two datasets look into the Boston population. The first provides demographic data-- specifically income, while the second provides information on the incidence of obesity within the city's population. With our next three datasets we explored three different avenues Boston offers to help people to maintain active, healthy lifestyles (Bike Paths, Open Space, Gyms and Health Clubs). By analyzing the locations of businesses and public spaces that promote healthy lifestyles, we hope to be able to assess their accessibility to people in areas where obesity and other exercise related health issues are most prevalent.
+What makes some Boston neighborhoods safer than other? What can the city of Boston do to help reduce crime rates? We hope to answer these questions by analyzing the influence of various factors, such as the presence of streetlights, on crime rates in different Boston neighborhoods.
 
 **Datasets Used:**
 
-*  Crimes 
+*  Crimes - Analyze Boston
 *  Neighborhoods
 *  Streets
-*  Streetlights
+*  Streetlight Locations - Analyze Boston
+
+**Transformations:**
+
+* transformCrimes: Finds average point (lat, long) for each street in each district where crimes existed. This is for finding the "middle" of the street - used in findCrimeStats.
+* sortNeighborhoods: Aggregates various data about crimes and streetlights to the neighborhood level. Given the coordinate for a streetlight or crime, this script checks to see if it falls within the bounds of a neighborhood.
+
 
 ## Optimization and Statistical Analysis
 ### Z3 Constraint Satisfaction (findCrimeStats.py)
@@ -28,11 +31,16 @@ the minimum number of night patrols needed in each district such that every stre
 ### Correlation between Streetlights and Crime (scoringLocation.py)
 We aimed to uncover correlation between number of streetlights and number of crimes that occur in Boston neighborhoods.
 
-**Transformations:**
 
-* transformCrimes: Finds average point (lat, long) for each street in each district where crimes existed. This is for finding the "middle" of the street - used in findCrimeStats.
-* sortNeighborhoods: Aggregates various data about crimes and streetlights to the neighborhood level. Given the coordinate for a streetlight or crime, this script checks to see if it falls within the bounds of a neighborhood.
 
+## Required libraries and tools
+You will need some libraries and packages.
+```
+python -m pip install shapely
+python -m pip install pandas
+install z3 via github instructions
+
+```
 
 
 **How to obtain new transformed datasets:**

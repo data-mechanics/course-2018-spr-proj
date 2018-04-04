@@ -112,16 +112,16 @@ class optimizeBikePlacement(dml.Algorithm):
         for i in range(9, -1, -1):
             solver.push()
             solver.add(sum([sum(school) for school in allSchool_1]) < (2**i + minPlacementPossible) )
-            print(2**i)
+            #print(2**i)
             if( str(solver.check()) != 'unsat' ):
                 minPlacementPossible += 2**i
-                print(minPlacementPossible)
+                #print(minPlacementPossible)
             solver.pop()
 
 
         # Once we find the number, add it to the constraint
         solver.add(sum([sum(school) for school in allSchool_1]) < minPlacementPossible)
-        print(minPlacementPossible)
+        #print(minPlacementPossible)
         print(solver.check())
         placementResult = solver.model()
         #placementResult_1 = copy.deepcopy(placementResult)

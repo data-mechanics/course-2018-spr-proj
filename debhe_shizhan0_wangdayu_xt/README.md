@@ -35,6 +35,8 @@ for multiple schools.
 4. We are going to use the z3 solver to test if there is a satisfaction assignment for all the school. 
 5. Once we find it is possible to do, we are going to use the z3 solver to optimized the bike hub replacement.
 (In our case, we consider to find the minimum numbers of bike hubs that can fit the constraint for all the schools.)
+In my code, I used the binary bit adding way of finding the minimun number that can make the whole system satisfy, which
+can cut the runtime by a huge fraction. By doing this, we are able to run this with the whole data in less than 5 minutes.
 6. Then we are able to get the optimized assignment(minimum number of bike hub) that can fit the requirement for all 
 the schools.
 

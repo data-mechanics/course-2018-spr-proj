@@ -56,6 +56,37 @@ class getNeighborhoods(dml.Algorithm):
             document describing that invocation event.
             '''
 
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+
+        repo.authenticate('janellc_rstiffel_yash', 'janellc_rstiffel_yash')
+        doc.add_namespace('alg',
+                          'http://datamechanics.io/algorithm/janellc_rstiffel_yash#')  # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat',
+                          'http://datamechanics.io/data/janellc_rstiffel_yash#')  # The data sets are in <user>#<collection> format.
+        doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
+        doc.add_namespace('log', 'http://datamechanics.io/data/')
+
+        this_script = doc.agent('alg:getNeighborhoods', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
+
+        resource = doc.entity('cri:jb_rfb_dm_proj2data',
+                              {'prov:label': 'Neighborhoods', prov.model.PROV_TYPE: 'ont:DataResource',
+                               'ont:Extension': 'json'})
+        get_neighborhoods = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+
+        doc.wasAssociatedWith(get_neighborhoods, this_script)
+
+        doc.usage(get_neighborhoods, resource, startTime, None,
+                  {prov.model.PROV_TYPE: 'ont:Retrieval',
+                   'ont:Query':''
+                   }
+
+        neighbs_dat = doc.entity('dat:neighborhoods',
+                                {prov.model.PROV_LABEL: 'Neighborhood Data', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(neighbs_dat, this_script)
+        doc.wasGeneratedBy(neighbs_dat, get_neighborhoods, endTime)
+        doc.wasDerivedFrom(neighbs_dat, resource, get_neighborhoods)
 
         repo.logout()
 

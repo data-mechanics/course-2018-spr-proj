@@ -42,7 +42,14 @@ class BostonRestaurantStatsAnalysis(dml.Algorithm):
 
         #collection = repo.bstc_csuksan_semina_tedkong.RestaurantRatingAndHealthViolations
         #cursor = collection.find({})
-        google_api_key = ""
+        
+        """
+        
+        The google maps visualization is commented out for speed, 
+        and because it didnt do anything for our understanding other than look nice.
+        
+        """
+        google_api_key = dml.auth['services']['google']['key']
 
 
         """
@@ -184,7 +191,7 @@ class BostonRestaurantStatsAnalysis(dml.Algorithm):
             #pyplot.setp(lines,mew=2.0)
         #pyplot.show()
         """
-
+        #########################################################################
 
         """
 
@@ -212,6 +219,7 @@ class BostonRestaurantStatsAnalysis(dml.Algorithm):
         output_file("gmap_plot.html")
         show(plot)
         """
+        #########################################################################
 
         """
 
@@ -320,19 +328,18 @@ class BostonRestaurantStatsAnalysis(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp', 'https://www.yelp.com/developers/')
 
         this_script = doc.agent('alg:bstc_csuksan_semina_tedkong#BostonRestaurantStatsAnalysis', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'Reviews', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('dat:bstc_csuksan_semina_tedkong#RestaurantRatingsAndHealthViolations_Boston', {'prov:label':'Statistics', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_rate = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_rate, this_script)
         doc.usage(get_rate, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Yelp+Reviews&$select=_id,businesses,total,region'
+                  'ont:Query':'?type=Stats+Analysis&$select=ave_violation_severity,rating,latitude,longitude'
                   }
                   )
 
-        rate = doc.entity('dat:bstc_csuksan_semina_tedkong#BostonRestaurantStatsAnalysis', {prov.model.PROV_LABEL:'Yelp Ratings', prov.model.PROV_TYPE:'ont:DataSet'})
+        rate = doc.entity('dat:bstc_csuksan_semina_tedkong#BostonRestaurantStatsAnalysis', {prov.model.PROV_LABEL:'Stats Analysis', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(rate, this_script)
         doc.wasGeneratedBy(rate, get_rate, endTime)
         doc.wasDerivedFrom(rate, resource, get_rate, get_rate, get_rate)

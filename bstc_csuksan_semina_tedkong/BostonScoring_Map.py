@@ -100,19 +100,18 @@ class BostonScoringMap(dml.Algorithm):
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-        doc.add_namespace('bdp', 'https://www.yelp.com/developers/')
 
         this_script = doc.agent('alg:bstc_csuksan_semina_tedkong#BostonScoringMap', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label':'Reviews', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        resource = doc.entity('dat:bstc_csuksan_semina_tedkon#dat:RestaurantRatingsAndHealthViolations_Boston', {'prov:label':'Score Map', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         get_rate = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_rate, this_script)
         doc.usage(get_rate, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=Yelp+Reviews&$select=_id,businesses,total,region'
+                  'ont:Query':'?type=Ratings+Health+Violations&$select=name,ave_violation_severity,rating,latitude,longitude'
                   }
                   )
 
-        rate = doc.entity('dat:bstc_csuksan_semina_tedkong#BostonScoringMap', {prov.model.PROV_LABEL:'Yelp Ratings', prov.model.PROV_TYPE:'ont:DataSet'})
+        rate = doc.entity('dat:bstc_csuksan_semina_tedkong#BostonScoringMap', {prov.model.PROV_LABEL:'Score Map', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(rate, this_script)
         doc.wasGeneratedBy(rate, get_rate, endTime)
         doc.wasDerivedFrom(rate, resource, get_rate, get_rate, get_rate)

@@ -23,13 +23,10 @@ class findClosest(dml.Algorithm):
         return 6373 * c
 
     @staticmethod
-    def execute(trial = False):
+    def execute(trial = True):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
-        if trial:
-            count = 0
-        
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -39,6 +36,11 @@ class findClosest(dml.Algorithm):
         stations = repo['cma4_lliu_saragl_tsuen.stationsProjected'].find()
 
         final = []
+
+        if trial:
+            final = repo['cma4_lliu_saragl_tsuen.closest'].aggregate([{'$sample': {'size': 1000}}], allowDiskUse=True)
+        else:
+            final = repo['cma4_lliu_saragl_tsuen.closest'].find()
 
         # finds closest station to each destination
         for d in destinations:
@@ -54,17 +56,14 @@ class findClosest(dml.Algorithm):
                     closestStation = s['key']
                     minDist = dist
                     minStationCoords = scoords
-        
-                if trial:
-                    count += 1
-                    if count > 100
+
             d['closestStation'] = closestStation
             d['stationCoords'] = minStationCoords
             final.append(d)
-            
+
 
         print(final)
-            
+
 
         repo.dropCollection("cma4_lliu_saragl_tsuen.closest")
         repo.createCollection("cma4_lliu_saragl_tsuen.closest")
@@ -77,7 +76,7 @@ class findClosest(dml.Algorithm):
         endTime = datetime.datetime.now()
 
         return {"start":startTime, "end":endTime}
-    
+
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''
@@ -122,7 +121,7 @@ class findClosest(dml.Algorithm):
         doc.wasDerivedFrom(stationsProjected, resource, get_closest, get_closest, get_closest)
 
         repo.logout()
-                  
+
         return doc
 
 findClosest.execute()

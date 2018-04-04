@@ -11,10 +11,10 @@ class entertainment(dml.Algorithm):
     writes = ['cma4_lliu_saragl_tsuen.entertainment']
 
     @staticmethod
-    def execute(trial = False):
+    def execute(trial = True):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
-        
+
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -25,11 +25,19 @@ class entertainment(dml.Algorithm):
 
         r = json.loads(response)
         print(r)
-        
+
         s = json.dumps(r, sort_keys=True, indent=2)
         repo.dropCollection("cma4_lliu_saragl_tsuen.entertainment")
         repo.createCollection("cma4_lliu_saragl_tsuen.entertainment")
-        repo['cma4_lliu_saragl_tsuen.entertainment'].insert_many(r)
+
+        final = []
+
+        if trial:
+            final = repo['cma4_lliu_saragl_tsuen.entertainment'].aggregate([{'$sample': {'size': 1000}}], allowDiskUse=True)
+        else:
+            final = repo['cma4_lliu_saragl_tsuen.entertainment'].find()
+
+        repo['cma4_lliu_saragl_tsuen.entertainment'].insert_many(final)
         repo['cma4_lliu_saragl_tsuen.entertainment'].metadata({'complete':True})
         print(repo['cma4_lliu_saragl_tsuen.entertainment'].metadata())
 
@@ -38,7 +46,7 @@ class entertainment(dml.Algorithm):
         endTime = datetime.datetime.now()
 
         return {"start":startTime, "end":endTime}
-    
+
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
         '''
@@ -72,7 +80,7 @@ class entertainment(dml.Algorithm):
         doc.wasDerivedFrom(entertainment, resource, get_stops, get_stops, get_stops)
 
         repo.logout()
-                  
+
         return doc
 
 entertainment.execute()

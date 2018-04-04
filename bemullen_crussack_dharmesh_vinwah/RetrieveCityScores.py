@@ -90,3 +90,7 @@ class RetrieveCityScores(dml.Algorithm):
         repo.logout()
                   
         return doc
+RetrieveCityScores.execute()
+doc = RetrieveCityScores.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))

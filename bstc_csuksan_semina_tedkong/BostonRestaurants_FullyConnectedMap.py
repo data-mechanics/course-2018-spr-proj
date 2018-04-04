@@ -5,6 +5,7 @@ import uuid
 import pandas as pd
 import numpy as np
 import json
+import urllib.request
 
 class getFullyConnectedMap(dml.Algorithm):
 
@@ -31,7 +32,12 @@ class getFullyConnectedMap(dml.Algorithm):
 
         """
 
-        file = pd.read_json("merged_datasets/RestaurantRatingsAndHealthViolations_Boston.json", lines=True)
+        urls = 'http://datamechanics.io/data/RestaurantRatingsAndHealthViolations_Boston.json'
+        with urllib.request.urlopen(urls) as url:
+            data = json.dumps(url.read().decode())
+        temp = json.loads(data)
+        file = pd.read_json(temp, lines=True)
+
         if(trial):
             splitted = np.array_split(file, 5)
             file = splitted[0]

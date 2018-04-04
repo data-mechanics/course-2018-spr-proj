@@ -9,7 +9,7 @@ import re
 import time
 from nltk.stem.lancaster import LancasterStemmer
 from nltk.tokenize import RegexpTokenizer
-
+import sys
 import urllib.request
 import gzip
 
@@ -88,11 +88,12 @@ def tokenize_corpus(corpus):
     """
     # Stem, tokenize, and prep for input 
     tkr = RegexpTokenizer('[a-zA-Z0-9@]+')
-    stemmer = LancasterStemmer()
+    stemmer = LancasterStemmer() # crap but fast 
     # Will take a few minutes
     # TODO/Future work: Break into multiple pieces and paralellize
     # ~2 seconds per 10,000 entires. 
     # with 1578627, it takes ~ 5 minutes on a macbook pro. 
+    print("Go get a Coffee-- this will take ~ 5 minutes to stem/tokenize all inputs")
     tokenized_corpus = []
     start = time.time()
     token_count = 0
@@ -106,7 +107,7 @@ def tokenize_corpus(corpus):
     return tokenized_corpus
 
 
-def save_corpus(corp, corp_filename):
+def save_corpus(corp, model_location, corp_filename):
     """
     Saves the twitter corpus  for later use
 
@@ -136,7 +137,7 @@ def load_corpus(corp_filename):
 
 
 
-def main():
+def main(trial=False):
     # location of twitter data
     dataset_url = "http://thinknook.com/wp-content/uploads/2012/09/Sentiment-Analysis-Dataset.zip"
     # local path to name 
@@ -145,15 +146,37 @@ def main():
     model_location = './model/'
     # tokenized filename 
     corp_filename = 'tokenized_tweet_corpus.dill'
+    gt_filename = 'ground_truth_tokenized_tweet_corpus.dill'
     # For reproducability, and being immature AF
     np.random.seed(6969)
 
     # Start by retrieving the data
     download_zip(dataset_url) 
+    corpus, ground_truth = build_corpus(dataset_location)
+    # for quick debug 
+    if trial:
+        # do a truncated write
+        corpus = corpus[:1000]
+        ground_truth = ground_truth[:1000]
+    t_corp = tokenize_corpus(corpus)
+    print("Writting Corpus to {}".format(corp_filename))
+    save_corpus(t_corp, model_location, corp_filename)
+    print("Writting Synchronous Lables to {}".format(gt_filename))
+    save_corpus(ground_truth, model_location, gt_filename)
+
+
     
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) ==2:
+        if sys.argv[1] == 't':
+            print("Running in Trial Mode: Truncating stemming ")
+            main(True)
+        else:
+            print("Invalid Argument. To run in trial mode, please use '$ python get_clean_twitter_sentiment.py t'")
+            sys.exit(1)
+    else:
+        main()
 
 
 

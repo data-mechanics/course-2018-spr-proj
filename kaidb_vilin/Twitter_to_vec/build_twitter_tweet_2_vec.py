@@ -6,6 +6,7 @@ import numpy as np
 
 from gensim.models.word2vec import Word2Vec
 import time
+import sys
 
 
 def load_corpus(model_location, corp_filename):
@@ -24,7 +25,7 @@ def load_corpus(model_location, corp_filename):
 
 
 
-def main():
+def main(trial = False):
     # we assume that the model data has already been downloaed 
     # and that the files have been stemmed
     # If not, please run get_clean_twitter_sentiment.py
@@ -35,6 +36,10 @@ def main():
     tokenized_tweet_corpus = load_corpus( model_location, tokenized_corpus_name)
     print("Data loaded")
     print()
+    if trial:
+        print("Running in trial mode with truncated corpus")
+        tokenized_tweet_corpus = tokenized_tweet_corpus[:100]
+
     print("Building Word2Vec Model....")
     # Train the model
     # w2vec word embeding for tweet corpus
@@ -42,6 +47,7 @@ def main():
     # Maybe consider using H2o-- this is slow as fuck 
     # IF you need something to do while you wait...illicit substances optional
     # https://www.youtube.com/watch?v=pCpLWbHVNhk
+    print()
     word2vec = Word2Vec(sentences=tokenized_tweet_corpus,
                     # vector size--max size of a tweet
                     size=512, 
@@ -59,4 +65,19 @@ def main():
     print("Model succsesfully saved")
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) ==2:
+        if sys.argv[1] == 't':
+            print("Running in Trial Mode: Truncating stemming ")
+            main(True)
+        else:
+            print("Invalid Argument. To run in trial mode, please use '$ python {} t'".format(sys.argv[0]))
+            sys.exit(1)
+    elif len(sys.argv) >2:
+        print("too many arguments. ")
+        print("To run in trial mode, please use '$ python {} t'".format(sys.argv[0]))
+        sys.exit(1)
+
+    else:
+        main()
+
+

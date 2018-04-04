@@ -28,7 +28,7 @@ class hubwayJuly(dml.Algorithm):
         # creating df that only contains city, total number of service, EMS_INDEX
    
         r = json.loads(hubway_df.to_json( orient='records'))
-        s = json.dumps(r, sort_keys=True, indent=2)
+        s = json.dumps(r, sort_keys=False, indent=2)
 
         # clear
         repo.dropPermanent('hubwayJuly')

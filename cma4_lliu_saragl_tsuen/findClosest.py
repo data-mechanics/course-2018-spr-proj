@@ -37,10 +37,10 @@ class findClosest(dml.Algorithm):
         destinations = None
 
         if trial:
-            destinations = repo['cma4_lliu_saragl_tsuen.destinationsProjected'].aggregate([{'$sample': {'size': 1000}}], allowDiskUse=True)
+            destinations = repo['cma4_lliu_saragl_tsuen.destinationsProjected'].aggregate([{'$sample': {'size': 250}}], allowDiskUse=True)
         else:
-            collection = repo['cma4_lliu_saragl_tsuen.destinationsProjected'].find()
-            
+            destinations = repo['cma4_lliu_saragl_tsuen.destinationsProjected'].find()
+
         stations = repo['cma4_lliu_saragl_tsuen.stationsProjected'].find()
 
         final = []

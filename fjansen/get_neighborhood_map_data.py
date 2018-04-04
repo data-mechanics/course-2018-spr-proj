@@ -3,35 +3,32 @@ import prov.model
 import datetime
 import uuid
 import prequest as requests
+from pyspark.sql import SparkSession
 
 
-class getNeighborhoodMapData(dml.Algorithm):
+class get_neighborhood_map_data(dml.Algorithm):
     contributor = 'fjansen'
     reads = []
     writes = ['fjansen.neighborhoodMap']
 
     @staticmethod
     def execute(trial=False):
-        startTime = datetime.datetime.now()
-        client = dml.pymongo.MongoClient()
-        repo = client.repo
-        repo.authenticate('fjansen', 'fjansen')
+        start_time = datetime.datetime.now()
 
-        print("Fetching neighborhoodMap data...")
-        data_url = "http://datamechanics.io/data/nathansw_rooday_sbajwa_shreyap/neighborhood_map.json"
+        print('Fetching neighborhoodMap data...')
+        data_url = 'http://datamechanics.io/data/nathansw_rooday_sbajwa_shreyap/neighborhood_map.json'
         response = requests.get(data_url).json()
-        print("neighborhoodMap data fetched!")
+        print('neighborhoodMap data fetched!')
 
-        print("Saving neighborhoodMap data...")
-        repo.dropCollection("neighborhoodMap")
-        repo.createCollection("neighborhoodMap")
-        repo['fjansen.neighborhoodMap'].insert(response)
-        repo['fjansen.neighborhoodMap'].metadata({'complete': True})
-        repo.logout()
+        print('Saving neighborhoodMap data...')
+        spark = SparkSession.builder.appName('save-neighborhood-map-data').getOrCreate()
+        df = spark.createDataFrame(response)
+        df.write.json('hdfs://project/hariri/cs591/neighborhood-map-data.json')
+        spark.stop()
 
-        print("Done!")
-        endTime = datetime.datetime.now()
-        return {"start": startTime, "end": endTime}
+        print('Done!')
+        end_time = datetime.datetime.now()
+        return {'start': start_time, 'end': end_time}
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
@@ -54,7 +51,7 @@ class getNeighborhoodMapData(dml.Algorithm):
         # Since the urls have a lot more information about the resource itself, we are treating everything apart from the actual document suffix as the namespace.
         doc.add_namespace('neighborhoodMap', 'https://data.boston.gov/api/action/datastore_search_sql')
 
-        this_script = doc.agent('alg:fjansen#getNeighborhoodMapData',
+        this_script = doc.agent('alg:fjansen#get_neighborhood_map_data',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('neighborhoodMap:?sql=SELECT%20*%20from%20%2212cb3883-56f5-47de-afa5-3b1cf61b257b%22',
                               {'prov:label': 'neighborhoodMap Data', prov.model.PROV_TYPE: 'ont:DataResource',

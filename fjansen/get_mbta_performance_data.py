@@ -3,24 +3,22 @@ import prov.model
 import datetime
 import uuid
 import prequest as requests
+from pyspark.sql import SparkSession
 
 
-class getMBTAPerformanceData(dml.Algorithm):
+class get_mbta_performance_data(dml.Algorithm):
     contributor = 'fjansen'
     reads = []
     writes = ['fjansen.MBTAPerformance', 'fjansen.householdincome', 'fjansen.povertyrates', 'fjansen.commuting']
 
     @staticmethod
     def execute(trial=False):
-        startTime = datetime.datetime.now()
-        client = dml.pymongo.MongoClient()
-        repo = client.repo
-        repo.authenticate('fjansen', 'fjansen')
+        start_time = datetime.datetime.now()
 
-        print("Fetching MBTAPerformance data...")
-        data_url = "http://datamechanics.io/data/nathansw_rooday_sbajwa_shreyap/MBTAPerformance.json"
+        print('Fetching MBTAPerformance data...')
+        data_url = 'http://datamechanics.io/data/nathansw_rooday_sbajwa_shreyap/MBTAPerformance.json'
         response = requests.get(data_url).json()
-        print("MBTAPerformance fetched!")
+        print('MBTAPerformance fetched!')
 
         count = 0
         obj1 = {}
@@ -37,19 +35,15 @@ class getMBTAPerformanceData(dml.Algorithm):
 
         final = [obj1, obj2, obj3]
 
-        print("Saving MBTAPerformance data...")
-        repo.dropCollection("MBTAPerformance")
-        repo.createCollection("MBTAPerformance")
-        if trial:
-            repo['fjansen.MBTAPerformance'].insert_one(final[0])
-        else:
-            repo['fjansen.MBTAPerformance'].insert_many(final)
-        repo['fjansen.MBTAPerformance'].metadata({'complete': True})
-        repo.logout()
+        print('Saving MBTAPerformance data...')
+        spark = SparkSession.builder.appName('save-mbta-performance').getOrCreate()
+        df = spark.createDataFrame(final)
+        df.write.json('hdfs://project/hariri/cs591/mbta-performance.json')
+        spark.stop()
 
-        print("Done!")
-        endTime = datetime.datetime.now()
-        return {"start": startTime, "end": endTime}
+        print('Done!')
+        end_time = datetime.datetime.now()
+        return {'start': start_time, 'end': end_time}
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
@@ -72,7 +66,7 @@ class getMBTAPerformanceData(dml.Algorithm):
         # Since the urls have a lot more information about the resource itself, we are treating everything apart from the actual document suffix as the namespace.
         doc.add_namespace('MBTAPerformance', 'https://data.boston.gov/api/action/datastore_search_sql')
 
-        this_script = doc.agent('alg:#getMBTAPerformanceData',
+        this_script = doc.agent('alg:#get_mbta_performance_data',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
         resource = doc.entity('MBTAPerformance:?sql=SELECT%20*%20from%20%2212cb3883-56f5-47de-afa5-3b1cf61b257b%22',
                               {'prov:label': 'MBTAPerformance Data', prov.model.PROV_TYPE: 'ont:DataResource',

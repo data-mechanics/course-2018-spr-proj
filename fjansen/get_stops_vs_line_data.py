@@ -3,35 +3,32 @@ import prov.model
 import datetime
 import uuid
 import prequest as requests
+from pyspark.sql import SparkSession
 
 
-class getTricklingData(dml.Algorithm):
+class get_stops_vs_line_data(dml.Algorithm):
     contributor = 'fjansen'
     reads = []
-    writes = ['fjansen.trickling']
+    writes = ['fjansen.stopsVsLines']
 
     @staticmethod
     def execute(trial=False):
-        startTime = datetime.datetime.now()
-        client = dml.pymongo.MongoClient()
-        repo = client.repo
-        repo.authenticate('fjansen', 'fjansen')
+        start_time = datetime.datetime.now()
 
-        print("Fetching trickling data...")
-        data_url = "http://datamechanics.io/data/nathansw_rooday_sbajwa_shreyap/trickling.json"
+        print('Fetching stopsVsLines data...')
+        data_url = 'http://datamechanics.io/data/nathansw_rooday_sbajwa_shreyap/stop_vs_lines.json'
         response = requests.get(data_url).json()
-        print("trickling data fetched!")
+        print('stopsVsLines data fetched!')
 
-        print("Saving trickling data...")
-        repo.dropCollection("trickling")
-        repo.createCollection("trickling")
-        repo['fjansen.trickling'].insert(response)
-        repo['fjansen.trickling'].metadata({'complete': True})
-        repo.logout()
+        print('Saving stopsVsLines data...')
+        spark = SparkSession.builder.appName('save-stops-vs-lines').getOrCreate()
+        df = spark.createDataFrame(response)
+        df.write.json('hdfs://project/hariri/cs591/stops-vs-lines.json')
+        spark.stop()
 
-        print("Done!")
-        endTime = datetime.datetime.now()
-        return {"start": startTime, "end": endTime}
+        print('Done!')
+        end_time = datetime.datetime.now()
+        return {'start': start_time, 'end': end_time}
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
@@ -52,26 +49,26 @@ class getTricklingData(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
 
         # Since the urls have a lot more information about the resource itself, we are treating everything apart from the actual document suffix as the namespace.
-        doc.add_namespace('trickling', 'https://data.boston.gov/api/action/datastore_search_sql')
+        doc.add_namespace('stopsVsLines', 'https://data.boston.gov/api/action/datastore_search_sql')
 
-        this_script = doc.agent('alg:fjansen#getTricklingData',
+        this_script = doc.agent('alg:fjansen#getstopsVsLinesData',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('trickling:?sql=SELECT%20*%20from%20%2212cb3883-56f5-47de-afa5-3b1cf61b257b%22',
-                              {'prov:label': 'trickling Data', prov.model.PROV_TYPE: 'ont:DataResource',
+        resource = doc.entity('stopsVsLines:?sql=SELECT%20*%20from%20%2212cb3883-56f5-47de-afa5-3b1cf61b257b%22',
+                              {'prov:label': 'stopsVsLines Data', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
-        get_trickling_data = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(get_trickling_data, this_script)
-        doc.usage(get_trickling_data, resource, startTime, None,
+        get_stopsVsLines_data = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_stopsVsLines_data, this_script)
+        doc.usage(get_stopsVsLines_data, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
                    'ont:Query': '?sql=SELECT%20*%20from%20%2212cb3883-56f5-47de-afa5-3b1cf61b257b%22'
                    }
                   )
-        trickling = doc.entity('dat:fjansen#trickling',
-                               {prov.model.PROV_LABEL: 'trickling Data', prov.model.PROV_TYPE: 'ont:DataSet'})
+        stopsVsLines = doc.entity('dat:fjansen#stopsVsLines',
+                                  {prov.model.PROV_LABEL: 'stopsVsLines Data', prov.model.PROV_TYPE: 'ont:DataSet'})
 
-        doc.wasAttributedTo(trickling, this_script)
-        doc.wasGeneratedBy(trickling, get_trickling_data, endTime)
-        doc.wasDerivedFrom(trickling, resource, get_trickling_data, get_trickling_data, get_trickling_data)
+        doc.wasAttributedTo(stopsVsLines, this_script)
+        doc.wasGeneratedBy(stopsVsLines, get_stopsVsLines_data, endTime)
+        doc.wasDerivedFrom(stopsVsLines, resource, get_stopsVsLines_data, get_stopsVsLines_data, get_stopsVsLines_data)
 
         repo.logout()
         return doc

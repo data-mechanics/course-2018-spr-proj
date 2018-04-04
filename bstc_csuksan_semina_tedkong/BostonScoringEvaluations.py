@@ -31,8 +31,15 @@ class BostonScoringEval(dml.Algorithm):
         TODO: Read in from mongo collection after inserting it in BostonScoring_Map.py
 
         """
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        repo.authenticate('bstc_csuksan_semina_tedkong', 'bstc_csuksan_semina_tedkong')
 
-        file = pd.read_json("BostonScoring_Map.json", lines=True)
+        collection_map = repo.bstc_csuksan_semina_tedkong.BostonScoring_Map
+        cursor_map = collection_map.find({})
+
+        file = pd.DataFrame(list(cursor_map))
+        #file = pd.read_json("BostonScoring_Map.json", lines=True)
         if trial == True:
             splitted = np.array_split(file, 3)
             file = splitted[0]
@@ -44,10 +51,11 @@ class BostonScoringEval(dml.Algorithm):
 
         """
         file = file.sort_values(by='name')
-        names = np.array(file)[:,2]
+        names = np.array(file)[:,3]
         arr = np.array(file)
         top_connections = []
-
+        arr = arr[:,1:]
+        #print(arr)
         """
 
         This for loops finds the 6 min value connections for each restaurant

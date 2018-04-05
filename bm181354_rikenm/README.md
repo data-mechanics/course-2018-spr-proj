@@ -30,9 +30,15 @@ One useful thing about hierarchal clustering is that you can see the dneundogram
 
 <img src="https://github.com/bm181354/course-2018-spr-proj/blob/master/bm181354_rikenm/img/20clusters.jpeg" width="350"/>
 
+*Fig 1.0: x axis represents normalized lat, y axis represents normalized lat and z axis represents normalized popularity of a stop. This diagram has 20 clusters*
+
 <img src="https://github.com/bm181354/course-2018-spr-proj/blob/master/bm181354_rikenm/img/20clusterd.jpeg" width="350"/>
 
+*Fig 2.0: Dneundogram for the Fig 1.0. Linkage used is average*
+
 <img src="https://github.com/bm181354/course-2018-spr-proj/blob/master/bm181354_rikenm/img/graph2.jpeg" width="400"/>
+
+*Fig 3.0: The red dot is the least significant stop as calculated by our algorithm. Hence, would be removed*
 
 
 ## To Run:

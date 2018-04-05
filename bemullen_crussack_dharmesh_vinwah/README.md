@@ -15,20 +15,28 @@ To that end, the datasets we are using are:
 
 1. <strong><a href="https://data.boston.gov/dataset/cityscore">CityScores</a></strong>: This provides a consolidated metric that reflects residents' satisfaction with the city's efforts. We use the average of a collection of these values as an approximate indicator of how painful move in week really is.
 
-2. <strong><a href="https://data.boston.gov/dataset/code-enforcement-building-and-property-violations/resource/90ed3816-5e70-443c-803d-9a71f44470be">Code Enforcement Building and Property Violations</a></strong>: This dataset contains a list of violations issued by the city and may be indexed by location, date ranges, etc. We use this to compute a weighted average over months/years to see if there is any relation between move in week and the number of violations (normalized for the obvious rise in enforcements spurred by the influx of students to Boston post move in week).
+2. <strong><a href="https://data.boston.gov/dataset/311-service-requests/resource/2968e2c0-d479-49ba-a884-4ef523ada3c0">311 Service Requests</a></strong>: This dataset contains over 400,000 detailed records of complaints and/or requests filed by residents. We sift through irrelevant requests by filtering for the type of service request (more details in the comments in the JS files), among others.
 
-3. <strong><a href="https://data.boston.gov/dataset/311-service-requests/resource/2968e2c0-d479-49ba-a884-4ef523ada3c0">311 Service Requests</a></strong>: This dataset contains over 400,000 detailed records of complaints and/or requests filed by residents. We sift through irrelevant requests by filtering for the type of service request (more details in the comments in the JS files), among others.
+3. <strong><a href="https://data.boston.gov/dataset/fire-incident-reporting">Boston Fire Incident Reporting</a></strong>: This dataset provides us with a rich history of fire incidents reported across the city of Boston, allowing us to glean trends, particularly during move in week.
 
-4. <strong><a href="http://realtime.mbta.com/Portal/Content/Documents/Interpreting_mbta_performance_API_output_2016-04-26.pdf">MBTA Performance API</a></strong>: This dataset provides us with a range of "dwell times" for the Red and Green MBTA lines. The dwell interval for a given stop is the amount of time the T spent waiting at that stop. Move in week might see dwell intervals increase, particularly at college-heavy stops.
+4. <strong><a href="gis.cityofboston.gov/arcgis/rest/services/Education/OpenData/MapServer/2">Spatial Dataset of Colleges and Universities in the Greater Boston Area</a></strong>: This is used to construct 2d-index-capable queries on the other 4 datasets.
 
-5. <strong><a href="gis.cityofboston.gov/arcgis/rest/services/Education/OpenData/MapServer/2">Spatial Dataset of Colleges and Universities in the Greater Boston Area</a></strong>: This is used to construct 2d-index-capable queries on the other 4 datasets.
+## Directory Structure
 
-## Transformations
+The root directory contains algorithms used to retrieve and store data from a myriad of portals into Mongo collections. All Python files contained here implement the DML algorithm.
 
-Transformations are stored in files beginning with the name: "Transform". The python files are used to create the provenance document for each transformation while the Javascript files perform the actual MongoDB queries.
+### Project 2 Specifics
+
+Information about specifics pertaining to project 2 can be found in the <a href="docs/">docs</a> directory.
+
+Certain data transformations were previously accomplished using pure Javascript. These can be found in the <a href="scripts/">scripts</a> directory.
+
 
 ## Evaluation
 
 To run the code, setup the database structure as documented in the parent README and then run:
+
+
+<code>pip install -r requirements.txt</code> followed by
 
 <code>python execute.py bemullen_crussack_dharmesh_vinwah</code>

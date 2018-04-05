@@ -43,23 +43,48 @@ class stat_analysis(dml.Algorithm):
         y_labels = X.iloc[:,3]
         
         
-        df = pd.DataFrame(X_value, columns=['lat_normalized',"long_normalized","pop_normalized"])
+        #df = pd.DataFrame(X_value, columns=['lat_normalized',"long_normalized","pop_normalized"])
         
-        df.corr(method='pearson')  #pearson correlation table between variables in X.
+        correlation_coff_df =X_value.corr(method='pearson')  #pearson correlation table between variables in X.
         
         #relation between lat and our y label
-        lat = linregress(X_value.iloc[:,0],y_labels)
+        slope_lat = (linregress(X_value.iloc[:,0],y_labels))[0]
+        intercept_lat = linregress(X_value.iloc[:,0],y_labels)[1]
+        rvalue_lat = linregress(X_value.iloc[:,0],y_labels)[2]
+        pvalue_lat = linregress(X_value.iloc[:,0],y_labels)[3]
+        std_lat = linregress(X_value.iloc[:,0],y_labels)[4]
         
         #relation between lon and our y label
-        long = linregress(X_value.iloc[:,1],y_labels)
+        slope_lon = (linregress(X_value.iloc[:,1],y_labels))[0]
+        intercept_lon = linregress(X_value.iloc[:,1],y_labels)[1]
+        rvalue_lon = linregress(X_value.iloc[:,1],y_labels)[2]
+        pvalue_lon = linregress(X_value.iloc[:,1],y_labels)[3]
+        std_lon = linregress(X_value.iloc[:,1],y_labels)[4]
     
         #relation between popularity and our y label
-        pop = linregress(X_value.iloc[:,2],y_labels)
-        
+        slope_pop = (linregress(X_value.iloc[:,2],y_labels))[0]
+        intercept_pop = linregress(X_value.iloc[:,2],y_labels)[1]
+        rvalue_pop = linregress(X_value.iloc[:,2],y_labels)[2]
+        pvalue_pop = linregress(X_value.iloc[:,2],y_labels)[3]
+        std_pop = linregress(X_value.iloc[:,2],y_labels)[4]
+
+        #saving those values in our mongodb
         new_df = pd.DataFrame(
-                              {'Lat': lat,
-                              'long': long,
-                              'pop':pop 
+                              {'Slope latitude': [slope_lat],
+                              'Intercept latitude': [intercept_lat],
+                              'R value latitude': [rvalue_lat],
+                               'P valye latitude': [pvalue_lat],
+                               'standard deviation latitude': [std_lat],
+                               'Slope longitude': [slope_lon],
+                              'Intercept longitude': [intercept_lon],
+                              'R value longitude': [rvalue_lon],
+                               'P valye longitude': [pvalue_lon],
+                               'standard deviation longitude': [std_lon],
+                               'Slope popularity': [slope_pop],
+                              'Intercept popularity': [intercept_pop],
+                              'R value popularity': [rvalue_pop],
+                               'P valye popularity': [pvalue_pop],
+                               'standard deviation popularity': [std_pop]
                               })
         
         r = json.loads(new_df.to_json( orient='records'))

@@ -33,6 +33,8 @@ class solutionLeastPopularStations(dml.Algorithm):
     @staticmethod
     def execute(trial = False):
 
+        
+     
         startTime = datetime.datetime.now()
 
         client = dml.pymongo.MongoClient()
@@ -78,7 +80,14 @@ class solutionLeastPopularStations(dml.Algorithm):
 
         data = pd.DataFrame(list(station_cursor.find()))
 
-        location_matrix = np.zeros((193, 2))
+        if trial == True:
+            times = 50
+            data = data.iloc[:50,:]
+        else:
+            times = 193
+        
+
+        location_matrix = np.zeros((times, 2))
         location_matrix[:,0]= data.iloc[0:]["Latitude"]
         location_matrix[:,1] = data.iloc[0:]["Longitude"]
 
@@ -109,6 +118,18 @@ class solutionLeastPopularStations(dml.Algorithm):
 
         data4 = pd.DataFrame(list(trip_data3.find()))
 
+
+        if trial == True:
+            times2 = 1000   #only see 1000 data points
+            times3 = 1000
+            tims4  = 1000 
+        else:
+            times2 = 19517  #default has 19k data point
+            times3 = 17272
+            times4 = 99860
+
+        
+
         trip_1d = np.zeros((220,1))     # data shows there are 220 hubwaystops as of july 2017
         trip_distance_pop = np.zeros((220,3))  # 220 stations with lat,lon,popularity
 
@@ -116,7 +137,7 @@ class solutionLeastPopularStations(dml.Algorithm):
         # after iteration some of the station's values(lat,lon,popularity) still may be zeros as these three cvs file doesn't contain
         #data for all 220 stops
 
-        for index in range(19517):
+        for index in range(times2):
             i=(data2.iloc[index,8])
             j = data2.iloc[index,3]
 
@@ -136,7 +157,7 @@ class solutionLeastPopularStations(dml.Algorithm):
 
 
 
-        for index in range(17272):    
+        for index in range(times3):    
             i=(data3.iloc[index,8])
             j = data3.iloc[index,3]
 
@@ -154,7 +175,7 @@ class solutionLeastPopularStations(dml.Algorithm):
             trip_distance_pop[j][1] = data3.iloc[index,5]
             trip_distance_pop[i][2] = trip_1d[j]
 
-        for index in range(99860):    
+        for index in range(times4):    
             i=(data4.iloc[index,8])
             j = data4.iloc[index,3]
 
@@ -312,7 +333,7 @@ class solutionLeastPopularStations(dml.Algorithm):
 
         #finding the station that is least significant
 
-        threshold = 0.1
+        threshold = 0.8
         d = dict(zip(range(len(xs)),[0]*len(xs)))
 
         def distance(a,b):

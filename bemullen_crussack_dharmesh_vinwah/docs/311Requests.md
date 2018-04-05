@@ -8,7 +8,7 @@ This data will further be used to determine how students change the max and aver
 ---------------------------------------------------------------------------------------------------------------------
 
 Retrieve311Requests.py:
-Requests data over all 311 inquiries in the period 2016-02-01 to 2018-03-30 from <a href="https://data.boston.gov/dataset/311-service-requests">Analyze Boston</a>, and stores the data into the mongoDB collection 'bemullen_crussack_dharmesh_vinwah.service_requests'. The script retrieves a copy of this data, retrieved 4th of April 2018, stored on this <a href"https://cs-people.bu.edu/dharmesh/cs591/591data/service_requests_filtered.json">server</a>.
+Requests data over all 311 inquiries in the period 2016-02-01 to 2018-03-30 from <a href="https://data.boston.gov/dataset/311-service-requests">Analyze Boston</a>, and stores the data into the mongoDB collection 'bemullen_crussack_dharmesh_vinwah.service_requests'. The script retrieves a copy of this data, retrieved 4th of April 2018, stored on this <a href="https://cs-people.bu.edu/dharmesh/cs591/591data/service_requests_filtered.json">server</a>.
 
 ---------------------------------------------------------------------------------------------------------------------
 

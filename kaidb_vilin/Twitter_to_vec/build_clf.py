@@ -101,7 +101,6 @@ def build_model(max_tweet_length, vector_size):
               metrics=['accuracy'])
     return model
 
-
 def main():
     max_tweet_length = 30
     vector_size = 512
@@ -153,7 +152,7 @@ def main():
           validation_data=(X_test, Y_test),
           callbacks=[EarlyStopping(min_delta=0.00025, patience=2)])
     print("Model complete, saving")
-    model.save_weights('deep_nn_weights.h5')
+    model.save_weights('deep_nn_2_weights.h5')
 
 
 if __name__ == "__main__":

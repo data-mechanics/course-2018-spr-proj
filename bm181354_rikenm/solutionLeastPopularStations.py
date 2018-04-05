@@ -122,7 +122,7 @@ class solutionLeastPopularStations(dml.Algorithm):
         if trial == True:
             times2 = 1000   #only see 1000 data points
             times3 = 1000
-            tims4  = 1000 
+            times4  = 1000
         else:
             times2 = 19517  #default has 19k data point
             times3 = 17272
@@ -212,7 +212,11 @@ class solutionLeastPopularStations(dml.Algorithm):
             if trip_1d[i][0] != float(0):
                 remove_zero_pop = np.append(remove_zero_pop,[[trip_1d[i]]])
                 counter = counter+1
-        remove_zero_pop = remove_zero_pop.reshape((181,1))
+
+        if trial:
+            remove_zero_pop = remove_zero_pop.reshape((142,1))
+        else:
+            remove_zero_pop = remove_zero_pop.reshape((181,1))
 
 
         #Pairwise distances between observations in n-dimensional space aka "pdist" but instead of distances it's popularity.

@@ -92,12 +92,8 @@ def getVDist(lat1, long1, lat2, long2):
 # Finding road safety rating by using numbers of
 # surrounding traffic signals and road lights
 class SafetyRating(dml.Algorithm):
-    startTime = datetime.now()
-
     contributor = 'liwang_pyhsieh'
-    reads = ['liwang_pyhsieh.crash_2015', 'liwang_pyhsieh.street_lights',
-             'liwang_pyhsieh.traffic_signals']
-
+    reads = ['liwang_pyhsieh.crash_2015', 'liwang_pyhsieh.street_lights', 'liwang_pyhsieh.traffic_signals']
     writes = ['liwang_pyhsieh.safety_scores']
 
     @staticmethod
@@ -138,7 +134,7 @@ class SafetyRating(dml.Algorithm):
             for row in prod_crash_lights
         ]
         # Select ones within some range
-        near_lights = [ row for row in prod_crash_lights if row["dist"] < 0.25 ]
+        near_lights = [ row for row in prod_crash_lights if row["dist"] < 0.5 ]
 
         # Aggregate by sum
         lightcounts = group_aggcount(near_lights, "_id", "_id_crash")
@@ -162,7 +158,7 @@ class SafetyRating(dml.Algorithm):
             for row in prod_crash_signals
         ]
         near_signals = [
-            row for row in prod_crash_signals if row["dist"] < 0.25
+            row for row in prod_crash_signals if row["dist"] < 0.5
         ]
 
         # Items with zero count will disappear, so zero-filling is required

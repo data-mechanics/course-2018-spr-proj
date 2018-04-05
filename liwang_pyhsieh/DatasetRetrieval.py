@@ -4,6 +4,7 @@ import dml
 import prov.model
 import datetime
 import uuid
+import random
 
 def format_time(str):
     res = str
@@ -43,7 +44,9 @@ class DatasetRetrieval(dml.Algorithm):
             item["Crash Time"] = format_time(item["Crash Time"])
             if item["X Coordinate"] is not None and item["Y Coordinate"] is not None and time_validity(item["Crash Time"]):
                 r_c.append(item)
-        # s = json.dumps(r, sort_keys=True, indent=2)
+        if trial:
+            r_c = random.sample(r_c, 300)
+
         repo.dropCollection("crash_2015")
         repo.createCollection("crash_2015")
         repo['liwang_pyhsieh.crash_2015'].insert_many(r_c)

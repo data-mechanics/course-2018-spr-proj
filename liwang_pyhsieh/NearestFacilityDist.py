@@ -86,9 +86,7 @@ def group_aggave(D, idx, g_col, s_col):
 # surrounding traffic signals and road lights
 class NearestFacilityDist(dml.Algorithm):
     contributor = 'liwang_pyhsieh'
-    reads = ['liwang_pyhsieh.crash_clustering',
-             'liwang_pyhsieh.hospitals', 'liwang_pyhsieh.police_stations']
-
+    reads = ['liwang_pyhsieh.crash_clustering', 'liwang_pyhsieh.hospitals', 'liwang_pyhsieh.police_stations']
     writes = ['liwang_pyhsieh.accidentcluster_averagefacilitydist']
 
     @staticmethod

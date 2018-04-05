@@ -31,6 +31,8 @@ Information about specifics pertaining to project 2 can be found in the <a href=
 
 Certain data transformations were previously accomplished using pure Javascript. These can be found in the <a href="scripts/">scripts</a> directory.
 
+The <a href="prototypes">prototypes</a> directory contains experimental files that were used over the course of the project to evaluate the feasibility of an idea.
+
 
 ## Evaluation
 

@@ -1,7 +1,7 @@
 ### Author: Vincent Wahl <vinwah@bu.edu>
 The following two pices of code, 'Retrieve311Requests.py' and 'Transform311Requests.py', is used to find the minimum amount of 311 dispatchers required to accommodate for all received inquiries.
 
-The motivation for determining the minimum amount of dispatchers was prompted by their own requirement of responding within 30 seconds to each inquiry. The 'Transform311Requests.py' finds how many people will be required to respond to the inquiries to achieve this. 
+The motivation for determining the minimum amount of dispatchers was prompted by their own requirement of responding within 30 seconds to each inquiry.
 
 This data will further be used to determine how students change the max and average load on the 311 central.
 

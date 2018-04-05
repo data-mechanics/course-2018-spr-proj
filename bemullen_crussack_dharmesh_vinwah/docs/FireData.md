@@ -1,16 +1,21 @@
 ## Fire Incidents KMeans
 
-###Author: Claire Russack <crussack@bu.edu>
+### Author: Claire Russack <crussack@bu.edu>
 
-I used the Fire Incident reports in Boston from May, September, and December of 2017. I first transformed the data to include only the unique incident numbers and the address, then I used geocoder to convert the addresses to latitude and longitude points. I then used that information to do three K-Means for each of the months. I wanted to determine if during the month of September, the fire incidents clustered closer to areas that students live in, such as Allston and Medford.
+The data retrieved by "RetrieveFire.py" is a collection of all Fire Incident Reports in Boston from May, September, and December of 2017, from the data portal Analyze Boston. The data is projected to include only the unique incident numbers and the address, then geocoder is used to convert the addresses to latitude and longitude points. This data is then stored in mongoDB in the collection "bemullen_crussack_dharmesh_vinwah.fires".
 
-I used two clusters for each month, based on a k-means silhoutte score for the data from the month of May.
+This data is further used in "TransformFireData.py" to do one K-Means for each of the months. This is done to determine if during the month of September, the fire incidents clustered closer to areas that students live in, such as Allston and Medford.
+
+The K-means algorithm is initialized with k=2 (i.e 2 clusters) for each month, based on the K-means silhouette score being the highest, indicating that each point has high similarity to its own cluster compared to other clusters for k=2. The silhouette score determined for May, for k in range [2,12], can be seen below.
+
 
 <center>
 	<img src="https://cs-people.bu.edu/dharmesh/cs591/591data/Silhouette_Score.png"/>
 </center>
 
-Upon running this file, I found:
+
+
+The centroids determined by this transformation is given below:
 
 May Centroids =  [[ 42.34223224 -71.06216747] (South End, 02118)
                   [ 42.31453459 -71.14446154]] (Brookline, 02467)

@@ -16,7 +16,7 @@ class stability_score(dml.Algorithm):
         income, and number of businesses.
 
 
-        Code adapted from https://github.com/Data-Mechanics/course-2017-fal-proj/blob/master/jdbrawn_jliang24_slarbi_tpotye/safetyScore.py
+        Code adapted from github users jdbrawn, jliang24, slarbi, and tpotye
         '''
 
         startTime = datetime.datetime.now()

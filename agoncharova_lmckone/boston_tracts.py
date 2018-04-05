@@ -16,6 +16,7 @@ class boston_tracts(dml.Algorithm):
 
 	@staticmethod
 	def execute(trial=False):
+		'''retrieves boston census tract data from datamechanics.io'''
 		startTime = datetime.datetime.now()
 
 		url = "http://datamechanics.io/data/boston_tracts_3.json"

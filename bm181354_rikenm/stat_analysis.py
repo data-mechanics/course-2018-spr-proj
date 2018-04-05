@@ -25,8 +25,6 @@ def stat_analysis():
     y_labels = X.iloc[:,3]
 
 
-
-
     df = pd.DataFrame(X_value, columns=['lat_normalized',"long_normalized","pop_normalized"])
 
     df.corr(method='pearson')  #pearson correlation table between variables in X.
@@ -40,9 +38,6 @@ def stat_analysis():
 
     #relation between popularity and our y label
     linregress(X_value[:,2],y_labels)
-
-
-
 
 
 # See readme for average Linkage Dendrograms analysis.

@@ -1,4 +1,4 @@
-# Filename: RetrieveMovingTruckPermits.py
+# Filename: RetrieveUniversitiesGeographicData.py
 # Author: Dharmesh Tarapore <dharmesh@bu.edu>
 # Description: Retrieve datasets from the sources provided and generate 
 #              the data lineage.
@@ -10,11 +10,10 @@ import prov.model
 import datetime
 import uuid
 
-class RetrieveMovingTruckPermits(dml.Algorithm):
-
+class RetrieveUniversitiesGeographicData(dml.Algorithm):
     contributor = "bemullen_crussack_dharmesh_vinwah"
     reads = []
-    writes = ["bemullen_crussack_dharmesh_vinwah.moving_truck_permits"]
+    writes = []
 
     @staticmethod
     def execute(trial = False):

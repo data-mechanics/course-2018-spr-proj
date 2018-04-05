@@ -1,3 +1,11 @@
+Running the files in their numbered order will create all the collections necessary to run each file. 
+The Project1 folder is previous files used to create the datasets for project 1.
+The visualization folder has an html file that shows a plotting of restaurants in Boston grouped by color into their kmeans groups.
+Some files access a dataset on Datamechanics.io that has been precomputed in project 1.
+
+________________________________________________________________________________________________________________________________________
+
+
 We have used the following five datasets to examine different restaurants and businesses:
 Code Enforcement - Building and Property Violations (Analyze Boston), FOOD ESTABLISHMENT INSPECTIONS (Analyze Boston), Yelp Fusion, Boston Restaurant Licenses (Analyze Boston), NYC Health Inspection (NYC Open Data), and NYC Restaurant Licenses (NYC Open Data)
 

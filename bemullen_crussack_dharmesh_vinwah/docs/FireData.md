@@ -4,9 +4,9 @@
 
 The data retrieved by "RetrieveFire.py" is a collection of all Fire Incident Reports in Boston from May, September, and December of 2017, from the data portal Analyze Boston. The data is projected to include only the unique incident numbers and the address, then Google's geocoder is used to convert the addresses to latitude and longitude points. This data is then stored in mongoDB in the collection "bemullen_crussack_dharmesh_vinwah.fires".
 
-This data is further used in "TransformFireData.py" to do one K-Means for each of the months. This is done to determine if during the month of September, the fire incidents clustered closer to areas that students live in, such as Allston and Medford.
+This data is further used in "TransformFireData.py" to do one K-Means for each of the months. This is done to determine if during the month of September, the fire incidents clusters closer to areas that students live in, such as Allston and Medford.
 
-The K-means algorithm is initialized with k=2 (i.e 2 clusters) for each month, based on the K-means silhouette score being the highest, indicating that each point has high similarity to its own cluster compared to other clusters for k=2. The silhouette score determined for May, for k in range [2,12], can be seen below.
+The K-means algorithm is initialized with k=2 (i.e 2 clusters) for each month, based on the K-means silhouette score being the highest for k=2. A high silhouette score indicates that each point has high similarity to its own cluster compared to other clusters. The silhouette score determined for May, for k in range [2,12], can be seen below.
 
 
 <center>

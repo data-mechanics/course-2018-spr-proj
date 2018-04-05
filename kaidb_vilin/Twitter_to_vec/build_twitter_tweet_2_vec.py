@@ -9,6 +9,7 @@ import time
 import sys
 
 
+
 def load_corpus(model_location, corp_filename):
     """
     Loads the corpus dil object

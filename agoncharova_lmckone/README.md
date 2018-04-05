@@ -24,17 +24,29 @@ Boston is a growing city characterized by both rapid economic growth and, increa
 
 5. **Income**
 
-	We used the [Census Data API python wrapper](https://github.com/datamade/census) to retrieve median income by census tract in Boston. 
+	We used the [Census Data API python wrapper](https://github.com/datamade/census) to retrieve median income by census tract in Massachusetts. We then filtered for the Suffolk Count FIPS code, representing census tracts in Boston. 
 
 6. **Census Tracts**
 
-	We retrieved the census tract [shapefile for Massachusetts](https://www.census.gov/cgi-bin/geo/shapefiles/index.php) and filtered it for Boston. We used QGIS to convert it into a GeoJSON file and retrieved it from datamechanics.io
+	We retrieved the census tract [shapefile for Massachusetts](https://www.census.gov/cgi-bin/geo/shapefiles/index.php) and filtered it for Boston. We used QGIS to convert it into a GeoJSON file which we retrieved from [datamechanics.io](http://datamechanics.io/data/boston_tracts_3.json).
 
 ## Aggregation and Scoring
 
-After gathering our data, we created a normalized "stability score" that measures the housing instability of a given census tract using the indicators noted as significant in [this paper](https://www.sciencedirect.com/science/article/pii/S0049089X16300977) by housing scholar Matthew Desmond (eviction rate and crime rate).
+After gathering our data, we utlized the [Shapely](https://toblerity.org/shapely/manual.html) library to aggregate the lat-long data we retrieved for evictions, crimes, and businesses by the census tract polygons. The function we implemented essentially identifies whether a lat-long point falls within the lat-long boundaries of a given census tract. We wrapped this shapely function into a MapReduce-style algorithm that appends a tuple containg the census tract FIPS code and a 1 when it identifies which tract the point falls within. We then aggregate these over the census tract FIPS code and use a combination of selections and projection to 'join' the counts of evictions, crimes, and businesses to the GeoJSON file, inserting them as fields within the 'properties' dictionary associated with each tract. 
+
+We also joined the income field that we retrieved from the Census Data API to the GeoJSON file through a simple project and selection on the GEOID field. 
+
+Having a measure of the count of evictions, crimes, businesses, and median income for each tract, we created a normalized "stability score" that measures the housing instability of a given census tract using the indicators noted as significant in [this paper](https://www.sciencedirect.com/science/article/pii/S0049089X16300977) by housing scholar Matthew Desmond (eviction rate and crime rate).
 
 ## Statistical Analysis
+
+We quickly visualized evictions, businesses, and crime on a map to get a sense of their distribution around the City:
+
+**Crimes, Evictions, and Businesses**
+![Crimes, Evictions, and Businesses](map.png)
+
+**Evictions and Businesses**
+![Evictions and Businesses](businesseviction.png)
 
 To investigate the relationships within our data, we ran some basic correlations. We found that businesses has a 0.1 correlation with stability score (p=0.14), a detail we used in our optimization. 
 
@@ -60,7 +72,7 @@ Here is a graph of a result of performing k-means on crime and eviction and stab
 ### SMT 
 In order to see whether it would be possible to gain insights into the relationships between the stability score and the number of businesses in a particular Boston-area census tract, we computed the correlation statistic on the "# of businesses" and "stability score". We found that the correlation was 0.1, which affirmed our intuition that there might be a relationship. Therefore, we implemented an SMT solver using the z3 library to compute the "optimal score". We invented an algorithm for computing the optimal score for a tract. The way it works is that we constrain the number of businesses it would be possible to add to an area. Then we assign a specific weight that a single businesses added might have on the stability score. Then we use the minimize function of Optimize z3 object to find the minimized optimal score from the stability score.
 
-* note: in order to run optimal_score.py, you will need to replace `sys.path.append("/Users/lubovmckone/course-2018-spr-proj/agoncharova_lmckone/z3/build/python/")` with your own path to the z3/build/python folder
+* *note:* in order to run optimal_score.py, you will need to replace `sys.path.append("/Users/lubovmckone/course-2018-spr-proj/agoncharova_lmckone/z3/build/python/")` in with your own path to the z3/build/python folder
 
 
 

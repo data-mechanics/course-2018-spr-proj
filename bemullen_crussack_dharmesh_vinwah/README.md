@@ -1,4 +1,4 @@
-# CS 591 L1 Project 1 
+# CS 591 L1 Projects 1 and 2
 
 Authors: Brooke Mullen <bemullen@bu.edu>, Dharmesh Tarapore <dharmesh@bu.edu>, Claire Russack <crussack@bu.edu>, Vincent Wahl <vinwah@bu.edu>
 

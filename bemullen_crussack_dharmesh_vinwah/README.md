@@ -37,6 +37,4 @@ Certain data transformations were previously accomplished using pure Javascript.
 To run the code, setup the database structure as documented in the parent README and then run:
 
 
-<code>pip install -r requirements.txt</code> followed by
-
-<code>python execute.py bemullen_crussack_dharmesh_vinwah</code>
+<code>pip install -r requirements.txt && python execute.py bemullen_crussack_dharmesh_vinwah</code>

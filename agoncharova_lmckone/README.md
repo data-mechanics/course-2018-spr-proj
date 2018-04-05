@@ -62,7 +62,7 @@ In order to see whether it would be possible to gain insights into the relations
 
 * note: in order to run optimal_score.py, you will need to replace 
 
-'sys.path.append("/Users/lubovmckone/course-2018-spr-proj/agoncharova_lmckone/z3/build/python/")'{:.language-python}
+`sys.path.append("/Users/lubovmckone/course-2018-spr-proj/agoncharova_lmckone/z3/build/python/")`
 
 with your own path to the z3/build/python folder
 

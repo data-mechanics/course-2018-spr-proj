@@ -14,7 +14,7 @@ Our idea is to located the least significant Hubway station and eliminate it. We
 Python and MongoDB
 
 ## Dataset
-Hubway stations and Subway Trips dataset
+Hubway stations and Hubway Trip dataset
 
 
 ## Methodology:
@@ -28,6 +28,7 @@ Hubway stations and Subway Trips dataset
 In this project we extracted 4 data sets from Hubway, a bicycle station company. Data acquired had start and end trip location, station ID, and station location.  Hence, we had three dimension of data(x=long, y=lat, z=popularity of a stop). For popularity we just counted total occurrence of stationID. We clustered our data using average linkage clustering. Linkage clustering is a hierarchal clustering where two similar objects are clustered in the same cluster at first then these clustered are joined iteratively until we hit the root node. We can stop algorithm to get a desired cluster. The cluster that seemed to work was when we had 20 clusters. We used this clustering instead of K mean because there are lots of option how to do the clustering. For example: Single, Average, Complete. For Cluster analysis, we did not find many useful test hence, we just created a correlation table for our data.
 One useful thing about hierarchal clustering is that you can see the dneundogram diagram to a analysis the cluster.
 
+<img src="/img/20clusters.jpeg" width="350"/>
 
 ## To Run:
 

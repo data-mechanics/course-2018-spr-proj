@@ -46,8 +46,6 @@ def corr(x, y): # Correlation coefficient.
 # We add additional parameter that specify how many runs required to approximate p-value
 def pval(x, y, s):
     c0 = corr(x, y)
-    print(c0)
-
     corrs = []
     for k in range(0, s):
         y_permuted = permute(y)

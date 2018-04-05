@@ -86,8 +86,10 @@ def group_aggave(D, idx, g_col, s_col):
 # surrounding traffic signals and road lights
 class NearestFacilityDist(dml.Algorithm):
     contributor = 'liwang_pyhsieh'
-    reads = ['liwang_pyhsieh.crash_clustering', 'liwang_pyhsieh.hospitals', 'liwang_pyhsieh.police_stations']
-    writes = ['liwang_pyhsieh.accidentcluster_averagefacilitydist']
+    reads = ['liwang_pyhsieh.crash_clustering',
+             'liwang_pyhsieh.hospitals', 'liwang_pyhsieh.police_stations']
+
+    writes = ['liwang_pyhsieh.accidentcluster_averagefacilitydist', 'liwang_pyhsieh.nearest_hos_dist']
 
     @staticmethod
     def execute(trial=False):
@@ -152,6 +154,12 @@ class NearestFacilityDist(dml.Algorithm):
         repo.dropCollection("accidentcluster_averagefacilitydist")
         repo.createCollection("accidentcluster_averagefacilitydist")
         repo['liwang_pyhsieh.accidentcluster_averagefacilitydist'].insert_many(nearestfacilityave)
+
+
+        repo.dropCollection("nearest_hos_dist")
+        repo.createCollection("nearest_hos_dist")
+        repo['liwang_pyhsieh.nearest_hos_dist'].insert_many(prod_crash_hospital)
+
         repo.logout()
         endTime = datetime.now()
 

@@ -30,6 +30,7 @@ In this project, we try to solve constraint-satisfaction problem, and to conduct
 In Project #1, we've found the number of lights and signals near to each accident spot. We want to know whether there's any relationship between frequency of accidents and amount of surrounding traffic facilities. Since we only analyze on accidents happening during nighttime, it's reasonable that accident frequency could be reduced if there's enough lighting or signals in an area. So that we can observe their relationships by computing correlation-coefficient. If we find there's negative relationship between accident frequency and number of nearby lights or signals, we can conclude that these facilities may help reduce car accidents. If not (with negative, or no apparent relation), then there may be other factors should be taken into consideration, such as traffic flow or weather condition.
 
 ### Constraint-Satisfaction Problem Solving
+In the project, we are trying to solve a constraint satisfaction problem by trying to find five location to place new facilities in order to improve the overall distance between where the crashes happen and the facilities. In the algorithm, we randomly pick locations and check if the location pass constraint until we have five locations.
 
 ### Statistical Analysis
 First we define that 'accident density' is the amount of other accidents near to the accident spot,then we compute the correlation-coefficient along with approximated p-value between accident density and number of nearby street lights and traffic signals of all accident spots.

@@ -2,7 +2,7 @@
 
 ### Author: Claire Russack <crussack@bu.edu>
 
-The data retrieved by "RetrieveFire.py" is a collection of all Fire Incident Reports in Boston from May, September, and December of 2017, from the data portal Analyze Boston. The data is projected to include only the unique incident numbers and the address, then geocoder is used to convert the addresses to latitude and longitude points. This data is then stored in mongoDB in the collection "bemullen_crussack_dharmesh_vinwah.fires".
+The data retrieved by "RetrieveFire.py" is a collection of all Fire Incident Reports in Boston from May, September, and December of 2017, from the data portal Analyze Boston. The data is projected to include only the unique incident numbers and the address, then Google's geocoder is used to convert the addresses to latitude and longitude points. This data is then stored in mongoDB in the collection "bemullen_crussack_dharmesh_vinwah.fires".
 
 This data is further used in "TransformFireData.py" to do one K-Means for each of the months. This is done to determine if during the month of September, the fire incidents clustered closer to areas that students live in, such as Allston and Medford.
 

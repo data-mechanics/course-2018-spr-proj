@@ -48,12 +48,20 @@ class stability_score(dml.Algorithm):
 
         # calculate score
         for entry in tract_counts.find():
+
             evictionScore = float(entry['properties']['evictions'] - minEvictions) / eviction_max_minus_min
             crimeScore = float(entry['properties']['crimes'] - minCrimes) / crime_max_minus_min
 
             ## take a look at coefficients used by Desmond in his paper to maybe weight these differently
             stabilityScore = (evictionScore + crimeScore) / 2.0
-            score.append({'Tract': entry['properties']['GEOID'], 'stability': stabilityScore})
+            # print("entry stabilityScore " + str(stabilityScore) + " crimes " + str(entry['properties']['crimes']) + " eviction " + str(entry['properties']['evictions']))
+            score.append({
+                'Tract': entry['properties']['GEOID'],
+                'stability': stabilityScore,
+                'evictionScore': evictionScore,
+                'crimeScore': crimeScore,
+                'businesses': entry['properties']['businesses']
+                })
 
         repo.dropCollection('stability_score')
         repo.createCollection('stability_score')
@@ -91,23 +99,22 @@ class stability_score(dml.Algorithm):
                                        {'prov:label': 'Stability Analysis by Census Tract',
                                         prov.model.PROV_TYPE: 'ont:DataSet'})
 
-        get_stablity_score = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        get_stability_score = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
-        doc.wasAssociatedWith(get_stablity_score, this_script)
+        doc.wasAssociatedWith(get_stability_score, this_script)
 
-        doc.usage(get_stablity_score, resource_stability, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
+        doc.usage(get_stability_score, resource_stability, startTime, None, {prov.model.PROV_TYPE: 'ont:Computation'})
 
         stability_score = doc.entity('dat:agoncharova_lmckone#stability_score',
                             {prov.model.PROV_LABEL: 'Stability Score', prov.model.PROV_TYPE: 'ont:DataSet'})
 
-
         doc.wasAttributedTo(stability_score, this_script)
         doc.wasGeneratedBy(stability_score, get_stability_score, endTime)
-        doc.wasDerivedFrom(stability_score, resource_stability, get_stablity_score, get_stablity_score, get_stablity_score)
+        doc.wasDerivedFrom(stability_score, resource_stability, get_stability_score, get_stability_score, get_stability_score)
 
         repo.logout()
 
         return doc
 
-
-stability_score.execute()
+# stability_score.execute()
+# stability_score.provenance()

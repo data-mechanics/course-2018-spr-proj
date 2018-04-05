@@ -19,7 +19,6 @@ class boston_crimes(dml.Algorithm):
 		response = urllib.request.urlopen(url).read()
 		response = response.decode("utf-8").replace(']', "") + "]"
 		data = json.loads(response)
-		print(data)
 		return data
 
 	@staticmethod
@@ -90,7 +89,7 @@ class boston_crimes(dml.Algorithm):
 
 		return doc
 
-boston_crimes.execute()
+# boston_crimes.execute()
 # doc = boston_crimes.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))

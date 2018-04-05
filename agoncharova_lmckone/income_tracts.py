@@ -30,7 +30,6 @@ class income_tracts(dml.Algorithm):
 		c = Census("d07b9c8b06ff352d4f8217ddc4f15737fc6c867c", year=2015)
 		#get median income in 2015 for all census tracts in Massachusetts
 		data = c.acs5.state_county_tract('B06011_001E', states.MA.fips, '025', Census.ALL)
-		print(type(data))
 
 		repo['agoncharova_lmckone.income_tracts'].insert_many(data)
 		repo['agoncharova_lmckone.income_tracts'].metadata({'complete':True})
@@ -73,14 +72,10 @@ class income_tracts(dml.Algorithm):
 				  
 		return doc
 
-
-income_tracts.execute()
-
-
+# income_tracts.execute()
+# income_tracts.provenance()
 
 #url = 'http://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/2010/tl_2010_25025_tabblock10.zip'
 #response = ur.urlopen(url)
 #data = json.load(response)
 #print(data)
-
-

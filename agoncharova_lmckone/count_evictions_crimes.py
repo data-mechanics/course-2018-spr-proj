@@ -217,5 +217,5 @@ class count_evictions_crimes(dml.Algorithm):
 		return doc
 
 
-count_evictions_crimes.execute()
+# count_evictions_crimes.execute()
 #sf_evictions_constructions.provenance()

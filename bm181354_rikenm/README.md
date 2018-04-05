@@ -38,7 +38,7 @@ One useful thing about hierarchal clustering is that you can see the dneundogram
 
 <img src="https://github.com/bm181354/course-2018-spr-proj/blob/master/bm181354_rikenm/img/graph2.jpeg" width="400"/>
 
-*Fig 3.0: The red dot is the least significant stop as calculated by our algorithm. Hence, would be removed*
+*Fig 3.0: The red dot is the least significant stop as calculated by our algorithm. Hence, would be removed. Fig 3.0a: red dot is buried inside a dense stop. Fig 3.0b : looking from z axis straight down. *
 
 
 ## To Run:

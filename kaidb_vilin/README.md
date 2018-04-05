@@ -5,7 +5,7 @@
 
 # Overview Project 2:
 Using tweepy, an open source python wrapper for Twitter's dev API, and an annotated tweet sentiment dataset, we
-construct a fully end to end ML pipeline for predicting aggregate sentiment by region. 
+construct a fully end to end ML pipeline for predicting aggregate sentiment by region. Twitter has become a data
 - The long term goal is to predict reactions to current news using 
 
 - note:  As this is predominantly exploratory,  technical short cuts were taken. 
@@ -28,6 +28,7 @@ construct a fully end to end ML pipeline for predicting aggregate sentiment by r
 ## Future Work:
 - Sentiment analyzer for News API article headlines
 - Correlate Twitter Sentiment with Article Sentiment 
+
 
 
 
@@ -61,6 +62,15 @@ build_twitter_tweet_2_vec.py
 build_clf.py
 ```
 
+- the first script will retrieve the data, save it, stem/tokenize it, and save it. This is avaiable in trial mode
+- The second wone will build a word2vec model using the saved data. This is also avaiable in trial mode
+- The final one will build a conv network from scratch from the full dataset. Trial mode is left out in lieu of loading a prebuild mode. 
+- If you do decide to from scratch, it is advised that you use a device with a GPU compatible with the tensorflow backend. 
+    - there is an initial memory explosion when building the training, testing and validation set. 
+    - TODO: partition all data into batches via data-stream 
+    - The W2vec model is combined with randomly subsampled tokens from the corpus conditioned on 1) the word being a vector, and 2) it being reasonably common (arbitrary)
+    - These are stacked into a tensor to construct the datasets. 
+    - ideally, 10-20 epochs should be run with a Nvidia GPU
 ## Tweet Word Embedding Examples 
 ** Disclaimer: These asosciations are constructed by the tweet. word2vec model. These associations are not reflective of our views. **
 ** Trigger Warning: Profanity, slurs...etc **

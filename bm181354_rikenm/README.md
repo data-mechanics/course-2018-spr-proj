@@ -43,9 +43,9 @@ One useful thing about hierarchal clustering is that you can see the dneundogram
 ## Dependency:
 
 ```python
-$ pip install pandas
-$ pip install scipy
-$ pip install numpy
+ pip install pandas
+ pip install scipy
+ pip install numpy
 ```
 
 ## To Run:

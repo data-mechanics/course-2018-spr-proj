@@ -85,7 +85,8 @@ class solutionLeastPopularStations(dml.Algorithm):
         np.shape(geo_affinity(location_matrix))
         np.shape(location_matrix)
 
-
+        # AgglomerativeClustering on these data based on their location. nearest neighbor are clustered together fiest
+        
         agg = AgglomerativeClustering(n_clusters=20, affinity=geo_affinity, linkage="average")
         label1 = agg.fit_predict(location_matrix)  # Returns class labels.
 
@@ -99,7 +100,8 @@ class solutionLeastPopularStations(dml.Algorithm):
         #plt.show()
 
         # clustering based on popularity and distance
-        #read 
+        
+        #read data for hubway trips. We will used this to obtain popularity index of stops
 
         data2 = pd.DataFrame(list(trip_data1.find()))
 
@@ -171,7 +173,8 @@ class solutionLeastPopularStations(dml.Algorithm):
             trip_distance_pop[i][2] = trip_1d[j]
 
 
-
+        #clustering based on popularity. similar popular stuff are combined first
+            
         def relative_popularity_between_point(x,y):
             #difference between two 1d points. These point insignifies popularity of that node 
             #return (abs(x-y)/((x+1)/2))
@@ -179,7 +182,7 @@ class solutionLeastPopularStations(dml.Algorithm):
             difference = (x-y)**2
             return math.sqrt(difference)
 
-        # removing all the stops that have zeros in all three fiels(lat,lon,popularity)
+        # removing all the stops that have zeros in all three fields(lat,lon,popularity)
         remove_zero_pop = np.array([[]])
         counter = 0 
 
@@ -191,7 +194,7 @@ class solutionLeastPopularStations(dml.Algorithm):
         remove_zero_pop = remove_zero_pop.reshape((181,1))
 
 
-        #Pairwise distances between observations in n-dimensional space aka "pdist" but instead of distances it's similarity of popularity.
+        #Pairwise distances between observations in n-dimensional space aka "pdist" but instead of distances it's popularity.
         def pop_affinity(M):
             return  np.array([[relative_popularity_between_point(a[0],b[0]) for a in M] for b in M])
 
@@ -204,7 +207,7 @@ class solutionLeastPopularStations(dml.Algorithm):
         agg.fit_predict(remove_zero_pop_minus)  # Returns class labels.    
 
 
-
+        #final form. combining both distance and popularity index 
         #combining both geo and popularity. now each item represent pdist+ppopularity 
         def geo_pop_affinity(M):
             return  np.array([[relative_popularity_and_distance_between_point(a,b) for a in M] for b in M])
@@ -285,8 +288,7 @@ class solutionLeastPopularStations(dml.Algorithm):
                          {'Latitude_normalized': remove_zero_trip_distance_pop[:,0],
                          'Longitude_normalized': remove_zero_trip_distance_pop[:,1],
                          'Popularity':remove_zero_trip_distance_pop[:,2] ,
-                         'Y_label': labels,
-
+                         'Y_label': labels
 
                          })
 
@@ -298,7 +300,8 @@ class solutionLeastPopularStations(dml.Algorithm):
         repo.dropPermanent('solutionLeastPopularStationsdb')
                 #repo.create_collection("trail_index")
         repo.createPermanent('solutionLeastPopularStationsdb')
-        repo['solutionLeastPopularStationsdb'].insert_many(r)
+        repo['bm181354_rikenm.solutionLeastPopularStationsdb'].insert_many(r)
+        repo['bm181354_rikenm.solutionLeastPopularStationsdb'].metadata({'complete':True})
 
 
         # finding least significant station
@@ -307,24 +310,36 @@ class solutionLeastPopularStations(dml.Algorithm):
         label_with_most_stops=(count_of_labels).most_common(1)[0][0]
 
 
-        #constraint 
-        smallest = 10000
-        smallest_index = 0
-        for i in range(len(labels)):
-            if (labels[i] == label_with_most_stops):  #if check if i_th is same as the one with the most stops          
-                if remove_zero_trip_distance_pop[i][2] < smallest:
-                       smallest = remove_zero_trip_distance_pop[i][2]
-                       smallest_index= i                                  # remove this stop
+        #finding the station that is least significant
+
+        threshold = 0.1
+        d = dict(zip(range(len(xs)),[0]*len(xs)))
+
+        def distance(a,b):
+            return (math.sqrt((a[0]-b[0])**2+(a[1]-b[1])**2+(a[2]-b[2])**2))
 
 
-        labels = np.zeros(np.shape(labels), dtype=int)
-        labels = labels.tolist()
-        labels[smallest_index] = "red"
-        '''plt.figure()
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-        ax.scatter(xs, ys, zs, zdir='z', s=20, c=labels, depthshade=True)
-        plt.show()'''
+        for i in range(len(xs)):
+            for j in range(len(xs)):
+                
+                
+                
+                if labels[i] == label_with_most_stops:
+                    a = [xs[i],ys[i],zs[i]]
+                    b = [xs[j],ys[j],zs[j]]
+                    dis = distance(a,b)
+                    
+                    
+                    
+                    
+                    if dis < threshold:
+                        d[i] += 1
+                        
+        smallest_index = max(d, key=d.get)
+         
+        
+       # saving dictionary that says which points are least significant. Higher the value in the dictionary, least significant. Key is station and value = nearby neighbor with same value.                 
+
         
         
         # logout

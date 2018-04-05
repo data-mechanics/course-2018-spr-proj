@@ -1,12 +1,12 @@
-import urllib.request
-import json
 import dml
 import prov.model
 import datetime
 import uuid
+import prequest as requests
+from pyspark.sql import SparkSession
 
 
-class demographics(dml.Algorithm):
+class get_demographics(dml.Algorithm):
     contributor = 'fjansen'
     reads = []
     writes = ['fjansen.race', 'fjansen.householdincome', 'fjansen.povertyrates', 'fjansen.commuting']
@@ -14,84 +14,67 @@ class demographics(dml.Algorithm):
     @staticmethod
     def execute(trial=False):
 
-        startTime = datetime.datetime.now()
+        start_time = datetime.datetime.now()
 
-        # open db client and authenticate
-        client = dml.pymongo.MongoClient()
-        repo = client.repo
-        repo.authenticate('fjansen', 'fjansen')
+        spark = SparkSession.builder.appName('save-demographics').getOrCreate()
 
         # opens 'Race.json' file from datamechanics.io
-        # and inserts it into repo collection 'fjansen.race'
 
         url = 'http://datamechanics.io/data/nathansw_sbajwa/Race.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
-        s = json.dumps(r, indent=4)
-        repo.dropCollection("race")
-        repo.createCollection("race")
-        repo['fjansen.race'].insert_one(r)
+        response = requests.get(url).json()
+
+        df = spark.createDataFrame(response)
+        df.write.json('hdfs://project/hariri/cs591/race.json')
 
         # opens 'MeansOfCommuting.json' file from datamechanics.io
-        # and inserts it into repo collection 'fjansen.commuting'
 
         url = 'http://datamechanics.io/data/nathansw_sbajwa/MeansOfCommuting.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
-        s = json.dumps(r, indent=4)
-        repo.dropCollection("commuting")
-        repo.createCollection("commuting")
-        repo['fjansen.commuting'].insert_one(r)
+        response = requests.get(url).json()
+        df = spark.createDataFrame(response)
+        df.write.json('hdfs://project/hariri/cs591/commuting.json')
 
         # opens 'PovertyRates.json' file from datamechanics.io
-        # and inserts it into repo collection 'fjansen.povertyrates'
 
         url = 'http://datamechanics.io/data/nathansw_sbajwa/PovertyRates.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
-        s = json.dumps(r, indent=4)
-        repo.dropCollection("povertyrates")
-        repo.createCollection("povertyrates")
-        repo['fjansen.povertyrates'].insert_one(r)
+        response = requests.get(url).json()
+        df = spark.createDataFrame(response)
+        df.write.json('hdfs://project/hariri/cs591/poverty-rates.json')
 
         # opens 'HouseholdIncome.json' file from datamechanics.io
-        # and inserts it into repo collection 'fjansen.householdincome'
 
         url = 'http://datamechanics.io/data/nathansw_sbajwa/HouseholdIncome.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
+        response = requests.get(url).json()
 
-        ## removes $ from all of the nested keys within the JSON file (char forbidden by mongodb)
-        for town in r.keys():
+        # removes $ from all of the nested keys within the JSON file (char forbidden by mongodb)
+        # TODO Is this necessary for Spark?
+        for town in response.keys():
             # Preps variables to alter dict with
             toReplace = {}
             toDelete = []
-            for old_key in r[town]:
+            for old_key in response[town]:
                 # ex: '$25,000-34,999' -> '25,000-34,999'
                 new_key = old_key.replace('$', '')
                 # only continue if the original key had a $ that needed to be removed
                 if new_key != old_key:
-                    # puts new key in seperate dict
-                    toReplace[new_key] = r[town][old_key]
+                    # puts new key in separate dict
+                    toReplace[new_key] = response[town][old_key]
                     # adds old key to list of keys to be deleted
                     toDelete += [old_key]
             # merges two dicts i.e. r[town] contains both old and new keys ($ and no $)
-            r[town].update(toReplace)
+            response[town].update(toReplace)
             # deletes old keys from r[town] leaving only kys with no $
             for key in toDelete:
-                del r[town][key]
+                del response[town][key]
 
-        s = json.dumps(r, indent=4)
-        repo.dropCollection("householdincome")
-        repo.createCollection("householdincome")
-        repo['fjansen.householdincome'].insert_one(r)
+        df = spark.createDataFrame(response)
+        df.write.json('hdfs://project/hariri/cs591/household-income.json')
 
         # logs out of db
-        repo.logout()
+        spark.stop()
 
-        endTime = datetime.datetime.now()
+        end_time = datetime.datetime.now()
 
-        return {"start": startTime, "end": endTime}
+        return {"start": start_time, "end": end_time}
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
@@ -176,8 +159,3 @@ class demographics(dml.Algorithm):
         repo.logout()
 
         return doc
-
-# demographics.execute()
-# doc = demographics.provenance()
-# print(doc.get_provn())
-# print(json.dumps(json.loads(doc.serialize()), indent=4))

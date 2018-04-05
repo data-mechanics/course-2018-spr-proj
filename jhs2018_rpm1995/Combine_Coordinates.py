@@ -13,13 +13,6 @@ class Combine_Coordinates(dml.Algorithm):
              'jhs2018_rpm1995.greenspaces']                  # its geographical coordinates
     writes = ['jhs2018_rpm1995.greenassets']
 
-    # @staticmethod
-    # def extract(cursor, type, megalist):        # This function extracts the type of object we are looking at (eg: tree)
-    #                                             # and its coordinates, and adds them to the list that we will write
-    #     for elements in cursor:                 # into dataset "greenobjects"
-    #         megalist.append({"Type": type, "Location": elements['geometry']['coordinates']})
-    #     return megalist
-
     @staticmethod
     def execute(trial=False):
         # Retrieve datasets

@@ -40,12 +40,12 @@ class project_coordinates(dml.Algorithm):
         hubway = repo.jhs2018_rpm1995.hubway.find()
         trees = repo.jhs2018_rpm1995.trees.find()
         charge = repo.jhs2018_rpm1995.charge.find()
-        # openspaces = repo.jhs2018_rpm1995.openspaces.find()
         budget = repo.jhs2018_rpm1995.budget.find()
         crime = repo.jhs2018_rpm1995.crime.find()
 
         objects = project_coordinates.extract(hubway, "hubway", objects)
-        objects = project_coordinates.extract(trees, "tree", objects)
+        if trial is False:
+            objects = project_coordinates.extract(trees, "tree", objects)
         objects = project_coordinates.extract(charge, "charge", objects)
 
         for items in budget:                                                # Because budget has a different format
@@ -111,6 +111,9 @@ class project_coordinates(dml.Algorithm):
                                                       prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension':
                                                           'json'})
 
+        resource_crime = doc.entity('bwod: crime', {'prov:label': 'Crime Incidents in Boston',
+                                                    prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'json'})
+
         get_greenobjects = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime,
                                         {prov.model.PROV_LABEL: "Locations of Hubway, Charging Stations, "
                                                                 "Budget Facilities and Trees in Boston",
@@ -122,6 +125,7 @@ class project_coordinates(dml.Algorithm):
         doc.usage(get_greenobjects, resource_charges, startTime)
         doc.usage(get_greenobjects, resource_trees, startTime)
         doc.usage(get_greenobjects, resource_budget, startTime)
+        doc.usage(get_greenobjects, resource_crime, startTime)
 
 # #######
         greenobjects = doc.entity('dat:jhs2018_rpm1995_greenobjects',
@@ -136,6 +140,8 @@ class project_coordinates(dml.Algorithm):
         doc.wasDerivedFrom(greenobjects, resource_charges, get_greenobjects, get_greenobjects,
                            get_greenobjects)
         doc.wasDerivedFrom(greenobjects, resource_budget, get_greenobjects, get_greenobjects,
+                           get_greenobjects)
+        doc.wasDerivedFrom(greenobjects, resource_crime, get_greenobjects, get_greenobjects,
                            get_greenobjects)
 
         repo.logout()

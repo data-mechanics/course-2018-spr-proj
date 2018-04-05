@@ -1,6 +1,4 @@
 # ####################################### Gonna get us some DATA #######################################################
-# ################ Data about Hubway Stations, Electric Charging Stations, and Open Spaces in Boston ###################
-
 
 import urllib.request
 import json
@@ -55,11 +53,12 @@ class getdata(dml.Algorithm):
         repo.createCollection("hubway")
         repo['jhs2018_rpm1995.hubway'].insert_many(r)
 
-        # This fetches a dataset with details about Trees in Boston
-        r = fetch_geojson('http://datamechanics.io/data/Trees%20(1).geojson', "Trees")
-        repo.dropCollection("trees")
-        repo.createCollection("trees")
-        repo['jhs2018_rpm1995.trees'].insert_many(r)
+        if trial is False:
+            # This fetches a dataset with details about Trees in Boston
+            r = fetch_geojson('http://datamechanics.io/data/Trees%20(1).geojson', "Trees")
+            repo.dropCollection("trees")
+            repo.createCollection("trees")
+            repo['jhs2018_rpm1995.trees'].insert_many(r)
 
         # This fetches a dataset with details about Charging Stations in Boston
         r = fetch_json('https://boston.opendatasoft.com/explore/dataset/charging-stations/download/?format=json'
@@ -68,18 +67,18 @@ class getdata(dml.Algorithm):
         repo.createCollection("charge")
         repo['jhs2018_rpm1995.charge'].insert_many(r)
 
-        #         # This fetches a dataset with details about Open Spaces in Boston
-        #         r = fetch_geojson('http://bostonopendata-boston.opendata.arcgis.com/datasets
-        # /2868d370c55d4d458d4ae2224ef8cddd_7'
-        #                           '.geojson', "Open Spaces")
-        #         repo.dropCollection("openspaces")
-        #         repo.createCollection("openspaces")
-        #         repo['jhs2018_rpm1995.openspaces'].insert_many(r)
+        # This fetches a dataset with details about Open Spaces in Boston
+        r = fetch_geojson('http://bostonopendata-boston.opendata.arcgis.com/datasets/2868d370c55d4d458d4ae2224ef8cddd_7'
+                          '.geojson', "Open Spaces")
+        repo.dropCollection("openspaces")
+        repo.createCollection("openspaces")
+        repo['jhs2018_rpm1995.openspaces'].insert_many(r)
 
         # This fetches a dataset with details about Budget Facilities in Boston
         #         r = fetch_geojson('http://bostonopendata-boston.opendata.arcgis.com/datasets
         # /106ab2544b3d4038ad110b531777931e_0.geojson', "Budget Facilities")
         url = 'http://datamechanics.io/data/Budget_Facilities_FY2017.csv'
+        print("Downloading Budget Facilities Dataset from datamechanics.io")
         response = urllib.request.urlopen(url).read().decode("utf-8")
         reader = csv.DictReader(response.splitlines())          # This actually works
         container = []
@@ -92,6 +91,7 @@ class getdata(dml.Algorithm):
 
         #### Jonathan Stuff ####
 
+        print("Downloading Crime Dataset from datamechanics.io")
         url = 'http://datamechanics.io/data/crime.csv'
         response = urllib.request.urlopen(url).read().decode('windows-1252')
         reader = csv.DictReader(response.splitlines())
@@ -130,7 +130,7 @@ class getdata(dml.Algorithm):
         doc.add_namespace('charge', 'http://bostonopendata-boston.opendata.arcgis.com/datasets')
         doc.add_namespace('openspace', 'http://bostonopendata-boston.opendata.arcgis.com/datasets')
         doc.add_namespace('budget', 'http://bostonopendata-boston.opendata.arcgis.com/datasets')
-
+        doc.add_namespace('crime', 'http://datamechanics.io')
         this_script = doc.agent('alg:jhs2018_rpm1995#getdata',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
@@ -171,6 +171,13 @@ class getdata(dml.Algorithm):
         get_openspaces = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_openspaces, this_script)
         doc.usage(get_openspaces, resource_openspaces, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
+
+        resource_crime = doc.entity('crime: geojson', {'prov:label': 'Crime Incidents in Boston',
+                                                       prov.model.PROV_TYPE: 'ont:DataResource',
+                                                       'ont:Extension': 'geojson'})
+        get_crime = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(get_crime, this_script)
+        doc.usage(get_crime, resource_crime, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
         # #######
 
         hubway = doc.entity('dat:jhs2018_rpm1995hubway',
@@ -196,6 +203,12 @@ class getdata(dml.Algorithm):
         doc.wasAttributedTo(budget, this_script)
         doc.wasGeneratedBy(budget, get_budget, endTime)
         doc.wasDerivedFrom(budget, resource_budget, get_budget, get_budget, get_budget)
+
+        crime = doc.entity('dat:jhs2018_rpm1995crime',
+                            {prov.model.PROV_LABEL: 'crime', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(crime, this_script)
+        doc.wasGeneratedBy(crime, get_crime, endTime)
+        doc.wasDerivedFrom(crime, resource_crime, get_crime, get_crime, get_crime)
 
         openspaces = doc.entity('dat:jhs2018_rpm1995openspaces',
                                 {prov.model.PROV_LABEL: 'openspaces', prov.model.PROV_TYPE: 'ont:DataSet'})

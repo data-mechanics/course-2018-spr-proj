@@ -42,8 +42,8 @@ class display(dml.Algorithm):
 
         print("Now running display.py")
 
-        #         dir_path = os.path.dirname(os.path.abspath(__file__))
-        dir_path = "C://cs591//course-2018-spr-proj//jhs2018_rpm1995"
+        dir_path = os.path.dirname(os.path.abspath(__file__))
+        # dir_path = "C://cs591//course-2018-spr-proj//jhs2018_rpm1995"
         filenamemap = os.path.join(dir_path, "assets.html")
         map_osm = folium.Map(location=[39, -98.1], zoom_start=4)
 
@@ -118,7 +118,8 @@ class display(dml.Algorithm):
 
         for coords, counts in grid.items():  # Gonna save to database and display on map
             megalist.append({"coordinates": coords, "charge_count": counts[0][0], "hubway_count": counts[1][0],
-                             "open_count" : counts[2][0], "tree_count": counts[3][0], "budget": counts[4][0], "crime_count": counts[5][0]})
+                             "open_count": counts[2][0], "tree_count": counts[3][0], "budget": counts[4][0],
+                             "crime_count": counts[5][0]})
             folium.Marker(coords, popup=str(counts)).add_to(map_osm)
 
         repo.dropCollection("kmeansdata")

@@ -90,7 +90,7 @@ class get_all_counts(dml.Algorithm):
 		output = doc.entity('dat:agoncharova_lmckone.boston_tracts_all_counts',
 			{prov.model.PROV_LABEL:'Count of evictions, crimes, and income in each census tract', prov.model.PROV_TYPE:'ont:DataSet'})
 
-		doc.wasAssociatedWith(get_count_evictions_crimes, this_script)
+		doc.wasAssociatedWith(get_all_counts, this_script)
 
 		doc.usage(get_all_counts, income_input, startTime, None,
 		          {prov.model.PROV_TYPE:'ont:Computation'}
@@ -110,7 +110,7 @@ class get_all_counts(dml.Algorithm):
 		return doc
 
 
-get_all_counts.execute()
+#get_all_counts.execute()
 
 
 

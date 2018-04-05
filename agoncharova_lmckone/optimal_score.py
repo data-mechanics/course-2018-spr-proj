@@ -5,6 +5,8 @@ import prov.model
 import datetime
 import uuid
 import dml
+import sys
+sys.path.append("/Users/lubovmckone/course-2018-spr-proj/agoncharova_lmckone/z3/build/python/")
 from z3 import *
 
 class optimal_score(dml.Algorithm):

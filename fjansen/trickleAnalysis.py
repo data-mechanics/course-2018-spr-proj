@@ -15,8 +15,8 @@ class trickleAnalysis(dml.Algorithm):
         return neighborhood_distance_matrix.loc[row.neighborhood1, row.neighborhood2]
 
     def cal_neighborhood_diff(x, ref_df):
-        if ((x['neighborhood2'] in ref_df.index) & (x['neighborhood1'] in ref_df.index)):
-            return ((ref_df[x['neighborhood1']] - ref_df[x['neighborhood2']]))
+        if (x['neighborhood2'] in ref_df.index) & (x['neighborhood1'] in ref_df.index):
+            return ref_df[x['neighborhood1']] - ref_df[x['neighborhood2']]
         else:
             return np.nan
 
@@ -26,24 +26,24 @@ class trickleAnalysis(dml.Algorithm):
             (neighborhood_pair['neighborhood1'] == neighborhood_name) & neighborhood_pair['is_neighbor'] == 1]
         return filtered_df['neighborhood_distance'].corr(filtered_df[correlation_col])
 
-    contributor = 'nathansw_rooday_sbajwa_shreyap'
-    reads = ['nathansw_rooday_sbajwa_shreyap.trickling', 'nathansw_rooday_sbajwa_shreyap.neighborhoodMap',
-             'nathansw_sbajwa.householdincome', 'nathansw_sbajwa.povertyrates', 'nathansw_sbajwa.commuting']
-    writes = ['nathansw_rooday_sbajwa_shreyap.trickleAnalysis']
+    contributor = 'fjansen'
+    reads = ['fjansen.trickling', 'fjansen.neighborhoodMap', 'fjansen.householdincome', 'fjansen.povertyrates',
+             'fjansen.commuting']
+    writes = ['fjansen.trickleAnalysis']
 
     @staticmethod
     def execute(trial=False):
         startTime = datetime.datetime.now()
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('nathansw_rooday_sbajwa_shreyap', 'nathansw_rooday_sbajwa_shreyap')
+        repo.authenticate('fjansen', 'fjansen')
 
         # Five db uses
-        trickle_db = repo['nathansw_rooday_sbajwa_shreyap.trickling']
-        neighborhoodMap_db = repo['nathansw_rooday_sbajwa_shreyap.neighborhoodMap']
-        householdincome_db = repo['nathansw_sbajwa.householdincome']
-        povertyrates_db = repo['nathansw_sbajwa.povertyrates']
-        commuting_db = repo['nathansw_sbajwa.commuting']
+        trickle_db = repo['fjansen.trickling']
+        neighborhoodMap_db = repo['fjansen.neighborhoodMap']
+        householdincome_db = repo['fjansen.householdincome']
+        povertyrates_db = repo['fjansen.povertyrates']
+        commuting_db = repo['fjansen.commuting']
 
         print("Loading Trickle Data")
         trickle_data = trickle_db.find_one()
@@ -154,7 +154,7 @@ class trickleAnalysis(dml.Algorithm):
         print("Saving Trickle Analysis Data")
         repo.dropCollection('trickleAnalysis')
         repo.createCollection('trickleAnalysis')
-        repo['nathansw_rooday_sbajwa_shreyap.trickleAnalysis'].insert_one(finalTrickleData)
+        repo['fjansen.trickleAnalysis'].insert_one(finalTrickleData)
 
         print("Done!")
         repo.logout()

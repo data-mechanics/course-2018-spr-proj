@@ -9,6 +9,8 @@ import dml
 from scipy.stats import linregress
 
 def stat_analysis():
+    contributor = 'bm181354_rikenm'
+    reads = []
     client = dml.pymongo.MongoClient()
     repo = client.repo
     repo.authenticate('bm181354_rikenm', 'bm181354_rikenm')
@@ -16,7 +18,6 @@ def stat_analysis():
 
     #y_label is obtained from our algorithm. 
     #x_value contains column lat_normalized, lon_normalized and popularity_normalized of a bike station 
-
 
 
     X = pd.DataFrame(list(station_cursor.find()))

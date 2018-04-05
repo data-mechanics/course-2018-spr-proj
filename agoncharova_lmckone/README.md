@@ -60,11 +60,7 @@ Here is a graph of a result of performing k-means on crime and eviction and stab
 ### SMT 
 In order to see whether it would be possible to gain insights into the relationships between the stability score and the number of businesses in a particular Boston-area census tract, we computed the correlation statistic on the "# of businesses" and "stability score". We found that the correlation was 0.1, which affirmed our intuition that there might be a relationship. Therefore, we implemented an SMT solver using the z3 library to compute the "optimal score". We invented an algorithm for computing the optimal score for a tract. The way it works is that we constrain the number of businesses it would be possible to add to an area. Then we assign a specific weight that a single businesses added might have on the stability score. Then we use the minimize function of Optimize z3 object to find the minimized optimal score from the stability score.
 
-* note: in order to run optimal_score.py, you will need to replace 
-
-`sys.path.append("/Users/lubovmckone/course-2018-spr-proj/agoncharova_lmckone/z3/build/python/")`
-
-with your own path to the z3/build/python folder
+* note: in order to run optimal_score.py, you will need to replace `sys.path.append("/Users/lubovmckone/course-2018-spr-proj/agoncharova_lmckone/z3/build/python/")` with your own path to the z3/build/python folder
 
 
 

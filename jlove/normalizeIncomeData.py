@@ -7,7 +7,7 @@ import numpy
 
 class normalizeIncomeData(dml.Algorithm):
     contributor = 'jlove'
-    reads = ['jlove.income', 'jlove.neighborhoods', 'jlove.incomeNormalized']
+    reads = ['jlove.incomes', 'jlove.neighborhoods']
     writes = ['jlove.incomeNormalized', 'jlove.nhWithIncome']
     
     @staticmethod

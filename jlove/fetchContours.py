@@ -5,7 +5,7 @@ import datetime
 import json
 import uuid
 
-class fetchFloodData(dml.Algorithm):
+class fetchContours(dml.Algorithm):
     contributor = 'jlove'
     reads = []
     writes = ['jlove.flood']

@@ -108,8 +108,10 @@ class k_means_stability_score(dml.Algorithm):
 		# possible to see visual output via uncommenting `graph_clusters`
 		# function calls in each of the methods below
 		this.cluster_by_crime_evictions_stability(stability_scores)
-		this.cluster_by_crime_stability(stability_scores)
-		this.cluster_by_evictions_stability(stability_scores)
+		
+		if(not trial):
+			this.cluster_by_crime_stability(stability_scores)
+			this.cluster_by_evictions_stability(stability_scores)
 
 		return {"start": startTime, "end":  datetime.datetime.now()}
 

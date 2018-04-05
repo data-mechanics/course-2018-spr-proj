@@ -89,6 +89,7 @@ class boston_businesses(dml.Algorithm):
 		# get a set of url queries
 		set_of_queries = fr.construct_set_of_queries(city)
 		print("about to request business data")
+		print("NOTE: this also takes a while")
 		for query in set_of_queries:
 			# make the request
 			response = urllib.request.urlopen(query)

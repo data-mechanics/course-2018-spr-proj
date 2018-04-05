@@ -38,7 +38,6 @@ datasets = set()
 ordered = []
 while len(algorithms) > 0:
     for i in range(0,len(algorithms)):
-        print(algorithms)
         if set(algorithms[i].reads).issubset(datasets):
             datasets = datasets | set(algorithms[i].writes)
             ordered.append(algorithms[i])
@@ -50,7 +49,6 @@ provenance = prov.model.ProvDocument()
 for algorithm in ordered:
     algorithm.execute(trial=args.trial)
     provenance = algorithm.provenance(provenance)
-    print(provenance)
 
 # Display a provenance record of the overall execution process.
 print(provenance.get_provn())

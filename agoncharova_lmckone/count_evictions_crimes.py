@@ -64,7 +64,8 @@ class count_evictions_crimes(dml.Algorithm):
 		boston_evictions = repo['agoncharova_lmckone.boston_evictions']
 		boston_businesses = repo['agoncharova_lmckone.boston_businesses']
 
-
+		# add a limit of 100 on data to support trial mode
+		count = 100
 		#utilize the shapely library to count the number of evictions in each census tract
 		eviction_tracts = []
 		print("geocoding evictions...")
@@ -75,12 +76,18 @@ class count_evictions_crimes(dml.Algorithm):
 				if polygon.contains(point):
 					geoid = feature['properties']['GEOID']
 					eviction_tracts.append((geoid, 1))
+			if(trial):
+				if(count <= 0):
+					break
+				count += 1
+
 		print("able to geocode evictions")
 
 		#aggregate count of evictions by summing the ones
 		evictions_by_tract = count_evictions_crimes.aggregate(eviction_tracts, sum)
 		print("evictions counted by tract")
-
+		
+		count = 100
 		#utilize the shapely library to count the number of crimes in each census tract
 		crime_tracts = []
 		print("geocoding crimes...")
@@ -91,6 +98,11 @@ class count_evictions_crimes(dml.Algorithm):
 				if polygon.contains(point):
 					geoid = feature['properties']['GEOID']
 					crime_tracts.append((geoid, 1))
+			if(trial):
+				if(count <= 0):
+					break
+				count += 1
+
 		print("crimes geocoded")
 
 		#aggregate count of crimes by summing the ones
@@ -101,7 +113,7 @@ class count_evictions_crimes(dml.Algorithm):
 
 		#copy the collection into a list that we will manipulate and reinsert into the db
 		boston_tracts_with_counts = [x for x in boston_tracts.find()]
-
+		count = 100
 		#insert evictions count into the census tracts collection, in 'properties'
 		print("inserting evictions count...")
 		for feature in boston_tracts_with_counts:
@@ -110,9 +122,13 @@ class count_evictions_crimes(dml.Algorithm):
 				feature['properties']['evictions'] = float(matches[0])
 			else:
 				feature['properties']['evictions'] = 0
+			if(trial):
+				if(count <= 0):
+					break
+				count += 1
 		print("evictions count inserted")
 
-
+		count = 100
 		#insert crimes count into the census tracts collection, in 'properties'
 		print("inserting crimes count...")
 		#insert crimes field
@@ -122,8 +138,13 @@ class count_evictions_crimes(dml.Algorithm):
 				feature['properties']['crimes'] = matches[0]
 			else:
 				feature['properties']['crimes'] = 0
+			if(trial):
+				if(count <= 0):
+					break
+				count += 1
 		print("crimes count inserted")
-
+		
+		count = 100
 		#utilize the shapely library to count the number of businesses in each census tract
 		business_tracts = []
 		print("geocoding businesses...")
@@ -134,6 +155,10 @@ class count_evictions_crimes(dml.Algorithm):
 				if polygon.contains(point):
 					geoid = feature['properties']['GEOID']
 					business_tracts.append((geoid, 1))
+			if(trial):
+				if(count <= 0):
+					break
+				count += 1
 		print("businesses geocoded")
 
 		#aggregate count of businesses by summing the ones
@@ -143,12 +168,17 @@ class count_evictions_crimes(dml.Algorithm):
 		#insert business count into the census tracts collection, in 'properties'
 		print("inserting business count...")
 		#insert business field
+		count = 100
 		for feature in boston_tracts_with_counts:
 			matches = [business_tract[1] for business_tract in businesses_by_tract if business_tract[0] == feature['properties']['GEOID']]
 			if matches:
 				feature['properties']['businesses'] = matches[0]
 			else:
 				feature['properties']['businesses'] = 0
+			if(trial):
+				if(count <= 0):
+					break
+				count += 1
 		print("businesses count inserted")
 
 

@@ -35,6 +35,9 @@ class boston_evictions(dml.Algorithm):
 		repo.dropCollection(b_e.coll_name)
 		repo.createCollection(b_e.coll_name)
 		
+		if(trial):
+			evictions_dict = evictions_dict[:1000]
+		
 		print("About to insert " + str(len(evictions_dict)) + " data points into " + b_e.coll_name)
 		repo[b_e.writes[0]].insert_many(evictions_dict)
 		repo[b_e.writes[0]].metadata( { 'complete': True } )
@@ -74,5 +77,5 @@ class boston_evictions(dml.Algorithm):
 
 		return doc
 
-# boston_evictions.execute()
+boston_evictions.execute()
 # boston_evictions.provenance()

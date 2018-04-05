@@ -15,6 +15,8 @@ class boston_crimes(dml.Algorithm):
 	@staticmethod
 	def get_crime_data():
 		print("about to get boston crime data")
+		print("NOTE: we are requesting it from the Boston data portal and it takes A WHILE")
+		print("even in trial mode :(")
 		url = "https://data.boston.gov/export/12c/b38/12cb3883-56f5-47de-afa5-3b1cf61b257b.json"
 		response = urllib.request.urlopen(url).read()
 		response = response.decode("utf-8").replace(']', "") + "]"
@@ -49,7 +51,8 @@ class boston_crimes(dml.Algorithm):
 		for item in data:
 			item['Long'] = float(item['Long'])
 			item['Lat'] = float(item['Lat'])
-		
+		if(trial):
+			data = data[:1000]
 		# save data
 		repo['agoncharova_lmckone.boston_crimes'].insert_many(data)
 		repo.logout()

@@ -30,7 +30,10 @@ One useful thing about hierarchal clustering is that you can see the dneundogram
 
 <img src="https://github.com/bm181354/course-2018-spr-proj/blob/master/bm181354_rikenm/img/20clusters.jpeg" width="350"/>
 
-<img src="https://github.com/bm181354/course-2018-spr-proj/blob/master/bm181354_rikenm/img/graph2.jpeg" width="350"/>
+<img src="https://github.com/bm181354/course-2018-spr-proj/blob/master/bm181354_rikenm/img/20clusterd.jpeg" width="350"/>
+
+<img src="https://github.com/bm181354/course-2018-spr-proj/blob/master/bm181354_rikenm/img/graph2.jpeg" width="400"/>
+
 
 ## To Run:
 

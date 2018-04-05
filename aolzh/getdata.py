@@ -8,10 +8,11 @@ import uuid
 class getdata(dml.Algorithm):
     contributor = 'aolzh'
     reads = []
-    writes = ['aolzh.NewYorkSchool', 'aolzh.NewYorkCrime', 'aolzh.NewYorkSubway', 'aolzh.NewYorkLibrary', 'aolzh.NewYorkHospitals']
+    writes = ['aolzh.NewYorkSchool', 'aolzh.NewYorkCrime', 'aolzh.NewYorkSubway', 'aolzh.NewYorkHospitals', 'aolzh.NewYorkStores', 'aolzh.NewYorkHouses']
 
     @staticmethod
     def execute(trial = False):
+        print("getdata")
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
@@ -47,15 +48,6 @@ class getdata(dml.Algorithm):
         repo['aolzh.NewYorkSubway'].insert_many(r)
         print("NewYorkSubway Finished")
 
-        url = 'https://data.cityofnewyork.us/resource/feuq-due4.json'
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
-        s = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("NewYorkLibrary")
-        repo.createCollection("NewYorkLibrary")
-        repo['aolzh.NewYorkLibrary'].insert_many(r)
-        print("NewYorkLibrary Finished")
-
         url = 'https://data.cityofnewyork.us/resource/ymhw-9cz9.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
@@ -64,6 +56,25 @@ class getdata(dml.Algorithm):
         repo.createCollection("NewYorkHospitals")
         repo['aolzh.NewYorkHospitals'].insert_many(r)
         print("NewYorkHospitals Finished")
+
+        url = 'http://datamechanics.io/data/aolzh/NewYorkStore.json'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
+        s = json.dumps(r, sort_keys=True, indent=2)
+        repo.dropCollection("NewYorkStores")
+        repo.createCollection("NewYorkStores")
+        repo['aolzh.NewYorkStores'].insert_many(r)
+        print("NewYorkStores Finished")
+
+        url = 'http://datamechanics.io/data/aolzh/NewYorkNewHouses.json'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
+        s = json.dumps(r, sort_keys=True, indent=2)
+        repo.dropCollection("NewYorkHouses")
+        repo.createCollection("NewYorkHouses")
+        repo['aolzh.NewYorkHouses'].insert_many(r)
+        print("NewYorkHouses Finished")
+
 
         repo.logout()
 
@@ -94,20 +105,23 @@ class getdata(dml.Algorithm):
         newyorkschool_resource = doc.entity('nyc:8pnn-kkif', {'prov:label':'NewYork Schools', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         newyorkcrime_resource = doc.entity('nyc:qgea-i56i', {'prov:label':'NewYork Crime', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         newyorksubway_resource = doc.entity('nyc:kk4q-3rt2', {'prov:label':'NewYork Subway', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        newyorklibrary_resource = doc.entity('nyc:feuq-due4', {'prov:label':'NewYork Library', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         newyorkhospitals_resource = doc.entity('nyc:ymhw-9cz9', {'prov:label':'NewYork Hospitals', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        newyorkstores_resource = doc.entity('dat:aolzh#NewYorkStore', {'prov:label':'NewYork Stores', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        newyorkhouses_resource = doc.entity('dat:aolzh#NewYorkNewHouses', {'prov:label':'NewYork Houses', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
 
         get_newyorkschool = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         get_newyorkcrime = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         get_newyorksubway = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        get_newyorklibrary = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         get_newyorkhospitals = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_newyorkstores = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        get_newyorkhouses = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 
         doc.wasAssociatedWith(get_newyorkschool, getdata_script)
         doc.wasAssociatedWith(get_newyorkcrime, getdata_script)
         doc.wasAssociatedWith(get_newyorksubway, getdata_script)
-        doc.wasAssociatedWith(get_newyorklibrary, getdata_script)
         doc.wasAssociatedWith(get_newyorkhospitals, getdata_script)
+        doc.wasAssociatedWith(get_newyorkstores, getdata_script)
+        doc.wasAssociatedWith(get_newyorkhouses, getdata_script)
 
         doc.usage(get_newyorkschool, newyorkschool_resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
@@ -122,11 +136,15 @@ class getdata(dml.Algorithm):
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
-        doc.usage(get_newyorklibrary, newyorklibrary_resource, startTime, None,
+        doc.usage(get_newyorkhospitals, newyorkhospitals_resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
-        doc.usage(get_newyorkhospitals, newyorkhospitals_resource, startTime, None,
+        doc.usage(get_newyorkstores, newyorkstores_resource, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
+                  }
+                  )
+        doc.usage(get_newyorkhouses, newyorkhouses_resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
@@ -147,15 +165,20 @@ class getdata(dml.Algorithm):
         doc.wasGeneratedBy(newyorksubway, get_newyorksubway, endTime)
         doc.wasDerivedFrom(newyorksubway, newyorksubway_resource, get_newyorksubway, get_newyorksubway, get_newyorksubway)
 
-        newyorklibrary = doc.entity('dat:aolzh#NewYorkLibrary', {prov.model.PROV_LABEL:'Newyork Library', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(newyorklibrary, getdata_script)
-        doc.wasGeneratedBy(newyorklibrary, get_newyorklibrary, endTime)
-        doc.wasDerivedFrom(newyorklibrary, newyorklibrary_resource, get_newyorklibrary, get_newyorklibrary, get_newyorklibrary)
-
         newyorkhospitals = doc.entity('dat:aolzh#NewYorkHospitals', {prov.model.PROV_LABEL:'NewYork Hospitals', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(newyorkhospitals, getdata_script)
         doc.wasGeneratedBy(newyorkhospitals, get_newyorkhospitals, endTime)
         doc.wasDerivedFrom(newyorkhospitals, newyorkhospitals_resource, get_newyorkhospitals, get_newyorkhospitals, get_newyorkhospitals)
+
+        newyorkstores = doc.entity('dat:aolzh#NewYorkStores', {prov.model.PROV_LABEL:'NewYork Stores', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(newyorkstores, getdata_script)
+        doc.wasGeneratedBy(newyorkstores, get_newyorkstores, endTime)
+        doc.wasDerivedFrom(newyorkstores, newyorkstores_resource, get_newyorkstores, get_newyorkstores, get_newyorkstores)
+
+        newyorkhouses = doc.entity('dat:aolzh#NewYorkHouses', {prov.model.PROV_LABEL:'NewYork Houses', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(newyorkhouses, getdata_script)
+        doc.wasGeneratedBy(newyorkhouses, get_newyorkhouses, endTime)
+        doc.wasDerivedFrom(newyorkhouses, newyorkhouses_resource, get_newyorkhouses, get_newyorkhouses, get_newyorkhouses)
 
         repo.logout()
                   

@@ -4,6 +4,7 @@ import prov.model
 import datetime
 import json
 import uuid
+import requests
 
 class fetchNeighborhoodBorders(dml.Algorithm):
     contributor = 'jlove'
@@ -22,12 +23,14 @@ class fetchNeighborhoodBorders(dml.Algorithm):
                 
         data = None
         url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/3525b0ee6e6b427f9aab5d0a1d0a1a28_0.geojson'
-        response = urllib.request.urlopen(url)
-        if response.status == 200:
-            data = response.read().decode('utf-8')
+        data = None
+        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/50d4342a5d5941339d4a44839d0fd220_0.geojson'
+        r = requests.get(url)
+        if r.status_code == 200:
+            print('good status')
+            data = r.json()
         if data != None:
-            entries = json.loads(data)
-            repo['jlove.neighborhoods'].insert_one(entries)
+            repo['jlove.neighborhoods'].insert_one(data)
             repo['jlove.neighborhoods'].metadata({'complete':True})
             print(repo['jlove.neighborhoods'].metadata())
         repo.logout()

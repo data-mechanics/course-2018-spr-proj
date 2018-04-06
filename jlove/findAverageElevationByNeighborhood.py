@@ -13,11 +13,12 @@ import uuid
 import shapely.geometry
 import numpy as np
 import geojson
+import scipy.stats
 
 class findAverageElevationByNeighborhood(dml.Algorithm):
     contributor = 'jlove'
-    reads = ['jlove.contours', 'jlove.neighborhoods']
-    writes = ['jlove.contour_neighborhoods', 'jlove.avg_elev']
+    reads = ['jlove.contours', 'jlove.neighborhoods', 'jlove.incomes']
+    writes = ['jlove.contour_neighborhoods', 'jlove.avg_elev', 'jlove.stats_result']
     
     @staticmethod
     def execute(trial = False):
@@ -76,16 +77,34 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
             features = contour['geo']['features']
             weighted_elev = []
             for feature in features:
-                weighted_elev += [feature['properties']['elev'] * feature['properties']['elev']]
+                weighted_elev += [feature['properties']['length'] * feature['properties']['elev']]
             
             avg_elevation[nh] = np.average(weighted_elev)
             
-        print(avg_elevation)
         
         repo.dropCollection('jlove.avg_elev')
         repo.createCollection('jlove.avg_elev')
-        repo['jlove.avg_elev'].insert_many(to_save)
-            
+        repo['jlove.avg_elev'].insert_one(avg_elevation)
+        
+        
+        contour_nh = repo['jlove.avg_elev'].find_one({})
+        incomes = rep['jlove.incomes'].find({})
+        
+        pairs = []
+        for income in incomes:
+            pairs[income['Neighborhood']] = {'income': income['Median Household Income']}
+            pairs += [income['Median Household Income'], [contour_nh[income['Neighborhood']]]]
+        
+        
+        pair_arr = np.array(pairs)
+        results = scipy.stats.pearsonr(pair_arr[::,0], pair_arr[::,1])
+        
+        doc = {'corr_cooef': results[0], 'p_val': results[1]}
+        
+        repo.dropCollectio('jlove.stats_result')
+        repo.createCollectio('jlove.stats_result')
+        
+        repo['jlove.stats_result'].insert_one(doc)
 
         
             
@@ -107,38 +126,58 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/dataset/')
         
         
-        this_script = doc.agent('alg:jlove#normalizeIncomeData', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:jlove#findAverageElevationByNeighborhood', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
-        resource1 = doc.entity('dat:jlove#income', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        normalize_income = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(normalize_income, this_script)
-        doc.usage(normalize_income, resource1, startTime, None,
+        resource1 = doc.entity('dat:jlove#contours', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'geojson'})
+        neighborhood_contours = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(neighborhood_contours, this_script)
+        doc.usage(neighborhood_contours, resource1, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
         resource2 = doc.entity('dat:jlove#neighborhoods', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'geojson'})
-        doc.wasAssociatedWith(normalize_income, this_script)
-        doc.usage(normalize_income, resource2, startTime, None,
+        doc.wasAssociatedWith(neighborhood_contours, this_script)
+        doc.usage(neighborhood_contours, resource2, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
-        resource3 = doc.entity('dat:jlove#incomeNormalized', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        doc.wasAssociatedWith(normalize_income, this_script)
-        doc.usage(normalize_income, resource3, startTime, None,
+        resource3 = doc.entity('dat:jlove#contour_neighborhoods', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'geojson'})
+        doc.wasAssociatedWith(neighborhood_contours, this_script)
+        doc.usage(neighborhood_contours, resource3, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
+                  }
+                  )
+        
+        resource4 = doc.entity('dat:jlove#incomes', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        doc.wasAssociatedWith(neighborhood_contours, this_script)
+        doc.usage(neighborhood_contours, resource4, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
+                  }
+                  )
+        
+        resource5 = doc.entity('dat:jlove#avg_elev', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
+        doc.wasAssociatedWith(neighborhood_contours, this_script)
+        doc.usage(neighborhood_contours, resource5, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
 
-        income_normalized = doc.entity('dat:jlove#incomeNormalized', {prov.model.PROV_LABEL:'Normalized Boston Median Household Income by Neighborhood', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(income_normalized, this_script)
-        doc.wasGeneratedBy(income_normalized, normalize_income, endTime)
-        doc.wasDerivedFrom(income_normalized, resource1, normalize_income, normalize_income, normalize_income)
+        contour_neighborhoods = doc.entity('dat:jlove#contour_neighborhoods', {prov.model.PROV_LABEL:'Boston 1 ft. Countour Lines Grouped by Neighborhood', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(contour_neighborhoods, this_script)
+        doc.wasGeneratedBy(contour_neighborhoods,neighborhood_contours, endTime)
+        doc.wasDerivedFrom(contour_neighborhoods, resource1, neighborhood_contours, neighborhood_contours, neighborhood_contours)
+        doc.wasDerivedFrom(contour_neighborhoods, resource2, neighborhood_contours, neighborhood_contours, neighborhood_contours)
         
-        nh_income = doc.entity('dat:jlove#nhWithIncome', {prov.model.PROV_LABEL:'Boston Neighborhood Borders with Information About Median Household Income', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(nh_income, this_script)
-        doc.wasGeneratedBy(nh_income, normalize_income, endTime)
-        doc.wasDerivedFrom(nh_income, resource3, normalize_income, normalize_income, normalize_income)
-        doc.wasDerivedFrom(nh_income, resource2, normalize_income, normalize_income, normalize_income)
+        avg_elev = doc.entity('dat:jlove#avg_elev', {prov.model.PROV_LABEL:'Boston Average Elevation by Neighborhood', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(avg_elev, this_script)
+        doc.wasGeneratedBy(avg_elev, neighborhood_contours, endTime)
+        doc.wasDerivedFrom(avg_elev, resource3, neighborhood_contours, neighborhood_contours, neighborhood_contours)
+        
+        stat_result = doc.entity('dat:jlove#stats_result', {prov.model.PROV_LABEL:'Results of Statistic Analysis', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(stat_result, this_script)
+        doc.wasGeneratedBy(stat_result, neighborhood_contours, endTime)
+        doc.wasDerivedFrom(stat_result, resource4, neighborhood_contours, neighborhood_contours, neighborhood_contours)
+        doc.wasDerivedFrom(stat_result, resource5, neighborhood_contours, neighborhood_contours, neighborhood_contours)
 
 
         repo.logout()

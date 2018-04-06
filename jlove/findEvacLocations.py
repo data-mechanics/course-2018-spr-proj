@@ -12,44 +12,46 @@ import shapely.geometry
 import datetime
 import numpy as np
 
+def find_closest_centroids(samples, centroids):
+
+    closest_centroids = []
+    for sample in samples:
+        distances = []
+        i = 0
+        for centroid in centroids:
+            distance = np.sqrt(((sample[0]-centroid[0])**2) +((sample[1]-centroid[1])**2))
+            distances += [(distance,i)]
+            i += 1
+            closest_centroids += [min(distances)[1]]
+
+    return np.array(closest_centroids)
+
+def get_centroids(samples, clusters):
+
+    sample_nums = {}
+    for cluster in clusters:
+        sample_nums[cluster] = None
+
+    sums = [np.array([0,0]) for _ in range(len(sample_nums.keys()))]
+    numbers = [0 for _ in range(len(sample_nums.keys()))]
+
+    for i in range(len(samples)):
+        numbers[clusters[i]] += 1
+        sums[clusters[i]][0] += samples[i][0]
+        sums[clusters[i]][1] += samples[i][1]
+
+    for i in range(len(sums)):
+        sums[i] = sums[i]/numbers[i]
+
+
+    return np.array(sums)
+
 class findEvacLocations(dml.Algorithm):
     contributor = 'jlove'
     reads = ['jlove.hydrants']
     writes = ['jlove.evacHubs']
     
-    def find_closest_centroids(samples, centroids):
-    
-        closest_centroids = []
-        for sample in samples:
-            distances = []
-            i = 0
-            for centroid in centroids:
-                distance = np.sqrt(((sample[0]-centroid[0])**2) +((sample[1]-centroid[1])**2))
-                distances += [(distance,i)]
-                i += 1
-                closest_centroids += [min(distances)[1]]
 
-        return np.array(closest_centroids)
-
-    def get_centroids(samples, clusters):
-
-        sample_nums = {}
-        for cluster in clusters:
-            sample_nums[cluster] = None
-
-        sums = [np.array([0,0]) for _ in range(len(sample_nums.keys()))]
-        numbers = [0 for _ in range(len(sample_nums.keys()))]
-
-        for i in range(len(samples)):
-            numbers[clusters[i]] += 1
-            sums[clusters[i]][0] += samples[i][0]
-            sums[clusters[i]][1] += samples[i][1]
-
-        for i in range(len(sums)):
-            sums[i] = sums[i]/numbers[i]
-
-
-        return np.array(sums)
     
     @staticmethod
     def execute(trial=False):
@@ -71,10 +73,10 @@ class findEvacLocations(dml.Algorithm):
         np.random.shuffle(shuffled)
         centroids = np.array(shuffled[:5])
         for i in range(30):
-            clusters = find_closest_centroids(samples, centroids)
-            centroids = get_centroids(samples, clusters)
+            clusters = find_closest_centroids(points, centroids)
+            centroids = get_centroids(points, clusters)
         
-        json_centroids = {}
+        json_centroids = []
         for centroid in centroids:
             json_centroids += [{'x': centroid[0], 'y': centroid[1]}]
         

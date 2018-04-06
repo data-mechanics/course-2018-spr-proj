@@ -29,6 +29,7 @@ class fetchContours(dml.Algorithm):
         if r.status_code == 200:
             print('decoding data')
             data = r.json()
+            print('printing keys')
             print(data.keys())
         if data != None:
             repo['jlove.contours'].insert_many(data['features'])

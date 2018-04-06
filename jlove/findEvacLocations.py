@@ -73,7 +73,8 @@ class findEvacLocations(dml.Algorithm):
         shuffled = points.copy()
         np.random.shuffle(shuffled)
         centroids = np.array(shuffled[:5])
-        for i in range(30):
+        iterations = 30 if not trial else 5
+        for i in range(iterations):
             clusters = find_closest_centroids(points, centroids)
             centroids = get_centroids(points, clusters)
         

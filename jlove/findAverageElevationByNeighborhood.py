@@ -71,8 +71,13 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
         contours = repo['jlove.contour_neighborhoods'].find()
         
         avg_elevation = {}
-        
+        count = 0
         for contour in contours:
+            if trial:
+                if count == 5:
+                    continue
+            count += 1
+            count = count % 5
             nh = contour['neighborhood']
             features = contour['geo']['features']
             weighted_elev = []
@@ -92,8 +97,8 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
         
         pairs = []
         for income in incomes:
-            pairs[income['Neighborhood']] = {'income': income['Median Household Income']}
-            pairs += [income['Median Household Income'], [contour_nh[income['Neighborhood']]]]
+            if income['Neighborhood'] in contour_nh:
+                pairs += [income['Median Household Income'], [contour_nh[income['Neighborhood']]]]
         
         
         pair_arr = np.array(pairs)

@@ -23,11 +23,8 @@ class fetchNeighborhoodBorders(dml.Algorithm):
                 
         data = None
         url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/3525b0ee6e6b427f9aab5d0a1d0a1a28_0.geojson'
-        data = None
-        url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/50d4342a5d5941339d4a44839d0fd220_0.geojson'
         r = requests.get(url)
         if r.status_code == 200:
-            print('good status')
             data = r.json()
         if data != None:
             repo['jlove.neighborhoods'].insert_one(data)

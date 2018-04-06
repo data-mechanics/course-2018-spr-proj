@@ -88,7 +88,7 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
         
         
         contour_nh = repo['jlove.avg_elev'].find_one({})
-        incomes = rep['jlove.incomes'].find({})
+        incomes = repo['jlove.incomes'].find({})
         
         pairs = []
         for income in incomes:

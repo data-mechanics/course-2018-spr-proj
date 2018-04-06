@@ -11,6 +11,7 @@ import prov.model
 import shapely.geometry
 import datetime
 import numpy as np
+import uuid
 
 def find_closest_centroids(samples, centroids):
 
@@ -103,7 +104,7 @@ class findEvacLocations(dml.Algorithm):
         resource = doc.entity('dat:jlove#hydrants', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'geojson'})
         evac_loc = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(evac_loc, this_script)
-        doc.usage(count_hydrants, resource1, startTime, None,
+        doc.usage(this_script, resource, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )

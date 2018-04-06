@@ -30,18 +30,14 @@ for r,d,f in os.walk(path):
         if r.find(os.sep) == -1 and file.split(".")[-1] == "py":
             name_module = ".".join(file.split(".")[0:-1])
             module = importlib.import_module(path + "." + name_module)
-            print(name_module)
             algorithms.append(module.__dict__[name_module])
 
-print('all sets done')
 # Create an ordering of the algorithms based on the data
 # sets that they read and write.
 datasets = set()
 ordered = []
 while len(algorithms) > 0:
     for i in range(0,len(algorithms)):
-        print(algorithms[i].reads)
-        print(datasets)
         if set(algorithms[i].reads).issubset(datasets):
             datasets = datasets | set(algorithms[i].writes)
             ordered.append(algorithms[i])
@@ -49,7 +45,6 @@ while len(algorithms) > 0:
             del algorithms[i]
             break
 
-print('algorithms sorted')
 
 # Execute the algorithms in order.
 provenance = prov.model.ProvDocument()

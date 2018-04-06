@@ -4,6 +4,7 @@ import prov.model
 import datetime
 import json
 import uuid
+import requests
 
 class fetchContours(dml.Algorithm):
     contributor = 'jlove'
@@ -22,12 +23,15 @@ class fetchContours(dml.Algorithm):
                 
         data = None
         url = 'http://bostonopendata-boston.opendata.arcgis.com/datasets/50d4342a5d5941339d4a44839d0fd220_0.geojson'
-        response = urllib.request.urlopen(url)
-        if response.status == 200:
-            data = response.read().decode('utf-8')
+        r = requests.get(url)
+        #response = urllib.request.urlopen(url)
+        print('data retrieved')
+        if r.status_code == 200:
+            print('decoding data')
+            data = r.json()
+            print(data.keys())
         if data != None:
-            entries = json.loads(data)
-            repo['jlove.contours'].insert_one(entries)
+            repo['jlove.contours'].insert_many(data['features'])
             repo['jlove.contours'].metadata({'complete':True})
             print(repo['jlove.contours'].metadata())
         repo.logout()

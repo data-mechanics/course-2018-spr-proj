@@ -9,7 +9,7 @@ import requests
 class fetchContours(dml.Algorithm):
     contributor = 'jlove'
     reads = []
-    writes = ['jlove.flood']
+    writes = ['jlove.contours']
     
     @staticmethod
     def execute(trial = False):

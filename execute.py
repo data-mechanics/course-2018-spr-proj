@@ -41,7 +41,6 @@ while len(algorithms) > 0:
         if set(algorithms[i].reads).issubset(datasets):
             datasets = datasets | set(algorithms[i].writes)
             ordered.append(algorithms[i])
-            print(algorithms[i])
             del algorithms[i]
             break
 
@@ -49,7 +48,6 @@ while len(algorithms) > 0:
 # Execute the algorithms in order.
 provenance = prov.model.ProvDocument()
 for algorithm in ordered:
-    print(algorithm)
     algorithm.execute(trial=args.trial)
     provenance = algorithm.provenance(provenance)
 

@@ -135,8 +135,9 @@ class dense4Hub(dml.Algorithm):
                   
         return doc
 
-dense4Hub.execute()
-doc = dense4Hub.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+if __name__ == "__main__":
+    dense4Hub.execute()
+    doc = dense4Hub.provenance()
+    print(doc.get_provn())
+    print(json.dumps(json.loads(doc.serialize()), indent=4))
 

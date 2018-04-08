@@ -55,7 +55,7 @@ class try4POPdense(dml.Algorithm):
 
         for home in homes:
             if trial == True:
-                if counting_homes >= 25:
+                if counting_homes >= 50:
                     break
 ##            
             counting_homes += 1
@@ -70,7 +70,7 @@ class try4POPdense(dml.Algorithm):
             for station in stations:
                 count_hubs += 1
 
-                print("this is the stations that we're looking at: ", station, "this is it's lat/lgn: ", round(float(station["Latitude" ]),8))
+#                print("this is the stations that we're looking at: ", station, "this is it's lat/lgn: ", round(float(station["Latitude" ]),8))
 
                 o_lat = round(float(station["Latitude" ]),8)
                 o_long = round(float(station["Longitude"]),8)
@@ -97,7 +97,7 @@ class try4POPdense(dml.Algorithm):
         s = lambda x: (x["hubways_lt4KM_mt1KM"] == 1)
         H = try4POPdense.select(new_homes.find(), s)
 
-        print(H)
+#        print(H)
 
         new_house_index = 0
         for new_house in range(len(H)):
@@ -106,7 +106,7 @@ class try4POPdense(dml.Algorithm):
                 if new_house_index >= 10:
                     break
 
-            print("This is the house that we're looking at: ", new_house_index)
+#            print("This is the house that we're looking at: ", new_house_index)
 
             
             idh = H[new_house_index]["_id"]
@@ -179,7 +179,7 @@ class try4POPdense(dml.Algorithm):
         repo.logout()
                   
         return doc
-    
+
 if __name__ == "__main__":
     try4POPdense.execute()
     doc = try4POPdense.provenance()

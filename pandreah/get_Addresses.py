@@ -23,35 +23,45 @@ class get_Addresses(dml.Algorithm):
         repo = client.repo
         repo.authenticate('pandreah', 'pandreah')
         print("did this")
-
-        url = 'http://datamechanics.io/data/LSALAMMI1.json' #This is where the data is coming from
-#        print("hit url1")
-        response = urllib.request.urlopen(url).read().decode("utf-8")
-#        print("getting json")
-        r = json.loads(response)
-#        print("got response 0")
-        s = json.dumps(r, sort_keys=True, indent=2)
-        url1 = 'http://datamechanics.io/data/LSALAMMI2.json'
-        response1 = urllib.request.urlopen(url).read().decode("utf-8")
-        r1 = json.loads(response1)
-#        print("got response 1")
-        s1 = json.dumps(r, sort_keys=True, indent=2)
-        url2 = 'http://datamechanics.io/data/LSALAMMI1.json'
-        response2 = urllib.request.urlopen(url).read().decode("utf-8")
-        r2 = json.loads(response2)
-#        print("got response 2")
-        s2 = json.dumps(r, sort_keys=True, indent=2)
-        url3 = 'http://datamechanics.io/data/LSALAMMI1.json'
-        response3 = urllib.request.urlopen(url).read().decode("utf-8")
-        r3 = json.loads(response3)
-#        print("got response 3")
-        s3 = json.dumps(r, sort_keys=True, indent=2)
-        repo.dropCollection("propertyA")
-        repo.createCollection("propertyA")
-        repo['pandreah.propertyA'].insert_many(r)                         #This is where the data is being stored
-        repo['pandreah.propertyA'].insert_many(r1)
-        repo['pandreah.propertyA'].insert_many(r2)
-        repo['pandreah.propertyA'].insert_many(r3)
+        
+        if trial == True:
+            url = 
+            response = urllib.request.urlopen(url).read().decode("utf-8")
+            r = json.loads(response)
+            s = json.dumps(r, sort_keys=True, indent=2)
+            repo.dropCollection("propertyA")
+            repo.createCollection("propertyA")
+            repo['pandreah.propertyA'].insert_many(r) 
+        
+        else: 
+            url = 'http://datamechanics.io/data/LSALAMMI1.json' #This is where the data is coming from
+#           print("hit url1")
+            response = urllib.request.urlopen(url).read().decode("utf-8")
+#           print("getting json")
+            r = json.loads(response)
+#           print("got response 0")
+            s = json.dumps(r, sort_keys=True, indent=2)
+            url1 = 'http://datamechanics.io/data/LSALAMMI2.json'
+            response1 = urllib.request.urlopen(url).read().decode("utf-8")
+            r1 = json.loads(response1)
+#           print("got response 1")
+            s1 = json.dumps(r, sort_keys=True, indent=2)
+            url2 = 'http://datamechanics.io/data/LSALAMMI1.json'
+            response2 = urllib.request.urlopen(url).read().decode("utf-8")
+            r2 = json.loads(response2)
+#           print("got response 2")
+            s2 = json.dumps(r, sort_keys=True, indent=2)
+            url3 = 'http://datamechanics.io/data/LSALAMMI1.json'
+            response3 = urllib.request.urlopen(url).read().decode("utf-8")
+            r3 = json.loads(response3)
+#           print("got response 3")
+            s3 = json.dumps(r, sort_keys=True, indent=2)
+            repo.dropCollection("propertyA")
+            repo.createCollection("propertyA")
+            repo['pandreah.propertyA'].insert_many(r)                         #This is where the data is being stored
+            repo['pandreah.propertyA'].insert_many(r1)
+            repo['pandreah.propertyA'].insert_many(r2)
+            repo['pandreah.propertyA'].insert_many(r3)
         repo['pandreah.propertyA'].metadata({'complete':True})
         print(repo['pandreah.propertyA'].metadata())
 

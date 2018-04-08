@@ -132,8 +132,9 @@ class kmeans(dml.Algorithm):
         repo.logout()
                   
         return doc
-
-kmeans.execute()
-doc = kmeans.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+    
+if __name__ == "__main__":
+    kmeans.execute()
+    doc = kmeans.provenance()
+    print(doc.get_provn())
+    print(json.dumps(json.loads(doc.serialize()), indent=4))

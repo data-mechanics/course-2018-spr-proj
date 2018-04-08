@@ -77,7 +77,8 @@ class get_hubwayStations(dml.Algorithm):
                   
         return doc
 
-get_hubwayStations.execute()
-doc = get_hubwayStations.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+if __name__ == "__main__":
+    get_hubwayStations.execute()
+    doc = get_hubwayStations.provenance()
+    print(doc.get_provn())
+    print(json.dumps(json.loads(doc.serialize()), indent=4))

@@ -14,7 +14,7 @@ Format taken from example file in github.com/Data-Mechanics'''
 class correlationHubway(dml.Algorithm):
     contributor = 'pandreah'
     reads = ['pandreah.popHubway']
-    writes = ['pandreah.correlation']
+    writes = ['pandreah.correlHubway']
 
 ###########################################################################
 ##      ALL OF THESE WERE TAKEN FROM THE CLASS WEBSITE.                  ##

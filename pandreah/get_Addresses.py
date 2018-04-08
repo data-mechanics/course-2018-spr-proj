@@ -112,8 +112,9 @@ class get_Addresses(dml.Algorithm):
                   
         return doc
 
-get_Addresses.execute()
-doc = get_Addresses.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+if __name__ == "__main__":
+    get_Addresses.execute()
+    doc = get_Addresses.provenance()
+    print(doc.get_provn())
+    print(json.dumps(json.loads(doc.serialize()), indent=4))
 

@@ -179,9 +179,10 @@ class try4POPdense(dml.Algorithm):
         repo.logout()
                   
         return doc
-
-try4POPdense.execute()
-doc = try4POPdense.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+    
+if __name__ == "__main__":
+    try4POPdense.execute()
+    doc = try4POPdense.provenance()
+    print(doc.get_provn())
+    print(json.dumps(json.loads(doc.serialize()), indent=4))
 

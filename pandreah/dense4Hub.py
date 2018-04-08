@@ -66,7 +66,7 @@ class dense4Hub(dml.Algorithm):
             for house in homes:
 
                 if trial == True:
-                    if count_Homes == 25:
+                    if count_Homes == 50:
                         break
 
                 #Distance calculated according to the Haversine formula
@@ -74,11 +74,18 @@ class dense4Hub(dml.Algorithm):
 
                 if distanceK <= radius:   #comparing the distance of each home with the 1KM radius
                     count_Homes += 1
-
+#            print(count_Homes)
+            
 ## We will start a for loop that gets the other Hubway stations inside the 3KM radius around the Hubway Station we're currently looking at
             count_Other_Hubways = 0
+            count_Other_Hubways_trial = 0
 #            print("This ", center_lat, center_lng, " is the Latitude/Longitude of central Hubway #", counting_hubs)
             for hubs in stations:
+
+                if trial == True:
+                    if count_Other_Hubways_trial == 100:
+                        break
+                
                 if station["_id" ] != hubs["_id" ]:
 
                     #Distance calculated according to the Haversine formula
@@ -86,6 +93,10 @@ class dense4Hub(dml.Algorithm):
 
                     if distanceerK <= rad_th:
                         count_Other_Hubways += 1
+                        
+                count_Other_Hubways_trial += 1
+                
+#            print(count_Homes)
 
             r = {'lat': center_lat, 'lng': center_lng, 'houses_1KM': count_Homes , 'hubways_3KM': count_Other_Hubways}
 

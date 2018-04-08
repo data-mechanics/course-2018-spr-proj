@@ -66,7 +66,7 @@ class dense4Hub(dml.Algorithm):
             for house in homes:
 
                 if trial == True:
-                    if count_Homes == 50:
+                    if count_Homes == 25:
                         break
 
                 #Distance calculated according to the Haversine formula

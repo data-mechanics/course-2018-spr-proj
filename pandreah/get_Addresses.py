@@ -25,7 +25,7 @@ class get_Addresses(dml.Algorithm):
         print("did this")
         
         if trial == True:
-            url = 
+            url = 'http://datamechanics.io/data/sampleLSAM.json'
             response = urllib.request.urlopen(url).read().decode("utf-8")
             r = json.loads(response)
             s = json.dumps(r, sort_keys=True, indent=2)

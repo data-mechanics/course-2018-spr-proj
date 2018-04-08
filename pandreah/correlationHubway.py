@@ -131,8 +131,9 @@ class correlationHubway(dml.Algorithm):
         repo.logout()
                   
         return doc
-
-correlationHubway.execute()
-doc = correlationHubway.provenance()
-print(doc.get_provn())
-print(json.dumps(json.loads(doc.serialize()), indent=4))
+    
+if __name__ == "__main__":
+    correlationHubway.execute()
+    doc = correlationHubway.provenance()
+    print(doc.get_provn())
+    print(json.dumps(json.loads(doc.serialize()), indent=4))

@@ -8,7 +8,7 @@ import uuid
 import copy
 from geoql import geoql
 from tqdm import tqdm
-
+import json
 
 
 class getStreetlightsInRadius(dml.Algorithm):
@@ -36,7 +36,7 @@ class getStreetlightsInRadius(dml.Algorithm):
         
         alcohol_mbta_stops = project(alcohol_mbta_stops, lambda t: t)
         projected_lights = project(streetlights_cursor, lambda t: (t['Long'], t['Lat']))
-        
+
         the_lights = []
         for light in projected_lights:
             the_lights.append({"type": "Feature", "geometry": {"type": "Point", "coordinates": light}})
@@ -50,12 +50,14 @@ class getStreetlightsInRadius(dml.Algorithm):
             temp = copy.deepcopy(lights_geoql)
 
             alc_coord = alcohol_mbta['alc_coord']
+            alc_name = alcohol_mbta['alc_name']
+            alc_license = alcohol_mbta['alc_license']
             mbta_coords = alcohol_mbta['mbta_coords']
             
             # get the max radius
             max_radius = 0
             for mbta_coord in mbta_coords:
-                radius = geopy.distance.vincenty(alc_coord, mbta_coord).miles
+                radius = geopy.distance.vincenty(alc_coord, (mbta_coord[0], mbta_coord[1])).miles
                 if radius > max_radius:
                     max_radius = radius
             # get the lights in that radius
@@ -63,6 +65,8 @@ class getStreetlightsInRadius(dml.Algorithm):
             # create a new record with alcohol coordinate, mbta coordinates, and all the streetlights
             alcohol_streetlight_list.append({
                     "alc_coord": alc_coord,
+                    "alc_name": alc_name,
+                    "alc_license":alc_license,
                     "mbta_coords":mbta_coords,
                     "streetlights":t["features"]
                 })
@@ -118,7 +122,7 @@ class getStreetlightsInRadius(dml.Algorithm):
         repo.logout()
         return doc
 
-#getStreetlightsInRadius.execute(True)
+getStreetlightsInRadius.execute()
 #doc = getStreetlightsInRadius.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

@@ -3,6 +3,8 @@ import prov.model
 import datetime
 import uuid
 import numpy as np
+import copy
+import json
 
 class optimization(dml.Algorithm):
     contributor = 'aoconno8_dmak1112_ferrys'
@@ -26,17 +28,20 @@ class optimization(dml.Algorithm):
         shortest_paths_cursor = repo.aoconno8_dmak1112_ferrys.shortest_path.find()
         shortest_paths = project(shortest_paths_cursor, lambda t: t)
         
-        best_paths = []            
+        paths = []            
         safest_count = 0
         shortest_count = 0
         for path in shortest_paths:
             alc_coord = path["alc_coord"]
+            alc_name = path['alc_name']
+            alc_license = path['alc_license']
             mbta_routes = path["mbta_routes"]
             
             routes = []
             route_scores = []
             for route_ in mbta_routes:
-                mbta_coord = route_["mbta_coord"]
+                mbta_coord = (route_["mbta_coord"][0], route_["mbta_coord"][1])
+                mbta_name = route_["mbta_coord"][2]
                 route = route_["route"]
                 route_dist = route_["route_dist"] # meters
                 streetlights = route_["streetlights"] # format [(streetlight_node, # lights), ...]
@@ -67,42 +72,56 @@ class optimization(dml.Algorithm):
                 
                 # append route and safest route
                 routes.append({
-                        "alc_coord": alc_coord,
-                        "mbta_route": {
-                            "mbta_coord": mbta_coord,
-                            "route":route, 
-                            "route_dist":route_dist,
-                            "streetlights":streetlights
-                            }
+                        "type":"shortest",
+                        "mbta_name": mbta_name,
+                        "mbta_coord": mbta_coord,
+                        "route":route, 
+                        "route_dist":route_dist,
+                        "streetlights":streetlights, 
+                        "score": route_score
                         })
+    
                 routes.append({
-                        "alc_coord": alc_coord,
-                        "mbta_route": {
-                            "mbta_coord": mbta_coord,
-                            "route":safest_route, 
-                            "route_dist":safest_route_dist,
-                            "streetlights":safest_route_streetlights
-                            }
+                        "type":"safest",
+                        "mbta_name": mbta_name,
+                        "mbta_coord": mbta_coord,
+                        "route":safest_route, 
+                        "route_dist":safest_route_dist,
+                        "streetlights":safest_route_streetlights,
+                        "score": safest_route_score
                         })
             
-            # choose max score
+            # choose max score as optimal
             if (route_scores):
                 index_best = route_scores.index(max(route_scores))
                 if index_best % 2 == 1:
                     safest_count += 1
                 else:
                     shortest_count += 1
-                best_path = routes[index_best]
-                best_paths.append(best_path)
+                
+                best_path = routes.pop(index_best)
+                
+                paths.append({
+                    "alc_coord": alc_coord,
+                    "alc_name":alc_name,
+                    "alc_license":alc_license,
+                    "optimal_route": best_path,
+                    "other_routes": routes
+                    })
                 
         print("Picked safest route ", safest_count, " times.")
         print("Picked shortest route ", shortest_count, " times.")
+        
+        paths_copy = copy.deepcopy(paths)
 
         repo.dropCollection("optimized_routes")
         repo.createCollection("optimized_routes")
-        repo['aoconno8_dmak1112_ferrys.optimized_routes'].insert_many(best_paths)
+        repo['aoconno8_dmak1112_ferrys.optimized_routes'].insert_many(paths)
         repo['aoconno8_dmak1112_ferrys.optimized_routes'].metadata({'complete':True})
         print(repo['aoconno8_dmak1112_ferrys.optimized_routes'].metadata())
+        
+        with open("../datasets/optimization.json", 'w') as file:
+            json.dump(paths_copy, file)
         
         repo.logout()
         endTime = datetime.datetime.now()
@@ -144,7 +163,7 @@ class optimization(dml.Algorithm):
         repo.logout()
         return doc
                   
-#optimization.execute()
+#optimization.execute(True)
 #doc = optimization.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

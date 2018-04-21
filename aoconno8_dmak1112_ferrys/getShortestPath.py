@@ -44,6 +44,8 @@ class getShortestPath(dml.Algorithm):
         
         for streetlights in tqdm(streetlights_in_radius):
             alc_coord = streetlights['alc_coord']
+            alc_name = streetlights['alc_name']
+            alc_license = streetlights['alc_license']
             mbta_coords = streetlights['mbta_coords']
             streetlights_list = streetlights['streetlights']
             
@@ -80,7 +82,7 @@ class getShortestPath(dml.Algorithm):
             temp_routes = []
             for mbta_coord in tqdm(mbta_coords):
                 # get nearest node to the mbta stop
-                target_xy = mbta_coord
+                target_xy = (mbta_coord[0], mbta_coord[1])
                 proj_target_xy = utm.from_latlon(target_xy[0], target_xy[1])
                 input_target_xy = (proj_target_xy[1], proj_target_xy[0])
                 target_node = ox.get_nearest_node(graph_project, input_target_xy, return_dist=True, method='euclidean')
@@ -126,6 +128,8 @@ class getShortestPath(dml.Algorithm):
                 
             routes.append({
                 "alc_coord": orig_xy,
+                "alc_name": alc_name,
+                "alc_license":alc_license,
                 "mbta_routes": temp_routes
             })
 
@@ -183,7 +187,7 @@ class getShortestPath(dml.Algorithm):
         return [p(t) for t in R]
 
 
-#getShortestPath.execute()
+#getShortestPath.execute(True)
 #doc = getShortestPath.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

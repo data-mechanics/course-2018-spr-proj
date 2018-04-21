@@ -7,6 +7,7 @@ import uuid
 from tqdm import tqdm
 import rtree
 import shapely.geometry
+import numpy as np
 
 class getClosestMBTAStops(dml.Algorithm):
     '''
@@ -31,22 +32,22 @@ class getClosestMBTAStops(dml.Algorithm):
         # mbta
         num_mbta_stops = 3
         mbta = repo.aoconno8_dmak1112_ferrys.mbta.find()
-        projected_mbta = getClosestMBTAStops.project(mbta, lambda t: (t['attributes']['latitude'], t['attributes']['longitude']))
+        projected_mbta = getClosestMBTAStops.project(mbta, lambda t: (t['attributes']['latitude'], t['attributes']['longitude'], t['attributes']['name']))
 
 
         # alc
         alc = repo.aoconno8_dmak1112_ferrys.alc_licenses.find()
-        projected_alc = getClosestMBTAStops.project(alc, lambda t: (t['License Number'], t['Street Number'] + ' ' + t['Street Name'] + ' ' +  str(t['Suffix']) + ' ' + t['City']))
+        projected_alc = getClosestMBTAStops.project(alc, lambda t: (t['License Number'], t['Street Number'] + ' ' + t['Street Name'] + ' ' +  str(t['Suffix']) + ' ' + t['City'], t['Business Name'], t['DBA']))
 
         if trial:
             # algorithm wasnt working well on trial because the mbta stops
             # and alcohol licenses were so far away from each other
             # so I just picked a small subset of close ones
-            projected_alc = [[42.3516079, -71.080906]]
-            alc_lat = projected_alc[0][0]
-            alc_long = projected_alc[0][1]
+            projected_alc = [["678", (42.3516079, -71.080906), "Business Name", "Name"]]
+            alc_lat = projected_alc[0][1][0]
+            alc_long = projected_alc[0][1][1]
             
-            projected_mbta = [[42.350067, -71.078068], [42.348227, -71.075493], [42.349224, -71.080600]]
+            projected_mbta = [[42.350067, -71.078068, "Copley"], [42.348227, -71.075493, "Back Bay"], [42.349224, -71.080600, "Ring Rd @ Boylston St"]]
             
         index = rtree.index.Index()
         for i in tqdm(range(len(projected_mbta))):
@@ -86,6 +87,7 @@ class getClosestMBTAStops(dml.Algorithm):
             mbta_dist.append({
                         "alc_license": alc_entry[0],
                         "alc_coord":(alc_lat, alc_long),
+                        "alc_name": alc_entry[2] if (type(alc_entry[3]) != str and np.isnan(alc_entry[3])) else alc_entry[3],
                         "mbta_coords":(mbta_coords)
                     })
 
@@ -149,7 +151,7 @@ class getClosestMBTAStops(dml.Algorithm):
         return [p(t) for t in R]
 
 
-#getClosestMBTAStops.execute(True)
+#getClosestMBTAStops.execute()
 #doc = getClosestMBTAStops.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

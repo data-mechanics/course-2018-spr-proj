@@ -27,6 +27,7 @@ class getStreetlights(dml.Algorithm):
         repo['aoconno8_dmak1112_ferrys.streetlights'].insert_many(streetlight_dict)
         repo['aoconno8_dmak1112_ferrys.streetlights'].metadata({'complete':True})
         print(repo['aoconno8_dmak1112_ferrys.streetlights'].metadata())
+        
 
         repo.logout()
         endTime = datetime.datetime.now()

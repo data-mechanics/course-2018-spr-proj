@@ -48,8 +48,8 @@ class getStatistics(dml.Algorithm):
 
 
             for k in range(len(shortest_paths)):
-                lights = shortest_paths[k]['mbta_route']['streetlights']
-                dist = shortest_paths[k]['mbta_route']['route_dist']
+                lights = shortest_paths[k]['optimal_route']['streetlights']
+                dist = shortest_paths[k]['optimal_route']['route_dist']
                 route_lengths.append(len(lights))
                 distances.append(dist)
                 temp_endpoints = 0
@@ -73,7 +73,7 @@ class getStatistics(dml.Algorithm):
             start = []
             end = []
             for k in range(len(shortest_paths)):
-                lights = shortest_paths[k]['mbta_route']['streetlights']
+                lights = shortest_paths[k]['optimal_route']['streetlights']
                 temp_start = 0
                 temp_end = 0
                 for j in range(len(lights)):
@@ -189,7 +189,7 @@ class getStatistics(dml.Algorithm):
         return sum(x)/len(x)
 
 
-#getStatistics.execute()
+getStatistics.execute()
 #doc = getStatistics.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

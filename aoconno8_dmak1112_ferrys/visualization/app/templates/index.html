@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<style>
+iframe {
+	margin-top:15px;
+    margin-left: 40px;
+} 
+form {
+	margin-top:20px;
+	margin-left: 65px;
+}
+.vis {
+	font-size:150px;
+}
+</style>
+
+<head>
+  <title>Visualizations</title>
+</head>
+
+<body>
+	<div>
+		{% if map %}
+			<form action="/show_graph">
+				<input class="vis" type="submit" value="Show distance vs. cost graph">
+			</form>
+			<iframe src="/map" height="550" width="1000" align="right"></iframe>
+		{% endif %}
+	</div>
+
+	<div>
+		{% if graph %}
+			<form action="/">
+				<input class="vis" type="submit" value="Show route map">
+			</form>
+			<iframe src="/graph" height="550" width="1000" align="right"></iframe>
+		{% endif %}
+	</div>
+
+</body>
+
+

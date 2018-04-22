@@ -1,9 +1,8 @@
-import osmnx as ox, networkx as nx
+import osmnx as ox
 import urllib.request
 import json
 import folium
 from tqdm import tqdm
-import geopandas as pd
 
 def generateGraph(r, G):
     print("Converting to GeoDataFrame")
@@ -19,7 +18,10 @@ def generateGraph(r, G):
     gdf_edges_red = gdf_edges[['geometry', 'u', 'v']]
     
     graph_map = folium.Map(location=graph_centroid, zoom_start=12, tiles='cartodbpositron')
+    
     print("Generating folium map")
+    # graph viz adapted from https://github.com/gboeing/osmnx/blob/master/osmnx/plot.py
+
     for alc_license in tqdm(r):
         route_dist = alc_license["optimal_route"]["route_dist"]
         streetlights = alc_license["optimal_route"]["streetlights"]
@@ -59,7 +61,28 @@ def generateGraph(r, G):
             route_start_node = (coords[1], coords[0])
         folium.RegularPolygonMarker(route_start_node, weight=0, fill_color= "#900C3F", fill_opacity=.9, number_of_sides=15, radius=5, popup=alc_name).add_to(graph_map)
         
-    filepath = 'output/viz.html'
+    legend_html = """
+         <div style="position: fixed; 
+                     bottom: 50px; 
+                     left: 50px; 
+                     width: 112px; 
+                     height: 60px; 
+                     border:1px 
+                     solid black; 
+                     z-index:9999; 
+                     font-size:12px;
+                     font-family:arial;">
+             <div style="margin-top:10px">
+                 &nbsp; <i class="fa fa-circle" style="color:#900C3F"></i> Alcohol License &nbsp;
+             </div>
+             <div style="margin-top:-10px">
+                 &nbsp;  <i class="fa fa-circle" style="color:#FF5733"></i> MBTA Stop &nbsp;
+             </div>
+          </div>
+         """
+    graph_map.get_root().html.add_child(folium.Element(legend_html))
+    
+    filepath = 'app/templates/viz.html'
     graph_map.save(filepath)
 
     return graph_map

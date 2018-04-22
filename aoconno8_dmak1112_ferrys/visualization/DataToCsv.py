@@ -47,6 +47,6 @@ for i in range(len(otherlist)):
 
 
 df = pd.DataFrame(full_list, columns=['symbol','date','price'])
-df.to_csv("output/data.csv",index=False)
+df.to_csv("app/templates/data.csv",index=False)
 print("Done")
 

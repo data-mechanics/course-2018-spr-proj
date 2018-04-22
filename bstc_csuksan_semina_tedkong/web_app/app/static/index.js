@@ -5,6 +5,21 @@ var msg = document.getElementById("userMsg");
 
 var retryCnt = 0;
 
+  function makeMap() {
+    this.map = L.map('map').setView([40.712, -74.006], 11);
+    var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+  });
+  // Now add the layer onto the map
+  map.addLayer(layer);
+  }
+
+var map = null;
+
+(function() {
+  makeMap();
+})();
+
 requestPermission();
 
 function requestPermission() {
@@ -52,4 +67,6 @@ function showPosition(position) {
   msg.innerHTML = "Your current location... "
   loc.innerHTML = "Latitude: " + position.coords.latitude
                     + "<br>Longitude: " + position.coords.longitude;
+  this.map.flyTo([position.coords.latitude, position.coords.longitude], 12);
+  L.marker([position.coords.latitude, position.coords.longitude]).addTo(this.map);
 }

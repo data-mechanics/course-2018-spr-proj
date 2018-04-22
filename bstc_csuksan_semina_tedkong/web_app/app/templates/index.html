@@ -1,0 +1,15 @@
+<html>
+  <head>
+      <title>{{ title }} - i911</title>
+  </head>
+  <body>
+    <h1 id="userMsg">Input how much you value Yelp rating and health code violation average:</h1>
+
+    <!-- TODO: add some form or sliding bar to get value which calls script in app/static folder-->
+
+  	<p id="restaurantNames"></p> <!-- these can be updated in the javascript -->
+    <p id="loc"></p>
+    <button onclick="getLocation()">Update location</button>
+    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
+	</body>
+</html>

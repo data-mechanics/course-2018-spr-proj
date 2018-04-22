@@ -35,7 +35,7 @@ svg {
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
  
-var margin = {top: 10, right: 10, bottom: 100, left: 40},
+var margin = {top: 10, right: 10, bottom: 100, left: 50},
     margin2 = {top: 430, right: 10, bottom: 20, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom,
@@ -125,10 +125,26 @@ d3.csv("http://datamechanics.io/data/aoconno8_dmak1112_ferrys/graph_opt_data.csv
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
+
+    svg.append("text")             
+      .attr("transform",
+            "translate(" + (width/2) + " ," + 
+                           (height + margin.top + 40) + ")")
+      .style("text-anchor", "middle")
+      .text("Optimization Score");
  
     focus.append("g")
         .attr("class", "y axis")
         .call(yAxis);
+
+
+    svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left + 50)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Distance");
         
     var contextlineGroups = context.selectAll("g")
         .data(sources)

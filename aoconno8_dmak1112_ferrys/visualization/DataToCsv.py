@@ -16,17 +16,17 @@ for i in range(len(d)):
     if d[i]['optimal_route']['route_dist'] > 8000:
         continue
     if d[i]['optimal_route']['type'] == 'shortest':
-        symbol = 'SHORT'
+        symbol = 'Shortest Routes'
     else:
-        symbol = 'SAFE'
+        symbol = 'Safest Routes'
     if not math.isnan(d[i]['optimal_route']['score']):
         optlist.append(("OPT", score, dist))
         otherlist.append((symbol, score, dist))
     for i in d[i]['other_routes']:
         if i['type'] == 'safest':
-            symbol = 'SAFE'
+            symbol = 'Safest Routes'
         else:
-            symbol = 'SHORT'
+            symbol = 'Shortest Routes'
         if i['route_dist'] > 8000:
                 continue
         if not math.isnan(i['score']):

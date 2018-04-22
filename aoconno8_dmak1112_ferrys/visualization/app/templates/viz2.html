@@ -33,11 +33,11 @@ path {
 <script>
 
 // Set the dimensions of the canvas / graph
-var margin = {top: 90, right: 60, bottom: 70, left: 100},
-    width = 1200 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+var margin = {top: 0, right: 60, bottom: 70, left: 50},
+    width = 1100 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
-// Parse the date / time
+// Parse the score / time
 
 // Set the ranges
 var x = d3.scale.linear().range([0, width]);
@@ -50,11 +50,12 @@ var yAxis = d3.svg.axis().scale(y)
     .orient("left");
 
 // Define the line
-var priceline = d3.svg.line()   
-    .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.price); })
+var distanceline = d3.svg.line()   
+    .x(function(d) { return x(d.score); })
+    .y(function(d) { return y(d.distance); })
     .interpolate("linear");
-    
+
+
 // Adds the svg canvas
 var svg = d3.select("body")
     .append("svg")
@@ -67,14 +68,14 @@ var svg = d3.select("body")
 // Get the data
 d3.csv("http://datamechanics.io/data/aoconno8_dmak1112_ferrys/graph_data.csv", function(error, data) {
     data.forEach(function(d) {
-        d.date = parseFloat(d.date);
-        d.price = parseFloat(d.price);
+        d.score = parseFloat(d.score);
+        d.distance = parseFloat(d.distance);
     });
 
 
     // Scale the range of the data
-    x.domain((d3.extent(data, function(d) { return d.date; })));
-    y.domain([0, d3.max(data, function(d) { return d.price; })]);
+    x.domain((d3.extent(data, function(d) { return d.score; })));
+    y.domain([0, d3.max(data, function(d) { return d.distance; })]);
 
     // Nest the entries by symbol
     var dataNest = d3.nest()
@@ -93,7 +94,10 @@ d3.csv("http://datamechanics.io/data/aoconno8_dmak1112_ferrys/graph_data.csv", f
             .style("stroke", function() { // Add the colours dynamically
                 return d.color = color(d.key); })
             .attr("id", 'tag'+d.key.replace(/\s+/g, '')) // assign ID
-            .attr("d", priceline(d.values));
+            .attr("d", distanceline(d.values));
+
+
+        
 
         // Add the Legend
         svg.append("text")
@@ -110,12 +114,16 @@ d3.csv("http://datamechanics.io/data/aoconno8_dmak1112_ferrys/graph_data.csv", f
                 d3.select("#tag"+d.key.replace(/\s+/g, ''))
                     .transition().duration(100) 
                     .style("opacity", newOpacity); 
-                // Update whether or not the elements are active
+                // Upscore whether or not the elements are active
                 d.active = active;
                 })  
             .text(d.key); 
 
     });
+
+
+    
+
 
     // Add the X Axis
     svg.append("g")
@@ -128,7 +136,14 @@ d3.csv("http://datamechanics.io/data/aoconno8_dmak1112_ferrys/graph_data.csv", f
         .attr("class", "y axis")
         .call(yAxis);
 
+
+
+    
+
 });
+
+
+// Zoom specific upscores
 
 </script>
 </body>

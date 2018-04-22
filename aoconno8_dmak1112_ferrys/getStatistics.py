@@ -189,7 +189,7 @@ class getStatistics(dml.Algorithm):
         return sum(x)/len(x)
 
 
-getStatistics.execute()
+#getStatistics.execute()
 #doc = getStatistics.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

@@ -8,6 +8,7 @@ iframe {
 form {
 	margin-top:20px;
 	margin-left: 65px;
+	display: inline-block;
 }
 .vis {
 	font-size:150px;
@@ -19,21 +20,35 @@ form {
 </head>
 
 <body>
+	<form action="/">
+		<input class="vis" type="submit" value="Show route map">
+	</form>
+
+	<form action="/show_graph">
+		<input class="vis" type="submit" value="Show distance vs. cost graph">
+	</form>
+
+	<form action="/show_opt_graph">
+		<input class="vis" type="submit" value="Show optimized routes graph">
+	</form>
+	
 	<div>
 		{% if map %}
-			<form action="/show_graph">
-				<input class="vis" type="submit" value="Show distance vs. cost graph">
-			</form>
+			
 			<iframe src="/map" height="550" width="1000" align="right"></iframe>
 		{% endif %}
 	</div>
 
 	<div>
 		{% if graph %}
-			<form action="/">
-				<input class="vis" type="submit" value="Show route map">
-			</form>
+			
 			<iframe src="/graph" height="550" width="1000" align="right"></iframe>
+		{% endif %}
+	</div>
+	<div>
+		{% if opt_graph %}
+			
+			<iframe src="/opt_graph" height="550" width="1000" align="right"></iframe>
 		{% endif %}
 	</div>
 

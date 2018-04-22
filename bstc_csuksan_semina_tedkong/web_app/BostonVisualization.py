@@ -8,14 +8,16 @@ Created on Sun Apr 22 00:28:19 2018
 import pandas as pd
 import numpy as np
 import json
-import urllib
+import urllib2
 import matplotlib.pyplot as plt
 import random
+import requests
 
 
 urls = 'http://datamechanics.io/data/BostonScoring_Map.json'
-with urllib.request.urlopen(urls) as url:
-    data = json.dumps(url.read().decode())
+with requests.get(urls) as url:
+    data = url.text
+    data = json.dumps(data)
 temp = json.loads(data)
 file = pd.read_json(temp, lines=True)
 #print(file)

@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import dill
 
+import time
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pickle
 from sklearn.linear_model import LogisticRegression
@@ -13,6 +14,8 @@ from sklearn.externals import joblib
 
 
 def main():
+    start = time.time()
+
     keras_model = "deep_nn_weights.h5"
     model_name = 'tweet_word2vec.model'
     # static names 
@@ -45,7 +48,7 @@ def main():
     print( "Test set has total {0} entries with {1:.2f}% negative, {2:.2f}% positive".format(len(x_test),
                                                                              (len(x_test[y_test == 0]) / (len(x_test)*1.))*100,
                                                                             (len(x_test[y_test == 1]) / (len(x_test)*1.))*100))
-    tvec1 = TfidfVectorizer(max_features=100000,ngram_range=(1, 3))
+    tvec1 = TfidfVectorizer(max_features=150000,ngram_range=(1, 3))
     tvec1.fit(x_train)
     x_train_tfidf = tvec1.transform(x_train)
     x_validation_tfidf = tvec1.transform(x_validation)
@@ -61,7 +64,7 @@ def main():
     print(clf.score(x_validation_tfidf, y_validation))
     print(clf.score(x_test_tfidf, y_test))
 
-    
+    time_app = str(time.time())
     np.save( data_loc + 'train_x.npy', x_train_tfidf)
     np.save( data_loc + 'train_y.npy', y_train)
 
@@ -72,17 +75,17 @@ def main():
     np.save( data_loc + 'test_y.npy', y_test)
     print("all Datasets have been saved ")
 
-    joblib.dump(clf, model_location + 'l2_LR.pkl') 
+    joblib.dump(clf, model_location + 'l2_LR{}.pkl'.format(time_app)) 
     print("Model saved")
 
 
 
 
-    with open(model_location + 'vectorizer.pk', 'wb') as fin:
+    with open(model_location + 'vectorizer{}.pk'.format(time_app), 'wb') as fin:
         pickle.dump(tvec1, fin)
-        
 
 
 
+    print("Finished in {}".format(time.time() - start))
 if __name__ == '__main__':
     main()

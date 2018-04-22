@@ -54,9 +54,12 @@ def main(trial = False):
                     size=512, 
                     # Window size
                     window=10, 
-                    negative=20,
+                    #negative=20,
                     iter=75,# I am impatient, and don't want to run it for too long 
                     seed=6969,
+                    # heiarchichal softmax
+                    hs=1,
+                     negative=0,
                     # paralellize this or it will take legit forever 
                     workers=multiprocessing.cpu_count())
     elapsed_time = time.time() - start

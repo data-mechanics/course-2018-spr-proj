@@ -1,3 +1,5 @@
+
+
 # Download zip file and extract to this directory 
 # Located at http://thinknook.com/wp-content/uploads/2012/09/Sentiment-Analysis-Dataset.zip
 
@@ -24,9 +26,6 @@ def download_zip(zip_file_url):
     z.extractall()
 
 
-def remove_urls (vTEXT):
-    vTEXT = re.sub(r'(https|http)?:\/\/(\w|\.|\/|\?|\=|\&|\%)*\b', '', vTEXT, flags=re.MULTILINE)
-    return(vTEXT)
 
 
 
@@ -47,7 +46,6 @@ def build_corpus(dataset_location):
     # Sentiment Label
     ground_truth = []
     punctuation = re.compile(r'[><%^*-.?!,":;()|0-9]')
-
     # Progress
     count = 0
     start = time.time()
@@ -75,14 +73,13 @@ def build_corpus(dataset_location):
             # Retrieve the tweet data
             tweet = y_x_vector[3].strip()
             clean_tweet = punctuation.sub("", tweet)
-            # remove urls 
-            clean_tweet = remove_urls(clean_tweet)
                     
             corpus.append(clean_tweet.strip().lower())
             
     print('Corpus size: {}'.format(len(corpus)))
     print("Finished in {}".format(time.time() - start))
-    return corpus, ground_truth
+    Y = [[1.0, 0.0] if v  == 0 else [0.0, 1.0]  for v in ground_truth]
+    return corpus,Y
 
 
 def tokenize_corpus(corpus):
@@ -145,7 +142,7 @@ def load_corpus(corp_filename):
 
 def main(trial=False):
     # location of twitter data
-    dataset_url = "http://thinknook.com/wp-content/uploads/2012/09/Sentiment-Analysis-Dataset.zip"
+    #dataset_url = "http://thinknook.com/wp-content/uploads/2012/09/Sentiment-Analysis-Dataset.zip"
     # local path to name 
     dataset_location = './Sentiment Analysis Dataset.csv'
     # where to save the model
@@ -153,22 +150,23 @@ def main(trial=False):
     # tokenized filename 
     corp_filename = 'tokenized_tweet_corpus.dill'
     gt_filename = 'ground_truth_tokenized_tweet_corpus.dill'
+    ohe_Y = "one_hot_encoded_Y.dill"
     # For reproducability, and being immature AF
     np.random.seed(6969)
 
     # Start by retrieving the data
-    download_zip(dataset_url) 
-    corpus, ground_truth = build_corpus(dataset_location)
+    #download_zip(dataset_url) 
+    corpus, Y = build_corpus(dataset_location)
     # for quick debug 
     if trial:
         # do a truncated write
         corpus = corpus[:1000]
         ground_truth = ground_truth[:1000]
-    t_corp = tokenize_corpus(corpus)
-    print("Writting Corpus to {}".format(corp_filename))
-    save_corpus(t_corp, model_location, corp_filename)
+    #t_corp = tokenize_corpus(corpus)
+    #print("Writting Corpus to {}".format(corp_filename))
+    #ave_corpus(t_corp, model_location, corp_filename)
     print("Writting Synchronous Lables to {}".format(gt_filename))
-    save_corpus(ground_truth, model_location, gt_filename)
+    save_corpus(Y, model_location, ohe_Y)
 
 
     

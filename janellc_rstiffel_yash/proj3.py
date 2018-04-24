@@ -18,7 +18,8 @@ def optimize():
         #results={}
         obj = optCrime.optCrime()
         results=obj.execute(d_input=district, distance_input=distance)
-        return render_template('results.html', results=results,district=district, distance=distance)
+        total=results[district]['total']
+        return render_template('results.html', total=total, results=results,district=district, distance=distance)
     else:
         return render_template('index.html')
 

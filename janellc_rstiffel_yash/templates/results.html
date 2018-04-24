@@ -2,19 +2,43 @@
 <html>
 
 <head>
+
+<link rel="stylesheet" type="text/css" href="static/style.css">
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat">
 <title> Optimizing Patrol Placements in Boston Neighborhoods </title>
-
+<style>
+      #map {
+        width: 75%;
+        height: 400px;
+        background-color: grey;
+        padding-left:100px;
+      }
+      .button{
+        background-color: #4CAF50;
+        border:none;
+        color:white;
+        padding:12px 26px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        border-radius: 8px;
+      }
+    </style>
 </head>
-<body>
-
-<div class="wrapper">
+<body style="font-family: 'Montserrat', serif; padding-left:100px;">
+<div class="wrapper" style="padding-bottom:75px;">
 <h1>  Search again? </h1>
 
 <h5> </h5>
   <form method="POST" action="/optimize"">
-      Find optimal patrol placements in which each street has a nearby station at most
-      <input type="number" name="distance" placeholder="# (feet)" min="0" max="1000" step="50" class="input" required>
-      feet away.<br><br>
+       Find optimal patrol placements in which each street has a nearby station at most
+      <span id="slider_value" style="color:green;font-weight: bold;">500</span>  feet away.<br><br>
+      
+     0 <input type="range" style="width:600px;"  name="distance" id="distance" min="1" max="1000" class="slider" oninput="show_value(this.value);" required> 1000
+
+      <br><br><br>
       District: <select id="disttrict" name="district"> 
         <option value="Downtown">Downtown</option>
         <option value="Roxbury">Roxbury</option>
@@ -29,16 +53,105 @@
         <option value="Brighton">Brighton</option>
         <option value="Mattapan">Mattapan</option>
        </select>
+    <br><br>
 
-      Distance is {{distance}} feet, district is {{district}}
-      {{results}}
-
-      <br><br>
-      <input type="submit" value="Enter" class="button" >
+      <button type="button" class="btn btn-success">Submit</button>
 
   </form>
+    <p>
+     Distance is {{distance}} feet, district is {{district}}
+
+      <br><br>
+      Minimum number of patrols needed: {{total}}
+
+      <br><br>
+    </p>
+    <h3> My map results </h3>
+    <div id="floating-panel">
+      <input onclick="clearMarkers();" type=button value="Hide Markers">
+      <input onclick="showMarkers();" type=button value="Show All Markers">
+      <input onclick="clearNoMarkers();" type=button value="Patrol Locations Only">
+    </div>
+    <div id="map"></div>
 </div>
 
+  <script>
+      var map;
+      var yesmarkers = [];
+      var nomarkers = [];
+      function initMap() {
+        var res = {{results|tojson}} ;
+        var district_name = Object.keys(res)[0];
+        var total = Object.keys(res)[1];
+        var locations = res[district_name][Object.keys(res[district_name])[0]];
+        console.log(locations);
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: {lat: 42.3601, lng: -71.0589}
+        });
+
+        var street_names =Object.keys(locations);
+        for (var i=0; i<street_names.length; i++) {
+            //console.log(locations[street_names[i]]);
+            patrol_position = new google.maps.LatLng(locations[street_names[i]]['lat'], locations[street_names[i]]['long']);
+            addMarker(patrol_position, locations[street_names[i]]['Patrol?']);
+        }
+      }
+
+      function addMarker(location, patrol) {
+        var marker = new google.maps.Marker({
+          position: location,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: (patrol=='Yes' ? 'green':'red'),
+            fillOpacity: 0.6,
+            scale: 3,
+            strokeColor: (patrol=='Yes'? 'green':'red'),
+            strokeWeight: 1
+          },
+          map: map
+        });
+        (patrol == 'Yes' ? yesmarkers.push(marker) : nomarkers.push(marker));
+      }
+
+      function setMapOnAll(map) {
+        for (var i = 0; i < yesmarkers.length; i++) {
+          yesmarkers[i].setMap(map);
+        }
+        for (var i = 0; i < nomarkers.length; i++) {
+          nomarkers[i].setMap(map);
+        }
+      }
+
+      // Removes the markers from the map, but keeps them in the array.
+      function clearMarkers() {
+        setMapOnAll(null);
+      }
+
+      function clearNoMarkers() {
+        for (var i = 0; i < yesmarkers.length; i++) {
+          yesmarkers[i].setMap(map);
+        }
+        for (var i = 0; i < nomarkers.length; i++) {
+          nomarkers[i].setMap(null);
+        }
+      }
+
+      // Shows any markers currently in the array.
+      function showMarkers() {
+        setMapOnAll(map);
+      }
+  </script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7ALl5l4QLyms6S6djMo77J2qY5B5oXQg&callback=initMap">
+    </script>
+    <script>
+        function show_value(x)
+          {
+           document.getElementById("slider_value").innerHTML=x;
+          }
+</script>
 </body>
 
 </html>

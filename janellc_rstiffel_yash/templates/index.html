@@ -2,19 +2,39 @@
 <html>
 
 <head>
-<title> Optimizing Patrol Placements in Boston Neighborhoods </title>
-
+<link rel="stylesheet" type="text/css" href="static/style.css">
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat">
+<style>
+  .button{
+    background-color: #4CAF50;
+    border:none;
+    color:white;
+    padding:12px 26px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+</style>
+<title> Minimizing Patrol Placements in Boston Neighborhoods </title>
 </head>
-<body>
+<body style="font-family: 'Montserrat', serif; text-align: center;">
 
-<div class="wrapper">
-<h1>  Optimizing Patrol Placements in Boston Neighborhoods </h1>
+<div class="wrapper" style="padding-top:70px;"">
+<h1>  Minimizing Patrol Placements in Boston Neighborhoods </h1>
 
 <h5> </h5>
   <form method="POST" action="/optimize"">
-      Find optimal patrol placements in which each street has a nearby station at most
-      <input type="number" name="distance" placeholder="# (feet)" min="0" max="1000" step="50" class="input" required>
-      feet away.<br><br>
+      <br><br><br>
+      Find optimal patrol placements in which each street has a nearby officer at most
+      <span id="slider_value" style="color:green; font-weight: bold;">500</span>  feet away.<br><br>
+      
+      <div class="slidecontainer">
+       0 <input type="range" style="width:600px;" name="distance" id="distance" min="1" max="1000" class="slider" oninput="show_value(this.value);" required> 1000
+      </div>
+      <br><br>
       District: <select id="district" name="district"> 
         <option value="Downtown">Downtown</option>
         <option value="Roxbury">Roxbury</option>
@@ -31,12 +51,17 @@
        </select>
 
 
-      <br><br>
-      <input type="submit" value="Enter" class="button" >
+      <br><br><br><br>
+      <input type="submit" value="Submit" class="button">
 
   </form>
 </div>
 
 </body>
-
+<script>
+function show_value(x)
+  {
+   document.getElementById("slider_value").innerHTML=x;
+  }
+</script>
 </html>

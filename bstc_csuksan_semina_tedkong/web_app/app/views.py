@@ -1,6 +1,7 @@
 import json
 from app import app
 from flask import render_template
+from flask import request
 
 @app.route('/', methods=['GET','POST'])
 def index():
@@ -16,7 +17,13 @@ def getpayload(phone_num):
 
     return json.dumps(payload)
 
-
+#receive data from template (note that location is only available once browser successfully locates user)
+@app.route('/receivedata', methods=['POST'])
+def receive_data():
+	print(request.form['yelp'])
+	print(request.form['violation'])
+	print(request.form['location'])
+	return render_template('index.html', title='Restaurant Recommender')
 '''
 @socketio.on_error()        # Handles the default namespace
 def error_handler(e):

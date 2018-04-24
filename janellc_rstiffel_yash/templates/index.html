@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title> Optimizing Patrol Placements in Boston Neighborhoods </title>
+
+</head>
+<body>
+
+<div class="wrapper">
+<h1>  Optimizing Patrol Placements in Boston Neighborhoods </h1>
+
+<h5> </h5>
+  <form method="POST" action="/optimize"">
+      Find optimal patrol placements in which each street has a nearby station at most
+      <input type="number" name="distance" placeholder="# (feet)" min="0" max="1000" step="50" class="input" required>
+      feet away.<br><br>
+      District: <select id="district" name="district"> 
+        <option value="Downtown">Downtown</option>
+        <option value="Roxbury">Roxbury</option>
+        <option value="Jamaica Plain">Jamaica Plain</option>
+        <option value="Dorcester">Dorcester</option>
+        <option value="South End">South End</option>
+        <option value="West Roxbury">West Roxbury</option>
+        <option value="South Boston">South Boston</option>
+        <option value="Hyde Park">Hyde Park</option>
+        <option value="East Boston">East Boston</option>
+        <option value="Charlestown">Charlestown</option>
+        <option value="Brighton">Brighton</option>
+        <option value="Mattapan">Mattapan</option>
+       </select>
+
+
+      <br><br>
+      <input type="submit" value="Enter" class="button" >
+
+  </form>
+</div>
+
+</body>
+
+</html>

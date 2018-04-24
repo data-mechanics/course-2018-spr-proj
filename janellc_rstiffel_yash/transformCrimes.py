@@ -4,6 +4,7 @@ import dml
 import prov.model
 import datetime
 import uuid
+from shapely.geometry import shape, Point, Polygon
 
 """
 Finds average point (lat, long) for each street in each district where crimes existed.
@@ -39,13 +40,14 @@ class transformCrimes(dml.Algorithm):
 
         # Get Crime data
         crimesData = repo.janellc_rstiffel_yash.crimesData.find()
+        neighborhoods = list(repo['janellc_rstiffel_yash.neighborhoods'].find())
 
         crimes_dist = {}
         for crime in crimesData:
             # Filters out empty rows
             if (crime['_id'] == None or crime['Long'] == None or crime['Lat'] == None or crime['DISTRICT'] == None or crime['STREET'] == None or "." in crime['STREET']):
                 continue
-            
+
             # Store in dictionary here
             if crime['DISTRICT'] not in crimes_dist:
                 crimes_dist[crime['DISTRICT']] = {crime['STREET']:{'Lat':float(crime['Lat']),'Long': float(crime['Long']), 'Count':1}}
@@ -127,7 +129,7 @@ class transformCrimes(dml.Algorithm):
                   
         return doc
 
-#transformCrimesData.execute()
+transformCrimes.execute()
 #doc = transformCrimesData.provenance()
 #print(doc.get_provn())
 #print(json.dumps(json.loads(doc.serialize()), indent=4))

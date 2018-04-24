@@ -25,11 +25,8 @@ def geodistance(la1, lon1, la2, lon2):
     lon1 = radians(lon1)
     la2 = radians(la2)
     lon2 = radians(lon2)
-
     dlon = lon1 - lon2
-
     EARTH_R = 6372.8
-
     y = sqrt(
         (cos(la2) * sin(dlon)) ** 2
         + (cos(la1) * sin(la2) - sin(la1) * cos(la2) * cos(dlon)) ** 2
@@ -39,21 +36,18 @@ def geodistance(la1, lon1, la2, lon2):
     return EARTH_R * c
 
 
-def findMinSat(streets):
+def findMinSat(streets, distance_input):
     """ Helper function to find the minimal satisfiable solution given a list of streets
     in the form [[street_name, lat#, long#], [_,_,_] ...]"""
     s=Solver()
     vs = {}
-
     #Exract points (latitutde and longitude) of each street, create a new z3.Int for each street.
     #Store it in values (vs) dictionaruy in the form {'z3': z3_value,  'street': street_name}
     i=0
-
     for street in streets:
         vs["c" + str(i)] = {'z3':z3.Int('c'+str(i)), 'street':street[0], 'lat':street[1], 'long':street[2]}
         s.add(vs["c"+str(i)]['z3'] >= 0)
         i+=1
-
     # For each street point, calculate its distance to every other street.
     # If the distance between i and j is less than 0.15 (~800 ft.), add a constraint
     # where ci + cj >= 1 (c is the street point).
@@ -63,19 +57,19 @@ def findMinSat(streets):
             s1long = streets[i][2]
             s2lat = streets[j][1]
             s2long = streets[j][2]
-
             dist = geodistance(s1lat,s1long,s2lat,s2long) #Calls geodistance helper function
-            if dist < 0.15:
+            if dist < distance_input:
                 s.add(vs["c"+str(i)]['z3'] + vs["c"+str(j)]['z3'] >= 1)
-
     #This value represents the objectifying function (which is the sum of all the edges)
     #st is the statement c = c0 + c1 + c2+ ... + cn as a string. exec(st).
+    the_length = len(vs)
     vs['c' + str(len(vs))] = {'z3': z3.Int('c' + str(len(vs))), 'street': 'Total' } 
     st = "s.add(vs['c" + str(len(vs)-1) + "']['z3']== vs['c" + str(0) + "']['z3']"
     for i in range(1,len(vs)-1):
         st+="+ vs['c" + str(i) + "']['z3']"
     st += ")"
     exec(st)
+    s.add(vs['c'+str(the_length)]['z3'] >= 0)
     
     # Find the minimal value of the objectifying variable
     tot=0
@@ -86,19 +80,14 @@ def findMinSat(streets):
             tot = i
             break
         s.pop()
-    #print(s.check())
+    if (str(s.check()) == 'unsat'):
+        return 'unsat'
     return(s.model(), vs)   # Return the model and values              
 
-class findCrimeStats(dml.Algorithm):
-    contributor = 'janellc_rstiffel_yash'
-    reads = ['janellc_rstiffel_yash.crimeDistricts']
-    writes = ['janellc_rstiffel_yash.crimeStats']
+class optCrime():
 
     @staticmethod
-    def execute(trial = False):
-        '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
-        startTime = datetime.datetime.now()
-
+    def execute(d_input, distance_input):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -116,90 +105,36 @@ class findCrimeStats(dml.Algorithm):
         d_results = {}
         for d in crimesData:
             district = list(d.keys())[1]
+            district_name = districtNames[district]
+            if d_input != district_name:
+                continue
             boston_district = d[district]
             streets = []
-            #print("District", district)
-
+            
             for street in boston_district:
                 streets.append([street,boston_district[street]['Lat'],boston_district[street]['Long']])
-
-            f = findMinSat(streets) # Calls findMinSat helper function, returns model and street name dict
+            distance_input = distance_input*0.000189393939
+            f = findMinSat(streets, distance_input) # Calls findMinSat helper function, returns model and street name dict
+            if f == 'unsat':
+                return f
             (model,vs) = f
 
             # Process the model, store results in a dictionary in form 
             # {District: {Total: #, streets_results: {street: 0, street:1, etc.}}
             street_results = {}
-
             for entry in model: 
                 if vs[str(entry)]['street'] == 'Total':
-                    streets_total = int(str(model[entry]))
+                    streets_total = len(model)-1 - int(str(model[entry]))
                     continue
-                street_results[vs[str(entry)]['street']] = {'Patrol?': int(str(model[entry])), 'lat':float(vs[str(entry)]['lat']), 'long': float(vs[str(entry)]['long'])}
+                street_results[vs[str(entry)]['street']] = {'Patrol?': 'No' if int(str(model[entry])) else 'Yes', 'lat':float(vs[str(entry)]['lat']), 'long': float(vs[str(entry)]['long'])}
                 #print(vs[str(entry)]['street'],"=", int(str(model[entry])))
 
-            d_results[districtNames[district]] = {'total': streets_total, 'streets_results': street_results}
-
-        #print(d_results)
-
-
-        repo.dropCollection("crimeStats")
-        repo.createCollection("crimeStats")
-
-        for key,value in d_results.items():
-             r = {key:value}
-             repo['janellc_rstiffel_yash.crimeStats'].insert(r)
-
-        repo['janellc_rstiffel_yash.crimeStats'].metadata({'complete':True})
-        print(repo['janellc_rstiffel_yash.crimeStats'].metadata())
-
+            d_results[district_name] = {'total': streets_total, 'streets_results': street_results}
+            break
         repo.logout()
-
-        endTime = datetime.datetime.now()
-
-        return {"start":startTime, "end":endTime}
+        return d_results
     
-    @staticmethod
-    def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-        '''
-            Create the provenance document describing everything happening
-            in this script. Each run of the script will generate a new
-            document describing that invocation event.
-            '''
-
-        # Set up the database connection.
-        client = dml.pymongo.MongoClient()
-        repo = client.repo
-        repo.authenticate('janellc_rstiffel_yash', 'janellc_rstiffel_yash')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
 
-        this_script = doc.agent('alg:findCrimeStats', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-        resource = doc.entity('dat:janellc_rstiffel_yash#crimeDistricts', {'prov:label':'Crimes Districts', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
-        find_stats = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-        
-        doc.wasAssociatedWith(find_stats, this_script)
 
-        doc.usage(find_stats, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':''
-                  }
-                  )
-        
-        stats = doc.entity('dat:crimeStats', {prov.model.PROV_LABEL:'Crime Stats', prov.model.PROV_TYPE:'ont:DataSet'})
-        doc.wasAttributedTo(stats, this_script)
-        doc.wasGeneratedBy(stats, find_stats, endTime)
-        doc.wasDerivedFrom(stats, resource, find_stats, find_stats, find_stats)
-
-      
-        repo.logout()
-                  
-        return doc
-
-findCrimeStats.execute()
-#doc = findCrimeStats.provenance()
-#print(doc.get_provn())
-#print(json.dumps(json.loads(doc.serialize()), indent=4))
-## eof
+#print(optCrime.execute('Dorcester', 800))

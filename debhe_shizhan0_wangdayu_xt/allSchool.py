@@ -48,6 +48,7 @@ class allSchool(dml.Algorithm):
         this will filter out all the elementry schools from privateSchool table.
         All the school has grade lower than 6th grade will be filter out
         '''
+        
         private_school = []
         for row in private_school_temp:
             if( ('6' in row['Grades']) or ('9' in row['Grades']) ) :

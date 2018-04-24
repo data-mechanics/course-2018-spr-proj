@@ -1,0 +1,29 @@
+<html>
+	<head lang="en-us">
+		<meta charset="utf-8">
+		<title>School Hubway Station</title>
+	</head>
+
+	<body>
+		<h1>
+			{% if message %}
+				{{message}}
+			{% endif %}
+		</h1>
+
+		<h1>Please enter the school name that you want to find</h1>
+		<form method="POST" action="{{url_for('schoolHubwayStation') }}">
+			<label for="string">Enter the school you want to find</label>
+			<input type="string" name="schoolNameInput" /><br/>
+			<input type="submit" />
+		</form>
+
+		<h1>Here are the result for the searching</h1>
+		<p>school name</p>
+		<p>{{schoolName}}</p>
+		<p>School coordinate: {{school_x}} , {{school_y}}</p>
+		<p>hubway station name</p>
+		<p>{{hubwayStationName}}</p>
+		<p>Hubway coordinate: {{hubway_x}} , {{hubway_y}}</p>
+	</body>
+</html>

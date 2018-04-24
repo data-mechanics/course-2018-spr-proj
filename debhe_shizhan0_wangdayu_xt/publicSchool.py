@@ -36,7 +36,7 @@ class publicSchool(dml.Algorithm):
         for row in cr:
             if(i != 0):
                 dic = {}
-                dic['schoolName'] = row[10]
+                dic['schoolName'] = row[11]
                 dic['bldg'] = row[3]
                 dic['sch_id'] = row[9]
                 dic['zipcode'] = row[7]

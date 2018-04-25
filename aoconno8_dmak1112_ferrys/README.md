@@ -1,10 +1,12 @@
-# Project 2
+# Project 3
 ## Justification
 Going to an establishment that allows alcohol consumption on the premises can be fun, but getting home can be dangerous. Even if you are not driving, you can encounter difficulty getting to your destination by public transportation. In Project #1, we incorporated datasets including Boston streetlight data, MBTA stops, and alcohol licenses. We performed transformations to combine these datasets to take the preliminary steps towards uncovering the most well-lit walking routes from the location of an alcohol-serving location to a public transportation stop.
 
 In Project #2, we take this idea a step further by performing optimization techniques to calculate routes from locations with alcohol licenses to MBTA stops. We added transformations to get all of the streetlights in the radius of each alcohol license and to calculate both the shortest paths and the safest paths from each alcohol license to its 3 closest MBTA stops. The safest path is the path that includes the node with the most streetlights in the radius. Then, we perform an optimization technique that scores all six of the paths based on a number of factors including route distance, number of streetlights, and variance of streetlights along the path. By finding the highest scored path, we hope to be able to provide civilians with routes to nearby MBTA stops that provide a reasonable combination of convenience and safety.
 
 We also perform various statistical analyses to test two hypotheses and to check for correlation. From these statistical analyses, we are able to get valuable information about the distribution of streetlights. For example, we discovered that in general, the mean number of streetlights near MBTA stops is greater than the mean number of streetlights near locations with alcohol licenses, so our endpoints have more streetlights than our starting points. More details about our results can be found below in the statistical analyses section.
+
+In Project #3, we provided a visualization of the optimal routes from every alcohol license to the MBTA stop chosen using the Python package folium. We also provided two visualizations, the first of which shows how the distances of each route vary as the score increases between the safest routes and the shortest routes (Figure 2), while the second tracks the same interaction for only the optimized routes (Figure 3). These visualizations were created using d3.
 
 
 ## Datasets
@@ -81,6 +83,9 @@ To provide a quick way to test our transformations, we provide a trial method th
     * utm
     * geoql
     * geopy
+    * folium
+    * d3
+    * flask
 * [Google Geocode API Key](https://developers.google.com/maps/documentation/geocoding/get-api-key)
     * Credentials are pulled from the auth.json file in the format ['services']['googlegeocoding']['key']
 * [MBTA Developer V3 API Portal Key](https://api-v3.mbta.com)

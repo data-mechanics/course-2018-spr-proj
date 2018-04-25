@@ -11,7 +11,12 @@
 
 		<ul>
 			{% for school in schools %}
-				<li>school Name : {{school[0]}} <br/>school X Coordinate : {{school[1]}} <br/> Y Coordinate: {{school[2]}}</li>
+				<li>school Name : {{school[0]}} <br/>
+					school X Coordinate : {{school[1]}} <br/>
+					 Y Coordinate: {{school[2]}}<br/>
+					 <!--
+					 <a href='/OnClickHubway/{{school[0]}}'>click to see the school and nearest hubway station</a> -->
+					</li>
 			{% endfor %}
 		</ul>
 

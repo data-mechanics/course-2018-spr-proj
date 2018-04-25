@@ -1,0 +1,20 @@
+<html>
+	<head lang="en-us">
+		<meta charset="utf-8">
+		<title>Check All the Schools</title>
+	</head>
+
+	<body>
+		<h1>
+			Here is list for all the schools
+		</h1>
+
+		<ul>
+			{% for school in schools %}
+				<li>school Name : {{school[0]}} <br/>school X Coordinate : {{school[1]}} <br/> Y Coordinate: {{school[2]}}</li>
+			{% endfor %}
+		</ul>
+
+		<p><a href='/schoolHubwayStation'>Find the closest hubway station for a certain school</a></p>
+	</body>
+</html>

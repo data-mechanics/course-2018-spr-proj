@@ -1,7 +1,7 @@
 <html>
 	<head lang="en-us">
 		<meta charset="utf-8">
-		<title>School Hubway Station</title>
+		<title>School New Bike hub</title>
 	</head>
 
 	<body>
@@ -12,7 +12,7 @@
 			{% endif %}
 		</h1>
 		<p><a href='/checkAllSchools'>What to check all the schools before searching?</a></p>
-		<form method="POST" action="{{url_for('schoolHubwayStation') }}">
+		<form method="POST" action="{{url_for('schoolNewBikeHub') }}">
 			<label for="string">Enter the school you want to find</label>
 			<input type="string" name="schoolNameInput" /><br/>
 			<input type="submit" />
@@ -22,9 +22,9 @@
 		<p>school name</p>
 		<p>{{schoolName}}</p>
 		<p>School coordinate: {{school_x}} , {{school_y}}</p>
-		<p>hubway station name</p>
-		<p>{{hubwayStationName}}</p>
-		<p>Hubway coordinate: {{hubway_x}} , {{hubway_y}}</p>
+		<p>Bike Hub Place</p>
+		<p>{{subwayStationName}}</p>
+		<p>Subway coordinate: {{subway_x}} , {{subway_y}}</p>
 		<a href='/'>Home</a>
 	</body>
 </html>

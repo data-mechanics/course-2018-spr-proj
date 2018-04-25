@@ -1,0 +1,20 @@
+<html>
+	<head lang="en-us">
+		<meta charset="utf-8">
+		<title>Check All the Schools</title>
+	</head>
+
+	<body>
+		<h1>
+			Here is list for all the hubwayStations
+		</h1>
+
+		<ul>
+			{% for hubway in hubways %}
+				<li>hubway Station : {{hubway[0]}} <br/>hubway X Coordinate : {{hubway[1]}} <br/> Y Coordinate: {{hubway[2]}}</li>
+			{% endfor %}
+		</ul>
+
+	
+	</body>
+</html>

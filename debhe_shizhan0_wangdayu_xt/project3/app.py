@@ -100,7 +100,47 @@ def checkAllSchools():
 		s_x = row['School_Cor_x']
 		s_y = row['School_Cor_y']
 		returnList.append([s_n, s_x, s_y])
+	repo.logout()
 	return render_template("checkAllSchools.html", schools = returnList)
+
+@app.route("/checkAllHubway", methods=["GET"])
+def checkAllHubway():
+	client = dml.pymongo.MongoClient()
+	repo = client.repo
+	repo.authenticate('debhe_shizhan0_wangdayu_xt', 'debhe_shizhan0_wangdayu_xt')
+	hubwayList = repo['debhe_shizhan0_wangdayu_xt.hubwayStation'].find()
+	hubwayResultList = []
+	for row in hubwayList:
+		h_n = row['station']
+		h_x = row['X']
+		h_y = row['Y']
+		hubwayResultList.append([h_n, h_x, h_y])
+	repo.logout()
+	return render_template("checkAllHubway.html", hubways = hubwayResultList)
+
+@app.route("/schoolAllHubway", methods=["GET, POST"])
+def schoolAllHubway():
+	hubwayList = findAllHubway()
+	if(request.method == "POST"):
+		client = dml.pymongo.MongoClient()
+		repo = client.repo
+		repo.authenticate('debhe_shizhan0_wangdayu_xt', 'debhe_shizhan0_wangdayu_xt')
+		schoolList = repo['debhe_shizhan0_wangdayu_xt.schoolHubwayDistance'].find()
+		for row in schoolList :
+			if(row['schoolName'] == schoolNameInput):
+				s_x = row['School_Cor_x']
+				s_y = row['School_Cor_y']
+		repo.logout()
+		return render_template("schoolAllHubway.html", schoolName = schoolNameInput, school_x = s_x, school_y = s_y, hubways = hubwayList)
+	repo.logout()
+	return render_template("schoolAllHubway.html", hubways = hubwayList)
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':

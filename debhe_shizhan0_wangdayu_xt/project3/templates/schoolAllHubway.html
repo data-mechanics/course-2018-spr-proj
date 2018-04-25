@@ -1,0 +1,33 @@
+<html>
+	<head lang="en-us">
+		<meta charset="utf-8">
+		<title>School and All the Hubway Station</title>
+	</head>
+
+	<body>
+		<h1>Please enter the school name that you want to find</h1>
+		<h1>
+			{% if message %}
+				{{message}}
+			{% endif %}
+		</h1>
+		<p><a href='/checkAllSchools'>What to check all the schools before searching?</a></p>
+		<form method="POST" action="{{url_for('schoolAllHubway') }}">
+			<label for="string">Enter the school you want to find</label>
+			<input type="string" name="schoolNameInput" /><br/>
+			<input type="submit" />
+		</form>
+
+		<h1>Here are the result for the searching</h1>
+		<p>school name</p>
+		<p>{{schoolName}}</p>
+		<p>School coordinate: {{school_x}} , {{school_y}}</p>
+		<ul>
+			{% for hubway in hubways %}
+			<li>Hubway Station Name: {{hubway[0]}}<br/>
+				X coordinate : {{hubway[1]}}<br/> Y coordinate : {{hubway[2]}} </li>
+			{% endfor %}
+		</ul>
+		<a href='/'>Home</a>
+	</body>
+</html>

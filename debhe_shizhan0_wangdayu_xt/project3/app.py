@@ -118,6 +118,28 @@ def checkAllHubway():
 	repo.logout()
 	return render_template("checkAllHubway.html", hubways = hubwayResultList)
 
+@app.route("/allSchoolAndHubway", methods=["GET"])
+def allSchoolAndHubway():
+	client = dml.pymongo.MongoClient()
+	repo = client.repo
+	repo.authenticate('debhe_shizhan0_wangdayu_xt', 'debhe_shizhan0_wangdayu_xt')
+	hubwayList = repo['debhe_shizhan0_wangdayu_xt.hubwayStation'].find()
+	hubwayResultList = []
+	for row in hubwayList:
+		h_n = row['station']
+		h_x = row['X']
+		h_y = row['Y']
+		hubwayResultList.append([h_n, h_x, h_y])
+	schoolList = repo['debhe_shizhan0_wangdayu_xt.schoolHubwayDistance'].find()
+	returnList = []
+	for row in schoolList:
+		s_n = row['schoolName']
+		s_x = row['School_Cor_x']
+		s_y = row['School_Cor_y']
+		returnList.append([s_n, s_x, s_y])
+	repo.logout()
+	return render_template("allSchoolAndHubway.html", hubways = hubwayResultList, schools = returnList)
+
 @app.route("/schoolAllHubway", methods=["GET, POST"])
 def schoolAllHubway():
 	hubwayList = findAllHubway()

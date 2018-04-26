@@ -13,7 +13,7 @@ class projectDestinationData(dml.Algorithm):
     writes = ['cma4_lliu_saragl_tsuen.destinationsProjected']
 
     @staticmethod
-    def execute(trial = True):
+    def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
@@ -31,10 +31,12 @@ class projectDestinationData(dml.Algorithm):
             collection = repo['cma4_lliu_saragl_tsuen.entertainment'].aggregate([{'$sample': {'size': 1000}}], allowDiskUse=True)
         else:
             collection = repo['cma4_lliu_saragl_tsuen.entertainment'].find()
+
         # projection
         dataSet = [
         	{'name': row["BUSINESSNAME"],
-        	'coords': row["Location"]}
+        	'coords': row["Location"],
+            'dest_type': "entertainment"}
         	for row in collection
         ]
 
@@ -46,7 +48,7 @@ class projectDestinationData(dml.Algorithm):
 
         food_data = []
         # joining food.py while filtering it
-        food_data = [{"name": field['businessName'], "coords": field['Location']} 
+        food_data = [{"name": field['businessName'], "coords": field['Location'], 'dest_type': 'food'} 
             for field in collection2 if field["RESULT"] is not "HE_Fail"]
         
         for i in range(len(food_data)):

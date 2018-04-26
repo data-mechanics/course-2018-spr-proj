@@ -9,7 +9,7 @@ import sys
 
 class findClosest(dml.Algorithm):
     contributor = 'cma4_lliu_saragl_tsuen'
-    reads = ['cma4_lliu_saragl_tsuen.destinationsProjected', 'cma4_lliu_saragl_tsuen.stationsProjected']
+    reads = ['cma4_lliu_saragl_tsuen.destinationsProjected', 'cma4_lliu_saragl_tsuen.stationsProjected', 'cma4_lliu_saragl_tsuen.food']
     writes = ['cma4_lliu_saragl_tsuen.closest']
 
     def latLongDist(p, q):
@@ -23,7 +23,7 @@ class findClosest(dml.Algorithm):
         return 6373 * c
 
     @staticmethod
-    def execute(trial = True):
+    def execute(trial = False):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
@@ -37,7 +37,7 @@ class findClosest(dml.Algorithm):
         destinations = None
 
         if trial:
-            destinations = repo['cma4_lliu_saragl_tsuen.destinationsProjected'].aggregate([{'$sample': {'size': 250}}], allowDiskUse=True)
+            destinations = repo['cma4_lliu_saragl_tsuen.destinationsProjected'].aggregate([{'$sample': {'size': 1000}}], allowDiskUse=True)
         else:
             destinations = repo['cma4_lliu_saragl_tsuen.destinationsProjected'].find()
 
@@ -63,8 +63,40 @@ class findClosest(dml.Algorithm):
             d['stationCoords'] = minStationCoords
             final.append(d)
             
+<<<<<<< HEAD
+        for i in final:
+        	del i['_id']
+=======
+        one_mile = 1.4
 
-        print(final)
+        food_data = repo['cma4_lliu_saragl_tsuen.food'].find()
+        food_places = []
+
+
+#Convert string version of coords to float tuples
+        for entry in food_data:
+            stringCoords = entry['Location']
+            la = stringCoords[1:13]
+            lo = stringCoords[15:-1]
+            if la == '' or lo == '':
+                continue
+            entry['Location'] = (float(la),float(lo))
+            food_places.append(entry)
+
+
+        print(food_places)
+#get number of failed restaurants within one mile radius per restaurant
+        for f in final:
+            fail_count = 0
+            for food in food_places:
+                if food["RESULT"] is "HE_Fail" and latLongDist(food['Location'], f['coords']) < one_mile and f is not food:
+                    fail_count += 1
+            f['fail_count'] = fail_count
+
+        print(final) 
+
+>>>>>>> 9ad635493ae1001d046c8bd3d793ac9d052dc104
+
             
 
         repo.dropCollection("cma4_lliu_saragl_tsuen.closest")

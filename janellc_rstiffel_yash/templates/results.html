@@ -18,20 +18,25 @@
         background-color: #4CAF50;
         border:none;
         color:white;
-        padding:12px 26px;
+        padding:10px 20px;
         text-align: center;
         text-decoration: none;
         display: inline-block;
         font-size: 14px;
         border-radius: 8px;
       }
+      #legend {
+      font-family: 'Montserrat', serif;
+      background: #fff;
+      padding: 10px;
+      margin: 10px;
+      border: 1px solid #000;
+    }
     </style>
 </head>
-<body style="font-family: 'Montserrat', serif; padding-left:100px;">
+<body style="font-family: 'Montserrat', serif; padding-left:100px;padding-right: 100px;">
 <div class="wrapper" style="padding-bottom:75px;">
-<h1>  Search again? </h1>
-
-<h5> </h5>
+<h2 style="padding-top: 15px;">  Search again? </h2>
   <form method="POST" action="/optimize"">
        Find optimal patrol placements in which each street has a nearby station at most
       <span id="slider_value" style="color:green;font-weight: bold;">500</span>  feet away.<br><br>
@@ -39,40 +44,35 @@
      0 <input type="range" style="width:600px;"  name="distance" id="distance" min="1" max="1000" class="slider" oninput="show_value(this.value);" required> 1000
 
       <br><br><br>
-      District: <select id="disttrict" name="district"> 
+      District:&nbsp;&nbsp; <select id="district" name="district" style="width:200px;height:30px;-webkit-appearance:none;-moz-appearance:none; appearance:none; padding-left: 15px; background-image:url('https://cdn1.iconfinder.com/data/icons/universal-icons-set-for-web-and-mobile/100/controls_0-12-256.png');background-repeat:no-repeat;background-position: 165px center; background-color:white; background-size:25px 25px; font-family: 'Montserrat'; font-size:14px;"> 
+        <option value="Brighton">Brighton</option>
+        <option value="Charlestown">Charlestown</option>
+        <option value="Dorcester">Dorchester</option>
         <option value="Downtown">Downtown</option>
-        <option value="Roxbury">Roxbury</option>
+        <option value="East Boston">East Boston</option>
+        <option value="Hyde Park">Hyde Park</option>
         <option value="Jamaica Plain">Jamaica Plain</option>
-        <option value="Dorcester">Dorcester</option>
+        <option value="Mattapan">Mattapan</option>
+        <option value="Roxbury">Roxbury</option>
+        <option value="South Boston">South Boston</option>
         <option value="South End">South End</option>
         <option value="West Roxbury">West Roxbury</option>
-        <option value="South Boston">South Boston</option>
-        <option value="Hyde Park">Hyde Park</option>
-        <option value="East Boston">East Boston</option>
-        <option value="Charlestown">Charlestown</option>
-        <option value="Brighton">Brighton</option>
-        <option value="Mattapan">Mattapan</option>
-       </select>
-    <br><br>
 
-      <button type="button" class="btn btn-success">Submit</button>
-
+       </select>&emsp;&emsp;&emsp;<input type="submit" value="Submit" class="button">
   </form>
-    <p>
-     Distance is {{distance}} feet, district is {{district}}
+  <br><br>
+  <hr style="border: 0;height: 1px;background: #333;background-image: linear-gradient(to right, #ccc, #333, #ccc);"> 
 
-      <br><br>
-      Minimum number of patrols needed: {{total}}
-
-      <br><br>
-    </p>
-    <h3> My map results </h3>
+      <h3>Minimum number of patrols needed: {{total}} </h3>
+      <h3>Showing results in {{district}} for {{distance}} feet... </h3>
     <div id="floating-panel">
       <input onclick="clearMarkers();" type=button value="Hide Markers">
       <input onclick="showMarkers();" type=button value="Show All Markers">
-      <input onclick="clearNoMarkers();" type=button value="Patrol Locations Only">
+      <input onclick="clearNoMarkers();" type=button value="Show Patrol Locations Only">
     </div>
     <div id="map"></div>
+    <div id="legend"><h3>Legend</h3></div>
+
 </div>
 
   <script>
@@ -90,6 +90,9 @@
           zoom: 12,
           center: {lat: 42.3601, lng: -71.0589}
         });
+
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push
+        (document.getElementById('legend'));
 
         var street_names =Object.keys(locations);
         for (var i=0; i<street_names.length; i++) {
@@ -142,6 +145,17 @@
       function showMarkers() {
         setMapOnAll(map);
       }
+      var div;
+      var legend = document.getElementById('legend');
+      div = document.createElement('div');
+      div.innerHTML =  "Marker = Street with reported crime";
+      legend.appendChild(div);
+      div = document.createElement('div');
+      div.innerHTML =  "Green = Patrol Placement";
+      legend.appendChild(div);
+      div = document.createElement('div');
+      div.innerHTML =  "Red = No Patrol Placement";
+      legend.appendChild(div);
   </script>
   <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7ALl5l4QLyms6S6djMo77J2qY5B5oXQg&callback=initMap">

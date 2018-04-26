@@ -2,6 +2,7 @@ import json
 from app import app
 from flask import render_template
 from flask import request
+from BostonVisualization import locate
 
 @app.route('/', methods=['GET','POST'])
 def index():
@@ -20,10 +21,19 @@ def getpayload(phone_num):
 #receive data from template (note that location is only available once browser successfully locates user)
 @app.route('/receivedata', methods=['POST'])
 def receive_data():
-	print(request.form['yelp'])
-	print(request.form['violation'])
-	print(request.form['location'])
-	return render_template('index.html', title='Restaurant Recommender')
+	y = float(request.form['yelp'])
+    r = float(request.form['violation'])
+    l = float(request.form['limit'])
+    r = (r*2) + 1
+    y = (y*9) + 1
+    lat = request.form['lat']
+    lon = request.form['lon']
+    #finds close restraurants
+    close = locate(lat, lon, r, y, l)
+    payload = {
+        'restaurants': close
+    }
+    return json.dumps(payload)
 '''
 @socketio.on_error()        # Handles the default namespace
 def error_handler(e):

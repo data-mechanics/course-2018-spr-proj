@@ -1,24 +1,11 @@
 
 var rNames = document.getElementById("restaurantNames");
-var loc = document.getElementById("loc"); // must be named loc or else page refreshes infinitely
-var msg = document.getElementById("userMsg");
+var lat,lon;
+var map = document.getElementById("map");
 
 var retryCnt = 0;
 
-  function makeMap() {
-    this.map = L.map('map').setView([40.712, -74.006], 11);
-    var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
-  });
-  // Now add the layer onto the map
-  map.addLayer(layer);
-  }
 
-var map = null;
-
-(function() {
-  makeMap();
-})();
 
 requestPermission();
 
@@ -60,13 +47,41 @@ function sendPosition(position) {
   // TODO: send location to backend?
 
   // show location on client
+  updateLatLonVars(position);
   showPosition(position);
+  enableButton();
+}
+
+function updateLatLonVars(position) {
+  lat = position.coords.latitude;
+  lon = position.coords.longitude;
 }
 
 function showPosition(position) {
-  msg.innerHTML = "Your current location... "
-  loc.innerHTML = "Latitude: " + position.coords.latitude
-                    + "<br>Longitude: " + position.coords.longitude;
-  this.map.flyTo([position.coords.latitude, position.coords.longitude], 12);
-  L.marker([position.coords.latitude, position.coords.longitude]).addTo(this.map);
+  loc.innerHTML = "Latitude: " + lat
+                    + "<br>Longitude: " + lon;
+  map.flyTo([position.coords.latitude, position.coords.longitude], 12);
+  L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+}
+
+function enableButton() {
+  console.log("enableButton");
+  document.getElementById("submit_button").disabled = false;
+}
+
+
+function submit() {
+    let yelpscale = document.getElementById("yelp_scale").value;
+    let violationscale = document.getElementById("violation_scale").value;
+    let num = document.getElementById("num_restaurant").value;
+    // console.log(yelpscale,violationscale,lat,lon,num);
+    $.post("/receivedata", {"yelp": yelpscale, 
+      "violation": violationscale,
+      "lat": lat,
+      "lon": lon,
+      "rest":num
+    });
+    // , function (res) {
+    //   updateMarkers
+    // })
 }

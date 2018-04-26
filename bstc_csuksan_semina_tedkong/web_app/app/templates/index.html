@@ -14,43 +14,54 @@
      crossorigin=""></script>
   </head>
   <body>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
+
     <h1 id="userMsg">Input how much you value Yelp rating and health code violation average:</h1>
     <!-- TODO: add some form or sliding bar to get value which calls script in app/static folder-->
   	<p id="restaurantNames"></p> <!-- these can be updated in the javascript -->
     <p id="loc"></p>
     <!--Range slider component-->
     <div class="slidecontainer" style="width:1000px;padding-left:10px;" >
-      <input type="range" min="0" max="1" value="0.50" step="0.01" class="slider" id="myRange" style='width: 300px; display:inline;'>
-      <input type="range" min="0" max="1" value="0.50" step="0.01" class="slider" id="myRange2" style='width: 300px; display:inline;'>
+      <input type="range" min="0" max="1" value="0.50" step="0.01" class="slider" id="yelp_scale" style='width: 300px; display:inline;'>
+      <input type="range" min="0" max="1" value="0.50" step="0.01" class="slider" id="violation_scale" style='width: 300px; display:inline;'>
       <br>
       <p style='display:inline;'>Yelp Rating Magnitude: <span id="demo"></span></p>  
       <p style='display:inline;margin-left:130px;'>Health Code Violation Magnitude: <span id="demo2"></span></p>
-
+      <div>
+        How many restaurants would you like to see: <input type="text" id="num_restaurant" value="3">
+      </div>
     </div>
     
     <!--Buttons-->
     <br>
     <button type='button' class="btn btn-primary" style="margin-left:10px;margin-bottom:10px;" onclick="getLocation()">Update location</button>
-    <button type='button' onclick='submit()' style="display: inline; margin-top:-10px;margin-left:8px" class="btn btn-danger" >Go!</button>
+    <button type='button' id="submit_button" disabled="true" onclick="submit()" style="display: inline; margin-top:-10px;margin-left:8px" class="btn btn-danger" >Go!</button>
     <br>
+
+
     <!--Leaflet map-->
     <div id="map" style="height: 500px;width: 1000px"></div>
-    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
-    <!--Jquery post script-->
     <script>
-    function submit() {
-        var yelpscale = $('#demo').html();
-        var violationscale = $('#demo2').html();
-        var loc = $('#loc').html();
-        $.post("/receivedata", {"yelp": yelpscale, 
-          "violation": violationscale,
-          "location":loc
-        })
-    }
+      function makeMap() {
+        map = L.map('map').setView([40.712, -74.006], 11);
+        var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+        });
+        // Now add the layer onto the map
+        map.addLayer(layer);
+      }
+
+      var map = null;
+
+      (function() {
+        makeMap();
+      })();
     </script>
+    
     <!--Range slider function-->
     <script>
-      var slider = document.getElementById("myRange");
+      var slider = document.getElementById("yelp_scale");
       var output = document.getElementById("demo");
       output.innerHTML = slider.value;
 
@@ -58,7 +69,7 @@
         output.innerHTML = this.value;
       }
 
-      var slider2 = document.getElementById("myRange2");
+      var slider2 = document.getElementById("violation_scale");
       var output2 = document.getElementById("demo2");
       output2.innerHTML = slider2.value;
 

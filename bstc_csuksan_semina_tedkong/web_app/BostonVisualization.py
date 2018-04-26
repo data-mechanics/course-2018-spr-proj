@@ -30,6 +30,7 @@ def locate(lat, long, rate, yelp, lim):
     ret = []
     rate_level = rate
     yelp_level = yelp
+    #print(yelp)
     yelp_level = random.randint(yelp_level * 2, 10) / 2
     rate_level = random.uniform(1, 3 - (rate_level - 1))
     check += [rate_level / 3, yelp_level / 5]
@@ -52,6 +53,9 @@ def locate(lat, long, rate, yelp, lim):
     
     local = []
     for i in ret:
+        # remove scaling from yelp rating and health score
+        data[i[0]][3] =  data[i[0]][3] * 3
+        data[i[0]][4] =  data[i[0]][4] * 5
         local += [data[i[0]]]
     
     local = np.array(local)

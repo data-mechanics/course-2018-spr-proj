@@ -75,12 +75,12 @@ function submit() {
     let violationscale = document.getElementById("violation_scale").value;
     let num = document.getElementById("num_restaurant").value;
     // console.log(yelpscale,violationscale,lat,lon,num);
-    $.post("/receivedata", {"yelp": yelpscale, 
+    $.get("/receivedata", {"yelp": yelpscale, 
       "violation": violationscale,
       "lat": lat,
       "lon": lon,
       "rest":num
-    });
+    }).done(function(data){console.log(data)});
     // , function (res) {
     //   updateMarkers
     // })

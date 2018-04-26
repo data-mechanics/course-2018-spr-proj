@@ -3,6 +3,7 @@ from app import app
 from flask import render_template
 from flask import request
 from BostonVisualization import locate
+import numpy
 
 @app.route('/', methods=['GET','POST'])
 def index():
@@ -19,19 +20,21 @@ def getpayload(phone_num):
     return json.dumps(payload)
 
 #receive data from template (note that location is only available once browser successfully locates user)
-@app.route('/receivedata', methods=['POST'])
+@app.route('/receivedata', methods=['GET'])
 def receive_data():
-	y = float(request.form['yelp'])
-    r = float(request.form['violation'])
-    l = float(request.form['limit'])
+    #print(request.args)
+    y = float(request.args.get('yelp'))
+    #print(type(y))
+    r = float(request.args.get('violation'))
+    l = float(request.args.get('rest'))
     r = (r*2) + 1
-    y = (y*9) + 1
-    lat = request.form['lat']
-    lon = request.form['lon']
+    y = (y*4) + 1
+    lat = float(request.args.get('lat'))
+    lon = float(request.args.get('lon'))
     #finds close restraurants
     close = locate(lat, lon, r, y, l)
     payload = {
-        'restaurants': close
+        'restaurants': close.tolist()
     }
     return json.dumps(payload)
 '''

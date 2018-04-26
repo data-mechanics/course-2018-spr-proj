@@ -86,8 +86,6 @@ class Constraint_satisfaction(dml.Algorithm):
 		partial_decrease_rate = pow(total_decrease_rate, 1.0/points_to_find)
 		average_dist_current = mean(current_hospital_mindist)
 
-		print("Selected partial rate: %f" % partial_decrease_rate)
-
 		while found < 5:
 			random_hospital_location = generate_random(lat_min, lat_max, longt_min, longt_max)
 			test_hospital_mindist = [x for x in current_hospital_mindist]

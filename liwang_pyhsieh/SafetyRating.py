@@ -27,8 +27,6 @@ class SafetyRating(dml.Algorithm):
     def execute(trial=False):
         startTime = datetime.now()
 
-        print("Count of surrounding lightings")
-
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo

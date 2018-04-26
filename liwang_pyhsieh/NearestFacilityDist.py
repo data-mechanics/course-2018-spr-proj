@@ -81,8 +81,6 @@ class NearestFacilityDist(dml.Algorithm):
     def execute(trial=False):
         startTime = datetime.now()
 
-        print("Nearest facilities...")
-
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo

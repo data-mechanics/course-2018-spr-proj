@@ -53,8 +53,6 @@ class KMeansForAccidents(dml.Algorithm):
     def execute(trial=False):
         startTime = datetime.now()
 
-        print("Crash K-means...")
-
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo

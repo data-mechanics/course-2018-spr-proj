@@ -38,8 +38,6 @@ class TransformAccidentDensity(dml.Algorithm):
     def execute(trial=False):
         startTime = datetime.now()
 
-        print("Counting accident density...")
-
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo

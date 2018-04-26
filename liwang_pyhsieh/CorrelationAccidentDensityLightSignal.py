@@ -70,9 +70,6 @@ class CorrelationAccidentDensityLightSignal(dml.Algorithm):
     def execute(trial=False):
         startTime = datetime.now()
 
-        print("do some stats!")
-
-        # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('liwang_pyhsieh', 'liwang_pyhsieh')
@@ -97,6 +94,7 @@ class CorrelationAccidentDensityLightSignal(dml.Algorithm):
             pval_accident_signal = pval(accident_density, signal_density, 500)
             pval_light_signal = pval(light_density, signal_density, 500)
         else:
+            # For normal run, use library function to speed up
             # pearsonr provides two-tailed values, we're only interested in positive side
             # and the result shows the value on negative side is small enough to omit (<< 1e-10)
             pval_accident_light = scipy.stats.pearsonr(accident_density, light_density)[0]

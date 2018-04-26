@@ -29,8 +29,6 @@ class DatasetRetrieval(dml.Algorithm):
     def execute(trial=False):
         startTime = datetime.datetime.now()
 
-        print("Data retrieval...")
-
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo

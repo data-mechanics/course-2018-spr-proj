@@ -56,10 +56,5 @@ def locate(lat, long, rate, yelp, lim):
     
     local = np.array(local)
     return local
-print(locate(42.3777464032,-71.0518522561,1,1,5))
-#print(local)
-#
-#plt.plot(data[:,1],data[:,2], 'gx')
-#plt.plot(check[1],check[2], 'rx')
-#plt.plot(local[:,1],local[:,2], 'bx')
+
 

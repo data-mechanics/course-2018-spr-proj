@@ -64,9 +64,12 @@ class findClosest(dml.Algorithm):
             final.append(d)
             
 <<<<<<< HEAD
+<<<<<<< HEAD
         for i in final:
         	del i['_id']
 =======
+=======
+>>>>>>> 9ad635493ae1001d046c8bd3d793ac9d052dc104
         one_mile = 1.4
 
         food_data = repo['cma4_lliu_saragl_tsuen.food'].find()
@@ -95,6 +98,9 @@ class findClosest(dml.Algorithm):
 
         print(final) 
 
+<<<<<<< HEAD
+>>>>>>> 9ad635493ae1001d046c8bd3d793ac9d052dc104
+=======
 >>>>>>> 9ad635493ae1001d046c8bd3d793ac9d052dc104
 
             

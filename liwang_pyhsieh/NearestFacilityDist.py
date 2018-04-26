@@ -127,6 +127,10 @@ class NearestFacilityDist(dml.Algorithm):
                 "cluster_id": crashdata["cluster_id"],
                 "nearest_hospital_id": tmp_nearest_hospital["_id"],
                 "nearest_police_id": tmp_nearest_police["_id"],
+                "nearest_police_name": tmp_nearest_police["name"],
+                "nearest_hospital_name": tmp_nearest_hospital["name"],
+                "nearest_police_coordinates": [tmp_nearest_police["Long"], tmp_nearest_police["Lat"]],
+                "nearest_hospital_coordinates": [tmp_nearest_hospital["Long"], tmp_nearest_hospital["Lat"]],
                 "nearest_hospital_dist": getVDist(
                     crashdata["coordinates"]["Lat"], crashdata["coordinates"]["Long"],
                     tmp_nearest_hospital["Lat"], tmp_nearest_hospital["Long"]),

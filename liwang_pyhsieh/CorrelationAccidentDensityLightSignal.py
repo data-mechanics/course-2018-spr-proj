@@ -6,6 +6,7 @@ from datetime import datetime
 from random import shuffle
 from math import sqrt
 from geopy.distance import vincenty
+import scipy.stats
 
 def join(S, R, s_prefix, r_prefix, s_idx, mcol_s, mcol_r, mcol_new):
     result = []
@@ -47,7 +48,7 @@ def corr(x, y): # Correlation coefficient.
 def pval(x, y, s):
     c0 = corr(x, y)
     corrs = []
-    for k in range(0, s):
+    for _ in range(0, s):
         y_permuted = permute(y)
         corrs.append(corr(x, y_permuted))
     return len([c for c in corrs if abs(c) >= abs(c0)])/len(corrs)
@@ -69,36 +70,38 @@ class CorrelationAccidentDensityLightSignal(dml.Algorithm):
     def execute(trial=False):
         startTime = datetime.now()
 
+        print("do some stats!")
+
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('liwang_pyhsieh', 'liwang_pyhsieh')
 
         # Compute correlation between density of accidents and density of street light/traffic signals
-        if trial == True:
-            accident_density = repo['liwang_pyhsieh.accident_density'].aggregate([{"$sample": {"size": 100}}])
-        else:
-            accident_density = repo['liwang_pyhsieh.accident_density'].find()
+        accident_density = repo['liwang_pyhsieh.accident_density'].find()
         accident_density = [x for x in accident_density]
         safety_scores = [x for x in repo['liwang_pyhsieh.safety_scores'].find()]
-        
-        if trial == True:
-            selectedIds = [x["_id"] for x in accident_density]
-            safety_scores = [x for x in safety_scores if x["_id"] in selectedIds]
 
         join_density = join(safety_scores, accident_density, "ss", "ad", "_id", "_id", "_id", "_id")
         
-        light_density = [x["ss_light_light_count"] for x in join_density]
-        signal_density = [x["ss_signal_signal_count"] for x in join_density]
+        light_density = [x["ss_lights"] for x in join_density]
+        signal_density = [x["ss_signals"] for x in join_density]
         accident_density = [x["ad_accident_density"] for x in join_density]
 
         corr_accident_light = corr(accident_density, light_density)
         corr_accident_signal = corr(accident_density, signal_density)
         corr_light_signal = corr(light_density, signal_density)
-
-        pval_accident_light = pval(accident_density, light_density, 200)
-        pval_accident_signal = pval(accident_density, signal_density, 200)
-        pval_light_signal = pval(light_density, signal_density, 200)
+        
+        if trial == True:
+            pval_accident_light = pval(accident_density, light_density, 500)
+            pval_accident_signal = pval(accident_density, signal_density, 500)
+            pval_light_signal = pval(light_density, signal_density, 500)
+        else:
+            # pearsonr provides two-tailed values, we're only interested in positive side
+            # and the result shows the value on negative side is small enough to omit (<< 1e-10)
+            pval_accident_light = scipy.stats.pearsonr(accident_density, light_density)[0]
+            pval_accident_signal = scipy.stats.pearsonr(accident_density, signal_density)[0]
+            pval_light_signal = scipy.stats.pearsonr(light_density, signal_density)[0]
 
         accident_correlation = [
             {"_id": "0", "relation": "accident-light", "corr": corr_accident_light, "pval": pval_accident_light},

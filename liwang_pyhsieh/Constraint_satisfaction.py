@@ -5,6 +5,7 @@ import prov.model
 from datetime import datetime
 from pyproj import Proj, transform
 from numpy.random import uniform
+from numpy import mean
 import random
 import math
 from geopy.distance import vincenty
@@ -40,8 +41,8 @@ def join(S, R, s_index, r_index, s_val, r_val):
 
 class Constraint_satisfaction(dml.Algorithm):
 	contributor = 'liwang_pyhsieh'
-	reads = ['liwang_pyhsieh.nearest_hos_dist', 'liwang_pyhsieh.crash_spatial', 'liwang_pyhsieh.crash_2015']
-	writes = ['liwang_pyhsieh.Constraint_satisfaction']
+	reads = ['liwang_pyhsieh.crash_nearest_facilities', 'liwang_pyhsieh.crash_temporal_spatial']
+	writes = ['liwang_pyhsieh.candidate_position_hospital']
 
 	@staticmethod
 	def execute(trial = False):
@@ -51,63 +52,68 @@ class Constraint_satisfaction(dml.Algorithm):
 		repo = client.repo
 		repo.authenticate('liwang_pyhsieh', 'liwang_pyhsieh')
 
-		latitude_set = []
-		longitude_set = []
+		nearest_facilities = [x for x in repo['liwang_pyhsieh.crash_nearest_facilities'].find()]
+		crash_spatial = [x for x in repo['liwang_pyhsieh.crash_temporal_spatial'].find()]
 
-		hospital_dis = repo['liwang_pyhsieh.nearest_hos_dist'].find()
-		crash_spatial = repo['liwang_pyhsieh.crash_spatial'].find()
-		crashes = repo['liwang_pyhsieh.crash_2015'].find()
+		# Sort by id for join
+		nearest_facilities = sorted(nearest_facilities, key=lambda x: x["_id"])
+		crash_spatial = sorted(crash_spatial, key=lambda x: x["_id"])
 
-		for dataobj in crashes:
-			str_date = dataobj["Crash Date"] + " " + dataobj["Crash Time"]
-			dateobj_date = datetime.strptime(str_date, "%d-%b-%Y %I:%M %p")
-			if isNighttime(dateobj_date):
-				latitude, longitude = (dataobj["Y Coordinate"], dataobj["X Coordinate"])
-				latitude_set.append(latitude)
-				longitude_set.append(longitude)
+		intersect_crash_facility_distance = []
+		lat_range = []
+		longt_range = []
 
-		latitude_min = min(latitude_set)
-		latitude_max = max(latitude_set)
-		longitude_min = min(longitude_set)
-		longitude_max = max(longitude_set)
+		for idx, item in enumerate(crash_spatial):
+			intersect_crash_facility_distance.append({
+				"_id": item["_id"],
+				"nearest_hospital_dist": nearest_facilities[idx]["nearest_hospital_dist"],
+				"Long": item["location"]["coordinates"][0],
+				"Lat": item["location"]["coordinates"][1]
+			})
+			lat_range.append(item["location"]["coordinates"][1])
+			longt_range.append(item["location"]["coordinates"][0])
 
-		#intersect_crash_distance = join(hospital_dis,crash_spatial, 1, 0, 2, 2)
+		longt_min, longt_max = min(longt_range), max(longt_range)
+		lat_min, lat_max = min(lat_range), max(lat_range)
 
-		intersect_crash_distance = []
-		for dataobj_crash in crash_spatial:
-			for dataobj_distance in hospital_dis:
-				if dataobj_distance["_id_crash"] == dataobj_crash["_id"]:
-					intersect_crash_distance.append((dataobj_crash["_id"], dataobj_crash["location"], dataobj_distance["dist"]))
+		# Each time, require some decrease by the same portion to previous result
+		# Note the decrease_rate should not be to high, or it will loop forever
 		found = 0
-		result = {}
+		results = []
+		current_hospital_mindist = [x["nearest_hospital_dist"] for x in intersect_crash_facility_distance]
+		total_decrease_rate = 0.8
+		points_to_find = 5
+		partial_decrease_rate = pow(total_decrease_rate, 1.0/points_to_find)
+		average_dist_current = mean(current_hospital_mindist)
+
+		print("Selected partial rate: %f" % partial_decrease_rate)
 
 		while found < 5:
-			random_hospital_location = generate_random(latitude_min,latitude_max,longitude_min,longitude_max)
-			random_hospital_location = epsg2LonLat(random_hospital_location[1], random_hospital_location[0])
+			random_hospital_location = generate_random(lat_min, lat_max, longt_min, longt_max)
+			test_hospital_mindist = [x for x in current_hospital_mindist]
+
+			for idx, dataobj in enumerate(intersect_crash_facility_distance):
+				new_distance = getVDist(random_hospital_location[0], random_hospital_location[1], dataobj["Lat"], dataobj["Long"])
+				if new_distance < current_hospital_mindist[idx]:
+					test_hospital_mindist[idx] = new_distance
 			
-			total_score = 0
+			average_dist_test = mean(test_hospital_mindist)
+			decrease_rate = average_dist_test / average_dist_current
 
-			for dataobj in intersect_crash_distance:
-				new_distance = getVDist(random_hospital_location[0],random_hospital_location[1], dataobj[1]['coordinates'][0],dataobj[1]['coordinates'][1])
-				score =  dataobj[2] - new_distance 
+			if decrease_rate < partial_decrease_rate:
+				results.append({"_id": found, "Lat": random_hospital_location[0], "Long": random_hospital_location[1]})
+				found += 1
+				current_hospital_mindist = test_hospital_mindist
+				average_dist_current = average_dist_test
 
-				if score > 0 :
-					total_score += score
-
-			if total_score > 0:
-				result[str(found + 1)] = random_hospital_location
-				found +=1
-				total_score = 0
-
-		repo.dropCollection("Constraint_satisfaction")
-		repo.createCollection("Constraint_satisfaction")
-		repo['liwang_pyhsieh.Constraint_satisfaction'].insert(result)
+		repo.dropCollection("candidate_position_hospital")
+		repo.createCollection("candidate_position_hospital")
+		repo['liwang_pyhsieh.candidate_position_hospital'].insert(results)
 
 		repo.logout()
 		endTime = datetime.now()
 
 		return {"start": startTime, "end": endTime}
-
 
 
 	@staticmethod
@@ -123,25 +129,25 @@ class Constraint_satisfaction(dml.Algorithm):
 		this_script = doc.agent('alg:liwang_pyhsieh#Constraint_satisfaction',
 								{prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-		resource_nearest_hos_dist = doc.entity('dat:liwang_pyhsieh#nearest_hos_dist', {prov.model.PROV_LABEL: 'nearest_hos_dist', prov.model.PROV_TYPE: 'ont:DataSet'})
-		get_nearest_hos_dist = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-		doc.wasAssociatedWith(get_nearest_hos_dist, this_script)
-		doc.usage(get_nearest_hos_dist,resource_nearest_hos_dist,startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
+		resource_crash_nearest_facilities = doc.entity('dat:liwang_pyhsieh#crash_nearest_facilities', {prov.model.PROV_LABEL: 'Information about nearest hospital and police station', prov.model.PROV_TYPE: 'ont:DataSet'})
+		get_crash_nearest_facilities = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+		doc.wasAssociatedWith(get_crash_nearest_facilities, this_script)
+		doc.usage(get_crash_nearest_facilities, resource_crash_nearest_facilities, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
 
 
-		resource_crash_spatial = doc.entity('dat:liwang_pyhsieh#crash_spatial', {prov.model.PROV_LABEL: 'crash_spatial', prov.model.PROV_TYPE: 'ont:DataSet'})
-		get_crash_spatial = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-		doc.wasAssociatedWith(get_crash_spatial, this_script)
-		doc.usage(get_crash_spatial,resource_crash_spatial,startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
+		resource_crash_temporal_spatial = doc.entity('dat:liwang_pyhsieh#crash_temporal_spatial', {prov.model.PROV_LABEL: 'Crash accident locations with spatial indexing and time', prov.model.PROV_TYPE: 'ont:DataSet'})
+		get_crash_temporal_spatial = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+		doc.wasAssociatedWith(get_crash_temporal_spatial, this_script)
+		doc.usage(get_crash_temporal_spatial,resource_crash_temporal_spatial,startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
 
-		get_constraint_satisfaction = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-		constraint_satisfaction = doc.entity('dat:liwang_pyhsieh#constraint_satisfaction',
-									{prov.model.PROV_LABEL: 'Find the location of hospitals that satisfise the constraint',
+		get_candidate_position_hospital = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+		candidate_position_hospital = doc.entity('dat:liwang_pyhsieh#constraint_satisfaction',
+									{prov.model.PROV_LABEL: 'Candidate locations of hospitals that satisfies given constraint',
 									prov.model.PROV_TYPE: 'ont:DataSet'})
-		doc.wasAttributedTo(constraint_satisfaction, this_script)
-		doc.wasGeneratedBy(constraint_satisfaction, get_constraint_satisfaction, endTime)
-		doc.wasDerivedFrom(constraint_satisfaction, resource_nearest_hos_dist, get_constraint_satisfaction, get_constraint_satisfaction, get_constraint_satisfaction)
-		doc.wasDerivedFrom(constraint_satisfaction, resource_crash_spatial, get_constraint_satisfaction, get_constraint_satisfaction, get_constraint_satisfaction)
+		doc.wasAttributedTo(candidate_position_hospital, this_script)
+		doc.wasGeneratedBy(candidate_position_hospital, get_candidate_position_hospital, endTime)
+		doc.wasDerivedFrom(candidate_position_hospital, resource_crash_nearest_facilities, get_candidate_position_hospital, get_candidate_position_hospital, get_candidate_position_hospital)
+		doc.wasDerivedFrom(candidate_position_hospital, resource_crash_temporal_spatial, get_candidate_position_hospital, get_candidate_position_hospital, get_candidate_position_hospital)
 
 		repo.logout()
 

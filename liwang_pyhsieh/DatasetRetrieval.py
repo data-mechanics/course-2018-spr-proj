@@ -29,6 +29,8 @@ class DatasetRetrieval(dml.Algorithm):
     def execute(trial=False):
         startTime = datetime.datetime.now()
 
+        print("Data retrieval...")
+
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
@@ -45,7 +47,7 @@ class DatasetRetrieval(dml.Algorithm):
             if item["X Coordinate"] is not None and item["Y Coordinate"] is not None and time_validity(item["Crash Time"]):
                 r_c.append(item)
         if trial:
-            r_c = random.sample(r_c, 300)
+            r_c = random.sample(r_c, 500)
 
         repo.dropCollection("crash_2015")
         repo.createCollection("crash_2015")
@@ -53,9 +55,15 @@ class DatasetRetrieval(dml.Algorithm):
         repo['liwang_pyhsieh.crash_2015'].metadata({'complete': True})
 
         # Hospitals
+        # Hospital data doesn't have unique IDs.
         url = 'http://datamechanics.io/data/liwang_pyhsieh/hospitals.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
+        if trial:
+            r = random.sample(r, 10)
+        for i in range(len(r)):
+            r[i]["_id"] = i
+
         repo.dropCollection("hospitals")
         repo.createCollection("hospitals")
         repo['liwang_pyhsieh.hospitals'].insert_many(r)
@@ -65,15 +73,19 @@ class DatasetRetrieval(dml.Algorithm):
         url = 'http://datamechanics.io/data/liwang_pyhsieh/Boston_Police_Stations.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
+        if trial:
+            r = random.sample(r, 10)
         repo.dropCollection("police_stations")
         repo.createCollection("police_stations")
         repo['liwang_pyhsieh.police_stations'].insert_many(r)
         repo['liwang_pyhsieh.police_stations'].metadata({'complete': True})
 
         # Street_lights
-        url = 'http://datamechanics.io/data/liwang_pyhsieh/street_lights.json'
+        url = 'http://datamechanics.io/data/liwang_pyhsieh/streetlight_field_refined.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
+        if trial:
+            r = random.sample(r, 500)
         repo.dropCollection("street_lights")
         repo.createCollection("street_lights")
         repo['liwang_pyhsieh.street_lights'].insert_many(r)
@@ -82,10 +94,12 @@ class DatasetRetrieval(dml.Algorithm):
         # Traffic Signals
         url = 'https://bostonopendata-boston.opendata.arcgis.com/datasets/de08c6fe69c942509089e6db98c716a3_0.geojson'
         response = urllib.request.urlopen(url).read().decode("utf-8")
-        r = json.loads(response)
+        r = json.loads(response)["features"]
+        if trial:
+            r = random.sample(r, 500)
         repo.dropCollection("traffic_signals")
         repo.createCollection("traffic_signals")
-        repo['liwang_pyhsieh.traffic_signals'].insert_many(r["features"])
+        repo['liwang_pyhsieh.traffic_signals'].insert_many(r)
         repo['liwang_pyhsieh.traffic_signals'].metadata({'complete': True})
 
         repo.logout()

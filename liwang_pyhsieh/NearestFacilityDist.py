@@ -2,11 +2,12 @@ import json
 import dml
 import uuid
 import prov.model
-import pandas
 from pyproj import Proj, transform
 from geopy.distance import vincenty
 from datetime import datetime
-
+from rtree import index as rt_index
+from functools import reduce
+import numpy as np
 
 def parseLoc(s):
     locpair = s.split("\n")[-1][1:-1].split(",")
@@ -66,99 +67,101 @@ def join(S, R, s_prefix, r_prefix, s_idx, mcol_s, mcol_r, mcol_new):
                 result.append(dicttmp)
     return result
 
-def group_aggsum(D, idx, g_col, s_col):
-    res = pandas.DataFrame.from_records(D, idx).groupby([g_col])[s_col].agg(["sum"])
-    idxlist = res.index.values
-    return [{"_id": idxlist[i], "sum": row["sum"]} for i, row in enumerate(res.to_dict("records"))]
-
-def group_aggmin(D, idx, g_col, s_col):
-    res = pandas.DataFrame.from_records(D, idx).groupby([g_col])[s_col].agg(["min"])
-    idxlist = res.index.values
-    return [{"_id": idxlist[i], "min": row["min"]} for i, row in enumerate(res.to_dict("records"))]
-
-def group_aggave(D, idx, g_col, s_col):
-    res = pandas.DataFrame.from_records(D, idx).groupby([g_col])[s_col].agg(["mean"])
-    idxlist = res.index.values
-    return [{"_id": idxlist[i], "ave": row["mean"]} for i, row in enumerate(res.to_dict("records"))]
-
 
 # Finding road safety rating by using numbers of
 # surrounding traffic signals and road lights
 class NearestFacilityDist(dml.Algorithm):
     contributor = 'liwang_pyhsieh'
-    reads = ['liwang_pyhsieh.crash_clustering',
+    reads = ['liwang_pyhsieh.crash_cluster_distribution',
              'liwang_pyhsieh.hospitals', 'liwang_pyhsieh.police_stations']
 
-    writes = ['liwang_pyhsieh.accidentcluster_averagefacilitydist', 'liwang_pyhsieh.nearest_hos_dist']
+    writes = ['liwang_pyhsieh.accidentcluster_averagefacilitydist', 'liwang_pyhsieh.crash_nearest_facilities']
 
     @staticmethod
     def execute(trial=False):
         startTime = datetime.now()
+
+        print("Nearest facilities...")
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('liwang_pyhsieh', 'liwang_pyhsieh')
 
-        dataset_crash = list(repo['liwang_pyhsieh.crash_clustering'].find())
+        dataset_crash = repo['liwang_pyhsieh.crash_cluster_distribution'].find()
 
-        dataset_hospital, dataset_police = [], []
+        rtree_index_hospital = rt_index.Index()
+        rtree_index_police = rt_index.Index()
+
         for dataobj in repo['liwang_pyhsieh.hospitals'].find():
-            lat, long = parseLoc(dataobj["Location"])
-            dataset_hospital.append({
+            lat, longt = parseLoc(dataobj["Location"])
+            tmp_obj = {
                 "_id": dataobj["_id"],
                 "name": dataobj["NAME"],
-                "lat": lat,
-                "long": long
-            })
+                "Lat": lat,
+                "Long": longt
+            }
+            rtree_index_hospital.insert(tmp_obj["_id"], (longt, lat, longt, lat), tmp_obj)
 
         for dataobj in repo['liwang_pyhsieh.police_stations'].find():
-            dataset_police.append({
+            tmp_obj = {
                 "_id": dataobj["OBJECTID"],
                 "name": dataobj["NAME"],
-                "lat": dataobj["Y"],
-                "long": dataobj["X"]
-            })
-
-        prod_crash_hospital = product(dataset_crash, dataset_hospital, "crash", "hos", "_id", "_id")
-        prod_crash_hospital = [
-            {"_id": row["_id"], "_id_crash": row["crash__id"], "_id_hos": row["hos__id"],
-             "dist": getVDist(row["crash_coordinate"]["Lat"], row["crash_coordinate"]["Long"], row["hos_lat"], row["hos_long"])}
-            for row in prod_crash_hospital
-        ]
-
-        nearest_hos_dist = group_aggmin(prod_crash_hospital, "_id", "_id_crash", "dist")
-        nearest_hos_dist = join(dataset_crash, nearest_hos_dist, "crash", "hosdist", "_id", "_id", "_id", "_id")
-        avedist_hos_cluster = group_aggave(nearest_hos_dist, "_id", "crash_cluster_id", "hosdist_min")
-
-        prod_crash_police = product(dataset_crash, dataset_police, "crash", "pol", "_id", "_id")
-        prod_crash_police = [
-            {"_id": row["_id"], "_id_crash": row["crash__id"], "_id_pol": row["pol__id"],
-             "dist": getVDist(row["crash_coordinate"]["Lat"], row["crash_coordinate"]["Long"], row["pol_lat"], row["pol_long"])}
-            for row in prod_crash_police
-        ]
-
-        nearest_pol_dist = group_aggmin(prod_crash_police, "_id", "_id_crash", "dist")
-        nearest_pol_dist = join(dataset_crash, nearest_pol_dist, "crash", "poldist", "_id", "_id", "_id", "_id")
-        avedist_pol_cluster = group_aggave(nearest_pol_dist, "_id", "crash_cluster_id", "poldist_min")
-
-        nearestfacilityave = join(avedist_hos_cluster, avedist_pol_cluster, "hosdistave", "poldistave", "_id", "_id", "_id", "_id")
-
-        nearestfacilityave = [
-            { "_id": int(row["_id"]),
-              "average_hospital_dist": float(row["hosdistave_ave"]),
-              "average_policestation_dist": float(row["poldistave_ave"])
+                "Lat": dataobj["Y"],
+                "Long": dataobj["X"]
             }
-            for row in nearestfacilityave]
+            rtree_index_police.insert(tmp_obj["_id"],
+                (tmp_obj["Long"], tmp_obj["Lat"], tmp_obj["Long"], tmp_obj["Lat"]), tmp_obj)
+        
+        # Find the nearest hospital and police station
+        crash_nearest_facilities = []
+        for crashdata in dataset_crash:
+            tmp_nearest_hospital = list(rtree_index_hospital.nearest(
+                (crashdata["coordinates"]["Long"], crashdata["coordinates"]["Lat"],
+                crashdata["coordinates"]["Long"], crashdata["coordinates"]["Lat"]),
+                1, objects=True))[0].object
+            tmp_nearest_police = list(rtree_index_police.nearest(
+                (crashdata["coordinates"]["Long"], crashdata["coordinates"]["Lat"],
+                crashdata["coordinates"]["Long"], crashdata["coordinates"]["Lat"]),
+                1, objects=True))[0].object
+            crash_nearest_facilities.append({
+                "_id": crashdata["_id"], 
+                "cluster_id": crashdata["cluster_id"],
+                "nearest_hospital_id": tmp_nearest_hospital["_id"],
+                "nearest_police_id": tmp_nearest_police["_id"],
+                "nearest_hospital_dist": getVDist(
+                    crashdata["coordinates"]["Lat"], crashdata["coordinates"]["Long"],
+                    tmp_nearest_hospital["Lat"], tmp_nearest_hospital["Long"]),
+                "nearest_police_dist": getVDist(
+                    crashdata["coordinates"]["Lat"], crashdata["coordinates"]["Long"],
+                    tmp_nearest_police["Lat"], tmp_nearest_police["Long"])
+                })
+
+        repo.dropCollection("crash_nearest_facilities")
+        repo.createCollection("crash_nearest_facilities")
+        repo['liwang_pyhsieh.crash_nearest_facilities'].insert_many(crash_nearest_facilities)
+
+        # Group by cluster and compute average distance
+        clustered_crashdata = {}
+        clust_nearestfacilityave = []
+        for crashdata in crash_nearest_facilities:
+            if crashdata["cluster_id"] not in clustered_crashdata:
+                clustered_crashdata[crashdata["cluster_id"]] = []
+            clustered_crashdata[crashdata["cluster_id"]].append(crashdata)
+        
+        for cluster_key in clustered_crashdata:
+            cluster_data = clustered_crashdata[cluster_key]
+            avedist_hos = reduce(lambda r, i: r+i["nearest_hospital_dist"], cluster_data, 0) / (len(cluster_data) or -1)
+            avedist_pol = reduce(lambda r, i: r+i["nearest_police_dist"], cluster_data, 0) / (len(cluster_data) or -1)
+            clust_nearestfacilityave.append({
+                "_id": cluster_key,
+                "average_hospital_dist": avedist_hos,
+                "average_policestation_dist": avedist_pol
+            })
 
         repo.dropCollection("accidentcluster_averagefacilitydist")
         repo.createCollection("accidentcluster_averagefacilitydist")
-        repo['liwang_pyhsieh.accidentcluster_averagefacilitydist'].insert_many(nearestfacilityave)
-
-
-        repo.dropCollection("nearest_hos_dist")
-        repo.createCollection("nearest_hos_dist")
-        repo['liwang_pyhsieh.nearest_hos_dist'].insert_many(prod_crash_hospital)
+        repo['liwang_pyhsieh.accidentcluster_averagefacilitydist'].insert_many(clust_nearestfacilityave)
 
         repo.logout()
         endTime = datetime.now()
@@ -179,27 +182,37 @@ class NearestFacilityDist(dml.Algorithm):
 
         this_script = doc.agent('alg:liwang_pyhsieh#nearestFacilityDist', {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-        crash_clusters = doc.entity('dat:liwang_pyhsieh#crash_clustering', {prov.model.PROV_LABEL: 'Crash accident locations clustering result', prov.model.PROV_TYPE: 'ont:DataSet'})
+        crash_cluster_distribution = doc.entity('dat:liwang_pyhsieh#crash_cluster_distribution', {prov.model.PROV_LABEL: 'Crash accident locations clustering result', prov.model.PROV_TYPE: 'ont:DataSet'})
         hospitals = doc.entity('dat:liwang_pyhsieh#hospitals', {prov.model.PROV_LABEL: 'Boston hospital information', prov.model.PROV_TYPE: 'ont:DataSet'})
         police_stations = doc.entity('dat:liwang_pyhsieh#police_stations', {prov.model.PROV_LABEL: 'Boston police station information', prov.model.PROV_TYPE: 'ont:DataSet'})
 
-        get_crash_clusters = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+
+        get_crash_cluster_distribution = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         get_hospitals = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         get_police_stations = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
-        doc.wasAssociatedWith(get_crash_clusters, this_script)
+        doc.wasAssociatedWith(get_crash_cluster_distribution, this_script)
         doc.wasAssociatedWith(get_hospitals, this_script)
         doc.wasAssociatedWith(get_police_stations, this_script)
 
-        doc.usage(get_crash_clusters, crash_clusters, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
+        doc.usage(get_crash_cluster_distribution, crash_cluster_distribution, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
         doc.usage(get_hospitals, hospitals, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
         doc.usage(get_police_stations, police_stations, startTime, None, {prov.model.PROV_TYPE: 'ont:Retrieval'})
+
+
+        get_crash_nearest_facilities = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        crash_nearest_facilities = doc.entity('dat:liwang_pyhsieh#crash_nearest_facilities', {prov.model.PROV_LABEL: 'Information about nearest hospital and police station', prov.model.PROV_TYPE: 'ont:DataSet'})
+        doc.wasAttributedTo(crash_nearest_facilities, this_script)
+        doc.wasGeneratedBy(crash_nearest_facilities, get_crash_nearest_facilities, endTime)
+        doc.wasDerivedFrom(get_crash_nearest_facilities, crash_cluster_distribution, get_crash_nearest_facilities, get_crash_nearest_facilities, get_crash_nearest_facilities)
+        doc.wasDerivedFrom(get_crash_nearest_facilities, hospitals, get_crash_nearest_facilities, get_crash_nearest_facilities, get_crash_nearest_facilities)
+        doc.wasDerivedFrom(get_crash_nearest_facilities, police_stations, get_crash_nearest_facilities, get_crash_nearest_facilities, get_crash_nearest_facilities)
 
         get_facility_avedist = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         facility_avedist = doc.entity('dat:liwang_pyhsieh#accidentcluster_averagefacilitydist', {prov.model.PROV_LABEL: 'Counts for nearby lights and traffic signals for accidents', prov.model.PROV_TYPE: 'ont:DataSet'})
         doc.wasAttributedTo(facility_avedist, this_script)
         doc.wasGeneratedBy(facility_avedist, get_facility_avedist, endTime)
-        doc.wasDerivedFrom(facility_avedist, crash_clusters, get_facility_avedist, get_facility_avedist, get_facility_avedist)
+        doc.wasDerivedFrom(facility_avedist, crash_cluster_distribution, get_facility_avedist, get_facility_avedist, get_facility_avedist)
         doc.wasDerivedFrom(facility_avedist, hospitals, get_facility_avedist, get_facility_avedist, get_facility_avedist)
         doc.wasDerivedFrom(facility_avedist, police_stations, get_facility_avedist, get_facility_avedist, get_facility_avedist)
 

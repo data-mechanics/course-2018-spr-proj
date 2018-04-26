@@ -42,6 +42,33 @@ def schoolHubwayStation():
 			return render_template("schoolHubwayStation.html", message = "School Not Found")
 	return render_template("schoolHubwayStation.html")
 
+@app.route("/schoolSubwayStation", methods=["GET","POST"])
+def schoolSubwayStation():
+	if(request.method == 'POST'):
+		schoolNameInput = request.form.get('schoolNameInput')
+		client = dml.pymongo.MongoClient()
+		repo = client.repo
+		repo.authenticate('debhe_shizhan0_wangdayu_xt', 'debhe_shizhan0_wangdayu_xt')
+		schoolHubwayList = []
+		schoolHubwayList = repo['debhe_shizhan0_wangdayu_xt.schoolSubwayDistance'].find()
+		find = False
+		for row in schoolHubwayList:
+			if row['schoolName'] == schoolNameInput:
+				schoolName = row['schoolName']
+				subwayStationName = row['subwayStation']
+				schoolCorX = row['schoolX']
+				schoolCorY = row['schoolY']
+				subwayCorX = row['subwayX']
+				subwayCorY = row['subwayY']
+				print(subwayCorY)
+				find = True
+		repo.logout()
+		if(find == True):
+			return render_template("schoolSubwayStation.html", schoolName = schoolName, subwayStationName = subwayStationName, school_x=schoolCorX, school_y=schoolCorY, subway_x=subwayCorX, subway_y=subwayCorY)
+		else:
+			return render_template("schoolSubwayStation.html", message = "School Not Found")
+	return render_template("schoolSubwayStation.html")
+
 @app.route("/schoolNewBikeHub", methods=["GET","POST"])
 def schoolNewBikeHub():
 	if(request.method == 'POST'):

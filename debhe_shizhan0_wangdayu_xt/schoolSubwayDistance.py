@@ -50,7 +50,7 @@ class schoolSubwayDistance(dml.Algorithm):
             subwayStop_temp = copy.deepcopy(subwayStop)
             for row_2 in subwayStop_temp:
                 if(row_2['X'] != '""' and row_2['Y'] != '""' and row_1['X'] != '""' and row_1['Y'] != '""'):
-                    s = (row_1['schoolName'], row_2['stopName'], (float(row_1['X']) - float(row_2['X']))**2 + ( float(row_1['Y']) - float(row_2['Y']) )**2, row_2['id'], row_1['X'], row_1['Y'])
+                    s = (row_1['schoolName'], row_2['stopName'], (float(row_1['X']) - float(row_2['X']))**2 + ( float(row_1['Y']) - float(row_2['Y']) )**2, row_2['id'], row_1['X'], row_1['Y'], row_2['X'], row_2['Y'])
                     allDistance.append(s)
         
         # Need to school name for all the school as the key for further transformation
@@ -65,7 +65,7 @@ class schoolSubwayDistance(dml.Algorithm):
             schoolX = ''
             schoolY = ''
 
-            for (k, b, v, d, x, y) in allDistance:
+            for (k, b, v, d, x, y,sb_x, sb_y) in allDistance:
                 if(key == k):
                     if(v < minD):
                         station = b
@@ -73,7 +73,9 @@ class schoolSubwayDistance(dml.Algorithm):
                         identity = d
                         schoolX = x
                         schoolY = y
-            minDistance.append({'schoolName': school , 'subwayStation': station, 'Distance': math.sqrt(minD), 'subwayId' : identity, "schoolX" : schoolX, 'schoolY' : schoolY})
+                        subwayX = sb_x
+                        subwayY = sb_y
+            minDistance.append({'schoolName': school , 'subwayStation': station, 'Distance': math.sqrt(minD), 'subwayId' : identity, "schoolX" : schoolX, 'schoolY' : schoolY, 'subwayX': subwayX, 'subwayY':subwayY})
 
         # save the information to the database
         repo.dropCollection("schoolSubwayDistance")

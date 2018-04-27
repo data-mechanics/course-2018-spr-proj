@@ -23,7 +23,7 @@ class findClosest(dml.Algorithm):
         return 6373 * c
 
     @staticmethod
-    def execute(trial = False):
+    def execute(trial = True):
         '''Retrieve some data sets (not using the API here for the sake of simplicity).'''
         startTime = datetime.datetime.now()
 
@@ -65,12 +65,14 @@ class findClosest(dml.Algorithm):
             
         one_mile = 1.4
 
-        food_data = repo['cma4_lliu_saragl_tsuen.food'].find()
+        url = 'http://datamechanics.io/data/cma4_tsuen/newdata.json'
+        response = urllib.request.urlopen(url).read().decode("utf-8")
+        r = json.loads(response)
         food_places = []
 
 
 #Convert string version of coords to float tuples
-        for entry in food_data:
+        for entry in r:
             stringCoords = entry['Location']
             la = stringCoords[1:13]
             lo = stringCoords[15:-1]
@@ -80,12 +82,12 @@ class findClosest(dml.Algorithm):
             food_places.append(entry)
 
 
-        print(food_places)
 #get number of failed restaurants within one mile radius per restaurant
         for f in final:
             fail_count = 0
             for food in food_places:
-                if food["RESULT"] is "HE_Fail" and latLongDist(food['Location'], f['coords']) < one_mile and f is not food:
+                if food["ViolStatus"] == 'Fail' and findClosest.latLongDist(food['Location'], f['coords']) < one_mile:
+                    print("add failcount to ", food['businessName'])
                     fail_count += 1
             f['fail_count'] = fail_count
 

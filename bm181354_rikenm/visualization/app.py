@@ -1,9 +1,7 @@
 from flask import Flask
-from flask import render_template
-from pymongo import MongoClient
+from flask import render_template, jsonify
+import pymongo
 import json
-
-import dml
 
 from bson import json_util
 from bson.json_util import dumps
@@ -18,33 +16,46 @@ DBS_NAME = 'donorschoose'
 COLLECTION_NAME = 'projects'
 
 # field from mongo [see and change this]
-FIELDS = {'school_state': True, 'resource_type': True, 'poverty_level': True, 'date_posted': True, 'total_donations': True, '_id': False}
+# remove '_id'
+FIELDS = {'Latitude_normalized': True, 'Longitude_normalized': True, 'Popularity': True, 'Y_label': True,'_id' : False}
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/hubway/projects")
+
+#MARK: - Sending JSON data to the request [Make another one as well]
+@app.route("/hubway/projects", methods =['GET'])
 def donorschoose_projects():
-    
     # good
-    client = dml.pymongo.MongoClient()
+    client = pymongo.MongoClient()
     repo = client.repo
     repo.authenticate('bm181354_rikenm', 'bm181354_rikenm')
-    #connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
-    collection = repo['bm181354_rikenm.stat_analysis']
-    #collection = connection[DBS_NAME][COLLECTION_NAME]
-    
+    collection = repo['bm181354_rikenm.solutionLeastPopularStationsdb']
+    #.find({})
+
     # filter out unncessary data
     projects = collection.find(projection=FIELDS)
-    #
     
     json_projects = []
     for project in projects:
-        json_projects.append(project)
+         json_projects.append(project)
     json_projects = json.dumps(json_projects, default=json_util.default)
-    connection.close()
-    return json_projects
+    client.close()
+    return (json_projects)
+
+
+@app.route("/hubway/boston", methods =['GET'])
+def boston_map():
+    file = open("static/geojson/boston.json")
+
+    ls = []
+    for line in file:
+        ls.append(line)
+    value = json.dumps(ls,default=json_util.default)
+    return value
+
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',port=5000,debug=True)

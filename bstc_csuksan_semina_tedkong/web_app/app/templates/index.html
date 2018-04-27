@@ -17,48 +17,38 @@
 
     <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
 
-    <h1 id="userMsg">Input how much you value Yelp rating and health code violation average:</h1>
+    <h1 id="userMsg" style="margin-left:10px;margin-bottom:10px;">Find Restaurants based on Yelp Rating and Health Code Violations</h1>
     <!-- TODO: add some form or sliding bar to get value which calls script in app/static folder-->
-  	<p id="restaurantNames"></p> <!-- these can be updated in the javascript -->
-    <p id="loc"></p>
+  	<p id="restaurantNames" style="margin-left:10px;margin-bottom:10px;"></p> <!-- these can be updated in the javascript -->
+    <p id="loc" style="margin-left:10px;margin-bottom:10px;"></p>
     <!--Range slider component-->
     <div class="slidecontainer" style="width:1000px;padding-left:10px;" >
+      <p style=''>On a scale of 0 to 1, how important is a good rating/health code score average?</p>
       <input type="range" min="0" max="1" value="0.50" step="0.01" class="slider" id="yelp_scale" style='width: 300px; display:inline;'>
       <input type="range" min="0" max="1" value="0.50" step="0.01" class="slider" id="violation_scale" style='width: 300px; display:inline;'>
       <br>
-      <p style='display:inline;'>Yelp Rating Magnitude: <span id="demo"></span></p>  
+      <p style='display:inline;'>Yelp Rating Magnitude: <span id="demo"></span></p>
       <p style='display:inline;margin-left:130px;'>Health Code Violation Magnitude: <span id="demo2"></span></p>
       <div>
         How many restaurants would you like to see: <input type="text" id="num_restaurant" value="3">
       </div>
     </div>
-    
+
     <!--Buttons-->
     <br>
-    <button type='button' class="btn btn-primary" style="margin-left:10px;margin-bottom:10px;" onclick="getLocation()">Update location</button>
+    <button type='button' class="btn btn-primary" style="margin-left:10px;margin-bottom:10px;" onclick="getLocation()">Use current location</button>
     <button type='button' id="submit_button" disabled="true" onclick="submit()" style="display: inline; margin-top:-10px;margin-left:8px" class="btn btn-danger" >Go!</button>
     <br>
 
 
     <!--Leaflet map-->
-    <div id="map" style="height: 500px;width: 1000px"></div>
+    <div id="map" style="height: 500px;width: 1000px;margin-left:10px;margin-bottom:10px;"></div>
     <script>
-      function makeMap() {
-        map = L.map('map').setView([40.712, -74.006], 11);
-        var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
-        });
-        // Now add the layer onto the map
-        map.addLayer(layer);
-      }
-
-      var map = null;
-
       (function() {
         makeMap();
       })();
     </script>
-    
+
     <!--Range slider function-->
     <script>
       var slider = document.getElementById("yelp_scale");

@@ -9,16 +9,6 @@ import numpy
 def index():
     return render_template('index.html', title='Restaurant Recommender')
 
-# example of passing data to route and sending data back
-@app.route('/generate/<phone_num>', methods=['GET','POST'])
-def getpayload(phone_num):
-
-    payload = {
-        'phone_num': phone_num
-    }
-
-    return json.dumps(payload)
-
 #receive data from template (note that location is only available once browser successfully locates user)
 @app.route('/receivedata', methods=['GET'])
 def receive_data():

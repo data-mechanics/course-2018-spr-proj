@@ -31,8 +31,8 @@ def locate(lat, long, rate, yelp, lim):
     rate_level = rate
     yelp_level = yelp
     #print(yelp)
-    yelp_level = random.randint(yelp_level * 2, 10) / 2
-    rate_level = random.uniform(1, 3 - (rate_level - 1))
+    yelp_level = random.uniform((yelp_level), 5) 
+    rate_level = random.uniform(1, 3 - ((rate_level) - 1))
     check += [rate_level / 3, yelp_level / 5]
     
     for ind,val in enumerate(data):

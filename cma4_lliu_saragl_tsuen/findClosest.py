@@ -131,7 +131,7 @@ class findClosest(dml.Algorithm):
         this_script = doc.agent('alg:cma4_lliu_saragl_tsuen#closest', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('dat:destinationsProjected', {'prov:label':'Destinations Name and Coords', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         resource2 = doc.entity('dat:stationsProjected', {'prov:label':'Stations stationsProjected Name and Data', prov.model.PROV_TYPE:'ont:DataSet', 'ont:Extension':'json'})
-        resource3 = doc.entity('dat:food', {'prov:label': 'Food destinations', prov.mode.PROV_TYPE:'ont:Dataset', 'ont:Extension':'json'})
+        resource3 = doc.entity('dat:food', {'prov:label': 'Food destinations', prov.model.PROV_TYPE:'ont:Dataset', 'ont:Extension':'json'})
         get_closest = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_closest, this_script)
         doc.usage(get_closest, resource, startTime, None,

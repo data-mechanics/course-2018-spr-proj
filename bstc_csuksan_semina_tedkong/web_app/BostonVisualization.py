@@ -55,7 +55,7 @@ def locate(lat, long, rate, yelp, lim):
     for i in ret:
         # remove scaling from yelp rating and health score
         data[i[0]][3] =  data[i[0]][3] * 3
-        data[i[0]][4] =  data[i[0]][4] * 5
+        data[i[0]][4] =  round(data[i[0]][4] * 5, 1)
         local += [data[i[0]]]
     
     local = np.array(local)

@@ -45,9 +45,10 @@
         marker.addListener('click', function() {
           map.setZoom(15);
           map.setCenter(marker.getPosition());
-          infoWindow.open(map, marker)
+          infoWindow.open(map, marker);
 
         });
+		
         
         destination(map)
       }
@@ -55,6 +56,8 @@
         function destination(map) {
           var dict = []
           var key = []
+		  var infowindow = new google.maps.InfoWindow()
+
          //Loops over python data
           {% for i in data %}
           //ContentString will appear in the marker Popup
@@ -98,24 +101,23 @@
               }
               
             }
-            
+		  
             var content = '{{i.closestStation[0]}}'
-            var infowindow = new google.maps.InfoWindow()
+//            var infowindow = new google.maps.InfoWindow()
             map.setCenter(marker.getPosition())
             //If user clicks on marker, then open the nearby restaurants with get_restaurants
             google.maps.event.addListener(marker, 'click', (function(marker, content, infowindow){
             return function(){
               map.setZoom(15);
               infowindow.setContent(content);
-              infowindow.open(map,marker);
+			  infowindow.open(map,marker);
               get_restaurant(map, marker, dict);
               map.setCenter(marker.getPosition())
-              
             };
 
           })(marker,content, infowindow));
           {% endfor %}
-          }
+		  }
                 
           function get_restaurant(map, marker, dict){
             
@@ -151,9 +153,16 @@
             });
             
               map.setCenter(markers.getPosition())
-              google.maps.event.addListener(markers, 'click', function(){
-                this.infowindow.open(map,this);});
-                Path.setMap(map);
+              google.maps.event.addListener(markers, 'mouseover', function(){
+                this.infowindow.open(map,this);
+
+			  });Path.setMap(map)
+				  
+			  google.maps.event.addListener(markers, 'mouseout',function(){
+				  this.infowindow.close()
+			  });Path.setMap(map);
+			  
+			  
             }  
             }
 

@@ -86,7 +86,6 @@ class findClosest(dml.Algorithm):
             fail_count = 0
             for food in food_places:
                 if food["ViolStatus"] == 'Fail' and findClosest.latLongDist(food['Location'], f['coords']) < one_mile:
-                    print("add failcount to ", food['businessName'])
                     fail_count += 1
             f['fail_count'] = fail_count
 

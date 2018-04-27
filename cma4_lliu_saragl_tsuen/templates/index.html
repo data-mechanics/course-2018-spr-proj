@@ -61,7 +61,7 @@
          //Loops over python data
           {% for i in data %}
           //ContentString will appear in the marker Popup
-          var contentString = new google.maps.InfoWindow({content: '{{i.closestStation[0]}}'});
+          var contentString = new google.maps.InfoWindow({content: '{{i.closestStation[0]}}' + ": " + "'{{i.closestStation[1]}}"});
             latlng = new google.maps.LatLng('{{i.stationCoords[0]}}','{{i.stationCoords[1]}}')
               //Red Markers If it is MBTA
             if ('{{i.closestStation[0]}}' =="mbta"){
@@ -102,7 +102,7 @@
               
             }
 		  
-            var content = '{{i.closestStation[0]}}'
+            var content = '{{i.closestStation[0]}}' + ": " + '{{i.closestStation[1]}}'
 //            var infowindow = new google.maps.InfoWindow()
             map.setCenter(marker.getPosition())
             //If user clicks on marker, then open the nearby restaurants with get_restaurants

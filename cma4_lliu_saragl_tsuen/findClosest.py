@@ -94,7 +94,7 @@ class findClosest(dml.Algorithm):
             unique_restaurants.clear()
 
         for dest in destinations:
-            desttype = dest_type['dest_type']
+            desttype = dest['dest_type']
             final.append(desttype)
 
         print(final)             

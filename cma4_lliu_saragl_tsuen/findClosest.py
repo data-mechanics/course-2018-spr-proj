@@ -82,12 +82,16 @@ class findClosest(dml.Algorithm):
             food_places.append(entry)
 
 #get number of failed restaurants within one mile radius per restaurant
+        unique_restaurants = set()
+
         for f in final:
             fail_count = 0
             for food in food_places:
-                if food["ViolStatus"] == 'Fail' and findClosest.latLongDist(food['Location'], f['coords']) < one_mile:
+                if food["ViolStatus"] == 'Fail' and findClosest.latLongDist(food['Location'], f['coords']) < one_mile and food['businessName'] not in unique_restaurants:
+                    unique_restaurants.add(food['businessName'])
                     fail_count += 1
             f['fail_count'] = fail_count
+            unique_restaurants.clear()
 
         for dest in destinations:
             desttype = dest_type['dest_type']

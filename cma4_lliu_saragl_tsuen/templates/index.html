@@ -35,18 +35,15 @@
           zoom: 12,
           center: myLatlng
         });
-
         var marker = new google.maps.Marker({
           position: myLatlng,
           map: map,
           title: 'Click to zoom'
         });
-
         marker.addListener('click', function() {
           map.setZoom(15);
           map.setCenter(marker.getPosition());
           infoWindow.open(map, marker);
-
         });
 		
         
@@ -57,11 +54,11 @@
           var dict = []
           var key = []
 		  var infowindow = new google.maps.InfoWindow()
-
          //Loops over python data
           {% for i in data %}
           //ContentString will appear in the marker Popup
-          var contentString = new google.maps.InfoWindow({content: '{{i.closestStation[0]}}' + ": " + "'{{i.closestStation[1]}}"});
+          console.log('{{i}}')
+		  var contentString = new google.maps.InfoWindow({content: '{{i.closestStation[0]}}' + ": " + "'{{i.closestStation[1]}}"});
             latlng = new google.maps.LatLng('{{i.stationCoords[0]}}','{{i.stationCoords[1]}}')
               //Red Markers If it is MBTA
             if ('{{i.closestStation[0]}}' =="mbta"){
@@ -75,11 +72,13 @@
               restaurant = '{{i.name}}'
               restaurant_lat = '{{i.coords[0]}}'
               restaurant_lng = '{{i.coords[1]}}'
+			  dest_type = '{{i.dest_type}}'
+			  
               if ('{{i.closestStation[1]}}' in dict) {
-                dict['{{i.closestStation[1]}}'].push(['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng])
+                dict['{{i.closestStation[1]}}'].push(['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng, dest_type])
               }
               else{
-                dict['{{i.closestStation[1]}}'] = [['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng]] 
+                dict['{{i.closestStation[1]}}'] = [['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng, dest_type]] 
               }
             }
             else{
@@ -94,10 +93,10 @@
               restaurant_lat = '{{i.coords[0]}}'
               restaurant_lng = '{{i.coords[1]}}'
               if ('{{i.closestStation[1]}}' in dict) {
-                dict['{{i.closestStation[1]}}'].push(['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng])
+                dict['{{i.closestStation[1]}}'].push(['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng, dest_type])
               }
               else{
-                dict['{{i.closestStation[1]}}'] = [['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng]] 
+                dict['{{i.closestStation[1]}}'] = [['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng, dest_type]] 
               }
               
             }
@@ -114,17 +113,16 @@
               get_restaurant(map, marker, dict);
               map.setCenter(marker.getPosition())
             };
-
           })(marker,content, infowindow));
           {% endfor %}
 		  }
                 
           function get_restaurant(map, marker, dict){
-            
+			
             //Checks for all the nearby restaurants near Hubway/MBTA stop
             lat = marker.position.lat()
             lng = marker.position.lng()
-
+			
               for (i in dict[marker.title]){
               var Distance = [{lat: lat, lng: lng}]
               var contentString = new google.maps.InfoWindow({content: dict[marker.title][i][1]});
@@ -144,18 +142,28 @@
               })
               
               //Green Marker for Nearby Restaurants
-               var markers = new google.maps.Marker({
-                  position: latlng,
-                  map: map,
-                  title:dict[marker.title][i][0],
-                  icon:'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-                  infowindow: contentString              
-            });
+			  if(dict[marker.title][i][4] == 'food'){
+				  var markers = new google.maps.Marker({
+					  position: latlng,
+					  map: map,
+					  title:dict[marker.title][i][0],
+					  icon:'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+					  infowindow: contentString});
+			  }
+			  else{
+				  var markers = new google.maps.Marker({
+					  position: latlng,
+					  map: map,
+					  title:dict[marker.title][i][0],
+					  icon:'http://maps.google.com/mapfiles/ms/icons/purple-dot.png',
+					  infowindow: contentString});
+			  }
+
+				  
             
               map.setCenter(markers.getPosition())
               google.maps.event.addListener(markers, 'mouseover', function(){
                 this.infowindow.open(map,this);
-
 			  });Path.setMap(map)
 				  
 			  google.maps.event.addListener(markers, 'mouseout',function(){
@@ -165,7 +173,6 @@
 			  
             }  
             }
-
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEREd5Y6MmXitp_So163Gh0KfLSiB6H30&callback=initMap">

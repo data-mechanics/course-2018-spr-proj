@@ -37,7 +37,7 @@ class findClosest(dml.Algorithm):
         destinations = None
 
         if trial:
-            destinations = repo['cma4_lliu_saragl_tsuen.destinationsProjected'].aggregate([{'$sample': {'size': 250}}], allowDiskUse=True)
+            destinations = repo['cma4_lliu_saragl_tsuen.destinationsProjected'].aggregate([{'$sample': {'size': 200}}], allowDiskUse=True)
         else:
             destinations = repo['cma4_lliu_saragl_tsuen.destinationsProjected'].find()
 
@@ -62,7 +62,7 @@ class findClosest(dml.Algorithm):
             d['closestStation'] = closestStation
             d['stationCoords'] = minStationCoords
             final.append(d)
-            
+        
         one_mile = 1.4
 
         url = 'http://datamechanics.io/data/cma4_tsuen/newdata.json'
@@ -81,7 +81,6 @@ class findClosest(dml.Algorithm):
             entry['Location'] = (float(la),float(lo))
             food_places.append(entry)
 
-
 #get number of failed restaurants within one mile radius per restaurant
         for f in final:
             fail_count = 0
@@ -91,10 +90,11 @@ class findClosest(dml.Algorithm):
                     fail_count += 1
             f['fail_count'] = fail_count
 
-        print(final) 
+        for dest in destinations:
+            desttype = dest_type['dest_type']
+            final.append(desttype)
 
-
-            
+        print(final)             
 
         repo.dropCollection("cma4_lliu_saragl_tsuen.closest")
         repo.createCollection("cma4_lliu_saragl_tsuen.closest")
@@ -126,18 +126,24 @@ class findClosest(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('destinations', 'http://datamechanics.io/')
         doc.add_namespace('stations', 'http://datamechanics.io/')
+        doc.add_namespace('food', 'http://datamechanics.io/data/cma4_tsuen/newdata.json')
 
         this_script = doc.agent('alg:cma4_lliu_saragl_tsuen#closest', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         resource = doc.entity('dat:destinationsProjected', {'prov:label':'Destinations Name and Coords', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
         resource2 = doc.entity('dat:stationsProjected', {'prov:label':'Stations stationsProjected Name and Data', prov.model.PROV_TYPE:'ont:DataSet', 'ont:Extension':'json'})
+        resource3 = doc.entity('dat:food', {'prov:label': 'Food destinations', prov.mode.PROV_TYPE:'ont:Dataset', 'ont:Extension':'json'})
         get_closest = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_closest, this_script)
         doc.usage(get_closest, resource, startTime, None,
-                  {prov.model.PROV_TYPE:'ont:Retrieval'
+                  {prov.model.PROV_TYPE:'ont:Computation'
                   }
                   )
         doc.usage(get_closest, resource2, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Computation'
+                  }
+                  )
+        doc.usage(get_closest, resource3, startTime, None,
+                  {prov.model.PROV_TYPE:'ont:Retrieval'
                   }
                   )
 
@@ -149,7 +155,12 @@ class findClosest(dml.Algorithm):
         stationsProjected = doc.entity('dat:cma4_lliu_saragl_tsuen#stationsProjected', {prov.model.PROV_LABEL:'Projected Stations', prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(stationsProjected, this_script)
         doc.wasGeneratedBy(stationsProjected, get_closest, endTime)
-        doc.wasDerivedFrom(stationsProjected, resource, get_closest, get_closest, get_closest)
+        doc.wasDerivedFrom(stationsProjected, resource2, get_closest, get_closest, get_closest)
+
+        foodData = doc.entity('dat:cma4_lliu_saragl_tsuen#food', {prov.model.PROV_LABEL:'Food Destinations', prov.model.PROV_TYPE:'ont:DataSet'})
+        doc.wasAttributedTo(foodData, this_script)
+        doc.wasGeneratedBy(foodData, get_closest, endTime)
+        doc.wasDerivedFrom(foodData, resource3, get_closest, get_closest, get_closest)
 
         repo.logout()
                   

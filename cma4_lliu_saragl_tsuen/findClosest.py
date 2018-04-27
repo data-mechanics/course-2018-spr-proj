@@ -91,7 +91,7 @@ class findClosest(dml.Algorithm):
             f['fail_count'] = fail_count
 
         for dest in destinations:
-            desttype = dest_type['dest_type']
+            desttype = dest['dest_type']
             final.append(desttype)
 
         print(final)             

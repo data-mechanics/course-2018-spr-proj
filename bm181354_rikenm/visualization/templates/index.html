@@ -10,7 +10,7 @@
   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="./">Dashboard</a>
+        <a class="navbar-brand" href="./">Data Mechanism Visualizations</a>
       </div>
     </div>
   </div>
@@ -19,94 +19,102 @@
 
     <div class="row">
 
-      <div class="col-sm-6">
+      <div class="col-md-5">
         <div class="row">
 
           <div class="col-sm-12">
             <div class="chart-wrapper">
               <div class="chart-title">
-                Cell Title
+                  
+                Slider 
               </div>
               <div class="chart-stage">
-                <img data-src="holder.js/100%x120/white/text:100x120">
+                  <div id="hist"></div>
+                  <div id="inputSlider">
+                      <div><input type="range" id="slideRange" value="0.5" min="0" max="20" step="1" onchange="updateSlider(this.value)"></div>
+                      Score threshold: <span id="sliderValue">0.5</label>
+                  </div>
               </div>
               <div class="chart-notes">
-                Notes about this chart
+                Move the slider for Api calls
               </div>
             </div>
           </div>
 
 
+          <div class="col-md-21">
+            <div class="chart-wrapper">
+              <div class="chart-title">
+                Y-Label
+              </div>
+              <div class="chart-stage">
+                  <div id = "Y_label"></div>
+              </div>
+              <div class="chart-notes">
+                Pie chart 
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        
+        <div class="col-sm-6 ">
+            <div class="chart-wrapper">
+              <div class="chart-title">
+                 New station
+              </div>
+              <div class="chart-stage">
+                <div id ="total"></div>
+
+                1900
+              </div>
+              <div class="chart-notes">
+                <div id ="number-projects-nd"></div> 
+                Total Number of New station
+              </div>
+            </div>
+          </div>
+        
+    
+         
           <div class="col-sm-6">
             <div class="chart-wrapper">
               <div class="chart-title">
-                Cell Title
+                Number of Station 
               </div>
               <div class="chart-stage">
-                <img data-src="holder.js/100%x265/white/text:100x265">
+                <div id ="number"></div>
+
               </div>
               <div class="chart-notes">
-                Notes about this chart
+                  <div id = "number-projects-nd"></div>
+                  Total Number of old+New station
               </div>
             </div>
           </div>
+          
 
-          <div class="col-sm-6">
-            <div class="chart-wrapper">
-              <div class="chart-title">
-                Cell Title
-              </div>
-              <div class="chart-stage">
-                <img data-src="holder.js/100%x265/white/text:100x265">
-              </div>
-              <div class="chart-notes">
-                Notes about this chart
-              </div>
-            </div>
-          </div>
-
-        </div>
       </div>
 
-      <div class="col-sm-6">
+      <div class="col-sm-7">
         <div class="chart-wrapper">
           <div class="chart-title">
-            Cell Title
+            <main>
+              <map>
+    
+              Boston Map 
+         
+              </map>
+              </main>
           </div>
           <div class="chart-stage">
-            <img data-src="holder.js/100%x324/white/text:100x324">
+            
+            
           </div>
           <div class="chart-notes">
-            Notes about this chart
-          </div>
-        </div>
-      </div>
-
-
-      <div class="col-sm-3">
-        <div class="chart-wrapper">
-          <div class="chart-title">
-            Cell Title
-          </div>
-          <div class="chart-stage">
-            <img data-src="holder.js/100%x60/white/text:100x60">
-          </div>
-          <div class="chart-notes">
-            Notes about this chart
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-3">
-        <div class="chart-wrapper">
-          <div class="chart-title">
-            Cell Title
-          </div>
-          <div class="chart-stage">
-            <img data-src="holder.js/100%x60/white/text:100x60">
-          </div>
-          <div class="chart-notes">
-            Notes about this chart
+            Boston's Coordinates
           </div>
         </div>
       </div>
@@ -120,7 +128,21 @@
 
   </div>
 
-  <script src="../static/lib/js/jquery.min.js"></script>
+  <script src="https://d3js.org/d3-color.v1.min.js"></script>
+  <script src="../static/lib/js/crossfilter.js" type='text/javascript'></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+
+
+  <script src="../static/lib/js/crossfilter.js"></script>
+  <script src="../static/lib/js/d3.js"></script>
+  <script src="../static/lib/js/dc.js"></script>
+  <script src="../static/lib/js/queue.js"></script>
+
+
+  <script src="../static/lib/js/keen.min.js"></script>
+  <script src='../static/js/graph.js' type='text/javascript'></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> 
   <script src="../static/lib/js/bootstrap.min.js"></script>
   <script src="../static/lib/js/holder.js"></script>
 
@@ -130,6 +152,7 @@
 
   <script src="../static/lib/js/keen.min.js"></script>
   <script src="../static/lib/js/meta.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
 
 </body>
 </html>

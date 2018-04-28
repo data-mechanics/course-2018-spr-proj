@@ -42,6 +42,22 @@ def h(b, w ,X):
     """
     return g( (X @ w) + b)
 
+def sparse_h(b, w ,X):
+    """
+    This function implments the logistic regression hypothesis function
+
+    Argument:
+    b -- bias
+    w -- predictive parameters
+    X -- data matrix of size (numbers_examples, number_predictors)
+
+    Returns:
+    sigmoid(Xw + b)
+    """
+    act  = g( (X.dot(w)) + b)
+    return act.reshape((X.shape[0], 1))
+
+
 # Weight Initialization for p predictors
 def initialize(p):
     """
@@ -96,6 +112,7 @@ def computeCost(b, w, X, Y, lmbda = 0):
     Return:
     cost -- negative log-likelihood cost for logistic regression
     """
+
 
     m = Y.size
     term1 = np.dot(-np.array(Y).T,np.log(h(b,w,X)))

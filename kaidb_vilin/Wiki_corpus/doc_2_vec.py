@@ -5,7 +5,7 @@
 import logging
 import os.path
 import sys
-
+import time
 from gensim.corpora.wikicorpus import WikiCorpus
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from pprint import pprint
@@ -18,7 +18,7 @@ class TaggedWikiDocument(object):
         self.wiki.metadata = True
     def __iter__(self):
         for content, (page_id, title) in self.wiki.get_texts():
-            yield TaggedDocument([c.decode("utf-8") for c in content], [title])
+            yield TaggedDocument([c for c in content], [title])
 
 
 
@@ -32,17 +32,12 @@ def main():
     logger.info("running %s" % ' '.join(sys.argv))
     
     print("Loading Wiki Corpus")
-    wiki = WikiCorpus("enwiki-latest-pages-articles.xml.bz2")
-    print("wiki loaded")
-    print()
-    print("Parsing Documents")
+    #wiki = WikiCorpus("enwiki-latest-pages-articles14.xml-p7697599p7744799.bz2")
+    wiki = WikiCorpus('enwiki-latest-pages-articles.xml.bz2')
+    print(type(wiki))
     documents = TaggedWikiDocument(wiki)
-    print("Documents Parsed")
-    pre = Doc2Vec(min_count=0)
-    pre.scan_vocab(documents)
-    for num in range(0, 20):
-        print('min_count: {}, size of vocab: '.format(num), pre.scale_vocab(min_count=num, dry_run=True)['memory']['vocab']/700)
 
+    print("Documents Parsed")
     cores = multiprocessing.cpu_count()
 
     models = [

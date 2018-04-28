@@ -8,12 +8,13 @@ import matplotlib.pyplot as plt
 import scipy
 import os
 import math
+import scipy
+from tqdm import tqdm
 
 from sklearn.metrics import f1_score
 from sklearn.metrics import roc_curve, auc,confusion_matrix
 
 # Gradient Descent Core 
-
 
 def computeGradients(b, w, X, Y, lmbda):
     """
@@ -51,6 +52,40 @@ def computeGradients(b, w, X, Y, lmbda):
     return grads, cost
 
 
+def computeSparseGradients(b, w, X, Y, lmbda):
+    """
+    Computes gradients
+
+    Arguments:
+    w -- weight parameters
+    b -- bias
+    X -- datamatrix
+    Y -- ground truth labels 
+    lmbda -- regularization hyperparameter
+
+    Return:
+    cost -- Loss function cose
+    dw -- gradient of the loss with respect to predictors w
+    db -- gradient of the loss with respect to bias b    
+    """
+    # number of examples
+    m = X.shape[0]
+    # Hypothesis predictions 
+    hx = sparse_h(b,w,X)
+    cost = computeCost(b, w, X,Y)
+    dw =  (1/m ) *  X.dot(hx -Y) + (lmbda * w) 
+    db = (1/m ) *  np.sum(hx - Y)
+
+    assert(dw.shape == w.shape)
+    assert(db.dtype == float)
+    # Cost should be scalar
+    cost = np.squeeze(cost)
+    assert(cost.shape == ())
+    
+    grads = {"dw": dw,
+             "db": db}
+    # store cost to track its value as a function of iterations 
+    return grads, cost
 
 
 def compute_update_with_momentum(b,w, grads, v, beta, learning_rate):
@@ -112,7 +147,7 @@ def gradientDescent(b, w,  X, Y,lmbda, num_iterations, learning_rate, verbose = 
     
     costs = []
     tol=0
-    for i in range(num_iterations):
+    for i in tqdm(range(num_iterations)):
         # Compute Gradient and cost
         grads, cost = computeGradients(b, w, X, Y, lmbda)
         # Retrieve derivatives from grads
@@ -143,7 +178,7 @@ def gradientDescent(b, w,  X, Y,lmbda, num_iterations, learning_rate, verbose = 
     return b_optimal, w_optimal, costs
 
 
-def momentumGradientDescent(b, w,v,  X, Y,lmbda, num_iterations, learning_rate,beta, verbose = False, stopping_tolerance = 1e-6):
+def momentumGradientDescent(b, w,v,  X, Y,lmbda, num_iterations, learning_rate,beta, verbose = False, stopping_tolerance = 1e-6, sparse=False):
     """
     This function calculates w,b  by running a gradient descent for num_iterations. 
     
@@ -200,7 +235,7 @@ def momentumGradientDescent(b, w,v,  X, Y,lmbda, num_iterations, learning_rate,b
 
 
 
-def miniBatchMomentumGradientDescent(b, w,v,  X, Y,lmbda, num_iterations, learning_rate,beta, verbose = False,batch_size=64,seed=6969, stopping_tolerance = 1e-6):
+def miniBatchMomentumGradientDescent(b, w,v,  X, Y,lmbda, num_iterations, learning_rate,beta, verbose = False,batch_size=64,seed=6969, stopping_tolerance = 1e-6, sparse=False):
     """
     This function calculates w,b  by running a gradient descent for num_iterations. 
     
@@ -223,18 +258,27 @@ def miniBatchMomentumGradientDescent(b, w,v,  X, Y,lmbda, num_iterations, learni
     
     TODO: add early stoping, optimization options, regularization 
     """
-    
+    print("MB GD starting")
     costs = []
-    for i in range(num_iterations):
+    for i in tqdm(range(num_iterations)):
         
         # Define the random minibatches. We increment the seed to reshuffle differently the dataset after each epoch
         seed = seed + 1
         minibatches = random_mini_batches(X, Y, batch_size, seed)
         
-        for minibatch in minibatches:
+        #for minibatch in tqdm(minibatches):
+        for c in tqdm(range(len(minibatches))):
+            if c % 100==0:
+                print("iter {}".format(c))
+            minibatch = minibatches[c]
             (minibatch_X, minibatch_Y) = minibatch
             # Compute Gradient and cost
-            grads, cost = computeGradients(b, w, minibatch_X, minibatch_Y, lmbda)
+            
+            if sparse:
+                grads, cost = computeSparseGradients(b, w, X, Y, lmbda)
+            else:
+                grads, cost = computeGradients(b, w, minibatch_X, minibatch_Y, lmbda)
+            #del minibatch_X
             # Retrieve derivatives from grads
             dw = grads["dw"]
             db = grads["db"]

@@ -10,11 +10,12 @@ import scipy
 import os
 import math
 
+
 from sklearn.metrics import f1_score
 from sklearn.metrics import roc_curve, auc,confusion_matrix
 
 class LogisticRegression:
-    def __init__(self, lmbda = 0, learning_rate = .01,beta=.9 ,num_iterations= 10000, opt='GD', seed=6969, batch_size=64):
+    def __init__(self, lmbda = 0, learning_rate = .01,beta=.9 ,num_iterations= 10000, opt='GD', seed=6969, batch_size=32, sparse=False):
         self.costs = None
         self.opt=opt
         self.lmbda = lmbda
@@ -24,6 +25,7 @@ class LogisticRegression:
         self.num_iterations = num_iterations
         self.seed = seed
         self.batch_size = batch_size
+        self.sparse = sparse
         
     def fit(self, X, Y, verbose=False):
         self.p = X.shape[1]
@@ -53,7 +55,8 @@ class LogisticRegression:
                 self.num_iterations,
                 self.alpha,
                 self.beta,
-                verbose = verbose)
+                verbose = verbose,
+                sparse =self.sparse)
         if opt == "MB_Momentum":
             print("Using MiniBatch Gradient Descent with Momentum")
             self.v = initialize_velocity(self.b,self.w)
@@ -69,7 +72,8 @@ class LogisticRegression:
                 beta= self.beta,
                 batch_size= self.batch_size,
                 seed = self.seed,
-                verbose = verbose)
+                verbose = verbose,
+                sparse =self.sparse)
             
 
         

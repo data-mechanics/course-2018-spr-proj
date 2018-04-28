@@ -30,7 +30,6 @@ def schoolHubwayStation():
 		schoolHubwayList = []
 		schoolHubwayList = repo['debhe_shizhan0_wangdayu_xt.schoolHubwayDistance'].find()
 		find = False
-	#schoolHubwayList = list(mongo.db.debhe_shizhan0_wangdayu_xt.schoolHubwayDistance.find())
 		for row in schoolHubwayList:
 			if row['schoolName'] == schoolNameInput:
 				schoolName = row['schoolName']
@@ -65,7 +64,7 @@ def schoolSubwayStation():
 				schoolCorY = row['schoolY']
 				subwayCorX = row['subwayX']
 				subwayCorY = row['subwayY']
-				print(subwayCorY)
+				#print(subwayCorY)
 				find = True
 		repo.logout()
 		if(find == True):
@@ -83,6 +82,7 @@ def schoolNewBikeHub():
 		repo.authenticate('debhe_shizhan0_wangdayu_xt', 'debhe_shizhan0_wangdayu_xt')
 		schoolList = []
 		schoolList = repo['debhe_shizhan0_wangdayu_xt.newSchoolSubDis'].find()
+		find = False
 		for row in schoolList:
 			if row['schoolName'] == schoolNameInput:
 				schoolName = row['schoolName']
@@ -91,8 +91,12 @@ def schoolNewBikeHub():
 				schoolCorY = row['schoolY']
 				subwayCorX = findSubwayX(subwayName)
 				subwayCorY = findSubwayY(subwayName)
+				find = True
 		repo.logout()
-		return render_template("schoolNewBikeHub.html", schoolName = schoolName, subwayStationName = subwayName, school_x=schoolCorX, school_y=schoolCorY, subway_x=subwayCorX, subway_y=subwayCorY)
+		if(find == True):
+			return render_template("schoolNewBikeHub.html", schoolName = schoolName, subwayStationName = subwayName, school_x=schoolCorX, school_y=schoolCorY, subway_x=subwayCorX, subway_y=subwayCorY)
+		else:
+			return render_template("schoolNewBikeHub.html", message="Record not find")
 	return render_template("schoolNewBikeHub.html")
 
 @app.route('/OnClickHubway/<schooName>', methods = ['GET'])
@@ -122,6 +126,7 @@ def showTwoResult():
 		repo = client.repo
 		repo.authenticate('debhe_shizhan0_wangdayu_xt', 'debhe_shizhan0_wangdayu_xt')
 		newStationList = repo['debhe_shizhan0_wangdayu_xt.newSchoolSubDis'].find()
+		find = False
 		for row in newStationList:
 			if row['schoolName'] == schoolNameInput:
 				subwayName = row['subwayStation']
@@ -135,9 +140,13 @@ def showTwoResult():
 				hubwayCorX = row['Hubway_Cor_x']
 				hubwayCorY = row['Hubway_Cor_y']
 				hubwayStationName = row['hubwayStation']
+				find = True
 		schoolName = schoolNameInput
 		repo.logout()
-		return render_template("showTwoResult.html", schoolName = schoolName, subwayStationName = subwayName, school_x = schoolCorX, school_y = schoolCorY, subway_x= subwayCorX, subway_y = subwayCorY,hubwayStationName = hubwayStationName, hubway_x=hubwayCorX, hubway_y=hubwayCorY )
+		if(find == True):
+			return render_template("showTwoResult.html", schoolName = schoolName, subwayStationName = subwayName, school_x = schoolCorX, school_y = schoolCorY, subway_x= subwayCorX, subway_y = subwayCorY,hubwayStationName = hubwayStationName, hubway_x=hubwayCorX, hubway_y=hubwayCorY )
+		else:
+			return render_template("showTwoResult.html", message="Record not find")
 	return render_template("showTwoResult.html")
 
 

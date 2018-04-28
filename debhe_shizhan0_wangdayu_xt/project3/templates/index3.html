@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CS591L1_Prj3</title>
+
+<link rel="stylesheet" href="leaflet.css" />
+<script type=text/javascript src="leaflet.js"></script>
+
+
+<style>
+<!--
+body{
+font-family: Arial, Helvetica, sans-serif;
+}
+
+h1{
+margin: 10px 0px 0px 6px;
+}
+
+p{
+font-family: 'Trebuchet MS', Times;
+margin: 10px 10px 15px 20px;
+}
+
+p#dm{
+font-family: Arial, Helvetica, sans-serif;
+color: #3399ff;
+margin: 0px 0px 0px 20px;
+font-size: 2.2em;
+text-align: left;
+}
+
+p#dm2{
+font-family: Arial, Helvetica, sans-serif;
+color: #3399ff;
+margin: 0px 0px 0px 20px;
+font-size: 2.2em;
+text-align: right;
+}
+
+hr#main{
+width: 100%;
+border: 0;
+background-color: #3399ff;
+height: 0.6em;
+margin: -10px 0px -14px 0px;
+}
+
+#map{
+width: 1200px; 
+height: 600px;
+margin: 35px 0px 10px 0px;
+}
+
+button{
+margin-left: 25px;
+background-color: #3399ff;
+border: none;
+color: white;
+font-size: 1.1em;
+display: inline-block;
+border-radius: 4px;
+transition-duration: 0.4s;
+}
+
+button:hover {
+background-color: white;
+color: #3399ff;
+}
+-->
+</style>
+</head>
+<body>
+<div id='content' align="center">
+	<h1>CS591L1 Project 3</h1>
+	<p id="dm"><strong> Data Mechanics<strong></p>
+	<hr id="main">
+	<p id='dm2'><strong> D&#592;&#647;&#592; W&#477;&#613;&#596;&#592;u&#7433;&#596;s <strong> </p>
+	
+	<form id="frm1" action="/action_page.php">
+	  School Name: <input type="text" name="name" value="">
+	  <button onclick="myFunction()">search</button>
+	</form> 
+
+	<p id="output"></p>
+
+	<div id='map'></div>
+<div>
+	
+<script>
+	//get form data
+	function myFunction() {
+		var x = document.getElementById("frm1");
+		var text = "";
+		text = x.name.value;
+		document.getElementById("output").innerHTML = text;
+	}
+
+	// initialize the map
+	var map = L.map('map').setView([42.35, -71.08], 11);
+
+	// load a tile layer
+	L.tileLayer('http://tiles.mapc.org/basemap/{z}/{x}/{y}.png',
+    {
+      attribution: 'Tiles by <a href="http://mapc.org">MAPC</a></a>',
+      maxZoom: 17,
+      minZoom: 9
+    }).addTo(map);
+	
+	var a = -71.08;
+	var b = -71.38;
+	var marker = L.marker([42.35, -71.08]).addTo(map);
+	marker.bindPopup("<b>Hello world!</b><br>This is boston.").openPopup();
+	
+	var myLines = [{
+    "type": "LineString",
+    "coordinates": [[a, 42.35], [a, 42.25], [b, 42.15]]
+	}];
+	
+	var geojsonFeature = {
+    "type": "Feature",
+    "properties": {
+        "name": "Coors Field",
+        "amenity": "Baseball Stadium",
+        "popupContent": "This is where the Rockies play!"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [-71.18, 42.18]
+    }
+	};
+	
+	L.geoJSON(geojsonFeature).addTo(map);
+
+	var myLayer = L.geoJSON(myLines).addTo(map);
+	
+	var planes = [
+	["7C6B07",42.36, -71.08],
+	["7C6B38",42.37, -71.08],
+	["7C6CA1",42.38, -71.08],
+	["7C6CA2",42.39, -71.08],
+	["C81D9D",42.40, -71.08],
+	["C82009",42.41, -71.08],
+	["C82081",42.42, -71.08],
+	["C820AB",42.43, -71.08],
+	["C820B6",42.45, -71.08]
+	];
+
+	for (var i = 0; i < planes.length; i++) {
+		marker = new L.marker([planes[i][1],planes[i][2]])
+			.bindPopup(planes[i][0])
+			.addTo(map);
+	}
+
+</script>
+
+</body>
+</html>

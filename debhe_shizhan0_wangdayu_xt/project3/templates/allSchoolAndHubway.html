@@ -1,7 +1,22 @@
+<!DOCTYPE html>
 <html>
 	<head lang="en-us">
 		<meta charset="utf-8">
 		<title>Check All the Schools</title>
+
+		<link rel="stylesheet" href="/static/leaflet.css" />
+		<script type=text/javascript src="{{ url_for('static', filename='leaflet.js') }}"></script>
+
+		<style>
+<!--
+#map{
+width: 1200px; 
+height: 600px;
+margin: 35px 0px 10px 0px;
+}
+-->
+		</style>
+
 	</head>
 
 	<body>
@@ -9,7 +24,7 @@
 			Here is list for all the schools
 		</h1>
 
-		<ul>
+<!-- 		<ul>
 			{% for school in schools %}
 				<li>school Name : {{school[0]}} <br/>school X Coordinate : {{school[1]}} <br/> Y Coordinate: {{school[2]}}</li>
 			{% endfor %}
@@ -19,8 +34,38 @@
 			{% for hubway in hubways %}
 				<li>hubway Station : {{hubway[0]}} <br/>hubway X Coordinate : {{hubway[1]}} <br/> Y Coordinate: {{hubway[2]}}</li>
 			{% endfor %}
-		</ul>
+		</ul> -->
 
 		<p><a href='/schoolHubwayStation'>Find the closest hubway station for a certain school</a></p>
+
+		<div id='map' width="1000px" height="600px"></div>
+
+<script>
+
+	// initialize the map
+	var map = L.map('map').setView([42.35, -71.08], 12);
+
+	// load a tile layer
+	L.tileLayer('http://tiles.mapc.org/basemap/{z}/{x}/{y}.png',
+    {
+      attribution: 'Tiles by <a href="http://mapc.org">MAPC</a></a>',
+      maxZoom: 25,
+      minZoom: 9
+    }).addTo(map);
+
+	var school = [];
+	'{% for school in schools %}'
+	marker = new L.marker([parseFloat('{{school[2]}}'),parseFloat('{{school[1]}}')])
+			.bindPopup('{{school[0]}}')
+			.addTo(map);
+	'{% endfor %}'
+
+	'{% for hubway in hubways %}'
+	marker = new L.marker([parseFloat('{{hubway[2]}}'),parseFloat('{{hubway[1]}}')])
+			.bindPopup('{{hubway[0]}}')
+			.addTo(map);
+	'{% endfor %}'
+
+</script>
 	</body>
 </html>

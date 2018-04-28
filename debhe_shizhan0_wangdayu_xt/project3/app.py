@@ -15,6 +15,11 @@ def mainPage():
 	if request.method == "GET":
 		return render_template("index.html")
 
+@app.route("/index3", methods=["GET","POST"])
+def testPage():
+	if request.method == "GET":
+		return render_template("index3.html")
+
 @app.route("/schoolHubwayStation", methods=["GET","POST"])
 def schoolHubwayStation():
 	if(request.method == 'POST'):
@@ -64,7 +69,7 @@ def schoolSubwayStation():
 				find = True
 		repo.logout()
 		if(find == True):
-			return render_template("schoolSubwayStation.html", schoolName = schoolName, subwayStationName = subwayStationName, school_x=schoolCorX, school_y=schoolCorY, subway_x=subwayCorX, subway_y=subwayCorY)
+			return render_template("schoolSubwayStation.html", schoolName = schoolName, subwayStationName = subwayStationName, school_x=(schoolCorX), school_y=schoolCorY, subway_x=subwayCorX, subway_y=subwayCorY)
 		else:
 			return render_template("schoolSubwayStation.html", message = "School Not Found")
 	return render_template("schoolSubwayStation.html")

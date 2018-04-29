@@ -4,6 +4,33 @@
   <title>Layouts &raquo; Hero-Thirds</title>
   <link rel="stylesheet" href="../static/lib/css/bootstrap.min.css">
   <link rel="stylesheet" href="../static/lib/css/keen-dashboards.css">
+  <style>
+      #number {
+        font-size: 64px;
+        text-align: center;
+        padding-bottom: 63px;
+        height: 74px;
+        line-height: normal;
+      }
+
+#map-text {
+        font-size: 44px;
+        text-align: center;
+        font-family:Georgia;
+        padding-bottom: 63px;
+        height: 54px;
+        line-height: normal;
+      }
+
+      #total{
+        font-size: 64px;
+        text-align: center;
+        padding-bottom: 63px;
+        height: 74px;
+        line-height: normal;
+      }
+
+    </style>
 </head>
 <body class="application">
 
@@ -45,7 +72,7 @@
           <div class="col-md-21">
             <div class="chart-wrapper">
               <div class="chart-title">
-                Y-Label
+                Average Popularity of Cluster
               </div>
               <div class="chart-stage">
                   <div id = "Y_label"></div>
@@ -59,43 +86,7 @@
 
         </div>
 
-        
-        <div class="col-sm-6 ">
-            <div class="chart-wrapper">
-              <div class="chart-title">
-                 New station
-              </div>
-              <div class="chart-stage">
-                <div id ="total"></div>
-
-                1900
-              </div>
-              <div class="chart-notes">
-                <div id ="number-projects-nd"></div> 
-                Total Number of New station
-              </div>
-            </div>
-          </div>
-        
     
-         
-          <div class="col-sm-6">
-            <div class="chart-wrapper">
-              <div class="chart-title">
-                Number of Station 
-              </div>
-              <div class="chart-stage">
-                <div id ="number"></div>
-
-              </div>
-              <div class="chart-notes">
-                  <div id = "number-projects-nd"></div>
-                  Total Number of old+New station
-              </div>
-            </div>
-          </div>
-          
-
       </div>
 
       <div class="col-sm-7">
@@ -103,11 +94,15 @@
           <div class="chart-title">
             <main>
               <map>
-    
-              Boston Map 
+            <div id = "map-text">
+                  Boston Neighborhood Map 
+             </div>
          
               </map>
               </main>
+
+              
+
           </div>
           <div class="chart-stage">
             
@@ -118,6 +113,42 @@
           </div>
         </div>
       </div>
+
+
+      <div class="col-md-3">
+          <div class="chart-wrapper">
+            <div class="chart-title">
+               New station
+            </div>
+            <div class="chart-stage">
+              <div id ="total">2</div>
+            </div>
+            <div class="chart-notes">
+              <div id ="number-projects-nd"></div> 
+              Total Number of New station
+            </div>
+          </div>
+        </div>
+    
+       
+        <div class="col-md-4">
+          <div class="chart-wrapper">
+            <div class="chart-title">
+              Number of Station 
+            </div>
+            <div class="chart-stage">
+              <div id ="number"></div>
+
+            </div>
+            <div class="chart-notes">
+                <div id = "number-projects-nd"></div>
+                Total Number of old+New station
+            </div>
+          </div>
+        </div>
+
+
+
 
     </div>
 

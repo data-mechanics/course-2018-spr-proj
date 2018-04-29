@@ -64,7 +64,7 @@ class newSchoolSubDis(dml.Algorithm):
             for subStop, assignment in dic.items():
                 if (assignment == "1"):
                     listSubwayOfo += [subStop]
-
+        #print(listSubwayOfo)
         # For each school if it is "close" to its closest subway station, it is not our target
         # for the bike hub station. So just add its distance to the closest subway station
         # For the other schools, find its distance to the closes station that get assigned 

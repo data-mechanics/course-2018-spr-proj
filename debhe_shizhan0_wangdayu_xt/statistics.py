@@ -7,7 +7,26 @@ import uuid
 import copy
 import z3
 import numpy as np
+import math 
+import numpy
 
+#X = Longitude, Y = Latitude
+def degreesToRadians(degrees):
+    return degrees * math.pi / 180 
+
+def distanceInKmBetweenEarthCoordinates(lat_1, lon_1, lat_2, lon_2):
+    earthRadiusKm = 6371
+    lat1 = float(lat_1)
+    lat2 = float(lat_2)
+    lon1 = float(lon_1)
+    lon2 = float(lon_2)
+    dLat = degreesToRadians(lat2-lat1)
+    dLon = degreesToRadians(lon2-lon1)
+    lat1 = degreesToRadians(lat1)
+    lat2 = degreesToRadians(lat2)
+    a = math.sin(dLat/2) * math.sin(dLat/2) + math.sin(dLon/2) * math.sin(dLon/2) * math.cos(lat1) * math.cos(lat2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    return earthRadiusKm * c;
 
 class statistics(dml.Algorithm):
     contributor = 'debhe_shizhan0_wangdayu_xt'
@@ -35,6 +54,48 @@ class statistics(dml.Algorithm):
         subway_1 = copy.deepcopy(subway)
         #subway_2 = copy.deepcopy(subway)
         hubway_1 = copy.deepcopy(hubway)
+
+        hubway_2 = copy.deepcopy(hubway)
+        subway_2 = copy.deepcopy(subway)
+
+        temp_list = []
+        for row in hubway_2:
+            #print(distanceInKmBetweenEarthCoordinates(row['School_Cor_y'], row['School_Cor_x'], row['Hubway_Cor_y'], row['Hubway_Cor_x']) )
+            temp_list.append( distanceInKmBetweenEarthCoordinates(row['School_Cor_y'], row['School_Cor_x'], row['Hubway_Cor_y'], row['Hubway_Cor_x']) )
+
+        NewCalculation_HubwayAvgDis_in_KM = sum(temp_list) / len(temp_list)
+        #print("NewCalculation_HubwayAvgDis_in_KM:")
+        #print(NewCalculation_HubwayAvgDis_in_KM)
+
+        temp_list2 = []
+        for row in subway_2:
+            #print(distanceInKmBetweenEarthCoordinates(row['schoolY'], row['schoolX'], row['subwayY'], row['subwayX']))
+            temp_list2.append( distanceInKmBetweenEarthCoordinates(row['schoolY'], row['schoolX'], row['subwayY'], row['subwayX']) )
+
+        NewCalculation_BikeHubAvgDis_in_KM = sum(temp_list2) / len(temp_list2)
+        #print("NewCalculation_BikeHubAvgDis_in_KM:")
+        #print(NewCalculation_BikeHubAvgDis_in_KM)
+
+        NewCalculation_HubwayStdevDis_in_KM = numpy.std(temp_list)
+        #print("NewCalculation_HubwayStdevDis_in_KM")
+        #print(NewCalculation_HubwayStdevDis_in_KM)
+
+        NewCalculation_BikeHubStdevDis_in_KM = numpy.std(temp_list2)
+        #print("NewCalculation_BikeHubStdevDis_in_KM")
+        #print(NewCalculation_BikeHubStdevDis_in_KM)
+
+        temp_list1_time = []
+        for i in temp_list:
+            temp_list1_time.append(i/0.083)
+
+        temp_list2_time = []
+        for i in temp_list2:
+            temp_list2_time.append(i/0.66)
+
+        NewCalculation_HubbwayAvgTime_in_min = sum(temp_list1_time) / len(temp_list1_time)
+        NewCalculation_BikeHubAveTime_in_min = sum(temp_list2_time) / len(temp_list2_time)
+        NewCalculation_HubbwayStdevTime_in_min = numpy.std(temp_list1_time)
+        NewCalculation_BikeHubStdevTime_in_min = numpy.std(temp_list2_time)
 
         subwaydist = []
         hubwaydist = []
@@ -73,6 +134,15 @@ class statistics(dml.Algorithm):
         finalResult['correlation'] = cor.tolist()
         finalResult['Old Assignment Average Distance'] = oldAssignmentAvg
         finalResult['New Assignment Average Distance'] = newAssignmentAvg
+        finalResult['NewCalculation_HubwayAvgDis_in_KM'] = NewCalculation_HubwayAvgDis_in_KM
+        finalResult['NewCalculation_BikeHubAvgDis_in_KM'] = NewCalculation_BikeHubAvgDis_in_KM
+        finalResult['NewCalculation_HubwayStdevDis_in_KM'] = NewCalculation_HubwayStdevDis_in_KM
+        finalResult['NewCalculation_BikeHubStdevDis_in_KM'] = NewCalculation_BikeHubStdevDis_in_KM
+        finalResult['NewCalculation_HubbwayAvgTime_in_min'] = NewCalculation_HubbwayAvgTime_in_min
+        finalResult['NewCalculation_BikeHubAveTime_in_min'] = NewCalculation_BikeHubAveTime_in_min
+        finalResult['NewCalculation_HubbwayStdevTime_in_min'] = NewCalculation_HubbwayStdevTime_in_min
+        finalResult['NewCalculation_BikeHubStdevTime_in_min'] = NewCalculation_BikeHubStdevTime_in_min
+
 
         # save the information to the database
         repo.dropCollection("statistics")

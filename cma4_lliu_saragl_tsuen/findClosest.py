@@ -61,6 +61,8 @@ class findClosest(dml.Algorithm):
                     minStationCoords = scoords
             d['closestStation'] = closestStation
             d['stationCoords'] = minStationCoords
+            d['dest_type'] = d['dest_type']
+
             final.append(d)
         
         one_mile = 1.4
@@ -93,9 +95,7 @@ class findClosest(dml.Algorithm):
             f['fail_count'] = fail_count
             unique_restaurants.clear()
 
-        for dest in destinations:
-            desttype = dest['dest_type']
-            final.append(desttype)
+       
 
         print(final)             
 

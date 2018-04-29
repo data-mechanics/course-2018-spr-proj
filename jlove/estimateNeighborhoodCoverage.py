@@ -23,6 +23,12 @@ class estimateNeighborhoodCoverage(dml.Algorithm):
         
         floodShape = shapely.geometry.shape(flood['features'][0]['geometry'])
         covered = {}
+        hgroups = []
+        for group in hydrantGroups:
+            hgroups += [group]
+
+        hydrantGroups = hgroups
+        
         for group in tqdm(hydrantGroups):
             name = group['metadata']['neighborhood']
             count = 0

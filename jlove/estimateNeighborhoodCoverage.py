@@ -42,6 +42,8 @@ class estimateNeighborhoodCoverage(dml.Algorithm):
         print(covered)
         
         for neighborhood in hydrantCounts.keys():
+            if neighborhood == '_id':
+                continue
             print(neighborhood)
             temp_covered = covered[neighborhood]
             try:

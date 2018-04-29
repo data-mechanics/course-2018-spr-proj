@@ -43,7 +43,7 @@ class estimateNeighborhoodCoverage(dml.Algorithm):
             print(neighborhood)
             temp_covered = covered[neighborhood]
             try:
-                covered[neighborhood] = (covered/hydrantCounts[neighborhood]) * 100
+                covered[neighborhood] = (temp_covered/hydrantCounts[neighborhood]) * 100
             except ZeroDivisionError:
                 covered[neighborhood] = 0
         

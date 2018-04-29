@@ -8,6 +8,7 @@ We also perform various statistical analyses to test two hypotheses and to check
 
 In Project #3, we provided a visualization of the optimal routes from every alcohol license to the MBTA stop chosen using the Python package folium. We also provided two visualizations, the first of which shows how the distances of each route vary as the score increases between the safest routes and the shortest routes (Figure 2), while the second tracks the same interaction for only the optimized routes (Figure 3). These visualizations were created using d3.
 
+To run our flask app, run `python app.py` in the `visualizations/app` folder.
 
 ## Datasets
 

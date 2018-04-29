@@ -51,7 +51,7 @@ class estimateNeighborhoodCoverage(dml.Algorithm):
             except ZeroDivisionError:
                 covered[neighborhood] = 0
         
-        repo.dropColection('percentCovered')
+        repo.dropCollection('percentCovered')
         repo.createCollection('percentCovered')
         
         repo['jlove.percentCovered'].insert_one(covered)

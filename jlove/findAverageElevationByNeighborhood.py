@@ -96,7 +96,7 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
 
         for nh in avg_elevation:
             avg_elevation[nh] = (avg_elevation[nh] - mean) / float(std)
-            
+
         repo.dropCollection('jlove.avg_elev')
         repo.createCollection('jlove.avg_elev')
         repo['jlove.avg_elev'].insert_one(avg_elevation)

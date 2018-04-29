@@ -18,7 +18,7 @@ class estimateNeighborhoodCoverage(dml.Algorithm):
         repo = client.repo
         repo.authenticate('jlove', 'jlove')
         flood = repo['jlove.flood'].find_one({})
-        hydrantCounts = repo['jlove.hydrantCounts'].find_on({})
+        hydrantCounts = repo['jlove.hydrantCounts'].find_one({})
         hydrantGroups = repo['jlove.hydrantGroups'].find({})
         
         floodShape = shapely.geometry.shape(flood['features'][0]['geometry'])

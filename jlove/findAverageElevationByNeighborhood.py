@@ -71,6 +71,7 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
         contours = repo['jlove.contour_neighborhoods'].find()
         
         avg_elevation = {}
+        elevations = []
         count = 0
         for contour in contours:
             if trial:
@@ -80,13 +81,22 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
             count = count % 5
             nh = contour['neighborhood']
             features = contour['geo']['features']
-            weighted_elev = []
+            weighted_elev = 0
+            total_distance = 0
             for feature in features:
-                weighted_elev += [feature['properties']['length'] * feature['properties']['elev']]
+                weighted_elev += feature['properties']['length'] * feature['properties']['elev']
+                total_distance += feature['properties']['length']
             
-            avg_elevation[nh] = np.average(weighted_elev)
+            avg_elevation[nh] = weighted_elev/float(total_distance)
+            elevations += [avg_elevation[nh]]
             
-        
+
+        mean = np.mean(elevations)
+        std = np.std(elevations)
+
+        for nh in avg_elevation:
+            avg_elevation[nh] = (avg_elevation[nh] - mean) / float(std)
+            
         repo.dropCollection('jlove.avg_elev')
         repo.createCollection('jlove.avg_elev')
         repo['jlove.avg_elev'].insert_one(avg_elevation)
@@ -103,7 +113,7 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
         
         pair_arr = np.array(pairs)
         results = scipy.stats.pearsonr(pair_arr[::,0], pair_arr[::,1])
-        
+
         doc = {'corr_cooef': results[0], 'p_val': results[1]}
         
         repo.dropCollectio('jlove.stats_result')

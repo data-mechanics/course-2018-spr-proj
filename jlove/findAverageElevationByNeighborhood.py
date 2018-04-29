@@ -33,8 +33,14 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
         contours = repo['jlove.contours'].find({})
         
         neighborhood_overlap = {}
-        
+
+        contourTemp = []
         for contour in contours:
+            contourTemp += [contour]
+
+        contours = contourTemp
+
+        for contour in tqdm(contours):
             for neighborhood in neighborhoods['features']:
                 nShape = shapely.geometry.shape(neighborhood['geometry'])
                 cShape = shapely.geometry.shape(contour['geometry'])
@@ -73,6 +79,13 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
         avg_elevation = {}
         elevations = []
         count = 0
+
+        contour_temp = []
+        for contour in contours:
+            contour_temp += [contour]
+
+        contours = contour_temp
+
         for contour in contours:
             if trial:
                 if count == 5:
@@ -88,6 +101,7 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
                 total_distance += feature['properties']['length']
             
             avg_elevation[nh] = weighted_elev/float(total_distance)
+            print(avg_elevation[nh])
             elevations += [avg_elevation[nh]]
             
 

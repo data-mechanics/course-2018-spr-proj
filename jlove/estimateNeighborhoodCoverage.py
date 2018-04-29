@@ -28,7 +28,7 @@ class estimateNeighborhoodCoverage(dml.Algorithm):
             hgroups += [group]
 
         hydrantGroups = hgroups
-        
+
         for group in tqdm(hydrantGroups):
             name = group['metadata']['neighborhood']
             count = 0

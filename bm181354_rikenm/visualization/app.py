@@ -1,5 +1,9 @@
 from flask import Flask
 from flask import render_template, jsonify
+
+
+import requests
+
 import pymongo
 import json
 
@@ -47,13 +51,13 @@ def donorschoose_projects():
 
 @app.route("/hubway/boston", methods =['GET'])
 def boston_map():
-    file = open("static/geojson/boston.json")
-
-    ls = []
-    for line in file:
-        ls.append(line)
-    value = json.dumps(ls,default=json_util.default)
-    return value
+    #url = (" /static/geojson/boston.json")
+    #data = json.load(file)
+#    ls = []
+#    for line in file:
+#        ls.append(line)
+#   value = json.dumps(file,default=json_util.default)
+    return "Waiting"#requests.get(url).json()
 
 
 

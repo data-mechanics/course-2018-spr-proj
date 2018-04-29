@@ -4,6 +4,8 @@ from flask import render_template, jsonify
 
 import requests
 
+import pandas as pd
+
 import pymongo
 import json
 
@@ -16,8 +18,6 @@ app = Flask(__name__)
 MONGODB_HOST = 'localhost'
 MONGODB_PORT = 27017
 
-DBS_NAME = 'donorschoose'
-COLLECTION_NAME = 'projects'
 
 # field from mongo [see and change this]
 # remove '_id'
@@ -30,7 +30,7 @@ def index():
 
 #MARK: - Sending JSON data to the request [Make another one as well]
 @app.route("/hubway/projects", methods =['GET'])
-def donorschoose_projects():
+def choose_projects():
     # good
     client = pymongo.MongoClient()
     repo = client.repo
@@ -48,18 +48,20 @@ def donorschoose_projects():
     client.close()
     return (json_projects)
 
-
+# Map data
 @app.route("/hubway/boston", methods =['GET'])
 def boston_map():
-    #url = (" /static/geojson/boston.json")
-    #data = json.load(file)
-#    ls = []
-#    for line in file:
-#        ls.append(line)
-#   value = json.dumps(file,default=json_util.default)
-    return "Waiting"#requests.get(url).json()
+    return open("static/geojson/boston.json",'r').read()
 
+# slider gets this data
+@app.route("/cluster/<int:number>", methods =['GET'])
+def cluster_data(number):
+    return str(number)
 
+# load compute data
+@app.route("/hubway/compute", methods =['GET'])
+def compute_data():
+    return open("compute_data.json",'r').read()
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',port=5000,debug=True)

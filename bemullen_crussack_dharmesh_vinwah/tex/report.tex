@@ -61,17 +61,11 @@
 % Use the testflow package mentioned above to verify correct handling of
 % both paper sizes by the user's LaTeX system.
 %
-% Also note that the ``draftcls'' or ``draftclsnofoot'', not ``draft'', option
+% Also note that the "draftcls" or "draftclsnofoot", not "draft", option
 % should be used if it is desired that the figures are to be displayed in
 % draft mode.
 %
 \documentclass[journal,transmag]{IEEEtran}
-%
-% If IEEEtran.cls has not been installed into the LaTeX system files,
-% manually specify the path to it like:
-% \documentclass[journal]{../sty/IEEEtran}
-
-
 
 
 
@@ -98,10 +92,6 @@
 % have to be run twice to clear warning/error messages.
 
 
-
-
-
-
 % *** CITATION PACKAGES ***
 %
 %\usepackage{cite}
@@ -109,7 +99,7 @@
 % V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
 % \cite{} output to follow that of IEEE. Loading the cite package will
 % result in citation numbers being automatically sorted and properly
-% ``compressed/ranged''. e.g., [1], [9], [2], [7], [5], [6] without using
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
 % cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
 % \cite will automatically add leading space, if needed. Use cite.sty's
 % noadjust option (cite.sty V3.8 and later) if you want to turn this off
@@ -151,8 +141,8 @@
 % installed on most LaTeX systems. The latest version and documentation
 % can be obtained at: 
 % http://www.ctan.org/tex-archive/macros/latex/required/graphics/
-% Another good source of documentation is ``Using Imported Graphics in
-% LaTeX2e'' by Keith Reckdahl which can be found at:
+% Another good source of documentation is "Using Imported Graphics in
+% LaTeX2e" by Keith Reckdahl which can be found at:
 % http://www.ctan.org/tex-archive/info/epslatex/
 %
 % latex, and pdflatex in dvi mode, support graphics in encapsulated
@@ -160,7 +150,7 @@
 % in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
 % that all non-photo figures use a vector format (.eps, .pdf, .mps) and
 % not a bitmapped formats (.jpeg, .png). IEEE frowns on bitmapped formats
-% which can result in ``jaggedy''/blurry rendering of lines and letters as
+% which can result in "jaggedy"/blurry rendering of lines and letters as
 % well as large increases in file sizes.
 %
 % You can find documentation about the pdfTeX application at:
@@ -247,7 +237,7 @@
 % subfig.sty requires and automatically loads Axel Sommerfeldt's caption.sty
 % which will override IEEEtran.cls' handling of captions and this will result
 % in non-IEEE style figure/table captions. To prevent this problem, be sure
-% and invoke subfig.sty's ``caption=false'' package option (available since
+% and invoke subfig.sty's "caption=false" package option (available since
 % subfig.sty version 1.3, 2005/06/28) as this is will preserve IEEEtran.cls
 % handling of captions.
 % Note that the Computer Society format requires a larger sans serif font
@@ -276,7 +266,7 @@
 %\usepackage{stfloats}
 % stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
 % the ability to do double column floats at the bottom of the page as well
-% as the top. (e.g., ``\begin{figure*}[!b]'' is not normally possible in
+% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
 % LaTeX2e). It also provides a command:
 %\fnbelowfloat
 % to enable the placement of footnotes below bottom floats (the standard
@@ -315,7 +305,7 @@
 % the end of the document. If needed, the draftcls IEEEtran class option or
 % \CLASSINPUTbaselinestretch interface can be used to increase the line
 % spacing as well. Be sure and use the nomarkers option of endfloat to
-% prevent endfloat from ``marking'' where the figures would have been placed
+% prevent endfloat from "marking" where the figures would have been placed
 % in the text. The two hack lines of code above are a slight modification of
 % that suggested by in the endfloat docs (section 8.4.1) to ensure that
 % the full captions always appear in the list of figures/tables - even if
@@ -387,9 +377,7 @@ bemullen@bu.edu \ \ \
 crussack@bu.edu \ \ \ \ \ 
 dharmesh@cs.bu.edu \ \ \ \ \  \ 
 vinwah@bu.edu  % <-this % stops an unwanted space
-\thanks{Manuscript received December 1, 2012; revised December 27, 2012. 
-Corresponding author: M. Shell (email: http://www.michaelshell.org/contact.html).}}
-
+}
 
 
 % The paper headers
@@ -404,38 +392,12 @@ Corresponding author: M. Shell (email: http://www.michaelshell.org/contact.html)
 % you desire.
 
 
+%\IEEEtitleabstractindextext{%
+%\begin{abstract}
+%Abstract - Students have an impact on the quality of life during Boston's move in week. We
+%\newline
 
-
-% If you want to put a publisher's ID mark on the page you can do it like
-% this:
-%\IEEEpubid{0000--0000/00\$00.00~\copyright~2012 IEEE}
-% Remember, if you use this you must call \IEEEpubidadjcol in the second
-% column for its text to clear the IEEEpubid mark.
-
-
-
-% use for special paper notices
-%\IEEEspecialpapernotice{(Invited Paper)}
-
-
-% for Transactions on Magnetics papers, we must declare the abstract and
-% index terms PRIOR to the title within the \IEEEtitleabstractindextext
-% IEEEtran command as these need to go into the title area created by
-% \maketitle.
-% As a general rule, do not put math, special symbols or citations
-% in the abstract or keywords.
-
-\IEEEtitleabstractindextext{%
-\begin{abstract}
-The abstract goes here.
-\end{abstract}}
-
-% Note that keywords are not normally used for peerreview papers.
-%\begin{IEEEkeywords}
-%IEEEtran, journal, \LaTeX, magnetics, paper, template.
-%\end{IEEEkeywords}}
-
-
+%\end{abstract}}
 
 % make the title area
 \maketitle
@@ -443,7 +405,7 @@ The abstract goes here.
 
 % To allow for easy dual compilation without having to reenter the
 % abstract/keywords data, the \IEEEtitleabstractindextext text will
-% not be used in maketitle, but will appear (i.e., to be ``transported'')
+% not be used in maketitle, but will appear (i.e., to be "transported")
 % here as \IEEEdisplaynontitleabstractindextext when the compsoc 
 % or transmag modes are not selected <OR> if conference mode is selected 
 % - because all conference papers position the abstract like regular
@@ -464,17 +426,64 @@ The abstract goes here.
 % creates the second title. It will be ignored for other modes.
 \IEEEpeerreviewmaketitle
 
-
-
+\begin{abstract}Abstract -
+\end{abstract}
 \section{Introduction}
 
-\ Move in week is a chaotic and unpleasant for both, college students and local residents alike. Given the nature of high student population in Boston, we examined what this affect this group has on the overall quality of life in the city. We attempt this by isolating some of the most important aspects that make up the quality of life, whether is be good or bad. 
+\newline
+Move in week is a chaotic and unpleasant for both, college students and local residents alike. More than 34,000 students live in off campus housing in the city of Boston. Due to the nature of an academic calendar for most universities, the lease cycle tends to be September 1st. This rapid movement in a dense area affects the overall quality of life in the city. We examine this by isolating some of the most important aspects that make up the quality of life, whether it be good or bad. The chaotic period does not go unnoticed by the city. Furthermore, it creates a great strain on the city's resources. 
+
+\newline
+
+To quantify the quality of the city on a given day, we used the Analyze Boston’s City Score dataset. The Boston City Score is an initiative created to monitor the overall health of the city on a daily basis. It is calculated by aggregating various metrics, both additive and negative, into a single score. This dataset is one that was central to our project and was used as a significant way of determining metrics had on the quality of life.
+\newline
+\newline
+\newline
+—  [sentiment analysis as well] — 
+\newline
+\newline
+
+A solution that the city poses is temporary parking and traffic restrictions in areas that usually surround areas with a high density of student movers. Due to minimal options for transportation and the high movement, renters do not have space or resources to deal with their trash and furniture, leaving them to dispose of it in their surroundings. It is not surprising to find refrigerators, mattresses, and desks littered along the sides of the streets during this time. Analyze Boston's 311 Service Requests records these violations and their locations. With the understanding that the number of violations affects the quality of life on a given day in Boston, one of our aims became to find a way to serve requests in the most timely way. To make this solution concrete but also efficient, our team worked to display the minimum number of dispatchers required to respond to service requests within 30 seconds of each inquiry. 
+
+\newline
+Another metric that affects the quality of life in Boston is fire incidents in the city. The dataset, ‘Fire Incident Reporting’, also comes from Analyze Boston. The data set consists of incident details and location. It is non-trivial that a residential or commercial fire will negatively affect the quality of life so our question became finding the mean point of where incidents occur. 
+
+\newline
+In the City Score dataset, one of the features quantifies the amount of public library users on a given day. This metric is one that is additive to the city score. While students could potentially be detrimental to the quality of Boston’s life, it was possible that they could also be boosting it with increased library attendance. Two different datasets were created from City Score based on the library attendance metric. The first consisted of attendance when university was in session and the second was when it was not in session. 
 
 \section{Related Work}
-What we used / etc... 
+\ In Jim Haddidin's Trash City, he examines the niche problem of trash affecting the city score during move in week.$^{[1]}$ The number of code enforcement violations pertaining to dumping furniture and trash significantly increases during the September move in period. In addition to his discovery, the highest density location of violations existed around the Allston area, a neighborhood that consists of many students. In addition to an increase of trash violations, there is an increase in rodent and pest violations during this period and an increase in noise complaints. Not surprising, the densest location of these violations is also in the Allston area. Similar to our project, Haddidin used the Analyze Boston City Score data to determine the flux of quality of life. 
 
 \section{Approach}
 Subsections of how each of us individually contributed to each part of the project
+\subsection{Vincent} 
+\subsection{Claire}
+\subsection{Library Attendance Analysis}
+The goal of analyzing library visits to city score started out with questioning whether the number of visits actually went up during university session. The two datasets, were filtered based on the "ETL\_LOAD\_DATE" feature from the City Score data set:
+\newline Students In Session
+\begin{itemize}
+    \item September
+    \item October 
+    \item November
+    \item December 1st-15th
+    \item January 16th-31st
+    \item February
+    \item March
+    \item April
+    \item May
+\end{itemize}
+\newline Students Not In Session: 
+\begin{itemize}
+    \item January 1st-15th
+    \item July
+    \item June
+    \item August
+    \item December 16th-31st
+\end{itemize}
+
+
+
+\subsection{Dharmesh}
 
 \section{Conclusion}
 The conclusion goes here.
@@ -526,7 +535,7 @@ The authors would like to thank...
 % adjust value as needed - may need to be readjusted if
 % the document is modified later
 %\IEEEtriggeratref{8}
-% The ``triggered'' command can be changed if desired:
+% The "triggered" command can be changed if desired:
 %\IEEEtriggercmd{\enlargethispage{-5in}}
 
 % references section
@@ -546,8 +555,7 @@ The authors would like to thank...
 \begin{thebibliography}{1}
 
 \bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+J.~Haddidin,  \emph{Trash City: How Does Moving Week Impact the Quality of Life in Boston?},\relax Analyze Boston,  \emph{https://data.boston.gov/showcase/trash-city}
 
 \end{thebibliography}
 

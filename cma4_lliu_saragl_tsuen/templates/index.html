@@ -151,7 +151,7 @@
 					  infowindow: contentString,});
 				  }
 				  
-				  else{ //if (dict[marker.title][i][4] == 'entertainment'){ 
+				  else{  
 					  var markers = new google.maps.Marker({
 						  position: latlng,
 						  map: map,
@@ -163,6 +163,7 @@
 			  
             
               map.setCenter(markers.getPosition())
+				  
               google.maps.event.addListener(markers, 'mouseover', function(){
                 this.infowindow.open(map,this);
 			  });Path.setMap(map)
@@ -170,8 +171,7 @@
 			  google.maps.event.addListener(markers, 'mouseout',function(){
 				  this.infowindow.close()
 			  });Path.setMap(map);
-			  
-			  
+
             }  
             }
     </script>

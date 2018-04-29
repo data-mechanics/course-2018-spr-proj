@@ -73,12 +73,13 @@
               restaurant_lat = '{{i.coords[0]}}'
               restaurant_lng = '{{i.coords[1]}}'
 			  dest_type = '{{i.dest_type}}'
+			  fail_count = '{{i.fail_count}}'
 			  
               if ('{{i.closestStation[1]}}' in dict) {
-                dict['{{i.closestStation[1]}}'].push(['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng, dest_type])
+                dict['{{i.closestStation[1]}}'].push(['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng, dest_type, fail_count])
               }
               else{
-                dict['{{i.closestStation[1]}}'] = [['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng, dest_type]] 
+                dict['{{i.closestStation[1]}}'] = [['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng, dest_type, fail_count]] 
               }
             }
             else{
@@ -93,16 +94,15 @@
               restaurant_lat = '{{i.coords[0]}}'
               restaurant_lng = '{{i.coords[1]}}'
               if ('{{i.closestStation[1]}}' in dict) {
-                dict['{{i.closestStation[1]}}'].push(['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng, dest_type])
+                dict['{{i.closestStation[1]}}'].push(['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng, dest_type, fail_count])
               }
               else{
-                dict['{{i.closestStation[1]}}'] = [['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng, dest_type]] 
+                dict['{{i.closestStation[1]}}'] = [['{{i.closestStation[1]}}', restaurant, restaurant_lat, restaurant_lng, dest_type, fail_count]] 
               }
               
             }
 		  
             var content = '{{i.closestStation[0]}}' + ": " + '{{i.closestStation[1]}}'
-//            var infowindow = new google.maps.InfoWindow()
             map.setCenter(marker.getPosition())
             //If user clicks on marker, then open the nearby restaurants with get_restaurants
             google.maps.event.addListener(marker, 'click', (function(marker, content, infowindow){
@@ -125,7 +125,7 @@
 			
               for (i in dict[marker.title]){
               var Distance = [{lat: lat, lng: lng}]
-              var contentString = new google.maps.InfoWindow({content: dict[marker.title][i][1]});
+              var contentString = new google.maps.InfoWindow({content: "<p>" + dict[marker.title][i][1] + "<br\>"+ "Number of failed restaurants around this place: " + dict[marker.title][i][5] + "<\p>"});
               var latlng = new google.maps.LatLng(dict[marker.title][i][2],dict[marker.title][i][3]);
               
               //Polyline between two points 
@@ -148,18 +148,19 @@
 					  map: map,
 					  title:dict[marker.title][i][0],
 					  icon:'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-					  infowindow: contentString});
-			  }
-			  else{
-				  var markers = new google.maps.Marker({
-					  position: latlng,
-					  map: map,
-					  title:dict[marker.title][i][0],
-					  icon:'http://maps.google.com/mapfiles/ms/icons/purple-dot.png',
-					  infowindow: contentString});
-			  }
-
+					  infowindow: contentString,});
+				  }
 				  
+				  else{ //if (dict[marker.title][i][4] == 'entertainment'){ 
+					  var markers = new google.maps.Marker({
+						  position: latlng,
+						  map: map,
+						  title:dict[marker.title][i][0],
+						  icon:'http://maps.google.com/mapfiles/ms/icons/purple-dot.png',
+						  infowindow: contentString});
+				  }
+
+			  
             
               map.setCenter(markers.getPosition())
               google.maps.event.addListener(markers, 'mouseover', function(){

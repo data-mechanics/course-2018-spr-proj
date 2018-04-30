@@ -43,7 +43,7 @@ class calcFloodCor(dml.Algorithm):
 
         doc = {'corr_cooef': results[0], 'p_val': results[1]}
 
-        repo['jlove.stats_result'].insert_one(doc)
+        repo['jlove.floodCor'].insert_one(doc)
 
         repo.logout()
 

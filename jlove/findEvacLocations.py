@@ -12,6 +12,7 @@ import shapely.geometry
 import datetime
 import numpy as np
 import uuid
+from mpmath import mp, mpf
 
 def find_closest_centroids(samples, centroids):
     closest_centroids = []
@@ -66,14 +67,15 @@ class findEvacLocations(dml.Algorithm):
         
         repo.dropCollection("evac_hubs")
         repo.createCollection("evac_hubs")
+        mp.dps = 30
         
         hydrants = repo['jlove.hydrants'].find_one({})
         points = []
         for hydrant in hydrants['features']:
                 point = shapely.geometry.shape(hydrant['geometry'])
-                points += [[point.x, point.y]]
+                points += [[mpf(point.x), mpf(point.y)]]
         
-        points = np.array(points) * 10000 
+        points = np.array(points)
         shuffled = points.copy()
         np.random.shuffle(shuffled)
         centroids = np.array(shuffled[:5])

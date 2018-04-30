@@ -46,7 +46,7 @@ class RetrieveTweets(dml.Algorithm):
 
         if trial:
             url = base_url + url_stems[0] + ".json"
-            r = json.loads(RetrieveTweets.parseTweetJSON(response))
+            r = json.loads(RetrieveTweets.parseTweetJSON(requests.get(url).text))
             repo.dropCollection(key)
             repo.createCollection(key)
             repo['bemullen_crussack_dharmesh_vinwah.' + key].insert_many(r)
@@ -124,7 +124,7 @@ class RetrieveTweets(dml.Algorithm):
 
         doc.wasAttributedTo(tweets_retrival, this_script)
         doc.wasGeneratedBy(tweets_retrival, get_tweets, endTime)
-        doc.wasDerivedFrom(service_requests, resource_tweets, get_tweets,
+        doc.wasDerivedFrom(tweets_retrival, resource_tweets, get_tweets,
             get_tweets, get_tweets)
 
         repo.logout()

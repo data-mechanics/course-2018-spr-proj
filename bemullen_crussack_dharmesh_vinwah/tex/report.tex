@@ -24,7 +24,8 @@
 \def\BState{\State\hskip-\ALG@thistlm}
 \makeatother
 \usepackage{amssymb}
-\usepackage{graphicx}   % Written by David Carlisle and Sebastian Rahtz
+\usepackage{graphicx}
+\graphicspath{ {images/} }   % Written by David Carlisle and Sebastian Rahtz
                         % Required if you want graphics, photos, etc.
                         % graphicx.sty is already installed on most LaTeX
                         % systems. The latest version and documentation can
@@ -198,11 +199,42 @@ Students Not In Session:
 Traditional economic indicators such as gross domestic product (GDP), Gini coefficient, and human development index (HDI) provide remarkable approximations for quality of life and are often indicative of a region's well-being and health \cite{gallup}\cite{wellbgallup}. In our analysis of Boston's quality of life, however, we avoid using these metrics for several reasons. First, the length of our timeframe of interest (7 days) renders the evolution of most economic indicators inconsequential. Second, given the geographic area of consideration (Greater Boston), none of the aforementioned metrics are appropriate\footnote{GDP, HDI, and Gini coefficients are computed for countries as a whole and are thus unlikely to register meaningful changes sparked by move-in week in one city.}. Perhaps most importantly, economic prosperity does not provide an accurate representation of emotional well-being \cite{wellbgallup}. 
 \\In contrast, Twitter provides a rich source of data which, when analyzed, can reveal societal-scale levels of happiness \cite{happytexttwitter}. Twitter's erstwhile 140-character limit yields an extemporaneous dataset of user experiences \cite{moralsc}, especially given most Twitter users' proclivity for posting in the moment \cite{twtrends}\cite{mtwtrends}.
 \\Dodds et al are careful to draw a distinction between experential/fleeting happiness and contentment and stress that their 'hedonometer' algorithm efficiently estimates the former, while inferring the latter with increasing accuracy over large periods of time \cite{happytext}.
-\\
+\\Comparing multiple text corpora using a single metric necessitates justifying the variation. A comprehensive explanation of the 'word shift' graphs is provided in \cite{happytext}. We reproduce some of the calculations here:
+\\Consider two texts $T_{ref}$ (for reference) and $T_{comp}$ (for comparison) with happiness scores $h_{avg}^{(ref)}$ and $h_{avg}^{(comp)}$, where the happiness score for a text is defined by:
+\[h_{avg}(T) = \frac{\sum_{i=1}^{N}h_{avg}(w_{i})f_{i}}{\sum_{i=1}^{N}f_{i}} = \sum_{i=1}^{N}h_{avg}(w_i)p_i \quad\quad (1)\] where $f_i$ is the frequency of the $i^{th}$ word $w_i$ for which we have an estimate of average happiness, $h_{avg}(w_i)$, and $p_i = \frac{f_i}{\sum_{j=1}^{N}f_j}$ represents the corresponding normalized frequency\footnote{The average happiness for over 10,000 words was calculated and made publicly available as part of the labMT dataset by Dodds et al}.
+\\Using Eq (1), we can compare two texts thus:
+\[h_{avg}^{(comp) - h_{avg}^{(ref)}}= \sum_{i=1}^{N}h_{avg}(w_i)[p_i^{(comp) - p_i^{(ref)}}]\]
+\[= \sum_{i=1}^{N}[h_{avg}(w_i) - h_{avg}^{(ref)}][p_i^{(comp) - p_i^{(ref)}}] \quad (2)\]
+\[\because \sum_{i=1}^{N}h_{avg}^{(ref)}[p_i^{(comp)} - p_i^{(ref)}] = h_{avg}^{(ref)}[p_i^{(comp)} - p_i^{(ref)}]\]
+\[= h_{avg}^{(ref)}(1-1) = 0\]
+Two aspects determine the change in the $i^{th}$ word's contribution:
+\\\null\quad\quad1. Whether the word is (on average) happier than the reference text's average, $h_{avg}^{(ref)}$ and
+\\\null\quad\quad2. The relative abundance of the word in $T_{comp}$ to that in $T_{ref}$.
+\\A word's happiness relative to $T_{ref}$ is specified by $+$ (happier) and $-$ (less happier).
+\\Relative abundance is specified similarly, using $\uparrow$ (more abundant) and $\downarrow$ (less abundant).
+\\The combination of both results in the following four possibilities:
+\\\null\quad\quad1. $+\uparrow:$ Increased usage of relatively positive words.
+\\\null\quad\quad2. $-\downarrow:$ Decreased usage of relatively negative words.
+\\\null\quad\quad3. $+\downarrow:$ Decreased usage of relatively positive words.
+\\\null\quad\quad4. $-\uparrow:$ Increased usage of relatively negative words.
+\\Eq (2) is normalized to obtain a normalized summand:
+\[\delta h_{avg,i} = \frac{100}{|h_{avg}^{(comp)} - h_{avg}^{(ref)}]} t\]
+where \[t = \underbrace{[h_{avg}(w_i) - h_{avg}^{(ref)}]}_{+/-} \underbrace{[p_{i}^{(comp)} - p_{i}^{(ref)}]}_{\uparrow/\downarrow} \quad(3)\]
+where $\sum_{i}\delta h_{avg,i} = \pm100$
+\\\\A demonstration of this is provided in figure \ref{fig:wordshift0}, using the \textit{dharmSentiment} module \cite{dharmsentiment}.
+    \begin{figure}[!hbt]
+        \begin{center}
+        \includegraphics[width=\columnwidth]{wordshift0}
+        \caption{A comparison of the happiness between move-in week and a randomly chosen week during the summer.}
+        \label{fig:wordshift0}
+        \end{center}
+    \end{figure}
+    Clearly, the negative words pressure, dead, broken, and trash were used more frequently, while the positive words joy, party, heart, and spring were used less frequently. 
 \section{Results}
 Results go here.
 \section{Conclusion}
-Conclusion goes here.
+Our perfunctory investigation of the relationship between move-in week and quality of life is indicative of a negative correlation between move-in week and quality of life. While happiness (which was a heavily weighted component in our estimations of quality of life) is admittedly subjective and self-reported, we are confident that our approach to its evaluation provides a tenable, if somewhat inscrutable picture of happiness for the population as a whole. Time and primarily computational constraints prevented us from developing an inferential model of the shift in public happiness, given some of the optimizations suggested in [TODO: cite vincent's optimizations here], but we are hopeful that future work will explore this.
+\\The work done in this paper would not have been possible without the 'hedonometer algorithm', or the \textit{simpleLabMT} software package \cite{simplelabmt},  both of which were designed in part by Dr. Andrew Reagan at the University of Vermont.
 \section{Outlook}
 
 % Now we need a bibliography:
@@ -236,6 +268,10 @@ Conclusion goes here.
    \bibitem{gallup}
    Diener, Ed. "Subjective well-being: The science of happiness and a proposal for a national index." American psychologist 55.1 (2000): 34.
    
+   \bibitem{simplelabmt}
+   andyreagan/labMT-simple
+"Andyreagan/Labmt-Simple." GitHub. N. p., 2018. Web. 30 Apr. 2018.
+   
    \bibitem{wellbgallup}
    Kahneman, Daniel, and Angus Deaton. "High income improves evaluation of life but not emotional well-being." Proceedings of the national academy of sciences 107.38 (2010): 16489-16493.
    
@@ -244,6 +280,9 @@ Conclusion goes here.
    
    \bibitem{twtrends}
    Dunlap, Joanna C., and Patrick R. Lowenthal. "Tweeting the night away: Using Twitter to enhance social presence." Journal of Information Systems Education 20.2 (2009): 129.
+   
+   \bibitem{dharmsentiment}
+   Tarapore, Dharmesh. "Weirdindiankid/Dharmsentiment." GitHub. 2018. Web. 30 Apr. 2018, URL https://github.com/weirdindiankid/dharmSentiment
    
    \bibitem{mtwtrends}
    Bruns, Axel, and Jean E. Burgess. "The use of Twitter hashtags in the formation of ad hoc publics." Proceedings of the 6th European Consortium for Political Research (ECPR) General Conference 2011. 2011.

@@ -1,33 +1,35 @@
-## CS591 Project 
+## CS591 Project
 ## Members:  
 - Kai Bernardini
 - Vasily Ilin
 
+![logo](MassGovernor_right_word_cloud.png)
+
 # Overview Project 2:
 Using tweepy, an open source python wrapper for Twitter's dev API, and an annotated tweet sentiment dataset, we
 construct a fully end to end ML pipeline for predicting aggregate sentiment by region. Twitter has become a data
-- The long term goal is to predict reactions to current news using 
+- The long term goal is to predict reactions to current news using
 
-- note:  As this is predominantly exploratory,  technical short cuts were taken. 
+- note:  As this is predominantly exploratory,  technical short cuts were taken.
 
 ## Technical Challenges
 - Size of Datasets -- they are large
-- Verry high dimensional feature space 
-- Difficult to fit entire dataset into memory, batch training is a must 
-- The dataset is highly non-linear 
-    - Logistic Regression was pretty poor at identifying and meaningul trends 
+- Verry high dimensional feature space
+- Difficult to fit entire dataset into memory, batch training is a must
+- The dataset is highly non-linear
+    - Logistic Regression was pretty poor at identifying and meaningul trends
 - Insufficient computational Resources
     - (Me complaining) The new Macbooks for god knows what reason don't use a Nvidia GPU and are therefore incompatible with Tensorflow GPU integration...buyer beware
         - Training is prohibitively slow as a result  (30 minutes per epoch)
-        - As a result, we could only itterate through 5 epochs 
+        - As a result, we could only itterate through 5 epochs
 - Bots, Bots, and more freaken bots
     - Using a super crude methidology, we determined that at least 1/10 of all of our tweets are bot generated
-        - And even the true figure is likely much larger. 
-        - In the future, we should likely remove these tweets from the corpus. 
-    
+        - And even the true figure is likely much larger.
+        - In the future, we should likely remove these tweets from the corpus.
+
 ## Future Work:
 - Sentiment analyzer for News API article headlines
-- Correlate Twitter Sentiment with Article Sentiment 
+- Correlate Twitter Sentiment with Article Sentiment
 
 
 
@@ -36,12 +38,12 @@ construct a fully end to end ML pipeline for predicting aggregate sentiment by r
 
 ## Twitter Live stream using tweepy
 - We provide several high level  scripts to allow for easy retrieving of tweets
-    - Tweet streaming by Geographical Location : 
+    - Tweet streaming by Geographical Location :
     - Tweets by User
 - For either usecase, you are required to create a twitter app an input the following into ```auth.json```:
 
 ```python
-{ 
+{
     "consumer_key": "",
     "consumer_secret": "",
     "access_key": "",
@@ -49,14 +51,14 @@ construct a fully end to end ML pipeline for predicting aggregate sentiment by r
 }
 ```
 
-## Twitter Pre-labled Sentiment Dataset 
-- Prelabled Twitter Dataset complete with a sentiment Label 
+## Twitter Pre-labled Sentiment Dataset
+- Prelabled Twitter Dataset complete with a sentiment Label
 - To retrieve, save, and tokenize the data, execute </code> $ python get_clean_twitter_sentiment.py </code>
     - to run in trial mode, </code> $ python get_clean_twitter_sentiment.py t </code>
         - Trial mode will only tokenize and stem the first few tweets for illustrative purposes
-    - The model is incredibly effective at identifying useful embeddings for profaninty, slang, and spelling associations..etc and is not useful for word embeddings for arbitrary texts. 
-- Full pipeline is 
-```bash 
+    - The model is incredibly effective at identifying useful embeddings for profaninty, slang, and spelling associations..etc and is not useful for word embeddings for arbitrary texts.
+- Full pipeline is
+```bash
 get_clean_twitter_sentiment.py
 build_twitter_tweet_2_vec.py
 build_clf.py
@@ -64,20 +66,20 @@ build_clf.py
 
 - the first script will retrieve the data, save it, stem/tokenize it, and save it. This is avaiable in trial mode
 - The second wone will build a word2vec model using the saved data. This is also avaiable in trial mode
-- The final one will build a conv network from scratch from the full dataset. Trial mode is left out in lieu of loading a prebuild mode. 
-- If you do decide to from scratch, it is advised that you use a device with a GPU compatible with the tensorflow backend. 
-    - there is an initial memory explosion when building the training, testing and validation set. 
-    - TODO: partition all data into batches via data-stream 
+- The final one will build a conv network from scratch from the full dataset. Trial mode is left out in lieu of loading a prebuild mode.
+- If you do decide to from scratch, it is advised that you use a device with a GPU compatible with the tensorflow backend.
+    - there is an initial memory explosion when building the training, testing and validation set.
+    - TODO: partition all data into batches via data-stream
     - The W2vec model is combined with randomly subsampled tokens from the corpus conditioned on 1) the word being a vector, and 2) it being reasonably common (arbitrary)
-    - These are stacked into a tensor to construct the datasets. 
+    - These are stacked into a tensor to construct the datasets.
     - ideally, 10-20 epochs should be run with a Nvidia GPU
-## Tweet Word Embedding Examples 
+## Tweet Word Embedding Examples
 ** Disclaimer: These asosciations are constructed by the tweet. word2vec model. These associations are not reflective of our views. **
 ** Trigger Warning: Profanity, slurs...etc **
 
-```python 
+```python
 print(word2vec.wv.similar_by_word("lol"))
-[('hah', 0.7501074075698853), ('lmao', 0.7403647899627686), ('hahah', 0.6293175220489502), ('hahahah', 0.4980482757091522), ('lmfao', 0.4653286337852478), ('heh', 0.46210041642189026), ('cuz', 0.4489451050758362), ('ha', 0.4350995123386383), ('jus', 0.4144180417060852), ('u', 0.41266563534736633)] 
+[('hah', 0.7501074075698853), ('lmao', 0.7403647899627686), ('hahah', 0.6293175220489502), ('hahahah', 0.4980482757091522), ('lmfao', 0.4653286337852478), ('heh', 0.46210041642189026), ('cuz', 0.4489451050758362), ('ha', 0.4350995123386383), ('jus', 0.4144180417060852), ('u', 0.41266563534736633)]
 ```
 
 ```python
@@ -95,12 +97,12 @@ print(word2vec.wv.similar_by_word("dumb"))
         - Note that the Mirror to download is prohibitively slow. Please email me at kaidb@bu.edu and I will share the google drive containing the data (way, way faster)
         - The zipped size is ~14GBs
         - Unzipped size is ~65GBs
-    - Data is then unpacked from its xml format, tokenized, and a word2vec model is constructed from it. 
-        - This model is too large to fit in github. For a copy, please email me and I will share the drive containing the model. 
+    - Data is then unpacked from its xml format, tokenized, and a word2vec model is constructed from it.
+        - This model is too large to fit in github. For a copy, please email me and I will share the drive containing the model.
             - Useful for word embeddings for article titles (language tends to be gramatically correct)
 ##
 
-# News API 
+# News API
 - We created 4 api keys and cycle through them when throttled (only 1 is required. )
 ```python
 {
@@ -110,23 +112,23 @@ print(word2vec.wv.similar_by_word("dumb"))
 "news4": ""
 }
 ```
-    - TODO: Aws lambda would be an awesome way to generate new keys. 
+    - TODO: Aws lambda would be an awesome way to generate new keys.
 - We crawled articles from multiple national and local news sources and tried to apply the twitter sentiment classifer to them (shocker of the day, it did not transfer well)
-- To remedy this, we constructed a W2vec model on the entire wikipedia corpus. 
-- Unfortunetly, due to computational and timming constraints, we were unabe to apply this directly to the transformed news data. As such, the news sentiment analysis is in need of improvement. 
-- 
+- To remedy this, we constructed a W2vec model on the entire wikipedia corpus.
+- Unfortunetly, due to computational and timming constraints, we were unabe to apply this directly to the transformed news data. As such, the news sentiment analysis is in need of improvement.
+-
 
-## Optimization: 
-- Word2Vec using Gensim 
+## Optimization:
+- Word2Vec using Gensim
 - Gradient Descent with Momentum written from scratch :
-    - See Ipython Notebook in Tweet2Vec for this 
-- Unfortunetly, this model proved to be too simple, and failed in the long term. 
-## Statistical Analysis: 
+    - See Ipython Notebook in Tweet2Vec for this
+- Unfortunetly, this model proved to be too simple, and failed in the long term.
+## Statistical Analysis:
 - Predictive accuracy
-- Sentiment Mapping 
-- Model Construction using Keras with Tensorflow Backend. 
+- Sentiment Mapping
+- Model Construction using Keras with Tensorflow Backend.
 
-## Statistical Analysis 
+## Statistical Analysis
 
 
 
@@ -143,26 +145,26 @@ We also retrieved the CDC binge drinking dataset by state. So far we found ten c
 This will likely prove useful in analyzing city life later on. For example, comparing binge drinking with the locations of colleges
 or the poorest neighborhoods in Boston in order to find what binge drinking correlates more with. From the 311 dataset, there are several complaints that have reason listed as mbta. We examine geospatial relationships between the mbta transportation data, payroll information by zipcode...etc
 
-## Transformations: 
+## Transformations:
 - Payrol: Convert dollar strings to floats
 - 311: Project Data to remove extraneous columns. Combine Submission time, estimated completion time  and actual completion time to compute
-    - Elapsed time 
+    - Elapsed time
     - Estimated time till completion
-    - Extra Time used to complete task 
+    - Extra Time used to complete task
 - CDC: Various descriptive statistics, selection via boston rows...etc
 
 
-## MBTA Auth. 
-Please add you MBTA API_v3 key to auth.json. 
+## MBTA Auth.
+Please add you MBTA API_v3 key to auth.json.
 
 <code> {"mbta_api_key": ""}
 </code>
 
-## Generate Prov. 
+## Generate Prov.
 In the top directory of this project, run
 
 <code>python execute.py kaidb_vilin --trial
  </code>
-This will take at 1-10 minutes depending on your connection. 
+This will take at 1-10 minutes depending on your connection.
 ## Python Reqs:
 pandas, sklearn, dml, prov, json,urlib, json, datetime, uuid

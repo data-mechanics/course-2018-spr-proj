@@ -27,7 +27,8 @@ class boston_permits(dml.Algorithm):
         response = ur.urlopen(url)
         data = json.load(response)
         r = data['result']['records']
-
+        if(trial):
+            r = r[:100]
         print("About to insert " + str(len(r)) + " data points that were fetched")
         repo['agoncharova_lmckone.boston_permits'].insert_many(r)
         repo['agoncharova_lmckone.boston_permits'].metadata({'complete':True})
@@ -73,7 +74,6 @@ class boston_permits(dml.Algorithm):
         repo.logout()
                   
         return doc
-
 
 #boston_permits.execute()
 #boston_permits.provenance()

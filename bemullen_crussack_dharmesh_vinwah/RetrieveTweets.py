@@ -131,3 +131,6 @@ class RetrieveTweets(dml.Algorithm):
         repo.logout()
                   
         return doc
+
+# if __name__ == "__main__":
+#     RetrieveTweets.execute()

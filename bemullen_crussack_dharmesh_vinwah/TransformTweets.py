@@ -67,24 +67,35 @@ class TransformTweets(dml.Algorithm):
         repo.authenticate(Constants.BASE_AUTH, Constants.BASE_AUTH)
         tweets = repo[Constants.BASE_NAME + "." + "tweets"]
         tList = []
-        for tweet in tweets.find():
-            #print("Append: " )
+        m1 = 4; m2 = m1 + 1
+        normative_range = [datetime.datetime(2016, m1, 23), datetime.datetime(2016, m2, 10)]
+        for tweet in tweets.find({'datetime': {'$gte': normative_range[0],
+            '$lt': normative_range[1]}}):
+            print("Append: " + str(tweet))
             tList.append(str(tweet['content']) + '\n')
-        mid = int((len(tList) + 1)/2)
-        print(mid)
-        firstHalf = tList[:mid]
-        firstHalf = str(firstHalf)
-        secondHalf = str(tList[mid:])
-        ref_dict = TransformTweets.dictifyTweet(firstHalf) #("../examples/data/18.01.14.txt")
-        comp_dict = TransformTweets.dictifyTweet(secondHalf) #("../examples/data/21.01.14.txt")
+
+        # mid = int((len(tList) + 1)/2)
+        # print(mid)
+        # firstHalf = tList[:mid]
+        # firstHalf = str(firstHalf)
+        # secondHalf = str(tList[mid:])
+        eval_range = [datetime.datetime(2016, 8, 23), datetime.datetime(2016, 9, 10)]
+        ref_dict = TransformTweets.dictifyTweet(str(tList)) #TransformTweets.dictifyTweet(firstHalf) #("../examples/data/18.01.14.txt")
+
+        cList = []
+        for tweet in tweets.find({'datetime': {'$gte': eval_range[0],
+            '$lt': eval_range[1]}}):
+            #print("Append: " + str(tweet['content']))
+            cList.append(str(tweet['content']) + '\n')
+        print("cList: " + str(cList))
+        comp_dict = TransformTweets.dictifyTweet(str(cList)) #("../examples/data/21.01.14.txt")
 
         # this test the loading for each
         senti_dicts = [dharmSentiment.LabMT(),dharmSentiment.ANEW()]
-        senti_marisas = [dharmSentiment.LabMT(datastructure="marisatrie"),dharmSentiment.ANEW(datastructure="marisatrie")]
+        senti_marisas = [dharmSentiment.LabMT(datastructure="marisatrie"),
+        dharmSentiment.ANEW(datastructure="marisatrie")]
         stopVal = 1.0
         for senti_dict,senti_marisa in zip(senti_dicts,senti_marisas):
-        
-            #my_test_speedy(senti_dict,senti_marisa,ref_dict)
 
             # build it out here
             ref_word_vec = senti_marisa.wordVecify(ref_dict)
@@ -93,12 +104,20 @@ class TransformTweets(dml.Algorithm):
             comp_word_vec_stopped = senti_marisa.stopper(comp_word_vec,stopVal=stopVal)        
             dharmSentimentRender.shiftHtml(senti_marisa.scorelist, senti_marisa.wordlist,
                 ref_word_vec_stopped, comp_word_vec_stopped,
-                "test-shift-{0}.html".format(senti_dict.title),corpus=senti_marisa.corpus)
+                "test-shift-{0}.html".format(senti_dict.title),corpus=senti_marisa.corpus,
+                title="DharmSentiment Analysis" + senti_marisa.corpus,
+                customTitle=True, ref_name="Reference Week " + str(normative_range[0].month) +
+                "-" + str(normative_range[0].day) + "-" + str(normative_range[0].year) + " to "
+                + str(normative_range[1].month) + "-" + str(normative_range[1].day) + "-" +
+                str(normative_range[1].year)
+                ,comp_name="Move-In Week: " + str(eval_range[0].month) + "-" + str(eval_range[0].day) +
+                "-" + str(eval_range[0].year) + " to " + str(eval_range[1].month) + "-" +
+                str(eval_range[1].day) + "-" + str(eval_range[1].year))
 
-            dharmSentimentRender.shiftHtml(senti_marisa.scorelist, senti_marisa.wordlist,
-                ref_word_vec, comp_word_vec,
-                "test-shift-titles.html".format(senti_dict.title),customTitle=True,
-                title="Insert title here",ref_name="bananas",comp_name="apples")
+            # dharmSentimentRender.shiftHtml(senti_marisa.scorelist, senti_marisa.wordlist,
+            #     ref_word_vec, comp_word_vec,
+            #     "test-shift-titles.html".format(senti_dict.title),customTitle=True,
+            #     title="Insert title here",ref_name="bananas",comp_name="apples")
 
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
@@ -128,4 +147,5 @@ class TransformTweets(dml.Algorithm):
         return doc
 
 if __name__ == "__main__":
-    TransformTweets.sentimentTest()
+    #TransformTweets.execute()
+    #TransformTweets.sentimentTest()

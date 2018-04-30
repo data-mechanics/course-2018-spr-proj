@@ -12,9 +12,9 @@ import uuid
 import xmltodict
 
 class RetrieveCityScores(dml.Algorithm):
-    contributor = "bemullen_dharmesh"
+    contributor = "bemullen_crussack_dharmesh_vinwah"
     reads = []
-    writes = ["bemullen_dharmesh.cityscores"]
+    writes = ["bemullen_crussack_dharmesh_vinwah.cityscores"]
 
 
     @staticmethod
@@ -29,7 +29,7 @@ class RetrieveCityScores(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
+        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
 
         key = "cityscores"
         url = RetrieveCityScores.parseURL('''https://data.boston.gov/api/3/action/datastore_search_sql?sql=SELECT * from "5bce8e71-5192-48c0-ab13-8faff8fef4d7" WHERE "ETL_LOAD_DATE" >= '2016-02-01 00:00:00' AND "ETL_LOAD_DATE" <= '2018-01-01 00:00:00' ''')
@@ -39,7 +39,7 @@ class RetrieveCityScores(dml.Algorithm):
 
         repo.dropCollection(key)
         repo.createCollection(key)
-        repo['bemullen_dharmesh.' + key].insert_many(r)
+        repo['bemullen_crussack_dharmesh_vinwah.' + key].insert_many(r)
 
         repo.logout()
         endTime = datetime.datetime.now()
@@ -57,7 +57,7 @@ class RetrieveCityScores(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('bemullen_dharmesh', 'bemullen_dharmesh')
+        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
@@ -65,9 +65,11 @@ class RetrieveCityScores(dml.Algorithm):
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
         doc.add_namespace('bdpr', 'https://data.boston.gov/api/3/action/datastore_search_sql')
         doc.add_namespace('bdpm', 'https://data.boston.gov/datastore/odata3.0/')
-        doc.add_namespace('datp', 'http://datamechanics.io/data/bemullen_dharmesh/data/')
+        doc.add_namespace('datp', 'http://datamechanics.io/data/bemullen_crussack_dharmesh_vinwah/data/')
+        doc.add_namespace('csdt', 'https://cs-people.bu.edu/dharmesh/cs591/591data/')
 
-        this_script = doc.agent('alg:bemullen_dharmesh#RetrieveCityScores', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:bemullen_crussack_dharmesh_vinwah#RetrieveCityScores',\
+            {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
 
         resource_cityscores = doc.entity('bdpm:5bce8e71-5192-48c0-ab13-8faff8fef4d7',
             {'prov:label':'CityScores', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'json'})
@@ -79,7 +81,7 @@ class RetrieveCityScores(dml.Algorithm):
                   'ont:Query':'''?sql=SELECT * from "5bce8e71-5192-48c0-ab13-8faff8fef4d7" WHERE "ETL_LOAD_DATE" >= '2016-02-01 00:00:00' AND "ETL_LOAD_DATE" <= '2018-01-01 00:00:00' '''
                   })
 
-        cityscores = doc.entity('dat:bemullen_dharmesh#cityscores', {prov.model.PROV_LABEL:'CityScore Metrics',
+        cityscores = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#cityscores', {prov.model.PROV_LABEL:'CityScore Metrics',
             prov.model.PROV_TYPE:'ont:DataSet'})
         doc.wasAttributedTo(cityscores, this_script)
         doc.wasGeneratedBy(cityscores, get_cityscores, endTime)
@@ -89,3 +91,7 @@ class RetrieveCityScores(dml.Algorithm):
         repo.logout()
                   
         return doc
+RetrieveCityScores.execute()
+doc = RetrieveCityScores.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))

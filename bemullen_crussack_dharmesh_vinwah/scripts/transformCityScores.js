@@ -3,8 +3,9 @@
  * Author: Dharmesh Tarapore <dharmesh@bu.edu>
  * Description: Data transformations on the cityscores dataset.
  */
-d = db.bemullen_dharmesh;
-scores = d.cityscores;
+db.loadServerScripts();
+d = db.bemullen_crussack_dharmesh_vinwah;
+scores = db.bemullen_crussack_dharmesh_vinwah.cityscores;
 
 // Cleanup nulls and ensure score dates are appropriately stored and null values removed
 scores.find({CTY_SCR_DAY: {$not: {$type: 1}}, CTY_SCR_DAY: {$ne: null}}).forEach(function(doc) {
@@ -45,9 +46,9 @@ var scores_binned = scores.aggregate(
     }]);
 
 arrayVals = scores_binned.toArray();
-d.cityscores_monthly.remove({});
-db.createCollection("cityscores_monthly");
-db.bemullen_dharmesh.cityscores_monthly.insertMany(arrayVals);
+db.bemullen_crussack_dharmesh_vinwah.cityscores_monthly.remove({});
+createCollection("cityscores_monthly");
+db.bemullen_crussack_dharmesh_vinwah.cityscores_monthly.insertMany(arrayVals);
 
 
 

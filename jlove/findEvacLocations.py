@@ -23,7 +23,7 @@ def find_closest_centroids(samples, centroids):
             distance = np.sqrt(((sample[0]-centroid[0])**2) + ((sample[1]-centroid[1])**2))
             distances += [(distance, i)]
             i += 1
-            closest_centroids += [min(distances)[1]]
+        closest_centroids += [min(distances)[1]]
 
     return np.array(closest_centroids)
 
@@ -39,6 +39,7 @@ def get_centroids(samples, clusters):
         numbers[clusters[i]] += 1
         sums[clusters[i]][0] += samples[i][0]
         sums[clusters[i]][1] += samples[i][1]
+
 
     
     print(numbers)

@@ -49,6 +49,7 @@ class statistics(dml.Algorithm):
         #schools = repo['debhe_shizhan0_wangdayu_xt.allSchool'].find()
         subway = repo['debhe_shizhan0_wangdayu_xt.newSchoolSubDis'].find()
         hubway = repo['debhe_shizhan0_wangdayu_xt.schoolHubwayDistance'].find()
+        schoolToSubway = repo['debhe_shizhan0_wangdayu_xt.schoolSubwayDistance'].find()
 
         # Need to make the deepcopy of record for further use
         subway_1 = copy.deepcopy(subway)
@@ -57,6 +58,14 @@ class statistics(dml.Algorithm):
 
         hubway_2 = copy.deepcopy(hubway)
         subway_2 = copy.deepcopy(subway)
+        schoolToSubway_2 = copy.deepcopy(schoolToSubway)
+
+        schoolToSubway_KM = []
+        for row in schoolToSubway_2:
+            schoolToSubway_KM.append( distanceInKmBetweenEarthCoordinates(row['schoolY'], row['schoolX'], row['subwayY'], row['subwayX']) )
+
+        NewCalculation_AvgSchoolToSubway = sum(schoolToSubway_KM) / len(schoolToSubway_KM)
+        NewCalculation_StdevSchoolToSubway = numpy.std(schoolToSubway_KM)
 
         temp_list = []
         for row in hubway_2:
@@ -92,10 +101,24 @@ class statistics(dml.Algorithm):
         for i in temp_list2:
             temp_list2_time.append(i/0.66)
 
+        temp_list2_time_walk = []
+        for i in temp_list2:
+            temp_list2_time_walk.append(i/0.083)
+
+        schoolToSubway_time = []
+        for i in schoolToSubway_KM:
+            schoolToSubway_time.append(i/0.083)
+
+        NewCalculation_AvgSchoolToSubwayTime = sum(schoolToSubway_time) / len(schoolToSubway_time)
+        NewCalculation_StdevSchoolToSubwayTime = numpy.std(schoolToSubway_time)
+
         NewCalculation_HubbwayAvgTime_in_min = sum(temp_list1_time) / len(temp_list1_time)
         NewCalculation_BikeHubAveTime_in_min = sum(temp_list2_time) / len(temp_list2_time)
         NewCalculation_HubbwayStdevTime_in_min = numpy.std(temp_list1_time)
         NewCalculation_BikeHubStdevTime_in_min = numpy.std(temp_list2_time)
+
+        NewCalculation_BikeHubAveTimeWalk_in_min = sum(temp_list2_time_walk) / len(temp_list2_time_walk)
+        NewCalculation_BikeHubStdevTimeWalk_in_min = numpy.std(temp_list2_time_walk)
 
         subwaydist = []
         hubwaydist = []
@@ -134,14 +157,26 @@ class statistics(dml.Algorithm):
         finalResult['correlation'] = cor.tolist()
         finalResult['Old Assignment Average Distance'] = oldAssignmentAvg
         finalResult['New Assignment Average Distance'] = newAssignmentAvg
-        finalResult['NewCalculation_HubwayAvgDis_in_KM'] = NewCalculation_HubwayAvgDis_in_KM
-        finalResult['NewCalculation_BikeHubAvgDis_in_KM'] = NewCalculation_BikeHubAvgDis_in_KM
-        finalResult['NewCalculation_HubwayStdevDis_in_KM'] = NewCalculation_HubwayStdevDis_in_KM
-        finalResult['NewCalculation_BikeHubStdevDis_in_KM'] = NewCalculation_BikeHubStdevDis_in_KM
-        finalResult['NewCalculation_HubbwayAvgTime_in_min'] = NewCalculation_HubbwayAvgTime_in_min
-        finalResult['NewCalculation_BikeHubAveTime_in_min'] = NewCalculation_BikeHubAveTime_in_min
-        finalResult['NewCalculation_HubbwayStdevTime_in_min'] = NewCalculation_HubbwayStdevTime_in_min
-        finalResult['NewCalculation_BikeHubStdevTime_in_min'] = NewCalculation_BikeHubStdevTime_in_min
+        
+        finalResult['NewCalculation_HubwayAvgDis_in_KM (how far is a school to its closest hubway station)'] = NewCalculation_HubwayAvgDis_in_KM
+        finalResult['NewCalculation_BikeHubAvgDis_in_KM (how far is a school to its closest new bike hub)'] = NewCalculation_BikeHubAvgDis_in_KM
+        finalResult['NewCalculation_AvgSchoolToSubway (how far is a school to its closest subway station)'] = NewCalculation_AvgSchoolToSubway
+
+        finalResult['NewCalculation_HubwayStdevDis_in_KM (stdev for school to its closest hubway station)'] = NewCalculation_HubwayStdevDis_in_KM
+        finalResult['NewCalculation_BikeHubStdevDis_in_KM (stdev for school to its closest new bike hub)'] = NewCalculation_BikeHubStdevDis_in_KM
+        finalResult['NewCalculation_StdevSchoolToSubway (Stdev for the distance of school to closest subway station)'] = NewCalculation_StdevSchoolToSubway
+
+        finalResult['NewCalculation_HubbwayAvgTime_in_min (minutes takes to walk from school to cloest hubway station)'] = NewCalculation_HubbwayAvgTime_in_min
+        finalResult['NewCalculation_BikeHubAveTimeWalk_in_min (minutes take to walk to nearest new bike hub)'] = NewCalculation_BikeHubAveTimeWalk_in_min
+        finalResult['NewCalculation_HubbwayStdevTime_in_min (stdev for school to walk to hubway)'] = NewCalculation_HubbwayStdevTime_in_min
+        finalResult['NewCalculation_BikeHubStdevTimeWalk_in_min (Stdev for time from school walk to new bike hub)'] = NewCalculation_BikeHubStdevTimeWalk_in_min
+        
+        finalResult['NewCalculation_BikeHubAveTime_in_min (minutes takes to bike to the closest subway station)'] = NewCalculation_BikeHubAveTime_in_min
+        finalResult['NewCalculation_AvgSchoolToSubwayTime (minutes takes to walk from school to closest subway station)'] = NewCalculation_AvgSchoolToSubwayTime
+        finalResult['NewCalculation_BikeHubStdevTime_in_min (stdev for school to ride to closest subway station)'] = NewCalculation_BikeHubStdevTime_in_min
+        finalResult['NewCalculation_StdevSchoolToSubwayTime (Stdev for time from school walk to subway station)'] = NewCalculation_StdevSchoolToSubwayTime
+        
+        
 
 
         # save the information to the database

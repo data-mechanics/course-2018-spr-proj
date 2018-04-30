@@ -10,11 +10,12 @@ import prov.model
 import datetime
 import uuid
 import requests
+import DharmeshDataMechanics.CS591 as Constants
 
 class RetrieveTweets(dml.Algorithm):
-    contributor = "bemullen_crussack_dharmesh_vinwah"
+    contributor = Constants.CONTRIBUTOR
     reads = []
-    writes = ["bemullen_crussack_dharmesh_vinwah.tweets"]
+    writes = [Constants.BASE_NAME + ".tweets"]
 
     @staticmethod
     def parseURL(url):
@@ -38,7 +39,7 @@ class RetrieveTweets(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
+        repo.authenticate(Constants.BASE_AUTH, Constants.BASE_AUTH)
 
         key = "tweets"
         base_url = "https://cs-people.bu.edu/dharmesh/cs591/591data/"
@@ -49,7 +50,7 @@ class RetrieveTweets(dml.Algorithm):
             r = json.loads(RetrieveTweets.parseTweetJSON(requests.get(url).text))
             repo.dropCollection(key)
             repo.createCollection(key)
-            repo['bemullen_crussack_dharmesh_vinwah.' + key].insert_many(r)
+            repo[Constants.BASE_NAME + '.' + key].insert_many(r)
         else:
 
             collected = {}
@@ -71,7 +72,7 @@ class RetrieveTweets(dml.Algorithm):
                     operate[-2] = ""
                 operate = "".join(operate)
                 operate = json.loads(operate)
-                repo['bemullen_crussack_dharmesh_vinwah.' + key].insert_many(operate)
+                repo[Constants.BASE_NAME + '.' + key].insert_many(operate)
                 collected[w] = operate
             
             # for c in collected:
@@ -83,7 +84,7 @@ class RetrieveTweets(dml.Algorithm):
         return {"start":startTime, "end":endTime}
 
     @staticmethod
-    def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
+    def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
         '''
         Create the provenance document describing everything happening
         in this script. Each run of the script will generate a new
@@ -93,7 +94,7 @@ class RetrieveTweets(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
+        repo.authenticate(Constants.BASE_AUTH, Constants.BASE_AUTH)
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
@@ -101,10 +102,10 @@ class RetrieveTweets(dml.Algorithm):
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
         doc.add_namespace('bdpr', 'https://data.boston.gov/api/3/action/datastore_search_sql')
         doc.add_namespace('bdpm', 'https://data.boston.gov/datastore/odata3.0/')
-        doc.add_namespace('csdt', 'https://cs-people.bu.edu/dharmesh/cs591/591data/')
         doc.add_namespace('datp', 'http://datamechanics.io/data/bemullen_crussack_dharmesh_vinwah/data/')
+        doc.add_namespace('csdt', 'https://cs-people.bu.edu/dharmesh/cs591/591data/')
 
-        this_script = doc.agent('alg:bemullen_crussack_dharmesh_vinwah#RetrieveTweets',\
+        this_script = doc.agent('alg:' + Constants.BASE_NAME + '#RetrieveTweets',\
             {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
 
         resource_tweets = doc.entity('csdt:tweets',
@@ -118,7 +119,7 @@ class RetrieveTweets(dml.Algorithm):
         doc.usage(get_tweets, resource_tweets, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval'})
 
-        tweets_retrival = doc.entity('dat:bemullen_crussack_dharmesh_vinwah#tweets',\
+        tweets_retrival = doc.entity('dat:' + Constants.BASE_NAME + '#tweets',\
             {prov.model.PROV_LABEL:'Tweets about Boston City during the year 2016',
             prov.model.PROV_TYPE:'ont:DataSet'})
 

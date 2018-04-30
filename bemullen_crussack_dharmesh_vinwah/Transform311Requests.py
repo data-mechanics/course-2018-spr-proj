@@ -208,7 +208,6 @@ class Transform311Requests(dml.Algorithm):
         repo = client.repo
         repo.authenticate('bemullen_crussack_dharmesh_vinwah', 'bemullen_crussack_dharmesh_vinwah')
 
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') 
         doc.add_namespace('dat', 'http://datamechanics.io/data/') 
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')
         doc.add_namespace('log', 'http://datamechanics.io/log/')

@@ -19,8 +19,8 @@ def find_closest_centroids(samples, centroids):
         distances = []
         i = 0
         for centroid in centroids:
-            distance = np.sqrt(((sample[0]-centroid[0])**2) +((sample[1]-centroid[1])**2))
-            distances += [(distance,i)]
+            distance = np.sqrt(((sample[0]-centroid[0])**2) + ((sample[1]-centroid[1])**2))
+            distances += [(distance, i)]
             i += 1
             closest_centroids += [min(distances)[1]]
 
@@ -94,7 +94,6 @@ class findEvacLocations(dml.Algorithm):
     
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-        #ACTUALLY IMPLEMENT THIS
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('jlove', 'jlove')
@@ -104,7 +103,7 @@ class findEvacLocations(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/dataset/')
         
-        this_script = doc.agent('alg:jlove#countEvacLovations', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:jlove#findEvacLocations', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         resource = doc.entity('dat:jlove#hydrants', {'prov:label':'311, Service Requests', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'geojson'})
         evac_loc = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)

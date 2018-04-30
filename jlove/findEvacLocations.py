@@ -14,7 +14,6 @@ import numpy as np
 import uuid
 
 def find_closest_centroids(samples, centroids):
-
     closest_centroids = []
     for sample in samples:
         distances = []
@@ -28,19 +27,18 @@ def find_closest_centroids(samples, centroids):
     return np.array(closest_centroids)
 
 def get_centroids(samples, clusters):
-
     sample_nums = {}
     for cluster in clusters:
         sample_nums[cluster] = None
 
-    sums = [np.array([0,0]) for _ in range(len(sample_nums.keys()))]
+    sums = [np.array([0, 0]) for _ in range(len(sample_nums.keys()))]
     numbers = [0 for _ in range(len(sample_nums.keys()))]
 
     for i in range(len(samples)):
         numbers[clusters[i]] += 1
         sums[clusters[i]][0] += samples[i][0]
         sums[clusters[i]][1] += samples[i][1]
-
+    print(numbers)
     for i in range(len(sums)):
         sums[i] = sums[i]/numbers[i]
 

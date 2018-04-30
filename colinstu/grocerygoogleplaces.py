@@ -5,7 +5,6 @@ import prov.model
 import datetime
 import uuid
 
-googlekey = ''
 class grocerygoogleplaces(dml.Algorithm):
     contributor = 'colinstu'
     reads = []
@@ -26,6 +25,16 @@ class grocerygoogleplaces(dml.Algorithm):
         response = urllib.request.urlopen(url).read().decode("utf-8")
         r = json.loads(response)
         s = json.dumps(r, sort_keys=True, indent=2)
+        while 'next_page_token' in r.keys():
+            url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=grocery+in+boston&key=' + jdata['googlekey'] + '&pagetoken=' + r['next_page_token']
+            response = urllib.request.urlopen(url).read().decode("utf-8")
+            next_page = json.loads(response)
+            for row in next_page['results']:
+                r['results'].append(row)
+            if 'next_page_token' in next_page.keys():
+                r['next_page_token'] = next_page['next_page_token']
+            else:
+                break
         repo.dropCollection("grocerygoogleplaces")
         repo.createCollection("grocerygoogleplaces")
         repo['colinstu.grocerygoogleplaces'].insert_many(r['results'])
@@ -55,11 +64,11 @@ class grocerygoogleplaces(dml.Algorithm):
         doc.add_namespace('ont',
                           'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
-        doc.add_namespace('bdp', 'https://maps.googleapis.com/maps/api/place/textsearch/')
+        doc.add_namespace('gdp', 'https://maps.googleapis.com/maps/api/place/textsearch/')
 
         this_script = doc.agent('alg:colinstu#grocerygoogleplaces',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('bdp:wc8w-nujj', {'prov:label': 'Google Places Query for Grocery in Boston',
+        resource = doc.entity('gdp:wc8w-nujj', {'prov:label': 'Google Places Query for Grocery in Boston',
                                                 prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'json'})
         get_grocery = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
         doc.wasAssociatedWith(get_grocery, this_script)

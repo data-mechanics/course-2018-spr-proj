@@ -67,6 +67,24 @@ class DataLog:
     0:0.0,
      1:0.0
      }
+
+    # weighted by likes 
+    weighted_pos_d = {
+    0:0,
+     1:0
+     }
+
+    #weighted by like
+    weight_prob_d={
+    0:0,
+     1:0
+     }
+    
+    # data store 
+    hash_tags= {
+
+    }
+
     # Crawl Count 
     CC = 0
 
@@ -94,24 +112,45 @@ class Listener(StreamListener):
         #print()
         # Retrieve tweet it
         tmp_tweet_id = tmp_df.id.values[0]
-            
+        care = ['id_str', 'text', 'coordinates','favorite_count' ,'geo', 'user', 'entities', 'sentiment_proba', 'sentiment_pred']
         # Get the unique identifier for the user
         tmp_user = tmp_df.user.values[0]['id']
         tweet = tmp_df['text'].values[0]
-        
+        hashtags = re.findall(r"#(\w+)", str ( tweet) )
+        if tmp_df.lang.values[0] != 'en':
+            print("Skipping Non-English Tweet")
+            return True
+        likes = tmp_df['favorite_count'].values[0]
         vec = tokenize_vectorize(Model.vect, tweet, )
         # I only care about th efirst 1 
         probs =Model.clf.predict_proba(vec)[:,1]
         pred = Model.clf.predict(vec)
-        DataLog.pos_d[pred[0]] +=1
+        
+        w_probs = probs * int(likes)
+        w_pred = pred * int(likes)
 
-        print("Tweet Recieved with probability {}, prediction {}, Ratio, {} with text {} ".format( probs, pred, DataLog.pos_d[1]/ (DataLog.pos_d[1] + DataLog.pos_d[0]) , tweet))
+        DataLog.pos_d[pred[0]] +=1
+        DataLog.weighted_pos_d[pred[0]] += likes 
+
+        print("Tweet Recieved with probability {}, prediction {}, Ratio, {}, likes {}  with text {} ".format( probs, pred, DataLog.pos_d[1]/ (DataLog.pos_d[1] + DataLog.pos_d[0]) ,likes, tweet))
         #print(tmp_df.shape)
         tmp_df['sentiment_proba'] = np.squeeze(probs)
 
-        tmp_df['sentiment_pred'] = np.squeeze(probs)
-        DataLog.pos_d[pred[0]] += np.squeeze(probs)
-        DataLog.pos_d[ (pred[0] + 1) %2] += 1 - np.squeeze(probs)
+        tmp_df['sentiment_pred'] = np.squeeze(pred)
+        DataLog.pos_d[1] += np.squeeze(probs)
+        DataLog.pos_d[0] += 1 - np.squeeze(probs)
+
+        DataLog.weighted_pos_d[1] += np.squeeze(w_probs)
+        DataLog.weighted_pos_d[0] += 1 - np.squeeze(w_probs)
+        tmp_df['hashtags'] = [ hashtags]
+        if len(hashtags) >0:
+            for ht in hashtags:
+                if ht not in DataLog.hash_tags:
+                    DataLog.hash_tags[ht] = {0:0,1:0}
+
+                DataLog.hash_tags[ht][1] += np.squeeze(probs)
+                DataLog.hash_tags[ht][0] += 1- np.squeeze(probs)
+
         if tmp_user not in DataLog.unique_users:
             DataLog.unique_users[tmp_user] = True
 
@@ -120,9 +159,21 @@ class Listener(StreamListener):
             DataLog.unique_tweets[tmp_tweet_id] = True
             save_name =  str("user_{}_tweetID_{}_".format(tmp_user, tmp_tweet_id)) + DataLog.fetched_tweets_filename
             # Write by 
-            tmp_df.to_json(DataLog.save_path + save_name)
+            tmp_df[care].iloc[0].to_json(DataLog.save_path + save_name)
+
             print("succesfully wrote  tweet {}".format(tmp_tweet_id))
         DataLog.CC +=1
+        if DataLog.CC %10 ==0:
+            with open('hashtags.pkl', 'wb') as file:
+                file.write(pickle.dumps(DataLog.hash_tags) )
+            tmp_stats = [ DataLog.pos_d, 
+             DataLog.pos_prob_d , 
+             DataLog.weighted_pos_d,
+             DataLog.weight_prob_d]
+
+            with open('sent_stats.pkl', 'wb') as file:
+                file.write(pickle.dumps(tmp_stats) )
+
         print("Crawl index:{}".format(DataLog.CC))
         
 
@@ -166,8 +217,17 @@ def main():
     tf_vect = pickle.load(open(vectorize_path, "rb"))
     Model.clf = clf
     Model.vect = tf_vect
+    with open('../Twitter_to_vec/sent_stats.pkl', 'rb') as f:
+        tmp = pickle.load(f)
 
+    DataLog.pos_d = tmp[0]
+    DataLog.pos_prob_d = tmp[1]
+    DataLog.weighted_pos_d = tmp[2]
+    DataLog.weight_prob_d = tmp[3]
 
+    with open('../Twitter_to_vec/hashtags.pkl', 'rb') as f:
+        ht= pickle.load(f)
+    DataLog.hash_tags = ht
     listener = Listener()
     # bounding box for boston: -71.1912, 42.2279, -70.8085, 42.3973
 

@@ -136,7 +136,7 @@
 \begin{document}
 
 % Define document title and author
-    \title{Student Impact on Move-in Week the Greater Boston Area}
+    \title{Analyzing the Impact of Move-In Week on the Greater Boston Area}
     \author{Brooke Mullen, Claire Russack, Dharmesh Tarapore, Vincent Wahl
     \\bemullen@bu.edu, crussack@bu.edu, dharmesh@bu.edu, vinwah@bu.edu
     }
@@ -145,7 +145,7 @@
 
 % Write abstract here
 \begin{abstract}
-    Move in week is universally chaotic and a generally unpleasant experience for both, college students and local residents \cite{painfulmovein}. Despite universities' meticulous attempts to mitigate trouble, the logistical concerns presented by the sudden influx of over 30,000 students are intractable. In this project, we attempt to identify specific factors affecting residents' quality of life (as a result of move-in week) and study ways to improve it.   
+    Move in week is universally chaotic and a generally unpleasant experience for both, college students and local residents \cite{painfulmovein}. Despite universities' meticulous attempts to mitigate trouble, the logistical concerns presented by the sudden influx of over 30,000 students are inevitable. In this project, we attempt to identify specific factors affecting residents' quality of life (as a result of move-in week) and study ways to improve it.   
 \end{abstract}
 
 % Each section begins with a \section{title} command
@@ -155,7 +155,7 @@
 \\Due to the nature of an academic calendar for most universities, the lease cycle tends to be September 1st. This rapid movement in a dense area affects the overall quality of life in the city, often for the worse. [TODO: explain why we care(answering 2 questions...)].
 \\Mensurability notwithstanding, conventional proxies\footnote{The GDP (Gross Domestic Product) is often used as an approximate measure of quality of life, in conjunction with other metrics such as the HDI (Human Development Index) and Gini Coefficient.} for quality of life disregard (among other things) societal happiness: a critical adjunct to traditional economic metrics \cite{happytext}. 
 To remedy this, we propose an approach that utilizes open data sourced from Boston City's \textit{Analyze Boston} data portal \cite{bosdatalink} and posts made on the microblogging platform, Twitter \cite{twitterlink}. In particular, we use the \textit{CityScore}, \textit{311 Service Requests}, and \textit{Boston Fire Incident Reporting} datasets to identify the demand for specific city resources across multiple time periods as a function of user satisfaction.
-\\The rest of this paper is organized as follows: in section II, we document related research that inspired this project. In section III, we describe each of the 4 chosen datasets in greater detail to focus on their merits, potential limitations, and the methods we used to discern their relative importance in estimating the city's quality of life. Section IV charts our results and outlines their implications. Section V concludes the report with an outlook on future research.
+\\The rest of this paper is organized as follows: in section II, we document related research that inspired this project. In section III, we describe each of the 4 chosen datasets in greater detail to focus on their merits, potential limitations, and the methods we used to discern their relative importance in estimating the city's quality of life. Section IV outlines our results and examines their implications. Section V concludes the report with an outlook on future research.
 %To quantify the quality of the city on a given day, we used the Analyze Boston's City Score dataset. The Boston City Score is an initiative created to monitor the overall health of the city on a daily basis. It is calculated by aggregating various metrics, both additive and negative, into a single score. This dataset is one that was central to our project and was used as a significant way of determining metrics had on the quality of life.
 %A solution that the city poses is temporary parking and traffic restrictions in areas that usually surround areas with a high density of student movers. Due to minimal options for transportation and the high movement, renters do not have space or resources to deal with their trash and furniture, leaving them to dispose of it in their surroundings. It is not surprising to find refrigerators, mattresses, and desks littered along the sides of the streets during this time. Analyze Boston's 311 Service Requests records these violations and their locations. With the understanding that the number of violations affects the quality of life on a given day in Boston, one of our aims became to find a way to serve requests in the most timely way. To make this solution concrete but also efficient, our team worked to display the minimum number of dispatchers required to respond to service requests within 30 seconds of each inquiry. 
 %Another metric that affects the quality of life in Boston is fire incidents in the city. The dataset, ‘Fire Incident Reporting’, also comes from Analyze Boston. The data set consists of incident details and location. It is non-trivial that a residential or commercial fire will negatively affect the quality of life so our question became finding the mean point of where incidents occur. 
@@ -163,10 +163,13 @@ To remedy this, we propose an approach that utilizes open data sourced from Bost
 
 % Related Work
 \section{Related Work}
-    Jim Haddadin explored the relationship between move-in week and garbage disposal concerns in \cite{trashcity}. Noting a sharp rise in the number of code violations around university residences during move-in week, Haddadin highlights the consequences (and inevitability) of improper trash disposal [TODO: describe more]. In \cite{happytext}, Dodds et al address the subjectivity and vagueness inherent to estimating happiness among people by mining 46 billion tweets to uncover temporal variations in happiness and information levels over timescales ranging from hours to years.Their remote-sensing 'hedonometer' algorithm generated a rich source of information about short-term, experential happiness in a population and its causes. We use a similar, albeit slightly modified approach to understand residents' moods during move-in week.
+    Jim Haddadin explored the relationship between move-in week and garbage disposal concerns in \cite{trashcity}. Noting a sharp rise in the number of code violations around university residences during move-in week, Haddadin highlights some unforeseen consequences of improper trash disposal. In \cite{happytext}, Dodds et al address the subjectivity and vagueness inherent to estimating happiness among people by mining over 46 billion tweets to uncover temporal variations in happiness and information levels over timescales ranging from hours to years.Their remote-sensing 'hedonometer' algorithm generated a rich source of information about short-term, experiential happiness in a population and its causes. We use a similar, albeit slightly modified approach to understand residents' moods during move-in week.
 
 \section{Approach}
-Subsections of how each of us individually contributed to each part of the project
+Our desire to allay the worst aspects of move-in week presupposes the existence of a correlation between students moving in and a perceptible change in the quality of residents' lives. This requires: 
+\\ \null \quad\quad i. The identification of metrics that can effectively approximate quality of life and
+\\\null\quad\quad ii. Predictive analyses that capture and justify the impact of altering select attributes of move-in week\footnote{Note that this does \textbf{not} insinuate the existence of a causal relationship between university students moving in and residents' quality of life: it merely seeks to leverage potential correlations between the two.}.
+\\Similar to the approaches charted in \cite{happytext} and \cite{trashcity}, we begin first by selecting datasets that might evince the impact of students moving in. Boston City's Open Data Initiative, \textit{Analyze Boston} portal provides a vast repository of highly granular information about the city's functioning. In particular, the \textit{311 Service Requests}, \textit{CityScores}, and \textit{Fire Incident Reporting} are of particular interest and we expound their significance below \cite{bosdatalink}. For quality of life, we rely on the seminal research conducted by Mitchell et al in \cite{happytexttwitter} and use geotagged Twitter posts within 50 kilometers of Boston city. Limitations stemming from a lack of representativeness and potential bias in dataset selection are explored further in section IV.
 \subsection{Vincent} 
 \subsection{Claire}
 \subsection{Library Attendance Analysis}
@@ -191,7 +194,7 @@ Students Not In Session:
     \item August
     \item December 16th-31st
 \end{itemize}
-\subsection{Dharmesh}
+\subsection{Sentiment Analysis}
 \section{Results}
 Results go here.
 \section{Conclusion}
@@ -222,6 +225,9 @@ Conclusion goes here.
    
    \bibitem{trashcity}
    J.~Haddidin,  \emph{Trash City: How Does Moving Week Impact the Quality of Life in Boston?},\relax Analyze Boston,  \emph{https://data.boston.gov/showcase/trash-city}
+   
+   \bibitem{happytexttwitter}
+   Mitchell, Lewis, et al. "The geography of happiness: Connecting twitter sentiment and expression, demographics, and objective characteristics of place." PloS one 8.5 (2013): e64417.
    
   
 

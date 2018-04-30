@@ -169,7 +169,7 @@ To remedy this, we propose an approach that utilizes open data sourced from Bost
 Our desire to allay the worst aspects of move-in week presupposes the existence of a correlation between students moving in and a perceptible change in the quality of residents' lives. This requires: 
 \\ \null \quad\quad i. The identification of metrics that can effectively approximate quality of life and
 \\\null\quad\quad ii. Predictive analyses that capture and justify the impact of altering select attributes of move-in week\footnote{Note that this does \textbf{not} insinuate the existence of a causal relationship between university students moving in and residents' quality of life: it merely seeks to leverage potential correlations between the two.}.
-\\Similar to the approaches charted in \cite{happytext} and \cite{trashcity}, we begin first by selecting datasets that might evince the impact of students moving in. Boston City's Open Data Initiative, \textit{Analyze Boston} portal provides a vast repository of highly granular information about the city's functioning. In particular, the \textit{311 Service Requests}, \textit{CityScores}, and \textit{Fire Incident Reporting} are of particular interest and we expound their significance below \cite{bosdatalink}. For quality of life, we rely on the seminal research conducted by Mitchell et al in \cite{happytexttwitter} and use geotagged Twitter posts within 50 kilometers of Boston city. Limitations stemming from a lack of representativeness and potential bias in dataset selection are explored further in section IV.
+\\Similar to the approaches charted in \cite{happytext} and \cite{trashcity}, we begin first by selecting datasets that might evince the impact of students moving in. Boston City's Open Data Initiative, \textit{Analyze Boston} portal provides a vast repository of highly granular information about the city's functioning. In particular, the \textit{311 Service Requests}, \textit{CityScores}, and \textit{Fire Incident Reporting} datasets are of particular interest and we expound their significance below \cite{bosdatalink}. For quality of life, we rely on the seminal research conducted by Mitchell et al in \cite{happytexttwitter} and use geotagged Twitter posts within 50 kilometers of Boston city to gauge happiness. Limitations stemming from a lack of representativeness and potential bias in dataset selection are explored further in section IV.
 \subsection{Vincent} 
 \subsection{Claire}
 \subsection{Library Attendance Analysis}
@@ -194,7 +194,9 @@ Students Not In Session:
     \item August
     \item December 16th-31st
 \end{itemize}
-\subsection{Sentiment Analysis}
+\subsection{Analyzing Quality of Life}
+Traditional economic indicators such as gross domestic product (GDP), Gini coefficient, and human development index (HDI) provide remarkable approximations for quality of life and are often indicative of a region's well-being and health \cite{gallup}\cite{wellbgallup}. In our analysis of Boston's quality of life, however, we were careful to avoid using these metrics for several reasons. First, the length of our timeframe of interest (7 days) would render the evolution of most economic indicators inconsequential. Second, given the geographic area of consideration (Greater Boston), none of the aforementioned metrics are appropriate\footnote{GDP, HDI, and Gini coefficients are computed for countries as a whole.}. Perhaps most importantly, economic prosperity does not provide an accurate representation of emotional well-being \cite{wellbgallup}. 
+
 \section{Results}
 Results go here.
 \section{Conclusion}
@@ -228,6 +230,12 @@ Conclusion goes here.
    
    \bibitem{happytexttwitter}
    Mitchell, Lewis, et al. "The geography of happiness: Connecting twitter sentiment and expression, demographics, and objective characteristics of place." PloS one 8.5 (2013): e64417.
+   
+   \bibitem{gallup}
+   Diener, Ed. "Subjective well-being: The science of happiness and a proposal for a national index." American psychologist 55.1 (2000): 34.
+   
+   \bibitem{wellbgallup}
+   Kahneman, Daniel, and Angus Deaton. "High income improves evaluation of life but not emotional well-being." Proceedings of the national academy of sciences 107.38 (2010): 16489-16493.
    
   
 

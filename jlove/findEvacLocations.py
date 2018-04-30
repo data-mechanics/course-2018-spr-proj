@@ -38,10 +38,15 @@ def get_centroids(samples, clusters):
         numbers[clusters[i]] += 1
         sums[clusters[i]][0] += samples[i][0]
         sums[clusters[i]][1] += samples[i][1]
+
+    
     print(numbers)
+
+
     for i in range(len(sums)):
         sums[i] = sums[i]/numbers[i]
 
+    print(sums)
 
     return np.array(sums)
 
@@ -68,6 +73,7 @@ class findEvacLocations(dml.Algorithm):
                 point = shapely.geometry.shape(hydrant['geometry'])
                 points += [[point.x, point.y]]
         
+        points = np.array(points) * 10000 
         shuffled = points.copy()
         np.random.shuffle(shuffled)
         centroids = np.array(shuffled[:5])

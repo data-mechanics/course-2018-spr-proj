@@ -14,11 +14,12 @@ import shapely.geometry
 import numpy as np
 import geojson
 import scipy.stats
+from tqdm import tqdm
 
 class findAverageElevationByNeighborhood(dml.Algorithm):
     contributor = 'jlove'
     reads = ['jlove.contours', 'jlove.neighborhoods', 'jlove.incomes']
-    writes = ['jlove.contour_neighborhoods', 'jlove.avg_elev', 'jlove.stats_result']
+    writes = ['jlove.contour_neighborhoods', 'jlove.avg_elev', 'jlove.stats_result', 'jlove.elevIncPairs']
     
     @staticmethod
     def execute(trial = False):
@@ -39,7 +40,7 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
             contourTemp += [contour]
 
         contours = contourTemp
-
+        
         for contour in tqdm(contours):
             for neighborhood in neighborhoods['features']:
                 nShape = shapely.geometry.shape(neighborhood['geometry'])
@@ -50,20 +51,20 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
                 if overlap.length == 0:
                     continue
                 else:
-                    geo = geojson.LineString(overlap.coords)
-                    feature = geojson.Feature(name, geo, {})
+                    feature = {}
+                    feature['properties'] = {}
                     feature['properties']['neighborhood'] = name
                     feature['properties']['elev'] = contour['properties']['ELEV']
                     feature['properties']['length'] = overlap.length
-                    if neighborhood in neighborhood_overlap:
-                        neighborhood_overlap[neighborhood] += [feature]
+                    if name in neighborhood_overlap:
+                        neighborhood_overlap[name] += [feature]
                     else:
-                        neighborhood_overlap[neighborhood] = [feature]
+                        neighborhood_overlap[name] = [feature]
         
         to_save = []
         for key in neighborhood_overlap:
-            collection = geojson.FeatureCollection(neighborhood_overlap[key])
-            doc = {'neighborhood': key, 'geo': collection}
+            collection = neighborhood_overlap[key]
+            doc = {'neighborhood': key, 'geo': {'features': collection}}
             to_save += [doc]
         
         repo.dropCollection('jlove.contour_neighborhoods')
@@ -86,7 +87,7 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
 
         contours = contour_temp
 
-        for contour in contours:
+        for contour in tqdm(contours):
             if trial:
                 if count == 5:
                     continue
@@ -101,7 +102,6 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
                 total_distance += feature['properties']['length']
             
             avg_elevation[nh] = weighted_elev/float(total_distance)
-            print(avg_elevation[nh])
             elevations += [avg_elevation[nh]]
             
 
@@ -117,21 +117,28 @@ class findAverageElevationByNeighborhood(dml.Algorithm):
         
         
         contour_nh = repo['jlove.avg_elev'].find_one({})
-        incomes = repo['jlove.incomes'].find({})
+        incomes = repo['jlove.incomeNormalized'].find({})
         
         pairs = []
+        save_pairs = {}
         for income in incomes:
             if income['Neighborhood'] in contour_nh:
-                pairs += [income['Median Household Income'], [contour_nh[income['Neighborhood']]]]
+                save_pairs[income['Neighborhood']] = {'income': income['normalized'], 'elevation': contour_nh[income['Neighborhood']]}
+                pairs += [[income['normalized'], contour_nh[income['Neighborhood']]]]
         
+        repo.dropCollection('jlove.elevIncPairs')
+        repo.createCollection('jlove.elevIncPairs')
         
+        repo['jlove.elevIncPairs'].insert_one(save_pairs)
+
         pair_arr = np.array(pairs)
         results = scipy.stats.pearsonr(pair_arr[::,0], pair_arr[::,1])
+        
 
         doc = {'corr_cooef': results[0], 'p_val': results[1]}
         
-        repo.dropCollectio('jlove.stats_result')
-        repo.createCollectio('jlove.stats_result')
+        repo.dropCollection('jlove.stats_result')
+        repo.createCollection('jlove.stats_result')
         
         repo['jlove.stats_result'].insert_one(doc)
 

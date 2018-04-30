@@ -1,7 +1,7 @@
 # Filename: RetrieveTweets.py
-# Authors: Dharmesh Tarapore <dharmesh@bu.edu>,
-#         Vincent Wahl <vinwah@bu.edu>
-# Description: Retrieves tweets.
+# Authors: Dharmesh Tarapore <dharmesh@bu.edu>
+# Description: Retrieves tweets and formats them appropriately before
+#              inserting them into the database.
 import urllib.request
 from urllib.request import quote 
 import json
@@ -21,6 +21,17 @@ class RetrieveTweets(dml.Algorithm):
         return quote(url, safe='://*\'?=')
 
     @staticmethod
+    def parseTweetJSON(response):
+        response = response.replace("\n", ",")
+        response = "[" + response
+        response = response + "]"
+        response = list(response)
+        if response[-2] == ",":
+            response[-2] = ""
+        response = "".join(response)
+        return response
+
+    @staticmethod
     def execute(trial = False):
         startTime = datetime.datetime.now()
 
@@ -35,22 +46,13 @@ class RetrieveTweets(dml.Algorithm):
 
         if trial:
             url = base_url + url_stems[0] + ".json"
-            response = requests.get(url).text
-            response = response.replace("\n", ",")
-            response = "[" + response
-            response = response + "]"
-            response = list(response)
-            if response[-2] == ",":
-                response[-2] = ""
-            response = "".join(response)
-            r = json.loads(response)
+            r = json.loads(RetrieveTweets.parseTweetJSON(response))
             repo.dropCollection(key)
             repo.createCollection(key)
             repo['bemullen_crussack_dharmesh_vinwah.' + key].insert_many(r)
         else:
 
             collected = {}
-
             for w in url_stems:
                 url = base_url + w + ".json"
                 response = requests.get(url).text
@@ -105,8 +107,6 @@ class RetrieveTweets(dml.Algorithm):
         this_script = doc.agent('alg:bemullen_crussack_dharmesh_vinwah#RetrieveTweets',\
             {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
 
-
-
         resource_tweets = doc.entity('csdt:tweets',
             {'prov:label':'[jan, feb, mar, apr,\
             may, jun, jul,aug,sep,oct,nov,dec]',
@@ -130,6 +130,3 @@ class RetrieveTweets(dml.Algorithm):
         repo.logout()
                   
         return doc
-
-if __name__ == "__main__":
-    RetrieveTweets.execute(trial=True)

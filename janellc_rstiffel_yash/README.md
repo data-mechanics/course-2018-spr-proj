@@ -6,6 +6,7 @@
 * Rebecca Stiffelman (rstiffel)
 * Yash (yash)
 
+
 **Question:**
 
 What makes some Boston neighborhoods safer than other? What can the city of Boston do to help reduce crime rates? We hope to answer these questions by analyzing the influence of various factors, such as the presence of streetlights, on crime rates in different Boston neighborhoods.
@@ -32,7 +33,6 @@ the minimum number of night patrols needed in each district such that every stre
 We aimed to uncover correlation between number of streetlights and number of crimes that occur in Boston neighborhoods.
 
 
-
 ## Required libraries and tools
 You will need some libraries and packages.
 ```
@@ -40,9 +40,11 @@ python -m pip install shapely
 install z3 via github instructions
 
 ```
+**How to run the app**
+* Note: must retrive datasets before running app (see below)
+* python proj3.py
 
 
-**To run in trial mode**
+**Retrieve Datasets**
 * Note: Must run getStreetlights.py from ferrys (borrowed dataset from their team)
 * python execute.py janellc_rstiffel_yash --trial
-

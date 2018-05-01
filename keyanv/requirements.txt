@@ -1,0 +1,17 @@
+decorator==4.2.1
+dml==0.0.16.0
+haversine==0.4.5
+isodate==0.6.0
+lxml==4.2.1
+networkx==2.1
+numpy==1.14.2
+protoql==0.0.3.0
+prov==1.5.2
+pymongo==3.6.1
+pyparsing==2.2.0
+python-dateutil==2.7.2
+rdflib==4.2.2
+scikit-learn==0.19.1
+scipy==1.0.1
+six==1.11.0
+sklearn==0.0

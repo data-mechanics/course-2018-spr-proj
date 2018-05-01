@@ -1,7 +1,10 @@
+# ################################# Pulling the centroids of Open Spaces in Boston #####################################
+
 import dml
 import prov.model
 import datetime
 import uuid
+import json
 from shapely.geometry import Polygon
 
 
@@ -68,42 +71,42 @@ class open_centroids(dml.Algorithm):    # We are figuring out the coordinates of
 
     @staticmethod
     def provenance(doc=prov.model.ProvDocument(), startTime=None, endTime=None):
-
-            # Create the provenance document describing everything happening
-            # in this script. Each run of the script will generate a new
-            # document describing that invocation event.
+        # Create the provenance document describing everything happening
+        # in this script. Each run of the script will generate a new
+        # document describing that invocation event.
 
         client = dml.pymongo.MongoClient()
         repo = client.repo
         repo.authenticate('jhs2018_rpm1995', 'jhs2018_rpm1995')
-        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
+        doc.add_namespace('alg',
+                          'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat',
+                          'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet',
         # 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bwod', 'https://boston.opendatasoft.com/explore/dataset/boston-neighborhoods/')  # Boston
         # Wicked Open Data
-        doc.add_namespace('ab', 'https://data.boston.gov/dataset/boston-neighborhoods')   # Analyze Boston
+        doc.add_namespace('ab', 'https://data.boston.gov/dataset/boston-neighborhoods')  # Analyze Boston
 
         this_script = doc.agent('alg:jhs2018_rpm1995#open_centroids',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-# #######
-        resource_openspaces = doc.entity('bwod: openspaces', {'prov:label': 'Boston Hubway Stations',
-                                                             prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension':
-                                                             'geojson'})
+        # #######
+        resource_openspaces = doc.entity('bwod: openspaces', {'prov:label': 'Boston Open Spaces',
+                                                              prov.model.PROV_TYPE: 'ont:DataResource',
+                                                              'ont:Extension': 'geojson'})
 
         get_openspaces = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime,
                                       {
-                                                    prov.model.PROV_LABEL: "Collecting coordinates of Open Spaces in "
-                                                                           "Boston",
-                                                    prov.model.PROV_TYPE: 'ont:Computation'})
+                                          prov.model.PROV_LABEL: "Collecting coordinates of Open Spaces in Boston",
+                                          prov.model.PROV_TYPE: 'ont:Computation'})
 
         doc.wasAssociatedWith(get_openspaces, this_script)
 
         doc.usage(get_openspaces, resource_openspaces, startTime)
 
-# #######
+        # #######
         greenobjects = doc.entity('dat:jhs2018_rpm1995_centroids_openspaces',
                                   {prov.model.PROV_LABEL: 'Coordinates of centroids of open spaces in Boston',
                                    prov.model.PROV_TYPE: 'ont:DataSet'})
@@ -117,8 +120,8 @@ class open_centroids(dml.Algorithm):    # We are figuring out the coordinates of
         return doc
 
 
-# combineneighbourhood.execute()
-# doc = combineneighbourhood.provenance()
+# open_centroids.execute()
+# doc = open_centroids.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))
 

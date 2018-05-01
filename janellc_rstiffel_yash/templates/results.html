@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<link rel="stylesheet" type="text/css" href="static/style.css">
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat">
+<title> Optimizing Patrol Placements in Boston Neighborhoods </title>
+<style>
+      #map {
+        width: 75%;
+        height: 400px;
+        background-color: grey;
+        padding-left:100px;
+      }
+      .button{
+        background-color: #4CAF50;
+        border:none;
+        color:white;
+        padding:10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        border-radius: 8px;
+      }
+      #legend {
+      font-family: 'Montserrat', serif;
+      background: #fff;
+      padding: 10px;
+      margin: 10px;
+      border: 1px solid #000;
+    }
+    </style>
+</head>
+<body style="font-family: 'Montserrat', serif; padding-left:100px;padding-right: 100px;">
+<div class="wrapper" style="padding-bottom:75px;">
+<h2 style="padding-top: 15px;">  Search again? </h2>
+  <form method="POST" action="/optimize"">
+       Find optimal patrol placements in which each street has a nearby station at most
+      <span id="slider_value" style="color:green;font-weight: bold;">500</span>  feet away.<br><br>
+      
+     0 <input type="range" style="width:600px;"  name="distance" id="distance" min="1" max="1000" class="slider" oninput="show_value(this.value);" required> 1000
+
+      <br><br><br>
+      District:&nbsp;&nbsp; <select id="district" name="district" style="width:200px;height:30px;-webkit-appearance:none;-moz-appearance:none; appearance:none; padding-left: 15px; background-image:url('https://cdn1.iconfinder.com/data/icons/universal-icons-set-for-web-and-mobile/100/controls_0-12-256.png');background-repeat:no-repeat;background-position: 165px center; background-color:white; background-size:25px 25px; font-family: 'Montserrat'; font-size:14px;"> 
+        <option value="Brighton">Brighton</option>
+        <option value="Charlestown">Charlestown</option>
+        <option value="Dorcester">Dorchester</option>
+        <option value="Downtown">Downtown</option>
+        <option value="East Boston">East Boston</option>
+        <option value="Hyde Park">Hyde Park</option>
+        <option value="Jamaica Plain">Jamaica Plain</option>
+        <option value="Mattapan">Mattapan</option>
+        <option value="Roxbury">Roxbury</option>
+        <option value="South Boston">South Boston</option>
+        <option value="South End">South End</option>
+        <option value="West Roxbury">West Roxbury</option>
+
+       </select>&emsp;&emsp;&emsp;<input type="submit" value="Submit" class="button">
+  </form>
+  <br><br>
+  <hr style="border: 0;height: 1px;background: #333;background-image: linear-gradient(to right, #ccc, #333, #ccc);"> 
+
+      <h3>Minimum number of patrols needed: {{total}} </h3>
+      <h3>Showing results in {{district}} for {{distance}} feet... </h3>
+    <div id="floating-panel">
+      <input onclick="clearMarkers();" type=button value="Hide Markers">
+      <input onclick="showMarkers();" type=button value="Show All Markers">
+      <input onclick="clearNoMarkers();" type=button value="Show Patrol Locations Only">
+    </div>
+    <div id="map"></div>
+    <div id="legend"><h3>Legend</h3></div>
+
+</div>
+
+  <script>
+      var map;
+      var yesmarkers = [];
+      var nomarkers = [];
+      function initMap() {
+        var res = {{results|tojson}} ;
+        var district_name = Object.keys(res)[0];
+        var total = Object.keys(res)[1];
+        var locations = res[district_name][Object.keys(res[district_name])[0]];
+        console.log(locations);
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: {lat: 42.3601, lng: -71.0589}
+        });
+
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push
+        (document.getElementById('legend'));
+
+        var street_names =Object.keys(locations);
+        for (var i=0; i<street_names.length; i++) {
+            //console.log(locations[street_names[i]]);
+            patrol_position = new google.maps.LatLng(locations[street_names[i]]['lat'], locations[street_names[i]]['long']);
+            addMarker(patrol_position, locations[street_names[i]]['Patrol?']);
+        }
+      }
+
+      function addMarker(location, patrol) {
+        var marker = new google.maps.Marker({
+          position: location,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: (patrol=='Yes' ? 'green':'red'),
+            fillOpacity: 0.6,
+            scale: 3,
+            strokeColor: (patrol=='Yes'? 'green':'red'),
+            strokeWeight: 1
+          },
+          map: map
+        });
+        (patrol == 'Yes' ? yesmarkers.push(marker) : nomarkers.push(marker));
+      }
+
+      function setMapOnAll(map) {
+        for (var i = 0; i < yesmarkers.length; i++) {
+          yesmarkers[i].setMap(map);
+        }
+        for (var i = 0; i < nomarkers.length; i++) {
+          nomarkers[i].setMap(map);
+        }
+      }
+
+      // Removes the markers from the map, but keeps them in the array.
+      function clearMarkers() {
+        setMapOnAll(null);
+      }
+
+      function clearNoMarkers() {
+        for (var i = 0; i < yesmarkers.length; i++) {
+          yesmarkers[i].setMap(map);
+        }
+        for (var i = 0; i < nomarkers.length; i++) {
+          nomarkers[i].setMap(null);
+        }
+      }
+
+      // Shows any markers currently in the array.
+      function showMarkers() {
+        setMapOnAll(map);
+      }
+      var div;
+      var legend = document.getElementById('legend');
+      div = document.createElement('div');
+      div.innerHTML =  "Marker = Street with reported crime";
+      legend.appendChild(div);
+      div = document.createElement('div');
+      div.innerHTML =  "Green = Patrol Placement";
+      legend.appendChild(div);
+      div = document.createElement('div');
+      div.innerHTML =  "Red = No Patrol Placement";
+      legend.appendChild(div);
+  </script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7ALl5l4QLyms6S6djMo77J2qY5B5oXQg&callback=initMap">
+    </script>
+    <script>
+        function show_value(x)
+          {
+           document.getElementById("slider_value").innerHTML=x;
+          }
+</script>
+</body>
+
+</html>

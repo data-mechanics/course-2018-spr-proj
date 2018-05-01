@@ -104,7 +104,7 @@ class policeCrimeCorrelation(dml.Algorithm):
         x_distance = [a for (a,b) in rangeCountTuples]
         y_frequency = [b for (a,b) in rangeCountTuples]
 
-        print(distanceRangeCount)
+        # print(distanceRangeCount)
 
         coefficient = round(policeCrimeCorrelation.correlation(x_distance,y_frequency),3)
 

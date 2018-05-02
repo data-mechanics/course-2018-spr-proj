@@ -24,7 +24,6 @@ class bikeComparisonCam(dml.Algorithm):
         Cbikepath = repo['cwsonn_levyjr.Cbikepath'].find()
 
         #Get Cambridge bike path coordinates
-        
         bikePathCoords = []
         lenlst = []
         for c in Cbikepath:

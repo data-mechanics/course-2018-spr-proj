@@ -1,5 +1,10 @@
 # Project 3: Factors Influencing Crime in Boston
 
+### .
+### Please see pdf file (cs591 report) for more details.
+### .
+### .
+### .
 
 ## Authors
 * Janell Chen (janellc)
@@ -7,7 +12,6 @@
 * Yash (yash)
 
 
-# Please see pdf file (cs591 report) for more details.
 
 **Question:**
 
@@ -33,6 +37,7 @@ the minimum number of night patrols needed in each district such that every stre
 
 ### Correlation between Streetlights and Crime (sortCorrelations.py)
 We aimed to uncover correlation between number of streetlights and number of crimes that occur in Boston neighborhoods.
+
 
 
 ## Required libraries and tools

@@ -1,0 +1,138 @@
+<html>
+	<head lang="en-us">
+		<meta charset="utf-8">
+		<title>School New Bike hub</title>
+
+		<link rel="stylesheet" href="/static/leaflet.css" />
+		<script type=text/javascript src="{{ url_for('static', filename='leaflet.js') }}"></script>
+<style>
+<!--
+#map{
+width: 1200px; 
+height: 600px;
+margin: 35px 0px 10px 0px;
+}
+-->
+</style>
+
+	</head>
+
+	<body>
+		<div id="content" align="center">	
+		<h1>Please enter the school name that you want to find</h1>
+		<h1>
+			{% if message %}
+				{{message}}
+			{% endif %}
+		</h1>
+		<p><a href='/checkAllSchools'>What to check all the schools before searching?</a></p>
+		<form method="POST" action="{{url_for('schoolNewBikeHub') }}">
+			<label for="string">Enter the school you want to find</label>
+			<input type="string" name="schoolNameInput" /><br/>
+			<input type="submit" />
+		</form>
+
+		<h1>Here are the result for the searching</h1>
+		<p>School name</p>
+		<p>{{schoolName}}</p>
+		<p>School coordinate: {{school_x}} , {{school_y}}</p>
+		<p>Bike Hub Place</p>
+		<p>{{subwayStationName}}</p>
+		<p>Subway coordinate: {{subway_x}} , {{subway_y}}</p>
+
+		<div id='map' width="1000px" height="600px"></div>
+		<a href='/'>Home</a>
+
+<script>
+
+	// initialize the map
+	var map = L.map('map').setView([42.35, -71.08], 12);
+
+	// load a tile layer
+	L.tileLayer('http://tiles.mapc.org/basemap/{z}/{x}/{y}.png',
+    {
+      attribution: 'Tiles by <a href="http://mapc.org">MAPC</a></a>',
+      maxZoom: 25,
+      minZoom: 9
+    }).addTo(map);
+
+    var sn = '{{schoolName}}';
+
+	var schoolx = parseFloat('{{school_x}}');
+	var schooly = parseFloat('{{school_y}}');
+	var subwayName = '{{subwayStationName}}';
+	var subwayx = parseFloat('{{subway_x}}');
+	var subwayy = parseFloat('{{subway_y}}');
+	
+	var planes = [[sn,schooly, schoolx],[subwayName,subwayy,subwayx]];
+
+	var greenIcon = L.icon({
+    iconUrl: "{{ url_for('static', filename='leaf-green.png') }}",
+    shadowUrl: "{{ url_for('static', filename='leaf-shadow.png') }}",
+
+    iconSize:     [38, 95], // size of the icon
+    shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+	});
+
+	var orangeIcon = L.icon({
+    iconUrl: "{{ url_for('static', filename='leaf-orange.png') }}",
+    shadowUrl: "{{ url_for('static', filename='leaf-shadow.png') }}",
+
+    iconSize:     [38, 95], // size of the icon
+    shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+	});
+
+	marker = new L.marker([planes[0][1],planes[0][2]],{icon: greenIcon})
+		.bindPopup('SchoolName: '+planes[0][0])
+		.addTo(map);
+
+	marker = new L.marker([planes[1][1],planes[1][2]],{icon: orangeIcon})
+		.bindPopup('NewBikeHubName: '+planes[1][0])
+		.addTo(map);
+
+	 var polyline = L.polyline([
+            [schooly, schoolx],
+            [subwayy, subwayx]
+            ],
+            {
+                color: 'red',
+                weight: 10,
+                opacity: .5,
+                lineJoin: 'round'
+            }
+            ).addTo(map);
+
+	function degreesToRadians(degrees) {
+	  return degrees * Math.PI / 180;
+	}
+
+	function distanceInKmBetweenEarthCoordinates(lat1, lon1, lat2, lon2) {
+	  var earthRadiusKm = 6371;
+
+	  var dLat = degreesToRadians(lat2-lat1);
+	  var dLon = degreesToRadians(lon2-lon1);
+
+	  lat1 = degreesToRadians(lat1);
+	  lat2 = degreesToRadians(lat2);
+
+	  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+	          Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+	  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+	  return earthRadiusKm * c;
+	}
+
+	var dist = distanceInKmBetweenEarthCoordinates(schoolx, schooly, subwayx, subwayy);
+	var time = dist/0.66;
+	
+	polyline.bindPopup(dist.toString()+" km /BikeEstimateTime: "+time.toString()+" mins");
+
+</script>
+</div>
+	</body>
+</html>

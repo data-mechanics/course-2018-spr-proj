@@ -20,13 +20,15 @@
 </style>
 <title> Minimizing Patrol Placements in Boston Neighborhoods </title>
 </head>
-<header style="font-family: 'Montserrat', serif;text-align:right;padding-top: 10px;padding-right: 30px;"> Boston University CS591 </header>
+<header style="font-family: 'Montserrat', serif;text-align:right;padding-top: 10px;padding-right: 30px;"> Boston University CS591 
+</header>
+
 <body style="font-family: 'Montserrat', serif;">
 
 <div class="wrapper" style="text-align: center;">
 <h1 style="padding-top:70px;">  Minimizing Patrol Placements in Boston Neighborhoods </h1>
 
-  <form method="POST" action="/optimize"">
+  <form method="POST" action="/optimize">
       <br><br><br>
       Find optimal patrol placements in which each street has a nearby officer at most
       <span id="slider_value" style="color:green; font-weight: bold;">500</span>  feet away.<br><br>
@@ -54,12 +56,12 @@
 
       <br><br><br><br>
       <input type="submit" value="Submit" class="button">
-      <br><br><br><br><br>
+      <br><br><br><br><br><br>
       <p style="font-size: 11px;">By Yash Bavishi, Janell Chen, and Rebecca Stiffelman </p>
   </form>
 </div>
 
-<div style="padding-top: 20px;padding-left: 300px;padding-right: 300px;padding-bottom: 50px;">
+<div style="padding-top: 30px;padding-left: 300px;padding-right: 300px;padding-bottom: 50px;">
   <h2>How it Works</h2>
   <p>Based on your input,our algorithm will determine exactly which streets will have a patrol such that every street in the selected district with a patrol within the desired number of feet is covered. Our method uses Z3 Solver to find the optimal placements. Using Z3 Constraint Satisfaction, we determined a model for each Boston district, which tells us the optimal (minimal) number of night patrols needed such that every street where a crime occurred will be covered. The city of Boston can keep streets safer by intelligently placing patrols optimally so that streets where crimes occur are under a nearby patrol watch. </p>
   
@@ -67,13 +69,16 @@
 <div class="row" style="display:flex;">
     <div class="column" style="flex: 50%">
       <h2>Datasets</h2>
-      <p>Source: Analyze Boston </p>
+      <a href="https://data.boston.gov/">Source: Analyze Boston</a>
       <ul style="list-style-type:disc">
         <li>Boston Neighborhoods</li>
         <li>Boston Street Segments</li>
         <li>Crime Incident Reports</li>
       </ul>
-      <a href="https://data.boston.gov/">Visit Analyze Boston.</a>
+      
+      <form method="POST" action="/data">
+      <input type="submit" value="Visualize Retrieved Data" class="button">
+      </form>
     </div>
   <div class="column" style="flex: 50%">
     <h2>Motivation </h2>
@@ -81,7 +86,7 @@
     </p>
   </div>
   </div>
-  <h2>Future Work</h2>
+  <h2>Future Works</h2>
   <p>In order to improve coverage of crimes, we could explore more factors that affect crime incidence such as economic conditions and proximity to public transport. Understanding the relationship between these factors and crime rates could help us determine more intelligent locations to place patrols or other safety resources. 
   </p>
 

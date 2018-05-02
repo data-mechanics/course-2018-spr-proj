@@ -1,0 +1,122 @@
+<!-- author ben lawson (balawson@bu.edu) -->
+<!doctype html>
+<html lang="en">
+<style>
+    #p1 {
+      font: 400 100px/1.3 'Lobster Two', Helvetica, sans-serif;
+      color: #2b2b2b;
+      text-shadow: 1px 1px 0px #ededed, 4px 4px 0px rgba(0,0,0,0.15);
+      font-size: 50px;
+      text-align:center;
+     }
+      #p2 {
+      font: 'Times New Roman';
+      color: #2b2b2b;
+      font-size: 20px;
+      text-align:center;
+     }
+     #p3{
+     color: #2b2b2b;
+     text-align:center;
+     font-size: 30px
+     }
+
+
+	.wrapper{
+		display: grid;
+	}
+	.wrapper > div{
+		background:	#2b2b2b;
+		<!--padding: 1em;-->
+		<!--margin: 5px 5px 5px 5px;-->
+		border: 1px solid black;
+	}
+    .column {
+  float: left;
+  width:49%;
+  height:100%
+  padding: 5px;
+}
+
+/* Clear floats after image containers */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+
+
+</style>
+<header>
+    <!--<link href='http://fonts.googleapis.com/css?family=Arizonia' rel='stylesheet' type='text/css'>-->
+    <link href='http://fonts.googleapis.com/css?family=Berkshire+Swash' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
+
+    <!--<p style="font-family: Garamond; text-align:center; font-size:78px; font-weight:700" >CS591 Project</p>-->
+    <p id="p1">Analyzing Real-estate Investment in Boston</p>
+</header>
+
+<body>
+<div class="wrapper">
+    <div>
+        <!--<p id="p1" >Team members</p>-->
+        <p style="color: #ffffff; font-size:30px; text-align:center">Team members</p>
+
+    </div>
+    <p id="p3">Ailing Yu, Jin Tang, Yunyu Zhang, and Yuxiao Wang</p>
+
+    <div>
+        <p style="color: #ffffff; font-size:30px; text-align:center ">Introduction</p>
+    </div>
+
+    <p style="color:#2b2b2b ; font-size:20px; ">Boston is a beautiful and convenient city to live in. Because half of
+        the Boston population are students, the Boston population is fluid. People need to rent a house to live.
+        Moreover, because more and more technology companies are coming to Boston, the labour populations will grow.
+        Boston may become the next Palo Alto. Therefore, the housing market will bloom in Boston. The purpose of this
+        project is to find the best spot in Boston to invest in real estate. We take education, natural environment,
+        rent, transportation, social facilities and potential danger into consideration to get the best spot in Boston
+        to live and invest in.</p>
+
+    <div>
+        <p style="color: #ffffff; font-size:30px; text-align:center ">Recommend Investment</p>
+    </div>
+
+    <p style="color:#2b2b2b ; font-size:20px; ">We take five factors into consideration: rent, education,
+        transportation, safety, facility.
+        By calculating the correlations of each factors with the rent, We got the scores of each area by zipcode and
+        made a heapmap as follows. </p>
+
+     <a href="/choose" target="_blank"><p style="color: #b2b2b; font-size:30px; text-align:center "> Make your own
+            choice</p></a>
+
+</div>
+ <div class="row">
+        <div class="column">
+            <img src="http://datamechanics.io/data/rent.png" alt="heatmap by rent" style="width:100%">
+
+            <!--<img src="img_fjords.jpg" alt="Fjords" style="width:100%">-->
+        </div>
+        <div class="column">
+            <img src="http://datamechanics.io/data/alyu_sharontj_yuxiao_yzhang11/scoretable2.png" alt="heatmap by rent" style="width:100%">
+            <!--<img src="img_forest.jpg" alt="Forest" style="width:100%">-->
+        </div>
+    </div>
+<div class="wrapper">
+
+
+</div>
+</body>
+<footer>
+    <br>
+    <p id="p2">CS591 Project 2018 Spring</p>
+</footer>
+</html>
+
+
+
+
+
+
+

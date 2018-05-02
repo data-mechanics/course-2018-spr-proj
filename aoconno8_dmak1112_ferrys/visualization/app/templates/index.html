@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<style>
+iframe {
+	margin-top:15px;
+    margin-left: 65px;
+} 
+form {
+	margin-top:20px;
+	margin-left: 65px;
+	display: inline-block;
+}
+.vis {
+	font-size:150px;
+}
+</style>
+
+<head>
+  <title>Visualizations</title>
+</head>
+
+<body>
+	<form action="/">
+		<input class="vis" type="submit" value="Show Route Map">
+	</form>
+
+	<form action="/show_graph">
+		<input class="vis" type="submit" value="Show Distance/Score Graph">
+	</form>
+
+	<form action="/show_opt_graph">
+		<input class="vis" type="submit" value="Show Optimized Routes Distance/Score Graph">
+	</form>
+	<div>
+		{% if graph %}
+			<iframe src="/graph" height="550" width="1000"></iframe>
+		{% endif %}
+		{% if map %}
+			<iframe src="/map" height="550" width="1000"></iframe>
+		{% endif %}
+		{% if opt_graph %}
+			<iframe src="/opt_graph" height="550" width="1000"></iframe>
+		{% endif %}
+	</div>
+</body>
+
+

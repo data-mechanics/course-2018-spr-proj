@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   <title>Dubai Hotels</title>
+  </head>
+
+  <body onload = "loadMap()">
+    <h2>Dubai Hotels</h2>
+    <div id = "map" style = "width:640px; height:480px;"></div>
+	  <script type="text/javascript" src="data.json"></script>
+	  <script> 
+		  
+        function getJSONMarkers() {
+//          const markers = [
+//            {
+//              'name': 'Cafe Province', 
+//				'coords': [42.357172, -71.059651], 
+//				'closestStation': ['mbta', '"350 Washington St"'], 
+//				'stationCoords': [42.356733, -71.058942]
+//            },
+//            {
+//              'name': 'CIROS', 
+//				'coords': [42.353107, -71.05868], 
+//				'closestStation': ['mbta', '"Bedford St @ Chauncy St"'], 
+//				'stationCoords': [42.353262, -71.059643]
+//            },
+//            {
+//              'name': "Margaret's House Kitchen For Expectant Mothers", 
+//				'coords': [42.31382, -71.06317], 
+//				'closestStation': ['mbta', '"Hancock St @ Rowell St"'], 
+//				'stationCoords': [42.312676, -71.06448]
+//            }
+//          ];
+          return markers;
+        }
+
+        function loadMap() {
+          // Initialize Google Maps
+          const mapOptions = {
+            center:new google.maps.LatLng(42.361145, -71.057083),
+            zoom: 11
+          }
+          const map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+          // Load JSON Data
+          const hotelMarkers = getJSONMarkers();
+
+          // Initialize Google Markers
+          for(hotel of hotelMarkers) {
+            let marker = new google.maps.Marker({
+              map: map,
+              position: new google.maps.LatLng(hotel.coords[0], hotel.coords[1]),
+              title: hotel.name
+            })
+          }
+        }
+      </script>
+      <script src = "https://maps.googleapis.com/maps/api/js"></script>
+	  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW0ziIXzlSHR83NicqXf35zsyAq89mTdM&callback=loadMap">
+</script>
+  </body>
+</html>

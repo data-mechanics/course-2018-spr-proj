@@ -7,9 +7,9 @@ import datetime
 import uuid
 
 class schoolIndex(dml.Algorithm):
-    contributor = 'biken_riken'
+    contributor = 'bm181354_rikenm'
     reads = []
-    writes = ['biken_riken.school_db']
+    writes = ['bm181354_rikenm.school_db']
     
     @staticmethod
     def execute(trial = False):
@@ -20,7 +20,7 @@ class schoolIndex(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('biken_riken', 'biken_riken')
+        repo.authenticate('bm181354_rikenm', 'bm181354_rikenm')
         
         # Dataset01
         url = 'http://datamechanics.io/data/bm181354_rikenm/Public_Schools.csv'
@@ -74,14 +74,14 @@ class schoolIndex(dml.Algorithm):
         repo = client.repo
         
         ####
-        repo.authenticate('biken_riken', 'biken_riken')
+        repo.authenticate('bm181354_rikenm', 'bm181354_rikenm')
         doc.add_namespace('alg', 'http://datamechanics.io/?prefix=bm181354_rikenm/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp','http://datamechanics.io/?prefix=bm181354_rikenm/')
         
-        this_script = doc.agent('alg:biken_riken#schoolIndex', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:bm181354_rikenm#schoolIndex', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         ####
         
         #change this [format]
@@ -96,7 +96,7 @@ class schoolIndex(dml.Algorithm):
         doc.usage(get_school, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval'})
                   
         # change this
-        index = doc.entity('dat:biken_riken#school_db', {prov.model.PROV_LABEL:'index  of school of boston', prov.model.PROV_TYPE:'ont:DataSet'})
+        index = doc.entity('dat:bm181354_rikenm#school_db', {prov.model.PROV_LABEL:'index  of school of boston', prov.model.PROV_TYPE:'ont:DataSet'})
                   
         doc.wasAttributedTo(index, this_script)
         doc.wasGeneratedBy(index, get_school, endTime)

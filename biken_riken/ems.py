@@ -7,9 +7,9 @@ import datetime
 import uuid
 
 class ems(dml.Algorithm):
-    contributor = 'biken_riken'
+    contributor = 'bm181354_rikenm'
     reads = []
-    writes = ['biken_riken.ems']
+    writes = ['bm181354_rikenm.ems']
     
     @staticmethod
     def execute(trial = False):
@@ -19,7 +19,7 @@ class ems(dml.Algorithm):
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
         repo = client.repo
-        repo.authenticate('biken_riken', 'biken_riken')
+        repo.authenticate('bm181354_rikenm', 'bm181354_rikenm')
         
         # Dataset01
         url = 'http://datamechanics.io/data/bm181354_rikenm/Emergency_Medical_Service_EMS_Stations.csv'
@@ -57,7 +57,7 @@ class ems(dml.Algorithm):
         # clear
         repo.dropPermanent('emsdb')
         repo.createPermanent('emsdb')
-        repo['biken_riken.emsdb'].insert_many(r)
+        repo['bm181354_rikenm.emsdb'].insert_many(r)
 
 
         # logout
@@ -77,14 +77,14 @@ class ems(dml.Algorithm):
         client = dml.pymongo.MongoClient()
         repo = client.repo
         
-        repo.authenticate('biken_riken', 'biken_riken')
+        repo.authenticate('bm181354_rikenm', 'bm181354_rikenm')
         doc.add_namespace('alg', 'http://datamechanics.io/?prefix=bm181354_rikenm/algorithm/') # The scripts are in <folder>#<filename> format.
         doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp','http://datamechanics.io/?prefix=bm181354_rikenm/')
         
-        this_script = doc.agent('alg:biken_riken#ems', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        this_script = doc.agent('alg:bm181354_rikenm#ems', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         resource = doc.entity('bdp:Emergency_Medical_Service_EMS_Stations', {'prov:label':'dataset of medical service in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         
@@ -95,7 +95,7 @@ class ems(dml.Algorithm):
         #change this
         doc.usage(get_ems, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval'})
                   
-        ems = doc.entity('dat:biken_riken#emsdb', {prov.model.PROV_LABEL:'Emergency index', prov.model.PROV_TYPE:'ont:DataSet'})
+        ems = doc.entity('dat:bm181354_rikenm#emsdb', {prov.model.PROV_LABEL:'Emergency index', prov.model.PROV_TYPE:'ont:DataSet'})
         
         doc.wasAttributedTo(ems, this_script)
         doc.wasGeneratedBy(ems, get_ems, endTime)

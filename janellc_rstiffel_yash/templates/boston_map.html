@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Mapping with D3</title>
+	<script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+	<script src="http://datamechanics.io/data/boston_neighborhoods.json"></script>
+	<script src="http://datamechanics.io/data/crimes.json"></script>
+</head>
+<a class="navlist" href="../">Go back to Main Page</a>
+<body style="padding-left: 100px; text-align: center;">
+    
+	<!-- Page elements and content go here. -->
+	<h1 style="padding-left:500px;">Crime Incidents in Boston (Jan. 2018 - Mar. 2018)</h1>
+	<h2></h2>
+
+    <p  style="padding-top:50px; padding-left:100px; padding-right:100px;text-align: center"> Visualize the streets in Boston with reported crimes. Hover your mouse to view the street name for the marker. Use the slider to specify the month. </p>
+
+
+	<div id="sliderContainer">
+	    <input id="timeslide" type="range" min="0" max="11" value="0" step="1"/><br>
+	    <span id="range">January</span>
+	</div>
+
+	<script>
+    var width = 700;
+    var height = 580;
+
+    var inputValue = null;
+    var month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+    var svg = d3.select( "body" )
+        .append( "svg" )
+        .attr( "width", width )
+        .attr( "height", height );
+
+    var g = svg.append( "g" );
+
+    var albersProjection = d3.geoAlbers()
+        .scale( 190000 )
+        .rotate( [71.057,0] )
+        .center( [0, 42.313] )
+        .translate( [width/2,height/2] );
+
+    var geoPath = d3.geoPath()
+        .projection( albersProjection );
+
+    g.selectAll( "path" )
+        .data( neighborhoods_json.features )
+        .enter()
+        .append( "path" )
+        .attr( "fill", "#ccc" )
+        .attr( "stroke", "#333")
+        .attr( "d", geoPath );
+
+    var rodents = svg.append( "g" );
+
+    var path = rodents.selectAll( "path" )
+        .data( crimes_json.features )
+        .enter()
+        .append( "path" )
+        .attr("radius", 0.01)
+        .attr("fill", initialDate)
+        .attr("stroke", "#ccc")
+        .attr("d", geoPath)
+        .attr("class","incident")
+        .on("mouseover", function(d){
+            d3.select("h2").text(d.properties.STREET);
+            d3.select(this).attr("class","incident hover");
+        })
+        .on("mouseout", function(d){
+            d3.select("h2").text("");
+            d3.select(this).attr("class","incident");
+        });
+
+    // when the input range changes update the rectangle 
+    d3.select("#timeslide").on("input", function() {
+        update(+this.value);
+    });
+
+    function update(value) {
+        document.getElementById("range").innerHTML=month[value];
+        inputValue = month[value];
+        d3.selectAll(".incident")
+            .attr("fill", dateMatch);
+    }
+
+    function dateMatch(data, value) {
+        var d = new Date(data.properties.date);
+        var m = month[d.getMonth()];
+        if (inputValue == m) {
+            this.parentElement.appendChild(this);
+            return "red";
+        } else {
+            return "#999";
+        };
+    }
+
+    function initialDate(d,i){
+        var d = new Date(d.properties.STREET);
+        var m = month[d.getMonth()];
+        if (m == "January") {
+            this.parentElement.appendChild(this);
+            return "red";
+        } else {
+            return "#999";
+        };
+    }
+    </script>	
+
+	
+
+	<style>
+		body {
+    		position: absolute;
+    		font-family: "Proxima Nova", "Montserrat", sans-serif;
+		}
+		h1, h2 {
+		    position: absolute;
+		    left: 10px;
+		    font-size: 1.3em;
+		    font-weight: 100;
+		}
+		h2 {
+		    top: 30px;
+		    font-size: 1em;
+		}
+		/* REMOVE .incident FILL CSS */
+		.hover {
+		    fill: yellow;   
+		}
+		/* ADD CSS FOR #sliderContainer */
+		#sliderContainer {
+		    text-align: center;
+		    position: relative;
+		    top: 600px;
+		}
+	</style>
+
+	
+
+</body>
+</html>

@@ -10,6 +10,13 @@ app = Flask(__name__)
 def main():
     return render_template('index.html')
 
+@app.route('/data', methods=["GET","POST"])
+def visualize():
+    if request.method == "POST":
+        return render_template('boston_map.html')
+    else:
+        return render_template('index.html')
+
 @app.route('/optimize', methods=["GET","POST"])
 def optimize():
     if request.method == "POST":

@@ -1,10 +1,17 @@
-# Project 2: Factors Influencing Crime in Boston
+# Project 3: Factors Influencing Crime in Boston
 
+### .
+### Please see pdf file (cs591 report) for more details.
+### .
+### .
+### .
 
 ## Authors
 * Janell Chen (janellc)
 * Rebecca Stiffelman (rstiffel)
 * Yash (yash)
+
+
 
 **Question:**
 
@@ -40,9 +47,11 @@ python -m pip install shapely
 install z3 via github instructions
 
 ```
+**How to run the app**
+* Note: must retrive datasets before running app (see below)
+* python proj3.py
 
 
-**To run in trial mode**
+**Retrieve Datasets**
 * Note: Must run getStreetlights.py from ferrys (borrowed dataset from their team)
 * python execute.py janellc_rstiffel_yash --trial
-

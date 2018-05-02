@@ -1,34 +1,13 @@
 # Project 3: Factors Influencing Crime in Boston
 
-## Please see pdf file (cs591 report) for more details.
+### .
+### Please see pdf file (cs591 report) for more details.
 
 
 ## Authors
 * Janell Chen (janellc)
 * Rebecca Stiffelman (rstiffel)
 * Yash (yash)
-
-## Required libraries and tools
-You will need some libraries and packages.
-```
-python -m pip install shapely
-install z3 via github instructions
-
-```
-**How to run the app**
-* Note: must retrive datasets before running app (see below)
-* python proj3.py
-
-
-**Retrieve Datasets**
-* Note: Must run getStreetlights.py from ferrys (borrowed dataset from their team)
-* python execute.py janellc_rstiffel_yash --trial
-
-
-
-
-
-
 
 
 
@@ -56,3 +35,21 @@ the minimum number of night patrols needed in each district such that every stre
 
 ### Correlation between Streetlights and Crime (sortCorrelations.py)
 We aimed to uncover correlation between number of streetlights and number of crimes that occur in Boston neighborhoods.
+
+
+
+## Required libraries and tools
+You will need some libraries and packages.
+```
+python -m pip install shapely
+install z3 via github instructions
+
+```
+**How to run the app**
+* Note: must retrive datasets before running app (see below)
+* python proj3.py
+
+
+**Retrieve Datasets**
+* Note: Must run getStreetlights.py from ferrys (borrowed dataset from their team)
+* python execute.py janellc_rstiffel_yash --trial

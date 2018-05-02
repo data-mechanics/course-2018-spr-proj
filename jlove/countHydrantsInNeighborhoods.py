@@ -8,7 +8,7 @@ import geojson
 
 class countHydrantsInNeighborhoods(dml.Algorithm):
     contributor = 'jlove'
-    reads = ['jlove.hydrants', 'jlove.neighborhoods', 'jlove.hydrantGroups']
+    reads = ['jlove.hydrants', 'jlove.neighborhoods']
     writes = ['jlove.hydrantCounts', 'jlove.hydrantGroups']
     
     @staticmethod
@@ -34,8 +34,7 @@ class countHydrantsInNeighborhoods(dml.Algorithm):
             featureCollection = geojson.FeatureCollection(hydrantsIn)
             featureCollection['metadata'] = {'neighborhood': name}
             featureCollections += [featureCollection]
-        
-        
+
         repo.dropCollection('hydrantGroups')
         repo.createCollection('hydrantGroups')
         repo['jlove.hydrantGroups'].insert_many(featureCollections)

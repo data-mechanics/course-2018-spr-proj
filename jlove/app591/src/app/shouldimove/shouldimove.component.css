@@ -1,0 +1,41 @@
+.two {
+	width: 66.75%;
+	height: 100vh;
+	float: left;
+}
+
+.one {
+	width: 33%;
+	height: 100vh;
+	background-color: whitesmoke;
+	float: left;
+	border-right: 1px solid black;
+}
+
+.inner-one {
+}
+
+.title {
+	width: 100%;
+	padding: 0px 0px 0px 0px;
+	text-align: center;
+	border-bottom: solid 1px lightgrey;
+	color: darkslategrey;
+}
+
+.content {
+	padding: 90px 20px;
+}
+
+.search {
+	width: 100%;
+	text-align: center;
+}
+
+.search-button {
+	background-color: darkslategrey;
+	color: whitesmoke;
+	border: 1px solid darkslategrey;
+	border-radius: 3px;
+	cursor: pointer;
+}

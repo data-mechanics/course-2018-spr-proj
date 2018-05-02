@@ -44,6 +44,7 @@ while len(algorithms) > 0:
             del algorithms[i]
             break
 
+
 # Execute the algorithms in order.
 provenance = prov.model.ProvDocument()
 for algorithm in ordered:

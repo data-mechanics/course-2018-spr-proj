@@ -1,4 +1,4 @@
-# Project 2: Factors Influencing Crime in Boston
+# Project 3: Factors Influencing Crime in Boston
 
 
 ## Authors
@@ -6,6 +6,8 @@
 * Rebecca Stiffelman (rstiffel)
 * Yash (yash)
 
+
+# Please see pdf file (cs591 report) for more details.
 
 **Question:**
 

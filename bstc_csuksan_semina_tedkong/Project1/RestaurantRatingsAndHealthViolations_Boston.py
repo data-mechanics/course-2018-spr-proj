@@ -48,7 +48,9 @@ class RestaurantRatingsAndHealthViolations_Boston(dml.Algorithm):
         yelp_filter = lambda x: {'name':x['name'],
                                     'rating':x['rating'],
                                     'review_count':x['review_count'],
-                                    'location': x['location']}
+                                    'location': x['location'],
+                                    'latitude': (x['coordinates'])['latitude'],
+                                    'longitude': (x['coordinates'])['longitude']}
         yelp_data = project(yelp_data, yelp_filter)
         # print(yelp_data[:10])
 
@@ -95,6 +97,8 @@ class RestaurantRatingsAndHealthViolations_Boston(dml.Algorithm):
                                         'rating':t[0]['rating'],
                                         'review_count':t[0]['review_count'],
                                         'location':t[0]['location'],
+                                        'latitude':t[0]['latitude'],
+                                        'longitude':t[0]['longitude'],
                                         'num_violations':t[1]['num_violations'],
                                         'ave_violation_severity':t[1]['ave_violation_severity']
                                         }
@@ -147,7 +151,7 @@ class RestaurantRatingsAndHealthViolations_Boston(dml.Algorithm):
                   )
         doc.usage(get_yelp, resource2, startTime, None,
                   {prov.model.PROV_TYPE:'ont:Retrieval',
-                  'ont:Query':'?type=rating,review_count'
+                  'ont:Query':'?type=rating,review_count,latitude,longitude'
                   }
                   )
 

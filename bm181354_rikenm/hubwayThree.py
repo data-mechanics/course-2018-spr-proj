@@ -23,7 +23,11 @@ class hubwayThree(dml.Algorithm):
         
         # Dataset01
         url = 'http://datamechanics.io/data/bm181354_rikenm/201704-hubway-tripdata.csv'
- 
+#        if trial:
+#            chunksize = 100
+#            for chunk in pd.read_csv(url, chunksize=chunksize):
+#                hubway_df = chunk
+#        else:
         hubway_df = pd.read_csv(url)
         # creating df that only contains city, total number of service, EMS_INDEX
    
@@ -63,7 +67,7 @@ class hubwayThree(dml.Algorithm):
         this_script = doc.agent('alg:bm181354_rikenm#hubwayThree', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
         # change this
-        resource = doc.entity('bdp:Emergency_Medical_Service_EMS_Stations', {'prov:label':'dataset of medical service in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        resource = doc.entity('bdp:201704-hubway-tripdata', {'prov:label':'dataset of hubway in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         
         get_hubwayThree = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         

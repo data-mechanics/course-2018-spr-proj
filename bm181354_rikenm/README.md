@@ -40,10 +40,17 @@ One useful thing about hierarchal clustering is that you can see the dneundogram
 
 *Fig 3.0: The red dot is the least significant stop as calculated by our algorithm. Hence, would be removed. Fig 3.0a: red dot is buried inside a dense stop. Fig 3.0b : looking from z axis straight down.*
 
+## Dependency:
+
+```python
+ pip install pandas
+ pip install scipy
+ pip install numpy
+```
 
 ## To Run:
 
 ```python
 python execute.py bm181354_rikenm
 ```
-Our algorithm’s data would be saved as “bm181354_rikenm.solutionLeastPopularStationsdb” inside db “repo” and collection “solutionLeastPopularStationsdb”
+Our algorithm’s data would be saved as **“bm181354_rikenm.solutionLeastPopularStationsdb”** inside db **“repo”** and collection **“solutionLeastPopularStationsdb”**

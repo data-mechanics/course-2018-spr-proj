@@ -24,6 +24,12 @@ class hubwayJuly(dml.Algorithm):
         # Dataset01
         url = 'http://datamechanics.io/data/bm181354_rikenm/Hubway_Stations_as_of_July_2017.csv'
  
+ 
+#        if trial:
+#            chunksize = 100
+#            for chunk in pd.read_csv(url, chunksize=chunksize):
+#                hubway_df = chunk
+#        else:
         hubway_df = pd.read_csv(url)
         # creating df that only contains city, total number of service, EMS_INDEX
    
@@ -62,14 +68,14 @@ class hubwayJuly(dml.Algorithm):
         
         this_script = doc.agent('alg:bm181354_rikenm#hubwayJuly', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
         
-        # change this
-        resource = doc.entity('bdp:Emergency_Medical_Service_EMS_Stations', {'prov:label':'dataset of medical service in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        # change this : DONE
+        resource = doc.entity('bdp:Hubway_Stations_as_of_July_2017', {'prov:label':'dataset of hubway in Boston area [july 2017]', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
         
         get_hubwayJuly = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
         
         doc.wasAssociatedWith(get_hubwayJuly, this_script)
         
-        #change this
+        #DONE
         doc.usage(get_hubwayJuly, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval'})
                   
         hubwayJuly = doc.entity('dat:bm181354_rikenm#hubwayJuly', {prov.model.PROV_LABEL:'hubwayJuly', prov.model.PROV_TYPE:'ont:DataSet'})

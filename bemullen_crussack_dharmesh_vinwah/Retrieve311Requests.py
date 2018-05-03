@@ -60,14 +60,16 @@ class Retrieve311Requests(dml.Algorithm):
         repo = client.repo
         repo.authenticate(Constants.BASE_AUTH, Constants.BASE_AUTH)
 
-        doc.add_namespace('dat', 'http://datamechanics.io/data/') 
-        doc.add_namespace('ont', 'http://datamechanics.io/ontology#')
-        doc.add_namespace('log', 'http://datamechanics.io/log/')
+        doc.add_namespace('alg', 'http://datamechanics.io/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/resource/')
         doc.add_namespace('bdpr', 'https://data.boston.gov/api/3/action/datastore_search_sql')
         doc.add_namespace('bdpm', 'https://data.boston.gov/datastore/odata3.0/')
+        doc.add_namespace('datp', 'http://datamechanics.io/data/bemullen_crussack_dharmesh_vinwah/data/')
         doc.add_namespace('csdt', 'https://cs-people.bu.edu/dharmesh/cs591/591data/')
-        doc.add_namespace('datp', 'http://datamechanics.io/data/' + Constants.BASE_NAME + '/data/')
+
 
         this_script = doc.agent('alg:' + Constants.BASE_NAME + '#Retrieve311Requests',\
             {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})

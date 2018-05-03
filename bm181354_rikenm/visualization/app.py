@@ -61,7 +61,18 @@ def cluster_data(number):
 # load compute data
 @app.route("/hubway/compute", methods =['GET'])
 def compute_data():
-    return open("compute_data.json",'r').read()
+    client = pymongo.MongoClient()
+    repo = client.repo
+    repo.authenticate('bm181354_rikenm', 'bm181354_rikenm')
+    collection = repo['bm181354_rikenm.solutionClusteringpopdb']
+    
+    json_projects = []
+    for project in collection:
+        json_projects.append(project)
+    json_projects = json.dumps(json_projects, default=json_util.default)
+    client.close()
+
+    return (json_projects) #open(,'r').read()
 
 @app.route("/hubway/pop", methods =['GET'])
 def compute_pop():

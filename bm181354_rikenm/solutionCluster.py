@@ -27,7 +27,7 @@ import uuid
 class solutionCluster(dml.Algorithm):
     contributor = 'bm181354_rikenm'
     reads = ['bm181354_rikenm.hubwayJuly','bm181354_rikenm.hubwayOne','bm181354_rikenm.hubwayTwo','bm181354_rikenm.hubwayThree']
-    writes = ['bm181354_rikenm.solutionClusteringdb']
+    writes = ['bm181354_rikenm.solutionClusteringdb','bm181354_rikenm.solutionClusteringpopdb']
 
     @staticmethod
     def execute(trial = False):
@@ -97,7 +97,7 @@ class solutionCluster(dml.Algorithm):
 
         data4 = pd.DataFrame(list(trip_data3.find()))
 
-        if trail == True:
+        if trial == True:
             times2 = 1000 
             times3 = 1000
             tims4  = 1000 
@@ -197,12 +197,12 @@ class solutionCluster(dml.Algorithm):
                 
         remove_zero_trip_distance_pop = remove_zero_trip_distance_pop.reshape((counter,3))
 
-        if trail == True:
+        if trial == True:
             times4 = counter 
         else:
             times4 = 181        
 
-        print(times4)    
+
             
         remove_zero_pop = remove_zero_pop.reshape((times4,1))
 
@@ -247,10 +247,10 @@ class solutionCluster(dml.Algorithm):
                     "features": []}
             arr = []
             for i in x:
-                print(i)
+                
                 elem = { "type": "Feature", "id": 1, "geometry": { "type": "Point", "coordinates": [i[1],i[0]] }}
                 arr.append(elem) 
-            print("//")
+            
             old[counter]["features"]=arr
             counter = counter+1
 
@@ -290,7 +290,7 @@ class solutionCluster(dml.Algorithm):
         jup_repo = client.repo
 
         repo.dropPermanent('solutionClusteringpopdb')
-                        #repo.create_collection("trail_index")
+                        #repo.create_collection("trial_index")
         repo.createPermanent('solutionClusteringpopdb')
         repo['bm181354_rikenm.solutionClusteringpopdb'].insert_many(r)
         repo['bm181354_rikenm.solutionClusteringpopdb'].metadata({'complete':True})
@@ -324,7 +324,7 @@ class solutionCluster(dml.Algorithm):
             
             x= x|{i}
             
-            print(x) 
+            
             
             for j in x:
                  for k in range(len(json_obj[j])):
@@ -334,7 +334,7 @@ class solutionCluster(dml.Algorithm):
                      elem = { "type": "Feature", "id": 1, "geometry": { "type": "Point", "coordinates": [json_obj[j][k][1],json_obj[j][k][0]] }}
                      arr.append(elem)
                     
-            print("--")        
+                   
                   
             new["features"] = arr
             #print(counter2,arr)
@@ -356,18 +356,17 @@ class solutionCluster(dml.Algorithm):
 
 
 
-##        new_df = pd.DataFrame(final)
-##
-##        r = json.loads(new_df.to_json( orient='records'))
-##        s = json.dumps(r, sort_keys=True, indent=2)
-##
-##        jup_repo = client.repo
-##
-##        repo.dropPermanent('solutionClusteringdb')
-##                        #repo.create_collection("trail_index")
-##        repo.createPermanent('solutionClusteringdb')
-##        repo['bm181354_rikenm.solutionClusteringdb'].insert_many(r)
-##        repo['bm181354_rikenm.solutionClusteringdb'].metadata({'complete':True})
+        new_df = pd.DataFrame(final)
+
+        r = json.loads(new_df.to_json( orient='records'))
+        s = json.dumps(r, sort_keys=True, indent=2)
+
+        jup_repo = client.repo
+
+        repo.dropPermanent('solutionClusteringdb')
+        repo.createPermanent('solutionClusteringdb')
+        repo['bm181354_rikenm.solutionClusteringdb'].insert_many(r)
+        repo['bm181354_rikenm.solutionClusteringdb'].metadata({'complete':True})
 
 
 
@@ -378,46 +377,58 @@ class solutionCluster(dml.Algorithm):
 
 
 
-##        @staticmethod
-##        def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
-##            '''
-##                Create the provenance document describing everything happening
-##                in this script. Each run of the script will generate a new
-##                document describing that invocation event.
-##                '''
-##            
-            # Set up the database connection.
-##            client = dml.pymongo.MongoClient()
-##            repo = client.repo
-##            
-##            repo.authenticate('bm181354_rikenm', 'bm181354_rikenm')
-##            doc.add_namespace('alg', 'http://datamechanics.io/?prefix=bm181354_rikenm/algorithm/') # The scripts are in <folder>#<filename> format.
-##            doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
-##            doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
-##            doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
-##            doc.add_namespace('bdp','http://datamechanics.io/?prefix=bm181354_rikenm/')
-##            
-##            this_script = doc.agent('alg:bm181354_rikenm#solutionClustering', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
-##            
-##            resource = doc.entity('bdp:htaindex_data_places_25', {'prov:label':'dataset of all indices raw values', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
-##            
-##            get_index = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
-##            
-##            doc.wasAssociatedWith(get_index, this_script)
-##            
-##            #change this
-##            doc.usage(get_index, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval'})
-##            
-##            # change this
-##            index = doc.entity('dat:bm181354_rikenm#solutionClusteringdb', {prov.model.PROV_LABEL:'index  of transportation, housing', prov.model.PROV_TYPE:'ont:DataSet'})
-##            
-##            doc.wasAttributedTo(index, this_script)
-##            doc.wasGeneratedBy(index, get_index, endTime)
-##            doc.wasDerivedFrom(index, resource, index, index, index)
-##            
-##            repo.logout()
-##            return doc 
-               
+    @staticmethod
+    def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):
+        '''
+            Create the provenance document describing everything happening
+            in this script. Each run of the script will generate a new
+            document describing that invocation event.
+            '''
+        
+        # Set up the database connection.
+        client = dml.pymongo.MongoClient()
+        repo = client.repo
+        
+        repo.authenticate('bm181354_rikenm', 'bm181354_rikenm')
+        doc.add_namespace('alg', 'http://datamechanics.io/?prefix=bm181354_rikenm/algorithm/') # The scripts are in <folder>#<filename> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/') # The data sets are in <user>#<collection> format.
+        doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
+        doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
+        doc.add_namespace('bdp','http://datamechanics.io/?prefix=bm181354_rikenm/')
+        
+        this_script = doc.agent('alg:bm181354_rikenm#solutionCluster', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+        
+        resource = doc.entity('bdp:201702-hubway-tripdata', {'prov:label':'dataset of hubway in Boston area', prov.model.PROV_TYPE:'ont:DataResource', 'ont:Extension':'csv'})
+        
+        get_cluster = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        
+        doc.wasAssociatedWith(get_cluster, this_script)
+  
+        doc.usage(get_cluster, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval'})
+        
+        cluster = doc.entity('dat:bm181354_rikenm#solutionClusteringdb', {prov.model.PROV_LABEL:'cluster', prov.model.PROV_TYPE:'ont:DataSet'})
+        
+        doc.wasAttributedTo(cluster, this_script)
+        doc.wasGeneratedBy(cluster, get_cluster, endTime)
+        doc.wasDerivedFrom(cluster, resource, get_cluster, get_cluster, get_cluster)
+        
+        
+        #2
+        get_population = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
+        
+        doc.wasAssociatedWith(get_population, this_script)
+        
+        doc.usage(get_population, resource, startTime, None,{prov.model.PROV_TYPE:'ont:Retrieval'})
+        
+        population = doc.entity('dat:bm181354_rikenm#solutionClusteringpopdb', {prov.model.PROV_LABEL:'clusterPop', prov.model.PROV_TYPE:'ont:DataSet'})
+        
+        doc.wasAttributedTo(population, this_script)
+        doc.wasGeneratedBy(population, get_population, endTime)
+        doc.wasDerivedFrom(population, resource, get_population, get_population, get_population)
+      
+        
+        repo.logout()
+        return doc
 
         
 

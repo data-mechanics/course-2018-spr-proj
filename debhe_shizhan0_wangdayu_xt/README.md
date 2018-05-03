@@ -74,3 +74,9 @@ Running trial mode by
 ```
 python execute.py debhe_shizhan0_wangdayu_xt --trial
 ```
+
+For project 3 
+```
+export FLASK_APP=app.py
+flask run
+```

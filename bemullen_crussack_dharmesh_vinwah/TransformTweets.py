@@ -67,7 +67,7 @@ class TransformTweets(dml.Algorithm):
         repo.authenticate(Constants.BASE_AUTH, Constants.BASE_AUTH)
         tweets = repo[Constants.BASE_NAME + "." + "tweets"]
         tList = []
-        m1 = 4; m2 = m1 + 1
+        m1 = 11; m2 = m1 + 1
         normative_range = [datetime.datetime(2016, m1, 23), datetime.datetime(2016, m2, 10)]
         for tweet in tweets.find({'datetime': {'$gte': normative_range[0],
             '$lt': normative_range[1]}}):
@@ -146,6 +146,6 @@ class TransformTweets(dml.Algorithm):
         repo.logout()
         return doc
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
     #TransformTweets.execute()
-    #TransformTweets.sentimentTest()
+    TransformTweets.sentimentTest()

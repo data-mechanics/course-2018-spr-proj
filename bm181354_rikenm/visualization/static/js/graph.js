@@ -127,7 +127,7 @@ var counter = 0;
 
         chart
         .width(500)
-        .height(423)
+        .height(550)
         .dimension(popularityLevelDim)
         .group(popGroup)
         .legend(dc.legend())

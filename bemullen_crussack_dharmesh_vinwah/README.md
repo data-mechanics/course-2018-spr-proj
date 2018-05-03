@@ -19,7 +19,7 @@ To that end, the datasets we are using are:
 
 3. <strong><a href="https://data.boston.gov/dataset/fire-incident-reporting">Boston Fire Incident Reporting</a></strong>: This dataset provides us with a rich history of fire incidents reported across the city of Boston, allowing us to glean trends, particularly during move in week.
 
-4. <strong><a href="gis.cityofboston.gov/arcgis/rest/services/Education/OpenData/MapServer/2">Spatial Dataset of Colleges and Universities in the Greater Boston Area</a></strong>: This is used to construct 2d-index-capable queries on the other 4 datasets.
+4. <strong><a href="https://cs-people.bu.edu/dharmesh/cs591">Tweets within 50 kilometres of Boston City over 2016 and 2017</a></strong>: Used to understand Boston's sentiment and its evolution over a weekly period for each month.
 
 ## Directory Structure
 

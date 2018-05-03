@@ -63,5 +63,9 @@ def cluster_data(number):
 def compute_data():
     return open("compute_data.json",'r').read()
 
+@app.route("/hubway/pop", methods =['GET'])
+def compute_pop():
+    return open("computed_pop.json",'r').read()
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0',port=5000,debug=True)

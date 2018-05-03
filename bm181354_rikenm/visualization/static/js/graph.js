@@ -2,53 +2,54 @@ queue()
     .defer(d3.json, "/hubway/projects")  // <--- route that contains all my json datas
     .defer(d3.json,"/hubway/boston")
     .defer(d3.json,"/cluster/1")
+    .defer(d3.json,"/hubway/pop")
     .await(makeGraphs);
 
 var i = 0.0001;
 var flag = true;
 var counter = 0;
 
-    function makeGraphs(error, projectsJson,bostonJson,clusterJson) {
+    function makeGraphs(error, projectsJson,bostonJson,clusterJson,popularityJson) {
     
         var coor = [-71.157609+i,42.358888+i];
         i = i + 0.00001; 
 
-
         console.log(clusterJson)  
 
-        var popularity = [1272.1538461538462,829.3,583.0,2146.6666666666665,1886.1538461538462,1084.3,557.2,4711.5,2769.5833333333335,2786.75,89.0,1918.75,5042.764705882353,1163.0,3477.5714285714284,2.0, 23.0,1707.3333333333333, 2866.8571428571427,440.0]
-
-
+        console.log(popularityJson[clusterJson][0])
 
         var set_data = [[-71.09482660737189,42.362429532712525],
         [-71.10144447293223,42.34177428658286 ]]
 
 
         // this will be replaced by clusterJson
-       
+        // TODO : Replace this with original data 
+
+
+        var popularity = [1272.1538461538462,829.3,583.0,2146.6666666666665,1886.1538461538462,1084.3,557.2,4711.5,2769.5833333333335,2786.75,89.0,1918.75,5042.764705882353,1163.0,3477.5714285714284,2.0, 23.0,1707.3333333333333, 2866.8571428571427,440.0]
 
         var data1   = [ 
 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[1], 'title': 'Cluster 1'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[2], 'title': 'Cluster 2'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[3], 'title': 'Cluster 3'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[4], 'title': 'Cluster 4'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[5], 'title': 'Cluster 5'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[6], 'title': 'Cluster 6'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[7], 'title': 'Cluster 7'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[8], 'title': 'Cluster 8'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[9], 'title': 'Cluster 9'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[10], 'title': 'Cluster 10'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[11], 'title': 'Cluster 11'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[12], 'title': 'Cluster 12'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[13], 'title': 'Cluster 13'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[14], 'title': 'Cluster 14'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[15], 'title': 'Cluster 15'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[16], 'title': 'Cluster 16'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[17], 'title': 'Cluster 17'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[18], 'title': 'Cluster 18'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[19], 'title': 'Cluster 19'  }, 
-            { 'Expt': 1, 'Run': 1, 'popularity': popularity[0], 'title': 'Cluster 20'  }
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][1], 'title': 'Cluster 1'  },
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][2], 'title': 'Cluster 2'  },
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][3], 'title': 'Cluster 3'  },
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][4], 'title': 'Cluster 4'  },
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][5], 'title': 'Cluster 5'  },
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][6], 'title': 'Cluster 6'  },
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][7], 'title': 'Cluster 7'  },
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][8], 'title': 'Cluster 8'  },
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][9], 'title': 'Cluster 9'  },
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][10], 'title': 'Cluster 10'  }, 
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][11], 'title': 'Cluster 11'  }, 
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][12], 'title': 'Cluster 12'  }, 
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][13], 'title': 'Cluster 13'  }, 
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][14], 'title': 'Cluster 14'  }, 
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][15], 'title': 'Cluster 15'  }, 
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][16], 'title': 'Cluster 16'  }, 
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][17], 'title': 'Cluster 17'  }, 
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][18], 'title': 'Cluster 18'  }, 
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][19], 'title': 'Cluster 19'  }, 
+            { 'Expt': 1, 'Run': 1, 'popularity': popularityJson[clusterJson][0], 'title': 'Cluster 20'  }
             
           ];
 
@@ -268,6 +269,7 @@ var counter = 0;
             .defer(d3.json, "/hubway/projects")  // <--- route that contains all my json datas
             .defer(d3.json,"/hubway/boston")
             .defer(d3.json,"/cluster/"+slideValue)
+            .defer(d3.json,"/hubway/pop")
             .await(makeGraphs);
     };
 

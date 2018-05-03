@@ -146,6 +146,6 @@ class TransformTweets(dml.Algorithm):
         repo.logout()
         return doc
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     #TransformTweets.execute()
     #TransformTweets.sentimentTest()

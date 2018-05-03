@@ -33,10 +33,21 @@ Certain data transformations were previously accomplished using pure Javascript.
 
 The <a href="prototypes">prototypes</a> directory contains experimental files that were used over the course of the project to evaluate the feasibility of an idea.
 
+### Project 3 Specifics
+
+Information about specifics pertaining to project 3 can be found in the <a href="docs/">docs</a> directory.
+
+Certain data transformations were previously accomplished using pure Javascript. These can be found in the <a href="scripts/">scripts</a> directory.
+
+The <a href="prototypes">prototypes</a> directory contains experimental files that were used over the course of the project to evaluate the feasibility of an idea.
+
+Results and our final report can be found <a href="https://cs-people.bu.edu/dharmesh/cs591/report.pdf" target="_blank">here</a>.
+
+An interactive website summarising the results can be found at <a href="http://ec2-18-217-39-61.us-east-2.compute.amazonaws.com/">this link</a>. Code for the website is available <a href="https://github.com/Vinwah/CS591-Data-Mechanics-Web-Page">here</a>.
 
 ## Evaluation
 
 To run the code, setup the database structure as documented in the parent README and then run:
 
 
-<code>pip install -r requirements.txt && python execute.py bemullen_crussack_dharmesh_vinwah</code>
+<code>pip install -r requirements.txt --no-cache && python execute.py bemullen_crussack_dharmesh_vinwah</code>

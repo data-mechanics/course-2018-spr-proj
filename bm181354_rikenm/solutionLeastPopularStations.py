@@ -28,7 +28,7 @@ import uuid
 class solutionLeastPopularStations(dml.Algorithm):
     contributor = 'bm181354_rikenm'
     reads = ['bm181354_rikenm.hubwayJuly','bm181354_rikenm.hubwayOne','bm181354_rikenm.hubwayTwo','bm181354_rikenm.hubwayThree']
-    writes = ['bm181354_rikenm.solutionLeastPopularStationsdb']
+    writes = ['bm181354_rikenm.solutionLeastPopularStationsdb','bm181354_rikenm.solutionClusteringpopdb']
     
     @staticmethod
     def execute(trial = False):

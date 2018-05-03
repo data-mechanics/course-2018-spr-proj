@@ -65,6 +65,7 @@ class statistics(dml.Algorithm):
             schoolToSubway_KM.append( distanceInKmBetweenEarthCoordinates(row['schoolY'], row['schoolX'], row['subwayY'], row['subwayX']) )
 
         NewCalculation_AvgSchoolToSubway = sum(schoolToSubway_KM) / len(schoolToSubway_KM)
+        print(len(schoolToSubway_KM))
         NewCalculation_StdevSchoolToSubway = numpy.std(schoolToSubway_KM)
 
         temp_list = []

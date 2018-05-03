@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<!--
+	Photon by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Move-in Mania</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="javascripts/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="stylesheets/style.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="stylesheets/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="stylesheets/ie9.css" /><![endif]-->
+		<link rel="stylesheet" href="stylesheets/circle-container.css" />
+	</head>
+	<body>
+
+		<!-- Header -->
+			<section id="header">
+				<div class="inner">
+					<h1><strong>College Move-In Week </strong><a href="http://html5up.net"></a></h1>
+					<p>HOW DOES MOVE-IN WEEK IMPACT THE QUALITY OF LIFE IN BOSTON?</p>
+					<br><b><br><br><br><br><br>
+					<ul class="actions">
+						<li><a href="#one" class="button scrolly">Discover</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- One -->
+			<section id="one" class="main style1">
+				<div class="container">
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class="major">
+								<h2>Move in week is universally chaotic and a generally unpleasant experience for both, college students and local residents.</h2>
+							</header>
+							<p>In this project, we attempt to identify factors affecting residents’ quality of life as a result of move-in week.</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+							<span class="image fit"><img src="images/alstonXmas.jpg" alt="" /></span>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		<!-- Two -->
+			<section id="twoSectionA" class="main style2">
+				<div class="container">
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<ul class="major-icons">
+								<li><span class="image fit"><img id="happinessMap" src="images/happinessMaps/September.png" alt="" /></span></span></li>
+								<div id="monthSelectionBtns" class="btn-group">
+									<button id="btnJanuary" onClick="monthSelected('January')" style="width: 30%; padding: 0 0;">January</button>
+									<button id="btnFebruary" onClick="monthSelected('February')" style="width: 30%; padding: 0 0;">February</button>
+									<button id="btnMarch" onClick="monthSelected('March')" style="width: 30%; padding: 0 0;">March</button>
+									<button id="btnApril" onClick="monthSelected('April')" style="width: 30%; padding: 0 0;">April</button>
+									<button id="btnMay" onClick="monthSelected('May')" style="width: 30%; padding: 0 0;">May</button>
+									<button id="btnJune" onClick="monthSelected('June')" style="width: 30%; padding: 0 0;">June</button>
+									<button id="btnJuly" onClick="monthSelected('July')" style="width: 30%; padding: 0 0;">July</button>
+									<button id="btnAugust" onClick="monthSelected('August')" style="width: 30%; padding: 0 0;">August</button>
+									<button id="btnSeptember" onClick="monthSelected('September')" style="width: 30%; padding: 0 0;">September</button>
+									<button id="btnOctober" onClick="monthSelected('October')" style="width: 30%; padding: 0 0;">October</button>
+									<button id="btnNovember" onClick="monthSelected('November')" style="width: 30%; padding: 0 0;">November</button>
+									<button id="btnDecember" onClick="monthSelected('December')" style="width: 30%; padding: 0 0;">December</button>
+								</div>
+							</ul>
+						</div>
+						<div class="6u$ 12u$(medium)">
+							<header class="major">
+								<h2>Sentiment Analysis of Boston's Population<br /></h2>
+							</header>
+							<p>Overall Description</p>
+							<p id="monthDescription">month description (write text in script part at the bottom)</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+
+			<section id="twoSectionB" class="main style2" style="background-image: linear-gradient(45deg, #999999, #BBBBBB 50%, #AAAAAA 95%);">
+				<div class="container">
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class="major">
+								<h2>311 Service Requests<br /></h2>
+							</header>
+							<p>Analyze Boston's 311 Service Requests records non-emergency city violations, such as improper trash disposal and illegal parking complaints, and the location of these incidents. With the understanding that the number of violations affects the quality of life on a given day in Boston, one of our aims became to find a way to serve requests in the most timely way. To make this solution concrete but also efficient, our team worked to display the minimum number of dispatchers required to respond to service within the time limit indicated by the 311 service request central.</p>
+							<p>From our analysis, we found that the period that has both the highest amount of requests and need the most dispatchers is the period associated with students moving in to universities in Boston, 28th of August to 6th of September. On the figures to the left, you can see a bar plot of both the number of service requests and number of required dispatchers, over a 10day period, as an average over all years in the same period. Other than the move-in period, the periods chosen are selected as baseline comparisons periods, selected from both during and outside of school semesters.</p>
+							<p>From the results we can see that the number of service requests and minimum number of service request dispatchers is the highest during the move in period. To be exact, number of inquiries is 47% higher than the mean and minimum number of dispatchers is 17% higher than the mean during the move in period. If we assume that the number of service requests and minimum number of dispatchers is normally distributed and the mean and standard deviation in our results are representative of the true distribution, the probability of having this high or a higher result is 7.0% for number of inquiries and 4.9% for the minimum number of service providers.</p>
+							<p>Click <a href="https://github.com/weirdindiankid/course-2018-spr-proj/blob/master/bemullen_crussack_dharmesh_vinwah/docs/311Requests.md" style="color: #4a87d3"> here </a> for more information about our approach and results</p>
+						</div>
+						<div class="6u$ 12u$(medium)">
+							<ul class="major-icons">
+								<li><span class="image fit"><img src="images/avg_num_inquiries.png" alt="" /></span></span></li>
+								<li><span class="image fit"><img src="images/avg_personel_required.png" alt="" /></span></span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section id="twoSectionC" class="main style2">
+				<div class="container">
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<ul class="major-icons">
+								<li><span class="image fit"><img src="images/fire_incidents.png" alt="" /></span></li>
+							</ul>
+						</div>
+						<div class="6u$ 12u$(medium)">
+							<header class="major">
+								<h2>Fire Incidents<br /></h2>
+							</header>
+							<p>Reported fire incidents includes everything from a smoke detector activation to an electrical fire to a cooking fire. The Boston City Score includes Boston Fire Department (BFD) incidents so we thought they would be a good indicator of the city’s performance. Our initial suspicion was that during move-in week and the time that colleges are in session the fire department would be called more frequently and the incident numbers would be higher.</p>
+                            <p>This chart depicts the number of fire incidents for the first two weeks of each month. As you can see, the number of incidents is relatively consistent, with August, March, and September reporting the highest numbers.</p>
+                            <p>We must account for the fact that move-in means the population of Boston increases, and thus the amount of incidents is likely to increase. That said, during other months with colleges in session, such as October and November, there are not as many incidents as in August and September.</p>
+                            <p>The average number of fire incidents for all the months is 3947.25 incidents. For the months of August and September the average is 4351.5 fire incidents. This shows an increase of approximately 10% for the move-in months. The standard deviation between the months is approximately 325.44 incidents. Assuming number of incidents is normally distributed and the number of incidents is independent of the month, the probability of 4,351.5 or more incidents in one month, is 11%.</p>
+                        </div>
+					</div>
+				</div>
+			</section>
+
+			<section id="twoSectionD" class="main style2" style="background-image: linear-gradient(45deg, #999999, #BBBBBB 50%, #AAAAAA 95%);">
+				<div class="container">
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class="major">
+								<h2>Library Attendance<br /></h2>
+							</header>
+							<p>Boston uses the CityScore initiative to measure the overall health of the city each day. The initiative aggregates various city metrics, both negative and additive, into a singular score. One of these metrics is public library users. The initiative’s goal is for this metric to increase, concluding with a higher score. To contest the notion that students decrease the quality of life in Boston, we examined how student library users impact the score in a positive way.</p>
+                            <p>Due to the student population in Boston, we hypothesized that the score would increase during the academic year. We divided our data based on the average academic calendar dates of Boston University, Northeastern University, Suffolk University, and the University of Massachusetts Boston. Because the academic calendar covers most of the year, we sought out whether a student population affected the CityScore. Our method was analyzing the correlation between library attendance and city score during both the school session and not.</p>
+                            <p>The trend of the scatter plot for each dataset showed a similar shape, so we calculated a correlation coefficient to examine the true correlation. During the time that students are not in session, the correlation coefficient is .36, while during session it is .75. The result is that there is a stronger correlation between library users and CityScore during the academic year. In order for the city to achieve a higher score, the city should look at promoting student library attendance.</p>
+						</div>
+						<div class="6u$ 12u$(medium)">
+							<ul class="major-icons">
+								<li><span class="image fit"><img id="sessionGraph" src="images/libraryAttendance/uni_in_and_out_of_session.jpg" alt="" /></span></span></li>
+								<li>
+									<div id="sessionSelectionBtns" class="btn-group">
+										<button id="btnInSession" onClick="sessionSelected('in')" style="width: 49%; padding: 0 0;">In Session</button>
+										<button id="btnOutOfSession" onClick="sessionSelected('out')" style="width: 49%; padding: 0 0;">Out of Session</button>
+										<button id="btnInAndOut" onClick="sessionSelected('inOut')" style="width: 99%; padding: 0 0;">Both In and Out of Session</button>
+									</div>
+								<li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		<!-- Three -->
+			<section id="three" class="box">
+				<div class="container">
+					<header class="major" align="center">
+						<h2>DATASETS</h2>
+					</header>
+					<div class="row 150%">
+						<div class="6u 12u">
+							<span class="image fit"><img src="images/pic02.jpg" alt="" /></span>
+							<a href="https://data.boston.gov/dataset/cityscore"><h3>CITY SCORE</h3></a>
+							<p>This provides a consolidated metric that reflects residents' satisfaction with the city's efforts. We use the average of a collection of these values as an approximate indicator of how painful move in week really is.</p>
+						</div>
+						<div class="6u 12u">
+							<span class="image fit"><img src="images/pic03.jpg" alt="" /></span>
+							<a href="https://data.boston.gov/dataset/311-service-requests"><h3>311 SERVICE REQUESTS</h3></a>
+							<p>This dataset contains over 400,000 detailed records of complaints and/or requests filed by residents. We sift through irrelevant requests by filtering for the type of service request (more details in the comments in the JS files), among others.</p>
+						</div>
+						<div class="6u 12u">
+							<br><br><br>
+							<span class="image fit"><img src="images/pic04.jpg" alt="" /></span>
+							<a href="https://data.boston.gov/dataset/fire-incident-reporting"><h3>FIRE INCIDENT REPORTING</h3></a>
+							<p>This dataset provides us with a rich history of fire incidents reported across the city of Boston, allowing us to glean trends, particularly during move in week.</p>
+						</div>
+						<div class="6u 12u">
+							<br><br><br><br>
+							<span class="image fit"><img src="images/pic05.jpg" alt="" /></span>
+							<a href="https://data.boston.gov/dataset/colleges-and-universities"><h3>SPATIAL DATASET OF COLLEGES AND UNIVERSITIES IN THE GREATER BOSTON AREA</h3></a>
+							<p>This is used to construct 2d-index-capable queries on the other 4 datasets.</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+
+
+		<!-- Footer -->
+			<section id="footer">
+				<ul class="icons">
+					<li><a href="https://github.com/weirdindiankid/course-2018-spr-proj/tree/master/bemullen_crussack_dharmesh_vinwah" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</section>
+
+		<!-- Scripts -->
+			<script src="javascripts/jquery.min.js"></script>
+			<script src="javascripts/jquery.scrolly.min.js"></script>
+			<script src="javascripts/skel.min.js"></script>
+			<script src="javascripts/util.js"></script>
+			<!--[if lte IE 8]><script src="javascripts/ie/respond.min.js"></script><![endif]-->
+			<script src="javascripts/main.js"></script>
+
+	<script>
+
+        window.onload = function() {
+            monthSelected('September')
+            sessionSelected('inOut')
+        };
+
+        let monthText = {
+            January : "my jan text",
+			February : "my feb text",
+			March : "my mar text",
+			April : "my apr text",
+            May : "my may text",
+            June : "my jun text",
+            Jule : "my jul text",
+            August : "my aug text",
+            September : "my sep text",
+            Octtober : "my oct text",
+            November : "my nov text",
+            December : "my dec text"
+		};
+
+
+		let monthSelected = function(month) {
+
+			let happinessMap = document.getElementById('happinessMap');
+            happinessMap.setAttribute('src', "images/happinessMaps/"+ month + ".png");
+
+            let monthDescription = document.getElementById('monthDescription');
+            monthDescription.innerHTML = monthText[month]
+
+			let btnGrp = document.getElementById('monthSelectionBtns');
+            let btns = btnGrp.querySelectorAll('*');
+            btns.forEach(function(x){
+                if (x.getAttribute('id') == 'btn'+month) {
+					x.style.backgroundColor = "rgba(239, 133, 82, 0.8)";
+				} else {
+                    x.style.backgroundColor = "transparent";
+				}
+			})
+
+		}
+
+		let sessionSelected = function(s) {
+		    let img = 'none';
+            let activeBtn = 'none';
+			if (s == 'inOut'){
+				img = 'uni_in_and_out_of_session.png';
+                activeBtn = 'btnInAndOut';
+			} else if (s == 'in'){
+				img = 'uni_in_session.png';
+                activeBtn = 'btnInSession';
+			} else {
+				img = 'uni_out_of_session.png';
+                activeBtn = 'btnOutOfSession';
+			}
+
+		    let graph = document.getElementById('sessionGraph');
+            graph.setAttribute('src', "images/libraryAttendance/"+ img);
+
+            let btnGrp = document.getElementById('sessionSelectionBtns');
+            let btns = btnGrp.querySelectorAll('*');
+            btns.forEach(function(x){
+                if (x.getAttribute('id') == activeBtn) {
+                    x.style.backgroundColor = "rgba(239, 133, 82, 0.8)";
+                } else {
+                    x.style.backgroundColor = "transparent";
+                }
+            })
+        }
+
+	</script>
+
+
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

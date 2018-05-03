@@ -45,7 +45,7 @@ Results and our final report can be found <a href="https://cs-people.bu.edu/dhar
 
 The final poster can be found in the root directory, in a file named <i>poster.pdf</i>.
 
-An interactive website summarising the results can be found at <a href="http://ec2-18-217-39-61.us-east-2.compute.amazonaws.com/">this link</a>. Code for the website is available <a href="https://github.com/Vinwah/CS591-Data-Mechanics-Web-Page">here</a>.
+An interactive website summarising the results can be found at <a href="http://ec2-18-217-39-61.us-east-2.compute.amazonaws.com/">this link</a>. Code for the website is available in the directory <a href="https://github.com/weirdindiankid/course-2018-spr-proj/tree/master/bemullen_crussack_dharmesh_vinwah/Web%20Page">Web Page</a>.
 
 ## Evaluation
 

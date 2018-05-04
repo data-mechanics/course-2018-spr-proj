@@ -34,6 +34,7 @@ class display(dml.Algorithm):
     def execute(trial=False):
         # Retrieve datasets
         startTime = datetime.datetime.now()
+        scale = float(input("Please enter Scale [0.01 - 0.1] "))
 
         # Set up the database connection.
         client = dml.pymongo.MongoClient()
@@ -66,23 +67,24 @@ class display(dml.Algorithm):
                 coords = (j, i)
                 # folium.Marker(coords, popup=str(coords)).add_to(map_osm)      # Uncomment to see grid on map
                 # grid[coords] = 0                                              # For overall counts
-                grid[coords] = [[0], [0], [0], [0], [0], [0]]  # [[charge], [hubway], [open spaces], [trees], [budget], [crime]]
+                grid[coords] = [[0], [0], [0], [0], [0], [0]]  # [[charge], [hubway], [open spaces], [trees],
+                # [budget], [crime]]
                 cells.append(coords)
-                j += 0.01
-            i += 0.01
+                j += scale
+            i += scale
         # map_osm.save(filenamemap)                                             #
 
         xaxis = []  # Adjust scale of grid here
         i = -71.189
         while i < -70.878:
             xaxis.append(i)
-            i += 0.01
+            i += scale
 
         yaxis = []  # Adjust scale of grid here
         i = 42.234
         while i < 42.406:
             yaxis.append(i)
-            i += 0.01
+            i += scale
 
         budget_coords = []  # To store coordinates of budgets
         for budget in budgets:
@@ -115,11 +117,14 @@ class display(dml.Algorithm):
                     grid[(ycell, xcell)][3][0] += 1
                 elif typekind == "crime":
                     grid[(ycell,xcell)][5][0] += 1
-
+                    # grid[(ycell, xcell)][4][0] += 1
         for coords, counts in grid.items():  # Gonna save to database and display on map
             megalist.append({"coordinates": coords, "charge_count": counts[0][0], "hubway_count": counts[1][0],
                              "open_count": counts[2][0], "tree_count": counts[3][0], "budget": counts[4][0],
                              "crime_count": counts[5][0]})
+            # megalist.append({"coordinates": coords, "charge_count": counts[0][0], "hubway_count": counts[1][0],
+            #                  "open_count": counts[2][0], "tree_count": counts[3][0],
+            #                  "crime_count": counts[4][0]})
             folium.Marker(coords, popup=str(counts)).add_to(map_osm)
 
         repo.dropCollection("kmeansdata")
@@ -184,9 +189,10 @@ class display(dml.Algorithm):
 
         return doc
 
-# display.execute()
-# doc = display.provenance()
-# print(doc.get_provn())
-# print(json.dumps(json.loads(doc.serialize()), indent=4))
+
+display.execute()
+doc = display.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 # eof

@@ -20,11 +20,14 @@ class combineneighborhoodpoverty(dml.Algorithm):
             new_dict['geometry'] = row['geometry']
             poverty_row = poverty.find_one({'Region': new_dict['city']})
             if poverty_row:
-                new_dict['poverty rate'] = poverty_row['Poverty rate']
-                new_dict['percent of city impoverished'] = poverty_row["Percent of Boston's\nimpoverished"]
+                new_dict['poverty_rate'] = poverty_row['Poverty rate']
+                new_dict['percent_impoverished'] = poverty_row["Percent of Boston's\nimpoverished"]
+                new_dict['population'] = poverty_row["Total population for whom\npoverty status is determined"]
+
             else:
-                new_dict['poverty rate'] = 'N/a'
-                new_dict['percent of city impoverished'] = 'N/a'
+                new_dict['poverty_rate'] = 'N/a'
+                new_dict['percent_impoverished'] = 'N/a'
+                new_dict['population'] = 'N/a'
             new_collection.append(new_dict.copy())
         return new_collection
 
@@ -41,32 +44,34 @@ class combineneighborhoodpoverty(dml.Algorithm):
         repo = client.repo
         repo.authenticate('colinstu', 'colinstu')
         doc.add_namespace('alg', 'http://datamechanics.io/algorithm/')  # The scripts are in <folder>#<filename> format.
-        doc.add_namespace('dat', 'http://datamechanics.io/data/')  # The data sets are in <user>#<collection> format.
+        doc.add_namespace('dat', 'http://datamechanics.io/data/colinstu')  # The data sets are in <user>#<collection> format.
         doc.add_namespace('ont',
                           'http://datamechanics.io/ontology#')  # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
+        doc.add_namespace('dm','http://datamechanics.io/data/colinstu')
 
         this_script = doc.agent('alg:colinstu#combineneighborhoodpoverty',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
-        resource = doc.entity('bdp:wc8w-nujj',
+        resource = doc.entity('dm:combineneighborhoodpoverty',
                               {'prov:label': 'Combine Neighborhoods & Poverty', prov.model.PROV_TYPE: 'ont:DataResource',
                                'ont:Extension': 'json'})
-        getearningsbyzip = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        combineneighborhoodpoverty = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
 
-        doc.wasAssociatedWith(getearningsbyzip, this_script)
-        doc.usage(getearningsbyzip, resource, startTime, None,
+        doc.wasAssociatedWith(combineneighborhoodpoverty, this_script)
+        doc.usage(combineneighborhoodpoverty, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval',
                    }
                   )
 
-        earningsbyzip = doc.entity('dat:colinstu#combineneighborhoodpoverty',
+        neighborhoodpoverty = doc.entity('dat:colinstu#combineneighborhoodpoverty',
                                    {prov.model.PROV_LABEL: 'Combine Neighborhoods & Poverty',
                                     prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(combineneighborhoodpoverty, this_script)
-        doc.wasGeneratedBy(combineneighborhoodpoverty, combineneighborhoodpoverty, endTime)
-        doc.wasDerivedFrom(combineneighborhoodpoverty, resource, combineneighborhoodpoverty, combineneighborhoodpoverty, combineneighborhoodpoverty)
+        doc.wasAttributedTo(neighborhoodpoverty, this_script)
+        doc.wasGeneratedBy(neighborhoodpoverty, combineneighborhoodpoverty, endTime)
+        doc.wasDerivedFrom(neighborhoodpoverty, resource, combineneighborhoodpoverty, combineneighborhoodpoverty, combineneighborhoodpoverty)
 
         repo.logout()
+        return doc
 
     @staticmethod
     def execute(trial=False):
@@ -93,9 +98,9 @@ class combineneighborhoodpoverty(dml.Algorithm):
 
 
 combineneighborhoodpoverty.execute()
-#doc = combineneighborhoodpoverty.provenance()
-#print(doc.get_provn())
-#print(json.dumps(json.loads(doc.serialize()), indent=4))
+doc = combineneighborhoodpoverty.provenance()
+print(doc.get_provn())
+print(json.dumps(json.loads(doc.serialize()), indent=4))
 
 ## eof
 

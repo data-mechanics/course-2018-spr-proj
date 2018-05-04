@@ -54,13 +54,19 @@ class statAnalysis(dml.Algorithm):
             new_coll.append(new_dict.copy())
         x = [row['percent impoverished'] for row in new_coll]
         y = [row['grocery count'] for row in new_coll]
+        z = [row['neighborhood'] for row in new_coll]
+        print(x,y,z)
         corr_coef, p_value = scipy.stats.pearsonr(x, y)
         stat_dict = {}
         stat_dict['correlation coefficient'] = corr_coef
         stat_dict['p value'] = p_value
+        stat_dict['x'] = x
+        stat_dict['y'] = y
+        stat_dict['z'] = z
         stat_coll = []
         stat_coll.append(stat_dict.copy())
         return stat_coll
+
 
 
 

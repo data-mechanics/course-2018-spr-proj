@@ -22,10 +22,10 @@ class clusterGrocery(dml.Algorithm):
         output_coll = []
         if trial:
             for row in grocery.find()[:3]:
-                point_list.append([row['geometry']['location']['lat'], row['geometry']['location']['lng']])
+                point_list.append([row['geometry']['location']['lng'], row['geometry']['location']['lat']])
         else:
             for row in grocery.find():
-                point_list.append([row['geometry']['location']['lat'],row['geometry']['location']['lng']])
+                point_list.append([row['geometry']['location']['lng'],row['geometry']['location']['lat']])
 
         kmeans = KMeans(n_clusters=k).fit(point_list)
 
@@ -34,14 +34,14 @@ class clusterGrocery(dml.Algorithm):
         for p1 in centroids:
             min_dist = 9999999
             for row in grocery.find():
-                    p2 = (float(row['geometry']['location']['lat']), float(row['geometry']['location']['lng']))
+                    p2 = (float(row['geometry']['location']['lng']), float(row['geometry']['location']['lat']))
                     distance = clusterGrocery.dist(p1,p2)
                     if distance < min_dist:
                         min_dist = distance
                         min_row = row
 
             output_row = {}
-            output_row['grocery'] = min_row
+            #output_row['grocery'] = min_row
             output_row['closest centroid'] = p1
             output_coll.append(output_row.copy())
 

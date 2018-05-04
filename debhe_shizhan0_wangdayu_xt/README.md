@@ -75,7 +75,9 @@ Running trial mode by
 python execute.py debhe_shizhan0_wangdayu_xt --trial
 ```
 
-Visualization 
+### Visualization 
+Before using visualization, make sure project2 has been 
+re-run and MongoDB is connected. 
 1. copy auth.json and config.json to /project3
 2. install flask, flask_pymongo and pymongo
 3. in /project3 

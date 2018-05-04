@@ -1,1 +1,14 @@
-I will be using hubway data combined with traffic data and mbta data to try to determine when and why people would chose one form of transportation over another. I will use the hubway data to figure out which stations are the most popular and whether or not their popularity has to do with vacinity to a t stop. I will be looking at location and time of the day to look for reasons that certain stops are more popular than others. I will use the traffic data to determine the most optimal time of day to use the bikes. I will use the hubway data combined to figure out which stations will likely have bikes at a certain time of day.
+Running the web service:
+
+------------------------------------------
+in commandline:
+export FLASK_APP=server.py
+flask run
+
+open examplemap.html on the local server
+------------------------------------------
+
+On the website:
+In the top left hand corner, enter the hour that you wish to see locations for. Explore the different options with the buttons at the top of the screen.
+
+--------------------------------------------

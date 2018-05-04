@@ -75,8 +75,12 @@ Running trial mode by
 python execute.py debhe_shizhan0_wangdayu_xt --trial
 ```
 
-For project 3 
+Visualization 
+1. copy auth.json and config.json to /project3
+2. install flask, flask_pymongo and pymongo
+3. in /project3 
 ```
-export FLASK_APP=app.py
+export FLASK_APP=app.py 
 flask run
 ```
+4. server run on ```localhost:5000```

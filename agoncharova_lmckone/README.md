@@ -97,8 +97,15 @@ If we could continue to work on this project, we might also try to customize the
 * *note:* in order to run optimal_score.py, you will need to replace `sys.path.append("/Users/lubovmckone/course-2018-spr-proj/agoncharova_lmckone/z3/build/python/")` in with your own path to the z3/build/python folder
 
 
+## Website README
 
+To start the server, run the following from where `server.py` file is located (this directory):
 
+`export FLASK_APP=server.py && python3 -m flask run` 
 
+You might need to change `python3` to your respective version of python.
 
+Tutorials for the graphs:
+1. [Correlations Chart](https://bl.ocks.org/mbostock/4061961)
+2. [Evictions Map](http://duspviz.mit.edu/d3-workshop/mapping-data-with-d3/)
  

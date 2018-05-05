@@ -64,10 +64,12 @@ def compute_data():
     client = pymongo.MongoClient()
     repo = client.repo
     repo.authenticate('bm181354_rikenm', 'bm181354_rikenm')
-    collection = repo['bm181354_rikenm.solutionClusteringpopdb']
+    collection = repo['bm181354_rikenm.solutionClusteringdb']
+    
+    projects = collection.find()
     
     json_projects = []
-    for project in collection:
+    for project in projects:
         json_projects.append(project)
     json_projects = json.dumps(json_projects, default=json_util.default)
     client.close()

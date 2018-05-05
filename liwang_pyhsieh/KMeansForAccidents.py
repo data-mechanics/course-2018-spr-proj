@@ -82,7 +82,6 @@ class KMeansForAccidents(dml.Algorithm):
             }
             data_clustered.append(tmp_data)
 
-        print(kmeans.cluster_centers_)
         data_medians = []
         for idx, m in enumerate(kmeans.cluster_centers_):
             data_medians.append({

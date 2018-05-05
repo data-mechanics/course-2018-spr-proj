@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script>L_PREFER_CANVAS = false; L_NO_TOUCH = false; L_DISABLE_3D = false;</script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.2.0/dist/leaflet.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.2.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css" />
+    <link rel="stylesheet" href="https://rawgit.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css" />
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+            <style> #map_794624009dc04395b8447514a905e778 {
+                position : relative;
+                width : 100.0%;
+                height: 100.0%;
+                left: 0.0%;
+                top: 0.0%;
+                }
+            </style>
+        
+    <script src="https://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_794624009dc04395b8447514a905e778" ></div>
+        
+</body>
+<script>    
+    
+
+            
+                var bounds = null;
+            
+
+            var map_794624009dc04395b8447514a905e778 = L.map(
+                                  'map_794624009dc04395b8447514a905e778',
+                                  {center: [42.3186708,-71.0923346],
+                                  zoom: 12,
+                                  maxBounds: bounds,
+                                  layers: [],
+                                  worldCopyJump: false,
+                                  crs: L.CRS.EPSG3857
+                                 });
+            
+        
+    
+            var tile_layer_eaf6504073324c25b77d18c19046582f = L.tileLayer(
+                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                {
+  "attribution": null,
+  "detectRetina": false,
+  "maxZoom": 18,
+  "minZoom": 1,
+  "noWrap": false,
+  "subdomains": "abc"
+}
+                ).addTo(map_794624009dc04395b8447514a905e778);
+        
+    
+
+            var marker_59eecb3cf352493e875444fb30b20e5a = L.marker(
+                [42.30025000839615,-71.10737910445549],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_1d9f6e85f3d64a1595191fdf6018075d = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_59eecb3cf352493e875444fb30b20e5a.setIcon(icon_1d9f6e85f3d64a1595191fdf6018075d);
+            
+    
+            var popup_cd86cd3c96bd4a99a47c82f102122a0c = L.popup({maxWidth: '300'});
+
+            
+                var html_bd973eda07b04dea9a0aa636825e9f10 = $('<div id="html_bd973eda07b04dea9a0aa636825e9f10" style="width: 100.0%; height: 100.0%;">Lemuel Shattuck Hospital</div>')[0];
+                popup_cd86cd3c96bd4a99a47c82f102122a0c.setContent(html_bd973eda07b04dea9a0aa636825e9f10);
+            
+
+            marker_59eecb3cf352493e875444fb30b20e5a.bindPopup(popup_cd86cd3c96bd4a99a47c82f102122a0c);
+
+            
+        
+    
+
+            var marker_c5d36c54c0f0478b9c096741c82c8a39 = L.marker(
+                [42.3438499996779,-71.08983000035408],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_c995cfe5f156476a8563f3483bc04fad = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_c5d36c54c0f0478b9c096741c82c8a39.setIcon(icon_c995cfe5f156476a8563f3483bc04fad);
+            
+    
+            var popup_ec6d0bb822804a7ab1457660f2769e97 = L.popup({maxWidth: '300'});
+
+            
+                var html_d41bc99cd04d4713b1afe4233efb0f6a = $('<div id="html_d41bc99cd04d4713b1afe4233efb0f6a" style="width: 100.0%; height: 100.0%;">Beth Israel Deaconess Medical Center East Cam</div>')[0];
+                popup_ec6d0bb822804a7ab1457660f2769e97.setContent(html_d41bc99cd04d4713b1afe4233efb0f6a);
+            
+
+            marker_c5d36c54c0f0478b9c096741c82c8a39.bindPopup(popup_ec6d0bb822804a7ab1457660f2769e97);
+
+            
+        
+    
+
+            var marker_104a5dead2af4414aac4f065d517dfea = L.marker(
+                [42.31856289432221,-71.09165569529381],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_30deb3b4979f44e8baa0e933eec766d0 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_104a5dead2af4414aac4f065d517dfea.setIcon(icon_30deb3b4979f44e8baa0e933eec766d0);
+            
+    
+            var popup_dd56e571c6e643049c4b734be5f29c4e = L.popup({maxWidth: '300'});
+
+            
+                var html_1ccb136169fb43f183a06f7614b10606 = $('<div id="html_1ccb136169fb43f183a06f7614b10606" style="width: 100.0%; height: 100.0%;">Jewish Memorial Hospital</div>')[0];
+                popup_dd56e571c6e643049c4b734be5f29c4e.setContent(html_1ccb136169fb43f183a06f7614b10606);
+            
+
+            marker_104a5dead2af4414aac4f065d517dfea.bindPopup(popup_dd56e571c6e643049c4b734be5f29c4e);
+
+            
+        
+    
+
+            var marker_a5281ba7740142e1ad874aaf0f9b108d = L.marker(
+                [42.329611374844326,-71.10616871232227],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_2e95d6c556fb4c688284b4fce66882db = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_a5281ba7740142e1ad874aaf0f9b108d.setIcon(icon_2e95d6c556fb4c688284b4fce66882db);
+            
+    
+            var popup_07839ce9b3d947ef899e918c5140d94c = L.popup({maxWidth: '300'});
+
+            
+                var html_d56865330a6b469a99776c756408b52d = $('<div id="html_d56865330a6b469a99776c756408b52d" style="width: 100.0%; height: 100.0%;">New England Baptist Hospital</div>')[0];
+                popup_07839ce9b3d947ef899e918c5140d94c.setContent(html_d56865330a6b469a99776c756408b52d);
+            
+
+            marker_a5281ba7740142e1ad874aaf0f9b108d.bindPopup(popup_07839ce9b3d947ef899e918c5140d94c);
+
+            
+        
+    
+
+            var marker_1bcea9c7e04e4cef8aaddcd09d1e1ddf = L.marker(
+                [42.27137912172521,-71.08168028446168],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_e4dc3ca5b9d94c2c8daf0455557b2d2a = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_1bcea9c7e04e4cef8aaddcd09d1e1ddf.setIcon(icon_e4dc3ca5b9d94c2c8daf0455557b2d2a);
+            
+    
+            var popup_e938c919ff684fc0aebdf4f17a7fc80e = L.popup({maxWidth: '300'});
+
+            
+                var html_196c0e128ce74e358cb672acc0414171 = $('<div id="html_196c0e128ce74e358cb672acc0414171" style="width: 100.0%; height: 100.0%;">Boston Specialty &amp; Rehabilitation Hospital</div>')[0];
+                popup_e938c919ff684fc0aebdf4f17a7fc80e.setContent(html_196c0e128ce74e358cb672acc0414171);
+            
+
+            marker_1bcea9c7e04e4cef8aaddcd09d1e1ddf.bindPopup(popup_e938c919ff684fc0aebdf4f17a7fc80e);
+
+            
+        
+    
+
+            var marker_3a66f4daabc044d59b95af1db9b7407a = L.marker(
+                [42.3371094801158,-71.07139912234962],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_5b0c276d16f145fe87743b4db3771fc6 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_3a66f4daabc044d59b95af1db9b7407a.setIcon(icon_5b0c276d16f145fe87743b4db3771fc6);
+            
+    
+            var popup_284cf36f800b4a1583ba9badce1c417c = L.popup({maxWidth: '300'});
+
+            
+                var html_fbaa8a1640fa49ce9ac2eac64ac857c2 = $('<div id="html_fbaa8a1640fa49ce9ac2eac64ac857c2" style="width: 100.0%; height: 100.0%;">Boston Medical Center</div>')[0];
+                popup_284cf36f800b4a1583ba9badce1c417c.setContent(html_fbaa8a1640fa49ce9ac2eac64ac857c2);
+            
+
+            marker_3a66f4daabc044d59b95af1db9b7407a.bindPopup(popup_284cf36f800b4a1583ba9badce1c417c);
+
+            
+        
+    
+
+            var marker_c786b6f55fe94486b8570a67e3090aff = L.marker(
+                [42.329611374844326,-71.10616871232227],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_a57a0009904241d896ad7461faa70bed = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_c786b6f55fe94486b8570a67e3090aff.setIcon(icon_a57a0009904241d896ad7461faa70bed);
+            
+    
+            var popup_18cd3bcda3cb496a9f6e876694cb4ccb = L.popup({maxWidth: '300'});
+
+            
+                var html_da63442454c84a06a19bb3eb77b3b5ed = $('<div id="html_da63442454c84a06a19bb3eb77b3b5ed" style="width: 100.0%; height: 100.0%;">Va Hospital</div>')[0];
+                popup_18cd3bcda3cb496a9f6e876694cb4ccb.setContent(html_da63442454c84a06a19bb3eb77b3b5ed);
+            
+
+            marker_c786b6f55fe94486b8570a67e3090aff.bindPopup(popup_18cd3bcda3cb496a9f6e876694cb4ccb);
+
+            
+        
+    
+
+            var marker_8c8b1c26ffad4ad6bae6b69d14788938 = L.marker(
+                [42.36297141612903,-71.07043169540236],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_41148cda1ad14c9885281910a0f64360 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_8c8b1c26ffad4ad6bae6b69d14788938.setIcon(icon_41148cda1ad14c9885281910a0f64360);
+            
+    
+            var popup_9c300f6839034eeb9f415100d8b795ea = L.popup({maxWidth: '300'});
+
+            
+                var html_f323598a8705419097042ac5dc3e31ca = $('<div id="html_f323598a8705419097042ac5dc3e31ca" style="width: 100.0%; height: 100.0%;">Massachusetts Eye &amp; Ear Infirmary</div>')[0];
+                popup_9c300f6839034eeb9f415100d8b795ea.setContent(html_f323598a8705419097042ac5dc3e31ca);
+            
+
+            marker_8c8b1c26ffad4ad6bae6b69d14788938.bindPopup(popup_9c300f6839034eeb9f415100d8b795ea);
+
+            
+        
+    
+
+            var marker_8ebbbc194b064cdbac4f1710fa62b90d = L.marker(
+                [42.34665771451756,-71.14136122385321],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_7bcbc76d713c404d871cbf3a0007c8a4 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_8ebbbc194b064cdbac4f1710fa62b90d.setIcon(icon_7bcbc76d713c404d871cbf3a0007c8a4);
+            
+    
+            var popup_7f66e7ce4fa24e92bfd97e5e4ed46f53 = L.popup({maxWidth: '300'});
+
+            
+                var html_51a9659f34b84667a2d92562fdce4c51 = $('<div id="html_51a9659f34b84667a2d92562fdce4c51" style="width: 100.0%; height: 100.0%;">Kindred Hospital</div>')[0];
+                popup_7f66e7ce4fa24e92bfd97e5e4ed46f53.setContent(html_51a9659f34b84667a2d92562fdce4c51);
+            
+
+            marker_8ebbbc194b064cdbac4f1710fa62b90d.bindPopup(popup_7f66e7ce4fa24e92bfd97e5e4ed46f53);
+
+            
+        
+    
+
+            var marker_adca77cad8f44f8bace36c73f652c801 = L.marker(
+                [42.33587602903896,-71.10741054246668],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_4612395377084d8c816add4e2a179c65 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_adca77cad8f44f8bace36c73f652c801.setIcon(icon_4612395377084d8c816add4e2a179c65);
+            
+    
+            var popup_0b70d3c4bdcc4c238a7a694a3055d405 = L.popup({maxWidth: '300'});
+
+            
+                var html_b748c13618764f82b6d3af16ade4c746 = $('<div id="html_b748c13618764f82b6d3af16ade4c746" style="width: 100.0%; height: 100.0%;">Brigham And Women&#39;s Hospital</div>')[0];
+                popup_0b70d3c4bdcc4c238a7a694a3055d405.setContent(html_b748c13618764f82b6d3af16ade4c746);
+            
+
+            marker_adca77cad8f44f8bace36c73f652c801.bindPopup(popup_0b70d3c4bdcc4c238a7a694a3055d405);
+
+            
+        
+    
+
+            var marker_7a9c3e1f567445caaa55a926cecc7c04 = L.marker(
+                [42.27854306401838,-71.06631280050811],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_6919a7a9cca44053ab6b1ff038ae417d = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_7a9c3e1f567445caaa55a926cecc7c04.setIcon(icon_6919a7a9cca44053ab6b1ff038ae417d);
+            
+    
+            var popup_f2d67e60929746c9ab5c3de1f9994f39 = L.popup({maxWidth: '300'});
+
+            
+                var html_ff102571290640cf96808d7489df8030 = $('<div id="html_ff102571290640cf96808d7489df8030" style="width: 100.0%; height: 100.0%;">Carney Hospital</div>')[0];
+                popup_f2d67e60929746c9ab5c3de1f9994f39.setContent(html_ff102571290640cf96808d7489df8030);
+            
+
+            marker_7a9c3e1f567445caaa55a926cecc7c04.bindPopup(popup_f2d67e60929746c9ab5c3de1f9994f39);
+
+            
+        
+    
+
+            var marker_399c2c2b0ff44bd79662f95530f44d08 = L.marker(
+                [42.349946522039204,-71.0634111017112],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_bcf00732eb8949d4873cb114fb1251a1 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_399c2c2b0ff44bd79662f95530f44d08.setIcon(icon_bcf00732eb8949d4873cb114fb1251a1);
+            
+    
+            var popup_48920aad254142a1b009fe20574a8b36 = L.popup({maxWidth: '300'});
+
+            
+                var html_5f65d4d1d40b41cf9ea2a02a53eeee66 = $('<div id="html_5f65d4d1d40b41cf9ea2a02a53eeee66" style="width: 100.0%; height: 100.0%;">New England Medical Center</div>')[0];
+                popup_48920aad254142a1b009fe20574a8b36.setContent(html_5f65d4d1d40b41cf9ea2a02a53eeee66);
+            
+
+            marker_399c2c2b0ff44bd79662f95530f44d08.bindPopup(popup_48920aad254142a1b009fe20574a8b36);
+
+            
+        
+    
+
+            var marker_d51221a93c39419eb1857da1eaa23cd2 = L.marker(
+                [42.30021828265608,-71.12789683059322],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_5e192c64178a4d51ae4a4e9085fc8098 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_d51221a93c39419eb1857da1eaa23cd2.setIcon(icon_5e192c64178a4d51ae4a4e9085fc8098);
+            
+    
+            var popup_e4b45134370049688daf8da1ff900bd4 = L.popup({maxWidth: '300'});
+
+            
+                var html_de1dca0d525a4a38ba7cf23a5900a15b = $('<div id="html_de1dca0d525a4a38ba7cf23a5900a15b" style="width: 100.0%; height: 100.0%;">Faulkner Hospital</div>')[0];
+                popup_e4b45134370049688daf8da1ff900bd4.setContent(html_de1dca0d525a4a38ba7cf23a5900a15b);
+            
+
+            marker_d51221a93c39419eb1857da1eaa23cd2.bindPopup(popup_e4b45134370049688daf8da1ff900bd4);
+
+            
+        
+    
+
+            var marker_fc61d91d08dc46d1bf6da24bb1f4cabc = L.marker(
+                [42.349656455743144,-71.14822103232248],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_3cc17db119844ace88290ea8d0318b40 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_fc61d91d08dc46d1bf6da24bb1f4cabc.setIcon(icon_3cc17db119844ace88290ea8d0318b40);
+            
+    
+            var popup_22d40934ee9342f09b2f7114d237d172 = L.popup({maxWidth: '300'});
+
+            
+                var html_10901fa756334cb09b58a9c75e38d631 = $('<div id="html_10901fa756334cb09b58a9c75e38d631" style="width: 100.0%; height: 100.0%;">St. Elizabeth&#39;s Hospital</div>')[0];
+                popup_22d40934ee9342f09b2f7114d237d172.setContent(html_10901fa756334cb09b58a9c75e38d631);
+            
+
+            marker_fc61d91d08dc46d1bf6da24bb1f4cabc.bindPopup(popup_22d40934ee9342f09b2f7114d237d172);
+
+            
+        
+    
+
+            var marker_79d9a68460de43c1a7eca2f65f6d484d = L.marker(
+                [42.27598935537618,-71.17245195460838],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_088c6068e35f4f8391871f9f75f96f8d = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_79d9a68460de43c1a7eca2f65f6d484d.setIcon(icon_088c6068e35f4f8391871f9f75f96f8d);
+            
+    
+            var popup_362b1b050c0c487bbc48f623d694c2dd = L.popup({maxWidth: '300'});
+
+            
+                var html_7915ea494b1e4fbfb15ad6d8eb57dac0 = $('<div id="html_7915ea494b1e4fbfb15ad6d8eb57dac0" style="width: 100.0%; height: 100.0%;">VA Hospital</div>')[0];
+                popup_362b1b050c0c487bbc48f623d694c2dd.setContent(html_7915ea494b1e4fbfb15ad6d8eb57dac0);
+            
+
+            marker_79d9a68460de43c1a7eca2f65f6d484d.bindPopup(popup_362b1b050c0c487bbc48f623d694c2dd);
+
+            
+        
+    
+
+            var marker_100552a27c4f45ab977c3627e6debb9c = L.marker(
+                [42.36327718561898,-71.0668523937257],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_0e971928d8114ebe8367a6a004146483 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_100552a27c4f45ab977c3627e6debb9c.setIcon(icon_0e971928d8114ebe8367a6a004146483);
+            
+    
+            var popup_103f6baf4f7044c7a26f12ffa910cc8a = L.popup({maxWidth: '300'});
+
+            
+                var html_a849792a5655453c879e317fce0b9e94 = $('<div id="html_a849792a5655453c879e317fce0b9e94" style="width: 100.0%; height: 100.0%;">Shriners Burns Institute</div>')[0];
+                popup_103f6baf4f7044c7a26f12ffa910cc8a.setContent(html_a849792a5655453c879e317fce0b9e94);
+            
+
+            marker_100552a27c4f45ab977c3627e6debb9c.bindPopup(popup_103f6baf4f7044c7a26f12ffa910cc8a);
+
+            
+        
+    
+
+            var marker_0ae3672f4f8d431da43cb382d912beb6 = L.marker(
+                [42.337592548462226,-71.10472284437952],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_8ff08256a2d0453ba3342662a8dce4a7 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_0ae3672f4f8d431da43cb382d912beb6.setIcon(icon_8ff08256a2d0453ba3342662a8dce4a7);
+            
+    
+            var popup_b34a6c4817244347a9b1ad741530cfe9 = L.popup({maxWidth: '300'});
+
+            
+                var html_ea650ececb9a4f37bd2eb4ef2a3f71e5 = $('<div id="html_ea650ececb9a4f37bd2eb4ef2a3f71e5" style="width: 100.0%; height: 100.0%;">Children&#39;s Hospital</div>')[0];
+                popup_b34a6c4817244347a9b1ad741530cfe9.setContent(html_ea650ececb9a4f37bd2eb4ef2a3f71e5);
+            
+
+            marker_0ae3672f4f8d431da43cb382d912beb6.bindPopup(popup_b34a6c4817244347a9b1ad741530cfe9);
+
+            
+        
+    
+
+            var marker_a7a6923b73194887a90e1e1338b170cf = L.marker(
+                [42.31617666213941,-71.11272670363542],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_fe2df368c06a4f3f8c08413c2778154a = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_a7a6923b73194887a90e1e1338b170cf.setIcon(icon_fe2df368c06a4f3f8c08413c2778154a);
+            
+    
+            var popup_12769d96df624777b000f104b75ebc07 = L.popup({maxWidth: '300'});
+
+            
+                var html_1274df8305fa4a4ba8bb5eec59e308ba = $('<div id="html_1274df8305fa4a4ba8bb5eec59e308ba" style="width: 100.0%; height: 100.0%;">Arbour Hospital</div>')[0];
+                popup_12769d96df624777b000f104b75ebc07.setContent(html_1274df8305fa4a4ba8bb5eec59e308ba);
+            
+
+            marker_a7a6923b73194887a90e1e1338b170cf.bindPopup(popup_12769d96df624777b000f104b75ebc07);
+
+            
+        
+    
+
+            var marker_8ac542ca6bb041cabc4f266bdb6f77a8 = L.marker(
+                [42.29738386053219,-71.13150465441208],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_0cfa84f648fb4b4e9c0955c967157379 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_8ac542ca6bb041cabc4f266bdb6f77a8.setIcon(icon_0cfa84f648fb4b4e9c0955c967157379);
+            
+    
+            var popup_6ab285a2c01f4e6aa0c70092fc64c782 = L.popup({maxWidth: '300'});
+
+            
+                var html_5f56b773ee494b26b1e4af7fc146ee65 = $('<div id="html_5f56b773ee494b26b1e4af7fc146ee65" style="width: 100.0%; height: 100.0%;">Hebrew Rehabilitation Center</div>')[0];
+                popup_6ab285a2c01f4e6aa0c70092fc64c782.setContent(html_5f56b773ee494b26b1e4af7fc146ee65);
+            
+
+            marker_8ac542ca6bb041cabc4f266bdb6f77a8.bindPopup(popup_6ab285a2c01f4e6aa0c70092fc64c782);
+
+            
+        
+    
+
+            var marker_1c51190758824083900c528b87ab04a6 = L.marker(
+                [42.314030311294516,-71.06406449543488],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_71f9e8c98ee649c9b3346c3d16b039a8 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_1c51190758824083900c528b87ab04a6.setIcon(icon_71f9e8c98ee649c9b3346c3d16b039a8);
+            
+    
+            var popup_f5b90f5644024719b330c7048b8f9243 = L.popup({maxWidth: '300'});
+
+            
+                var html_298d527e6f9b4d01a72bf8f9556dbf83 = $('<div id="html_298d527e6f9b4d01a72bf8f9556dbf83" style="width: 100.0%; height: 100.0%;">St. Margaret&#39;s Hospital For Women</div>')[0];
+                popup_f5b90f5644024719b330c7048b8f9243.setContent(html_298d527e6f9b4d01a72bf8f9556dbf83);
+            
+
+            marker_1c51190758824083900c528b87ab04a6.bindPopup(popup_f5b90f5644024719b330c7048b8f9243);
+
+            
+        
+    
+
+            var marker_28fcf9d18fd54a9b8bca851c3e1993ea = L.marker(
+                [42.36764789068138,-71.06564730220646],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_7db0f3a2ae944ddaabc2208fd1977335 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_28fcf9d18fd54a9b8bca851c3e1993ea.setIcon(icon_7db0f3a2ae944ddaabc2208fd1977335);
+            
+    
+            var popup_4955ab4bd9ac43a68354733d0821fed1 = L.popup({maxWidth: '300'});
+
+            
+                var html_eff0aa29029545c7bb390af509166181 = $('<div id="html_eff0aa29029545c7bb390af509166181" style="width: 100.0%; height: 100.0%;">Spaulding Rehabilitation Hospital</div>')[0];
+                popup_4955ab4bd9ac43a68354733d0821fed1.setContent(html_eff0aa29029545c7bb390af509166181);
+            
+
+            marker_28fcf9d18fd54a9b8bca851c3e1993ea.bindPopup(popup_4955ab4bd9ac43a68354733d0821fed1);
+
+            
+        
+    
+
+            var marker_1a3f4df7b3074eb48e4f0494a3cc92be = L.marker(
+                [42.352620000312925,-71.13281000028115],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_2bb1d42ccb4d4f9ba7f34e84d255a5eb = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_1a3f4df7b3074eb48e4f0494a3cc92be.setIcon(icon_2bb1d42ccb4d4f9ba7f34e84d255a5eb);
+            
+    
+            var popup_ee7130d1d0164fcd89d34f86d049bf1d = L.popup({maxWidth: '300'});
+
+            
+                var html_64b60743e820482e9add3a83df8853d4 = $('<div id="html_64b60743e820482e9add3a83df8853d4" style="width: 100.0%; height: 100.0%;">Franciscan Children&#39;s  Hospital</div>')[0];
+                popup_ee7130d1d0164fcd89d34f86d049bf1d.setContent(html_64b60743e820482e9add3a83df8853d4);
+            
+
+            marker_1a3f4df7b3074eb48e4f0494a3cc92be.bindPopup(popup_ee7130d1d0164fcd89d34f86d049bf1d);
+
+            
+        
+    
+
+            var marker_a623cf78b62d4a988b29bfaa3506b371 = L.marker(
+                [42.3385289546495,-71.10940050507557],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_76369edc962c464e99cc5ae06303fa2b = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_a623cf78b62d4a988b29bfaa3506b371.setIcon(icon_76369edc962c464e99cc5ae06303fa2b);
+            
+    
+            var popup_a22293136700473d869ba62257351676 = L.popup({maxWidth: '300'});
+
+            
+                var html_cd72f371f628416fb5beed0bb3c1aa25 = $('<div id="html_cd72f371f628416fb5beed0bb3c1aa25" style="width: 100.0%; height: 100.0%;">Beth Israel Deaconess Medical Center West Cam</div>')[0];
+                popup_a22293136700473d869ba62257351676.setContent(html_cd72f371f628416fb5beed0bb3c1aa25);
+            
+
+            marker_a623cf78b62d4a988b29bfaa3506b371.bindPopup(popup_a22293136700473d869ba62257351676);
+
+            
+        
+    
+
+            var marker_bbc1290256234b5cadf01e50be816a86 = L.marker(
+                [42.33734993862189,-71.1071702648531],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_189860e17f5e4e8f84c9d0b14960dd5c = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_bbc1290256234b5cadf01e50be816a86.setIcon(icon_189860e17f5e4e8f84c9d0b14960dd5c);
+            
+    
+            var popup_d696ce693e674b7bb8d0f073e63029bc = L.popup({maxWidth: '300'});
+
+            
+                var html_0b11c26e71744b328bd80cbb4baf0f2f = $('<div id="html_0b11c26e71744b328bd80cbb4baf0f2f" style="width: 100.0%; height: 100.0%;">Dana-farber Cancer Institute</div>')[0];
+                popup_d696ce693e674b7bb8d0f073e63029bc.setContent(html_0b11c26e71744b328bd80cbb4baf0f2f);
+            
+
+            marker_bbc1290256234b5cadf01e50be816a86.bindPopup(popup_d696ce693e674b7bb8d0f073e63029bc);
+
+            
+        
+    
+
+            var marker_d33ba308c7cb44d48f7b83af9aaf1dc0 = L.marker(
+                [42.36247485742686,-71.06924724545246],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_f0bcef62a77f4becb150b1ba81aef171 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_d33ba308c7cb44d48f7b83af9aaf1dc0.setIcon(icon_f0bcef62a77f4becb150b1ba81aef171);
+            
+    
+            var popup_b5dbcfb381b248e5b6af1cab777f0ff7 = L.popup({maxWidth: '300'});
+
+            
+                var html_1e1102c47907430aa944245a5b9908dc = $('<div id="html_1e1102c47907430aa944245a5b9908dc" style="width: 100.0%; height: 100.0%;">Massachusetts General Hospital</div>')[0];
+                popup_b5dbcfb381b248e5b6af1cab777f0ff7.setContent(html_1e1102c47907430aa944245a5b9908dc);
+            
+
+            marker_d33ba308c7cb44d48f7b83af9aaf1dc0.bindPopup(popup_b5dbcfb381b248e5b6af1cab777f0ff7);
+
+            
+        
+    
+
+            var marker_f0962d2e98b744fba73b74e61f05456d = L.marker(
+                [42.335925371008436,-71.07378404269969],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_ab1607ac533144659cff75b03cee8e2b = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'red',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_f0962d2e98b744fba73b74e61f05456d.setIcon(icon_ab1607ac533144659cff75b03cee8e2b);
+            
+    
+            var popup_fd843e662a0241f7a80cf53c72c9f6bb = L.popup({maxWidth: '300'});
+
+            
+                var html_36ee2eacf77f407dbbd6c1ee3ff75c55 = $('<div id="html_36ee2eacf77f407dbbd6c1ee3ff75c55" style="width: 100.0%; height: 100.0%;">Boston City Hospital</div>')[0];
+                popup_fd843e662a0241f7a80cf53c72c9f6bb.setContent(html_36ee2eacf77f407dbbd6c1ee3ff75c55);
+            
+
+            marker_f0962d2e98b744fba73b74e61f05456d.bindPopup(popup_fd843e662a0241f7a80cf53c72c9f6bb);
+
+            
+        
+    
+
+            var marker_b0dc779162524587a241e15d49c99582 = L.marker(
+                [42.25648154053115,-71.1242694364363],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_7dded1a0763343a595f31db63c360b6e = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'blue',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_b0dc779162524587a241e15d49c99582.setIcon(icon_7dded1a0763343a595f31db63c360b6e);
+            
+    
+            var popup_80958713dbb14adaa7434d6c400e9eee = L.popup({maxWidth: '300'});
+
+            
+                var html_bb2b9d6c0383420498f8101e1da93542 = $('<div id="html_bb2b9d6c0383420498f8101e1da93542" style="width: 100.0%; height: 100.0%;">District E-18 Police Station</div>')[0];
+                popup_80958713dbb14adaa7434d6c400e9eee.setContent(html_bb2b9d6c0383420498f8101e1da93542);
+            
+
+            marker_b0dc779162524587a241e15d49c99582.bindPopup(popup_80958713dbb14adaa7434d6c400e9eee);
+
+            
+        
+    
+
+            var marker_ea6ff1f598f34e75bcf7397500612ce6 = L.marker(
+                [42.28678559406874,-71.1483677535003],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_982fd1fca61a4164a5a5a19491ffed54 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'blue',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_ea6ff1f598f34e75bcf7397500612ce6.setIcon(icon_982fd1fca61a4164a5a5a19491ffed54);
+            
+    
+            var popup_cd1d3da646204f0aa810395db18cbbdd = L.popup({maxWidth: '300'});
+
+            
+                var html_198b01b3e55d45c0985db9b335cb5769 = $('<div id="html_198b01b3e55d45c0985db9b335cb5769" style="width: 100.0%; height: 100.0%;">District E-5 Police Station</div>')[0];
+                popup_cd1d3da646204f0aa810395db18cbbdd.setContent(html_198b01b3e55d45c0985db9b335cb5769);
+            
+
+            marker_ea6ff1f598f34e75bcf7397500612ce6.bindPopup(popup_cd1d3da646204f0aa810395db18cbbdd);
+
+            
+        
+    
+
+            var marker_c84a639e5afc4d919796ea027d16cc6b = L.marker(
+                [42.37105778191191,-71.038676422262],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_b05ab72e2e8b41069021cd2870976c14 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'blue',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_c84a639e5afc4d919796ea027d16cc6b.setIcon(icon_b05ab72e2e8b41069021cd2870976c14);
+            
+    
+            var popup_04cfa7b36c644d6ca2612e6441852ea3 = L.popup({maxWidth: '300'});
+
+            
+                var html_774a795dcda246d0a62e76fc26069d20 = $('<div id="html_774a795dcda246d0a62e76fc26069d20" style="width: 100.0%; height: 100.0%;">District A-7 Police Station</div>')[0];
+                popup_04cfa7b36c644d6ca2612e6441852ea3.setContent(html_774a795dcda246d0a62e76fc26069d20);
+            
+
+            marker_c84a639e5afc4d919796ea027d16cc6b.bindPopup(popup_04cfa7b36c644d6ca2612e6441852ea3);
+
+            
+        
+    
+
+            var marker_a85f7a7af49a4788ad5606546ef058dd = L.marker(
+                [42.36182512483834,-71.06030726710203],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_cc690be31b214c519dbefbfc9ec29f28 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'blue',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_a85f7a7af49a4788ad5606546ef058dd.setIcon(icon_cc690be31b214c519dbefbfc9ec29f28);
+            
+    
+            var popup_b9d90289108745cf80feb0a8cc8d94ca = L.popup({maxWidth: '300'});
+
+            
+                var html_230cc42c0806480e88a567f89db43c8f = $('<div id="html_230cc42c0806480e88a567f89db43c8f" style="width: 100.0%; height: 100.0%;">District A-1 Police Station</div>')[0];
+                popup_b9d90289108745cf80feb0a8cc8d94ca.setContent(html_230cc42c0806480e88a567f89db43c8f);
+            
+
+            marker_a85f7a7af49a4788ad5606546ef058dd.bindPopup(popup_b9d90289108745cf80feb0a8cc8d94ca);
+
+            
+        
+    
+
+            var marker_88617be2a5ff4676bcd8e03ba8e4fee0 = L.marker(
+                [42.349394510980034,-71.15057831812406],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_5db03b611a044462b7403d81c688fb46 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'blue',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_88617be2a5ff4676bcd8e03ba8e4fee0.setIcon(icon_5db03b611a044462b7403d81c688fb46);
+            
+    
+            var popup_3c3b2be6024446f895c42a26d627c3f8 = L.popup({maxWidth: '300'});
+
+            
+                var html_7ac248fb9249408991f118ee3849242c = $('<div id="html_7ac248fb9249408991f118ee3849242c" style="width: 100.0%; height: 100.0%;">District D-14 Police Station</div>')[0];
+                popup_3c3b2be6024446f895c42a26d627c3f8.setContent(html_7ac248fb9249408991f118ee3849242c);
+            
+
+            marker_88617be2a5ff4676bcd8e03ba8e4fee0.bindPopup(popup_3c3b2be6024446f895c42a26d627c3f8);
+
+            
+        
+    
+
+            var marker_48c66e30466c4b96a0eaabfb647b425b = L.marker(
+                [42.37646665702756,-71.05604713089605],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_6060a541f5a64a42bce96e64270da8de = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'blue',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_48c66e30466c4b96a0eaabfb647b425b.setIcon(icon_6060a541f5a64a42bce96e64270da8de);
+            
+    
+            var popup_be778d8fa23742a3b6b0fbec744c7b38 = L.popup({maxWidth: '300'});
+
+            
+                var html_b5a4d6b5fa524d7fa4de462602288d2e = $('<div id="html_b5a4d6b5fa524d7fa4de462602288d2e" style="width: 100.0%; height: 100.0%;">District A-15 Police Station</div>')[0];
+                popup_be778d8fa23742a3b6b0fbec744c7b38.setContent(html_b5a4d6b5fa524d7fa4de462602288d2e);
+            
+
+            marker_48c66e30466c4b96a0eaabfb647b425b.bindPopup(popup_be778d8fa23742a3b6b0fbec744c7b38);
+
+            
+        
+    
+
+            var marker_b7e936c2e5534a9db635eecd4ecfeb53 = L.marker(
+                [42.34116404075056,-71.0549362848868],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_3afaaf4039094009b9284d6d1b90a2aa = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'blue',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_b7e936c2e5534a9db635eecd4ecfeb53.setIcon(icon_3afaaf4039094009b9284d6d1b90a2aa);
+            
+    
+            var popup_d82901fa276945bda5bd6f279e55bb82 = L.popup({maxWidth: '300'});
+
+            
+                var html_b48a2e3c3c5247c888007376b8479a2a = $('<div id="html_b48a2e3c3c5247c888007376b8479a2a" style="width: 100.0%; height: 100.0%;">District C-6 Police Station</div>')[0];
+                popup_d82901fa276945bda5bd6f279e55bb82.setContent(html_b48a2e3c3c5247c888007376b8479a2a);
+            
+
+            marker_b7e936c2e5534a9db635eecd4ecfeb53.bindPopup(popup_d82901fa276945bda5bd6f279e55bb82);
+
+            
+        
+    
+
+            var marker_4923b5d2cb8e4028877369967e879360 = L.marker(
+                [42.33943967310011,-71.06923975700295],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_9ba6dc1c49ab4e988677b88fd6fafecf = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'blue',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_4923b5d2cb8e4028877369967e879360.setIcon(icon_9ba6dc1c49ab4e988677b88fd6fafecf);
+            
+    
+            var popup_68d0413b77e4456c88ebebb3d435ac9f = L.popup({maxWidth: '300'});
+
+            
+                var html_e1548c1a275d40bda5f29bae6dd76bd3 = $('<div id="html_e1548c1a275d40bda5f29bae6dd76bd3" style="width: 100.0%; height: 100.0%;">District D-4 Police Station</div>')[0];
+                popup_68d0413b77e4456c88ebebb3d435ac9f.setContent(html_e1548c1a275d40bda5f29bae6dd76bd3);
+            
+
+            marker_4923b5d2cb8e4028877369967e879360.bindPopup(popup_68d0413b77e4456c88ebebb3d435ac9f);
+
+            
+        
+    
+
+            var marker_b095aee8a2614acfa1403cfb62312d70 = L.marker(
+                [42.33419233077249,-71.09074751951268],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_5a9c7e5a29d34a65b4c7cc6261431f0b = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'blue',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_b095aee8a2614acfa1403cfb62312d70.setIcon(icon_5a9c7e5a29d34a65b4c7cc6261431f0b);
+            
+    
+            var popup_3133b3d48dd64f37b25250b7cc0c7561 = L.popup({maxWidth: '300'});
+
+            
+                var html_6f68626a22b540368d25259ff4b52d65 = $('<div id="html_6f68626a22b540368d25259ff4b52d65" style="width: 100.0%; height: 100.0%;">Boston Police Headquarters</div>')[0];
+                popup_3133b3d48dd64f37b25250b7cc0c7561.setContent(html_6f68626a22b540368d25259ff4b52d65);
+            
+
+            marker_b095aee8a2614acfa1403cfb62312d70.bindPopup(popup_3133b3d48dd64f37b25250b7cc0c7561);
+
+            
+        
+    
+
+            var marker_26885583af3643a89e7fe32225cc530c = L.marker(
+                [42.328385389008155,-71.08568434891998],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_de1a5d64dd054f8899d4ba62e13d790d = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'blue',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_26885583af3643a89e7fe32225cc530c.setIcon(icon_de1a5d64dd054f8899d4ba62e13d790d);
+            
+    
+            var popup_8e8eaadc4bc747c284112c86e0cd650e = L.popup({maxWidth: '300'});
+
+            
+                var html_66bfc7cb90114299891cfa24ff776ba9 = $('<div id="html_66bfc7cb90114299891cfa24ff776ba9" style="width: 100.0%; height: 100.0%;">District B-2 Police Station</div>')[0];
+                popup_8e8eaadc4bc747c284112c86e0cd650e.setContent(html_66bfc7cb90114299891cfa24ff776ba9);
+            
+
+            marker_26885583af3643a89e7fe32225cc530c.bindPopup(popup_8e8eaadc4bc747c284112c86e0cd650e);
+
+            
+        
+    
+
+            var marker_7f93becd14e644718e86999430673bf9 = L.marker(
+                [42.30972244524442,-71.1046392167474],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_2dd8362d96754d1eab8996e1e40c1a1d = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'blue',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_7f93becd14e644718e86999430673bf9.setIcon(icon_2dd8362d96754d1eab8996e1e40c1a1d);
+            
+    
+            var popup_1e8009229aa34eb69bae1766bf6e0afc = L.popup({maxWidth: '300'});
+
+            
+                var html_1ef87e4cf1ca493bbc4c40c1d5be69f1 = $('<div id="html_1ef87e4cf1ca493bbc4c40c1d5be69f1" style="width: 100.0%; height: 100.0%;">District E-13 Police Station</div>')[0];
+                popup_1e8009229aa34eb69bae1766bf6e0afc.setContent(html_1ef87e4cf1ca493bbc4c40c1d5be69f1);
+            
+
+            marker_7f93becd14e644718e86999430673bf9.bindPopup(popup_1e8009229aa34eb69bae1766bf6e0afc);
+
+            
+        
+    
+
+            var marker_189fc9b95fcf4a6e9f29e40be2678123 = L.marker(
+                [42.284728929101234,-71.0917019913962],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_e03bc9640da14d978594de2a7d3e23bf = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'blue',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_189fc9b95fcf4a6e9f29e40be2678123.setIcon(icon_e03bc9640da14d978594de2a7d3e23bf);
+            
+    
+            var popup_3858ffe35faa4c42b592b76591120496 = L.popup({maxWidth: '300'});
+
+            
+                var html_569a12fdca144c88bdb7ae066eaa0dc1 = $('<div id="html_569a12fdca144c88bdb7ae066eaa0dc1" style="width: 100.0%; height: 100.0%;">District B-3 Police Station</div>')[0];
+                popup_3858ffe35faa4c42b592b76591120496.setContent(html_569a12fdca144c88bdb7ae066eaa0dc1);
+            
+
+            marker_189fc9b95fcf4a6e9f29e40be2678123.bindPopup(popup_3858ffe35faa4c42b592b76591120496);
+
+            
+        
+    
+
+            var marker_3b7e1f3db6354bc98682200ecafd3a37 = L.marker(
+                [42.298065504218826,-71.05916492056069],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_672a1bfd773c4108a25bf54754dfcc11 = L.AwesomeMarkers.icon({
+                    icon: 'info-sign',
+                    iconColor: 'white',
+                    markerColor: 'blue',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_3b7e1f3db6354bc98682200ecafd3a37.setIcon(icon_672a1bfd773c4108a25bf54754dfcc11);
+            
+    
+            var popup_52f52aafd6bd4b5abdbdd79c48ae4a39 = L.popup({maxWidth: '300'});
+
+            
+                var html_464da65671054bb6b13f424ad82a923b = $('<div id="html_464da65671054bb6b13f424ad82a923b" style="width: 100.0%; height: 100.0%;">District C-11 Police Station</div>')[0];
+                popup_52f52aafd6bd4b5abdbdd79c48ae4a39.setContent(html_464da65671054bb6b13f424ad82a923b);
+            
+
+            marker_3b7e1f3db6354bc98682200ecafd3a37.bindPopup(popup_52f52aafd6bd4b5abdbdd79c48ae4a39);
+
+            
+        
+    
+
+            var marker_2a4ae4df171b4563a65f257e54d74554 = L.marker(
+                [42.352163617817375,-71.04308639393186],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_d55023856a63442c9ecaaf55b81683f1 = L.AwesomeMarkers.icon({
+                    icon: 'ok-sign',
+                    iconColor: 'white',
+                    markerColor: 'green',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_2a4ae4df171b4563a65f257e54d74554.setIcon(icon_d55023856a63442c9ecaaf55b81683f1);
+            
+    
+
+            var marker_fbf06a70e537469395e52e42afd969fd = L.marker(
+                [42.299192023331315,-71.05713644939684],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_121c5ea7ba0a4c6ba3407025726abea2 = L.AwesomeMarkers.icon({
+                    icon: 'ok-sign',
+                    iconColor: 'white',
+                    markerColor: 'green',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_fbf06a70e537469395e52e42afd969fd.setIcon(icon_121c5ea7ba0a4c6ba3407025726abea2);
+            
+    
+
+            var marker_90856a1da7fd4c369974bafc94273373 = L.marker(
+                [42.32476537084348,-71.0521721708016],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_03c5a5485c034ba398bf27d1d896f2a2 = L.AwesomeMarkers.icon({
+                    icon: 'ok-sign',
+                    iconColor: 'white',
+                    markerColor: 'green',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_90856a1da7fd4c369974bafc94273373.setIcon(icon_03c5a5485c034ba398bf27d1d896f2a2);
+            
+    
+
+            var marker_8beb1dbc2c7c45e9a27ca5059312f39a = L.marker(
+                [42.25000600648497,-71.11474078066146],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_3edca5ef3d8241c689ef12c575338200 = L.AwesomeMarkers.icon({
+                    icon: 'ok-sign',
+                    iconColor: 'white',
+                    markerColor: 'green',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_8beb1dbc2c7c45e9a27ca5059312f39a.setIcon(icon_3edca5ef3d8241c689ef12c575338200);
+            
+    
+
+            var marker_56aed92fe53d491794fcebdd80fe6d63 = L.marker(
+                [42.290214009206196,-71.04968534423118],
+                {
+                    icon: new L.Icon.Default()
+                    }
+                )
+                .addTo(map_794624009dc04395b8447514a905e778);
+            
+    
+
+                var icon_9151c087e11144ff9d6fd114abeb1498 = L.AwesomeMarkers.icon({
+                    icon: 'ok-sign',
+                    iconColor: 'white',
+                    markerColor: 'green',
+                    prefix: 'glyphicon',
+                    extraClasses: 'fa-rotate-0'
+                    });
+                marker_56aed92fe53d491794fcebdd80fe6d63.setIcon(icon_9151c087e11144ff9d6fd114abeb1498);
+            
+    
+            var heat_map_070d7c0781b14c2fa40d41f6f95e2e1c = L.heatLayer(
+                [[42.36030878592034, -71.07210611724648], [42.3479185705944, -71.09307915688527], [42.364052672346794, -71.05807910178468], [42.362258826327654, -71.07147457755292], [42.294610716918584, -71.13564433717309], [42.354371897801755, -71.07922748483895], [42.35812039579183, -71.05138669144392], [42.37401888861771, -71.05833131630885], [42.34150070129864, -71.06296297296292], [42.359878740401484, -71.072048193906], [42.34634965039841, -71.09345218734747], [42.36245223135282, -71.07108326014333], [42.29623627797494, -71.1453611922088], [42.36580501439375, -71.06018910924352], [42.33544138688296, -71.06480387452596], [42.35186181619724, -71.09102734850552], [42.35653839377172, -71.11969621832164], [42.32152722078271, -71.05092305700931], [42.32152722128765, -71.05092305677684], [42.357517380622376, -71.1388547305856], [42.34382268246165, -71.06109744396517], [42.36374339201134, -71.05814863793125], [42.371897007616454, -71.06710207684732], [42.34733773535267, -71.05729266423529], [42.3543115113484, -71.05243469918831], [42.319165646095875, -71.11691865851893], [42.32439435438605, -71.11465960371679], [42.349975882462715, -71.0928747606149], [42.362224171045824, -71.07157025310276], [42.34282393526551, -71.10596388824554], [42.34272139172659, -71.10326132223894], [42.25468569834837, -71.14356041906638], [42.368832985520655, -71.0631852578329], [42.371062734222804, -71.06220212030382], [42.33180003158237, -71.11305362634592], [42.3543115113484, -71.05243469918831], [42.347923477716186, -71.09200977260917], [42.316371324801715, -71.08290207354347], [42.367199484492, -71.01801236308899], [42.330684493027675, -71.0614268735668], [42.3831260210126, -71.07681033070794], [42.348799036132355, -71.03281634485128], [42.378282624150145, -71.07557702107928], [42.372398072591594, -71.06866969275853], [42.349715251124756, -71.03146134122751], [42.322070167399914, -71.05125766715258], [42.29286790303471, -71.09617426157297], [42.349953296918216, -71.04172166654968], [42.304684333888865, -71.11960941342439], [42.25395270122934, -71.11715014156022], [42.35797817817263, -71.1675708677376], [42.35089734856915, -71.10067862978637], [42.35068720498454, -71.09432256889305], [42.37304049575537, -71.12890670639122], [42.300218066740584, -71.10654063065941], [42.330684493027675, -71.0614268735668], [42.345693834910556, -71.10462342744849], [42.34751216397967, -71.09040291175272], [42.36196699734083, -71.07251923035133], [42.36832175822665, -71.12373511690878], [42.34801042663259, -71.05782719387756], [42.356759879462146, -71.07301603554785], [42.364354927577864, -71.06988283167372], [42.2999432412487, -71.048142454709], [42.35570764666842, -71.15468743318246], [42.357507287923646, -71.16203041945022], [42.23533570221328, -71.12514645923342], [42.34673592505551, -71.05832860788713], [42.36374339201134, -71.05814863793125], [42.364052672346794, -71.05807910178468], [42.35812039579183, -71.05138669144392], [42.28396610383385, -71.04673475405376], [42.38329602531061, -71.07615950439778], [42.346970499941136, -71.06061072496638], [42.35784073753921, -71.0259712190986], [42.35909231151392, -71.15918514538356], [42.36374339201134, -71.05814863793125], [42.33546096434549, -71.06487850496617], [42.348581326054365, -71.04450907575412], [42.35484818008503, -71.11820247314279], [42.29627253790409, -71.0462142558897], [42.30022271665827, -71.10674799663822], [42.357347506295426, -71.13874116399276], [42.3590069788657, -71.15683134216344], [42.297036507427414, -71.13249832569565], [42.37353584258809, -71.03811712076812], [42.34382268246165, -71.06109744396517], [42.353472556206015, -71.05402759295974], [42.32414632157666, -71.05560514147624], [42.36857802971507, -71.06387452711708], [42.34150070126513, -71.06296297295361], [42.357517380622376, -71.1388547305856], [42.34150070126513, -71.06296297295361], [42.365926356452874, -71.0229279959534], [42.36752565809329, -71.02559133791564], [42.33632487153543, -71.11004679379296], [42.27939399707699, -71.0677835552025], [42.32414632157666, -71.05560514147624], [42.32414632157666, -71.05560514147624], [42.32414632157666, -71.05560514147624], [42.32052566693733, -71.05002484632766], [42.29627253790409, -71.0462142558897], [42.38472041690668, -71.07526005613778], [42.27885234786111, -71.0801481661123], [42.28398829805166, -71.04387241546515], [42.32140983397426, -71.05136783321305], [42.27885234786111, -71.0801481661123], [42.25073410580041, -71.12112853237691], [42.23576096717557, -71.12622411188505], [42.33385676438687, -71.06414822411531], [42.23533570221328, -71.12514645923342], [42.378282624150145, -71.07557702107928], [42.348544080619746, -71.10497439783006], [42.2999432412487, -71.048142454709], [42.35706689190377, -71.05143391336672], [42.36673193127263, -71.0613087016761], [42.34150070357574, -71.06296297449093], [42.35706689190377, -71.05143391336672], [42.341784693245714, -71.0628671314323], [42.314541096588414, -71.11849353517965], [42.28398829801518, -71.0438724154309], [42.296237039991375, -71.04646013819237], [42.34150070126513, -71.06296297295361], [42.335422567069706, -71.06483217081416], [42.32414632157666, -71.05560514147624], [42.31417509402002, -71.04694193668531], [42.32414632157666, -71.05560514147624], [42.28398829805166, -71.04387241546515], [42.32175028789545, -71.05168532931972], [42.373648363174894, -71.07025933069868], [42.35812039579183, -71.05138669144392], [42.31362815539034, -71.04670144241082], [42.28398829805166, -71.04387241546515], [42.31286916264228, -71.05603540759972], [42.30357160236603, -71.07751601926354], [42.31586496679318, -71.0663558811555], [42.29014789499096, -71.07077937019353], [42.36028054512843, -71.11959018527894], [42.37183773059676, -71.06534214273589], [42.367697014244264, -71.06384488370395], [42.2999432412487, -71.048142454709], [42.315317300078064, -71.1173251896145], [42.34331314393652, -71.10264848384564], [42.36112594178259, -71.07236517383075], [42.33256320918083, -71.0720866998601], [42.34150070126513, -71.06296297295361], [42.34865137097181, -71.10467739759441], [42.242782035951386, -71.13028422292406], [42.30604058770953, -71.0782583459414], [42.310447051916064, -71.07165191524432], [42.306009127379916, -71.0587909801923], [42.349157180355576, -71.09285213346955], [42.24505563786117, -71.13628715760666], [42.33834336586763, -71.06467127913818], [42.30757872056018, -71.05841882076851], [42.28592258100093, -71.06373529249292], [42.28592258096948, -71.06373529243554], [42.27724135259379, -71.06029319264813], [42.30401677723491, -71.06457796200262], [42.299937028350385, -71.07229850081933], [42.28499832647945, -71.04665102498164], [42.34770135480905, -71.08565669181007], [42.34722551253247, -71.05716342734168], [42.358442094554555, -71.02387062683958], [42.364255668367804, -71.02015195145984], [42.38037672860955, -71.07744329751027], [42.33288981873792, -71.07166519928015], [42.285661023957196, -71.09307804942136], [42.358890151568694, -71.15779572531409], [42.36474097987647, -71.13540305545642], [42.301757334298465, -71.11213821958565], [42.2764201906394, -71.11852187521411], [42.28774120190819, -71.10675512999921], [42.332091722115344, -71.07930797256046], [42.36610095788173, -71.06048985080852], [42.32152722078271, -71.05092305700931], [42.271316453252616, -71.17262825364854], [42.35812039579183, -71.05138669144392], [42.31062179085743, -71.0928705436171], [42.32414632157666, -71.05560514147624], [42.284236569426504, -71.09138155277468], [42.2900582299186, -71.04841811813486], [42.36622251432331, -71.02630060487975], [42.29312495804675, -71.15250776295122], [42.269948021027645, -71.09007345319635], [42.300156513204946, -71.1279253644068], [42.36000531715128, -71.05260185605532], [42.36000531715128, -71.05260185605532], [42.33475832220825, -71.06449853288422], [42.36699625619169, -71.06166006060867], [42.364052672346794, -71.05807910178468], [42.38328544545459, -71.07678339117963], [42.3655230631164, -71.0690460099084], [42.33547299800933, -71.06481592541398], [42.37236459712092, -71.06900427339005], [42.37228210433438, -71.06926766000606], [42.351596286058964, -71.0559440428617], [42.358388665285716, -71.11785245423982], [42.368834642378125, -71.06318715353652], [42.284996956095085, -71.04406945175965], [42.35419865045273, -71.07969944211918], [42.28698356581726, -71.05961469302945], [42.29627253790409, -71.0462142558897], [42.32164029208001, -71.05087924085831], [42.28398829805166, -71.04387241546515], [42.371897007616454, -71.06710207684732], [42.309095606207535, -71.1221436233482], [42.36000531715128, -71.05260185605532], [42.38253588037129, -71.04971765192796], [42.380670324630884, -71.07741199355243], [42.36000531715128, -71.05260185605532], [42.347673264008655, -71.0872418539832], [42.35812039579183, -71.05138669144392], [42.36374339201134, -71.05814863793125], [42.368279220041295, -71.06287093504811], [42.347704445924784, -71.07835242570276], [42.34667824998631, -71.10513687563243], [42.34883291243249, -71.09284182300581], [42.32414632157666, -71.05560514147624], [42.25249361668856, -71.11823268115106], [42.32414632157666, -71.05560514147624], [42.364052672346794, -71.05807910178468], [42.378282624150145, -71.07557702107928], [42.368991791758376, -71.06367734322662], [42.300602701237494, -71.0491573865022], [42.28262152905305, -71.05573073836237], [42.28267737916138, -71.05576785312526], [42.28766829373578, -71.09388694950977], [42.37206091321899, -71.06925441338846], [42.36736551265185, -71.0255334158704], [42.34872873432285, -71.05943646963392], [42.31861750582039, -71.06357167595914], [42.333242606575666, -71.06362307038289], [42.371897007616454, -71.06710207684732], [42.33476413304439, -71.06879003307084], [42.37066812446472, -71.06421985505145], [42.36870943804893, -71.02412436383118], [42.33125284212054, -71.07687773953833], [42.304224437369506, -71.08247463319148], [42.33711323052146, -71.10340271097728], [42.31933848318957, -71.07518222554584], [42.311334375605576, -71.07021687237915], [42.357517380622376, -71.1388547305856], [42.36644532878174, -71.06760711542996], [42.38404118681393, -71.07428837283273], [42.32125176061031, -71.05194247540506], [42.3252073871276, -71.07490265552094], [42.354890114579206, -71.1182295930352], [42.36313111093359, -71.05709878519686], [42.38328544545459, -71.07678339117963], [42.300821504010884, -71.04945975819817], [42.32414632157666, -71.05560514147624], [42.32145609723899, -71.05277129738482], [42.294524689051045, -71.04730824630279], [42.28080396525834, -71.0844806545693], [42.29627253790409, -71.0462142558897], [42.28267737916138, -71.05576785312526], [42.36089340157904, -71.07187948210169], [42.35834016965469, -71.14851513379021], [42.35794428062128, -71.07254329791311], [42.35613462108788, -71.07342407528313], [42.378282624150145, -71.07557702107928], [42.38328544545459, -71.07678339117963], [42.36093228358502, -71.1179194778868], [42.29627253790409, -71.0462142558897], [42.28398829805166, -71.04387241546515], [42.3136239632975, -71.04672899982761], [42.3486238368761, -71.0574677226444], [42.28423656901019, -71.09138155061062], [42.27885234786111, -71.0801481661123], [42.36674269904474, -71.06822512333669], [42.28398829805166, -71.04387241546515], [42.311213853376415, -71.05298493931427], [42.28982277994688, -71.04547544054925], [42.31378456998031, -71.11961606909827], [42.373596204294024, -71.03686877946294], [42.34150070126513, -71.06296297295361], [42.34752950548459, -71.07675745825208], [42.35812039579183, -71.05138669144392], [42.35812039579183, -71.05138669144392], [42.364052672346794, -71.05807910178468], [42.35812039579183, -71.05138669144392], [42.34382268246165, -71.06109744396517], [42.31255177285693, -71.08437340287156], [42.351661928343546, -71.11075804071794], [42.28398829805166, -71.04387241546515], [42.25249361668856, -71.11823268115106], [42.35706689190377, -71.05143391336672], [42.366938075901786, -71.06321724459401], [42.282247546687714, -71.05800805715101], [42.379593524176116, -71.02644634328901], [42.35812039579183, -71.05138669144392], [42.34999581828871, -71.0567574748485], [42.344731244561515, -71.06048748652049], [42.378282624150145, -71.07557702107928], [42.37270686808173, -71.13109299675598], [42.32049961418165, -71.06148079523278], [42.36778312707596, -71.06230952765033], [42.29286790303471, -71.09617426157297], [42.36648997294338, -71.06595026106491], [42.38328544545459, -71.07678339117963], [42.36374339201134, -71.05814863793125], [42.32924681397112, -71.06062556120305], [42.347899097936896, -71.09744970965251], [42.29282646870037, -71.09631572900099], [42.29573795872356, -71.15767790650267], [42.2352273185743, -71.12486863686271], [42.3526677180513, -71.11505034019955], [42.37316508803471, -71.069223291269], [42.34863795747701, -71.06009316906456], [42.36276953778213, -71.05368766120469], [42.28129515362944, -71.06130146474418], [42.30718690533346, -71.05383708960198], [42.3652529291216, -71.05962808282605], [42.36374339201134, -71.05814863793125], [42.337526037636096, -71.1107134210056], [42.25581945690123, -71.12413054823831], [42.36000531715128, -71.05260185605532], [42.349157180355576, -71.09285213346955], [42.2973112295412, -71.04701590081464], [42.35812039579183, -71.05138669144392], [42.317872628291234, -71.05149280076235], [42.28199791963825, -71.05890386977387], [42.294608938928434, -71.04803450866429], [42.32414632157666, -71.05560514147624], [42.29803270695029, -71.04914345159324], [42.29743826403956, -71.05109339260918], [42.314169405057015, -71.05986639552104], [42.31239657451411, -71.06416713917908], [42.29392862357614, -71.05168258230172], [42.298315209791, -71.04829290640608], [42.28824245093803, -71.05534743675352], [42.356097362677055, -71.07346124791594], [42.362330895054775, -71.07128762303111], [42.29417036547773, -71.0471471200794], [42.33021272759303, -71.05041931702293], [42.28446670008946, -71.04520724669382], [42.35763038008616, -71.15812775875405], [42.364052672346794, -71.05807910178468], [42.34770800872061, -71.08528912932009], [42.32414632157666, -71.05560514147624], [42.28398829805166, -71.04387241546515], [42.38259850746725, -71.07627370510278], [42.38328544545459, -71.07678339117963], [42.34780339519546, -71.08001401157875], [42.3554934511882, -71.07495919622777], [42.36224506065359, -71.07151203471133], [42.35877137911213, -71.15826164055972], [42.36322758472563, -71.14146252974633], [42.3271763548935, -71.05839612433601], [42.282621529053124, -71.05573073836236], [42.2352273185743, -71.12486863686271], [42.367508716934985, -71.1191503922873], [42.365555843432475, -71.05993590133684], [42.36504210023727, -71.06933838859752], [42.38328544545459, -71.07678339117963], [42.3469629319961, -71.06044210274749], [42.34893189458655, -71.05726007507079], [42.34150070126513, -71.06296297295361], [42.33309072957906, -71.0631303121477], [42.32140983397426, -71.05136783321296], [42.354959019806735, -71.07760789893709], [42.29627253790409, -71.0462142558897], [42.35321373062405, -71.05450123935033], [42.36000531715128, -71.05260185605532], [42.342788472727804, -71.06175759713821], [42.34865137097181, -71.10467739759441], [42.31880460753295, -71.0495727752834], [42.33614974169429, -71.10089792082303], [42.31083611331366, -71.08157437461658], [42.37051275540149, -71.0264651502102], [42.34272139172657, -71.10326132223894], [42.28161845191377, -71.08692497269877], [42.2999432412487, -71.048142454709], [42.284996956095085, -71.04406945175965], [42.366675108680624, -71.06830328933293], [42.331268484497706, -71.07486440402667], [42.33544138496892, -71.06480387384046], [42.33579967574143, -71.06588187312508], [42.36374339201134, -71.05814863793125], [42.324727198382206, -71.1143117181292], [42.35956902865999, -71.1174033815117], [42.29627253790409, -71.0462142558897], [42.3186592681913, -71.04965847745704], [42.32150196219366, -71.05422116972103], [42.31305846730942, -71.12242632620824], [42.32414632157666, -71.05560514147624], [42.281064326605616, -71.04580183469483], [42.28588644123724, -71.04294291984337], [42.31057395061523, -71.08979066511282], [42.31406199480722, -71.07772822346854], [42.347343492019725, -71.06441140390861], [42.36374339201134, -71.05814863793125], [42.34792110643495, -71.04011365781516], [42.32505087233286, -71.06913645827876], [42.31656770700289, -71.06575293814525], [42.39422614647429, -71.06741600916678], [42.353472556206015, -71.05402759295974], [42.36259828942578, -71.05505494206808], [42.34674128628911, -71.05832008716645], [42.34150070126513, -71.06296297295361], [42.36374339201134, -71.05814863793125], [42.37019088106863, -71.03025715128366], [42.36474097987647, -71.13540305545642], [42.36474097987647, -71.13540305545642], [42.372422943847134, -71.13160763794856], [42.28766829373578, -71.09388694950977], [42.378282624150145, -71.07557702107928], [42.33544138688296, -71.06480387452596], [42.33830929566575, -71.15478567238515], [42.2999432412487, -71.048142454709], [42.30741546036168, -71.06861875774203], [42.27885906038777, -71.11637742817743], [42.352146730645664, -71.08726600642663], [42.35056866979064, -71.0956586549582], [42.32076143613868, -71.0505861185214], [42.350642267338415, -71.06155351847725], [42.32414632157666, -71.05560514147624], [42.3286381598325, -71.04707816859218], [42.271087676534506, -71.17310584598836], [42.27885234786111, -71.0801481661123], [42.356776630949895, -71.12717194494776], [42.33632487153543, -71.11004679379296], [42.35709103241202, -71.12053724811521], [42.34272139172657, -71.10326132223894], [42.35194273291614, -71.11225251720032], [42.32414632157666, -71.05560514147624], [42.30125350723241, -71.11103096664387], [42.34367159986991, -71.06613942786367], [42.32414632157666, -71.05560514147624], [42.30537016965509, -71.06150371243554], [42.29982993680476, -71.06818779255654], [42.285726478687764, -71.06429452492803], [42.32160211597492, -71.11209027550669], [42.32571045912859, -71.087889968499], [42.33105484186732, -71.08088824669136], [42.34706789914371, -71.05795995009665], [42.34150070126513, -71.06296297295361], [42.36374339201134, -71.05814863793125], [42.3725992331027, -71.02832748580487], [42.35706689190377, -71.05143391336672], [42.31767085695731, -71.05142780489474], [42.30022271665827, -71.10674799663822], [42.34150070126513, -71.06296297295361], [42.3334792326655, -71.07122621169512], [42.36374339201134, -71.05814863793125], [42.3034066876262, -71.07142589861422], [42.30600912695739, -71.0587909802819], [42.29506966138713, -71.06166883621162], [42.31182065720354, -71.0617381294352], [42.36374339201134, -71.05814863793125], [42.3336434137121, -71.06395889425559], [42.34865137097181, -71.10467739759441], [42.33544138729125, -71.06480387608252], [42.36153099282201, -71.14619629555413], [42.30022271665827, -71.10674799663822], [42.28768425491452, -71.0938937415746], [42.353259652215264, -71.04869979434486], [42.29623627797494, -71.1453611922088], [42.300270698410564, -71.10466128609342], [42.283280501836686, -71.05013674002781], [42.36167550957157, -71.14654945478044], [42.3609234759809, -71.11778327367327], [42.317872628291234, -71.05149280076235], [42.371897007616454, -71.06710207684732], [42.33560614296443, -71.0661409293464], [42.36669912147286, -71.06713567740758], [42.34150070126513, -71.06296297295361], [42.36194395677274, -71.05470606913741], [42.34703542491685, -71.06043469287398], [42.362244315060344, -71.05473044021775], [42.3403045622163, -71.10993934009007], [42.30254086593418, -71.0666101609176], [42.371897007616454, -71.06710207684732], [42.2352273185743, -71.12486863686271], [42.3336434137121, -71.06395889425559], [42.32490768561864, -71.09827156879913], [42.28581829555546, -71.09631620338968], [42.27606894452773, -71.07204538415381], [42.331411657093085, -71.09439967596487], [42.26872344281151, -71.11956055366876], [42.31815404903929, -71.05895790366117], [42.317724166537246, -71.05671510216672], [42.314950701065996, -71.05994386910191], [42.297795337218325, -71.06356800130143], [42.29365554520483, -71.06209110607617], [42.291121098924, -71.06280530730209], [42.30922032287035, -71.0725962218798], [42.3034066876262, -71.07142589861422], [42.30512889108069, -71.06139761479238], [42.307507885088285, -71.07000822553574], [42.30062502514974, -71.0491467870018], [42.32135873450731, -71.07220437260284], [42.340085964156586, -71.16614314140581], [42.34541284907001, -71.08182055320711], [42.33814296932424, -71.03550785416664], [42.36263342312649, -71.05389630393745], [42.34067203132034, -71.06297705083514], [42.34150070126513, -71.06296297295361], [42.364052672346794, -71.05807910178468], [42.37078419654903, -71.06585470377827], [42.35222761980276, -71.02952433482717], [42.35812039579183, -71.05138669144392], [42.3580284450415, -71.05135009080117], [42.36000531715128, -71.05260185605532], [42.36636738719155, -71.065083532329], [42.38329602531061, -71.07615950439778], [42.36830344924282, -71.06258258625348], [42.36374339201134, -71.05814863793125], [42.37155005325582, -71.06727950710625], [42.34770800872061, -71.08528912932009], [42.35815489801869, -71.05140179852035], [42.37012463374543, -71.06503426000054], [42.36874269287944, -71.06425887217259], [42.330684493027675, -71.0614268735668], [42.38256806822288, -71.07665306714222], [42.34775478934212, -71.09533713130539], [42.35222714932276, -71.05561084728181], [42.36000531715128, -71.05260185605532], [42.364052672346794, -71.05807910178468], [42.34656800258403, -71.05798312016373], [42.33475831859329, -71.06918911673237], [42.35986300973926, -71.05254584518458], [42.34150070126513, -71.06296297295361], [42.36245609607196, -71.05556043091119], [42.35208833370258, -71.02945355266658], [42.35230425619061, -71.02931565857683], [42.33503444512569, -71.06564842185122], [42.348544080619746, -71.10497439783006], [42.3336434137121, -71.06395889425559], [42.35235030123314, -71.05800857058813], [42.35812039579183, -71.05138669144392], [42.33679517520617, -71.06563233367481], [42.3336434137121, -71.06395889425559], [42.347921160477405, -71.07552862965682], [42.37016442385188, -71.03021958740429], [42.349091370137835, -71.03962598432518], [42.36943377669828, -71.02057114494968], [42.36434826313353, -71.06988642752985], [42.36250070760886, -71.07102879193724], [42.34030456151963, -71.10993934068694], [42.35127349312247, -71.09047933587625], [42.31381396400451, -71.1211899725748], [42.314541096588414, -71.11849353517965], [42.312633377784934, -71.12268179222843], [42.36416905586243, -71.07016309525775], [42.33926556771872, -71.09669629772564], [42.34272139172659, -71.10326132223894], [42.36674269904474, -71.06822512333669], [42.35188096507882, -71.11036370210908], [42.36832726561484, -71.12375115452593], [42.367314351620614, -71.1187868331537], [42.36911134797711, -71.12588262822827], [42.369411804679544, -71.126298352456], [42.37220534166704, -71.13025710803217], [42.32381036465275, -71.05507051236012], [42.282385425513695, -71.05750716006195], [42.32414632157666, -71.05560514147624], [42.28398829805166, -71.04387241546515], [42.28398829805166, -71.04387241546515], [42.28065670008731, -71.06338389492446], [42.292009479386145, -71.04766261753073], [42.3330212494085, -71.02500063364887], [42.29993922193561, -71.04814018928953], [42.32435569537568, -71.05242517125222], [42.29627253790409, -71.0462142558897], [42.30062502514974, -71.0491467870017], [42.317872628291234, -71.05149280076235], [42.32414632157666, -71.05560514147624], [42.327360151422894, -71.05832024341815], [42.30779570405878, -71.05411421084682], [42.28460439384562, -71.04516309958872], [42.300270698410564, -71.10466128609342], [42.30022271665827, -71.10674799663822], [42.28539494687808, -71.09296318157149], [42.309008784378314, -71.12072673028023], [42.28285902221799, -71.17154902125577], [42.25249361668856, -71.11823268115106], [42.30022271665827, -71.10674799663822], [42.34699122930942, -71.05625795896393], [42.34708351489942, -71.05689960001573], [42.36786118598018, -71.02571271130125], [42.32414632157666, -71.05560514147624], [42.34764866447137, -71.0380192412576], [42.35646111065193, -71.0731564720993], [42.280926674026276, -71.06250111651057], [42.285732210732654, -71.04251006082687], [42.28398829805166, -71.04387241546515], [42.28550247993372, -71.04149677620373], [42.36000531715128, -71.05260185605532], [42.371897007616454, -71.06710207684732], [42.356285826096844, -71.07327511075587], [42.293411297857396, -71.0484167525967], [42.32446174584219, -71.05589863794627], [42.28398829805166, -71.04387241546515], [42.32414632157666, -71.05560514147624], [42.33427579016803, -71.06482694573961], [42.34150070126513, -71.06296297295361], [42.34150070126513, -71.06296297295361], [42.34870406215497, -71.05879862901593], [42.36374339201134, -71.05814863793125], [42.36539604665591, -71.01852698401837], [42.36932558930255, -71.02033066413635], [42.350647362451184, -71.09453078637281], [42.28588644123724, -71.04294291984337], [42.28267737916138, -71.05576785312526], [42.32072180816924, -71.05676917338158], [42.285732210732654, -71.04251006082687], [42.3016214067811, -71.11227322065902], [42.30084221789243, -71.12706280994348], [42.30125350723241, -71.11103096664387], [42.37134615123314, -71.12711485249068], [42.300218066740584, -71.10654063065941], [42.333618015843705, -71.06393635136297], [42.31405197246536, -71.11252989465137], [42.319540140274604, -71.11166903245778], [42.31083611331366, -71.08157437461658], [42.331268484497706, -71.07486440402667], [42.34804405356575, -71.04040823605308], [42.32414632157666, -71.05560514147624], [42.28398829805166, -71.04387241546515], [42.35055781879953, -71.09544969296651], [42.25468569834837, -71.14356041906638], [42.2488244639275, -71.13898180489595], [42.349194109409545, -71.09159329526163], [42.392032805361666, -71.0045792517928], [42.36134989520326, -71.07044764360204], [42.34030456151963, -71.10993934068694], [42.29623627797494, -71.1453611922088], [42.320004774778425, -71.05979927995983], [42.29006607399072, -71.04555620686753], [42.296236277975005, -71.14536119220863], [42.28043155582996, -71.08264762468897], [42.29116213638925, -71.0973630092528], [42.385336749506266, -71.04713003848993], [42.37353584344994, -71.03811711935393], [42.32164892472885, -71.05208225168359], [42.32175028789545, -71.05168532931972], [42.28398829805166, -71.04387241546515], [42.28398829805166, -71.04387241546515], [42.28204877479172, -71.05873087929338], [42.23723583190421, -71.13190118468705], [42.27843626168552, -71.07959376120054], [42.361284286138556, -71.0624915836577], [42.352621287813214, -71.05539205921224], [42.357944280457495, -71.07254329795832], [42.284669433812496, -71.04476979676114], [42.321748292953444, -71.05394044120841], [42.28398829805166, -71.04387241546515], [42.35180624416354, -71.04546534009332], [42.35800451055089, -71.16189941417524], [42.29627253790409, -71.0462142558897], [42.36557473998545, -71.02492841326803], [42.35351693853301, -71.02872612822073], [42.35812039579183, -71.05138669144392], [42.371897007616454, -71.06710207684732], [42.35812039579183, -71.05138669144392], [42.24505563786117, -71.13628715760666], [42.3543008512592, -71.02824306665515], [42.34150070126513, -71.06296297295361], [42.34150070126513, -71.06296297295361], [42.31417509402002, -71.04694193668531], [42.31381396220275, -71.12118996911222], [42.34264501323025, -71.06164100492964], [42.37327732951204, -71.03818691677874], [42.35812039579183, -71.05138669144392], [42.350645210185256, -71.11091930400983], [42.35061883212901, -71.09645456401445], [42.28588644123724, -71.04294291984337], [42.305439632153735, -71.0805626160444], [42.312169842576964, -71.06614009306651], [42.31028802277595, -71.06267521942311], [42.30001579794872, -71.06748672761734], [42.355594804849154, -71.0603756037165], [42.357431753092975, -71.12427932243031], [42.280339745518624, -71.05469424048273], [42.29982993680476, -71.06818779255654], [42.28853369404005, -71.06351861221884], [42.34272139172659, -71.10326132223894], [42.34793767766143, -71.06014277532823], [42.358503881120484, -71.05155460764776], [42.34679086693905, -71.03771681974143], [42.31798039205824, -71.05177075606966], [42.31558100647828, -71.04769768249119], [42.28398829805166, -71.04387241546515], [42.27813282670846, -71.07472758185726], [42.330684493027675, -71.0614268735668], [42.28199791963825, -71.05890386977387], [42.2999432412487, -71.048142454709], [42.2500902009062, -71.12247244312732], [42.28278724676038, -71.17178264340741], [42.29665200339223, -71.06120037223583], [42.36095088505907, -71.11765607603805], [42.37955180952426, -71.05234797282299], [42.335408415639996, -71.06485344799647], [42.34796620015466, -71.07145041230973], [42.35812039579183, -71.05138669144392], [42.34865137097181, -71.10467739759441], [42.357944280457495, -71.07254329795832], [42.3431979366017, -71.09108498557912], [42.35133371278179, -71.08972788074442], [42.32152722078271, -71.05092305700931], [42.36000531715128, -71.05260185605532], [42.354920351440526, -71.07740137525076], [42.34030456151963, -71.10993934068694], [42.36778122742082, -71.04707357016177], [42.25638133984772, -71.12612385797655], [42.329356055557966, -71.05265886673679], [42.29734126242053, -71.13155168533996], [42.28043155708612, -71.08264763037917], [42.300270698410564, -71.10466128609342], [42.30839273041653, -71.12263110304866], [42.302374807897955, -71.12578115305536], [42.34951175293841, -71.05703168785999], [42.36384484316128, -71.05824391447973], [42.33327137155299, -71.11181493472608], [42.293411297857396, -71.0484167525967], [42.36674269904474, -71.06822512333669], [42.31858337680282, -71.11646839963589], [42.30057270497846, -71.106166461909], [42.28323077981875, -71.05106198350789], [42.321455423646896, -71.05287051008636], [42.25845592928733, -71.14019647720042], [42.279748238698225, -71.08156665030803], [42.29644703342898, -71.14518913080563], [42.35812039579183, -71.05138669144392], [42.365509120280116, -71.06906450369912], [42.36233278797193, -71.07076439040414], [42.357101660628835, -71.12142320586446], [42.35812039579183, -71.05138669144392], [42.36918613429157, -71.02823459911637], [42.36674269922168, -71.06822512312475], [42.3553758766931, -71.07566952180288], [42.28282610332076, -71.1715264632743], [42.35520559662345, -71.06079652102599], [42.34739744954127, -71.07663336593089], [42.347690785129785, -71.0862403044064], [42.356932936688274, -71.11992028179236], [42.32350795008039, -71.05505894815141], [42.29627253790409, -71.0462142558897], [42.3237563413424, -71.05500022061653], [42.36248863978105, -71.05427590796897], [42.36386676925534, -71.0582645073799], [42.378282624150145, -71.07557702107928], [42.330684493027675, -71.0614268735668], [42.36216854280306, -71.07172783545924], [42.3676001026348, -71.11905973521729], [42.333918101512545, -71.06377160525295], [42.348945137612056, -71.0423662262365], [42.3459935903597, -71.06123200993699], [42.369765599663225, -71.02553075803522], [42.36970275387994, -71.02232855737022], [42.35057560320119, -71.09579217836092], [42.32414632157666, -71.05560514147624], [42.3336434137121, -71.06395889425559], [42.357944280457495, -71.07254329795832], [42.29821669610943, -71.11588516291737], [42.38328544545459, -71.07678339117963], [42.35706689190377, -71.05143391336672], [42.342788472727804, -71.06175759713821], [42.34950469187864, -71.05704736960874], [42.335393443147694, -71.06478670332326], [42.33579967574143, -71.06588187312508], [42.34679086924995, -71.03771682127794], [42.34679878519841, -71.03764694684054], [42.34770800872061, -71.08528912932009], [42.366399777546036, -71.06564888296673], [42.35812039579183, -71.05138669144392], [42.32439435438605, -71.11465960371679], [42.349157180355576, -71.09285213346955], [42.35532460344377, -71.075049100794], [42.37999779416132, -71.07756976333822], [42.357517380622376, -71.1388547305856], [42.38233921612186, -71.07265119426103], [42.29649449229684, -71.04659441934538], [42.28398829805166, -71.04387241546515], [42.32164029208001, -71.05087924085831], [42.317872628291234, -71.05149280076235], [42.32567348820647, -71.05678750976612], [42.283460975893405, -71.08504510806851], [42.280889089690426, -71.09246385775806], [42.30909560992072, -71.12214362245531], [42.34783409197933, -71.06997225592313], [42.345577420649605, -71.09430299148848], [42.35714525003143, -71.07300986327645], [42.34569383491052, -71.10462342744857], [42.3586422478219, -71.1581726409845], [42.3519335974601, -71.1111211407928], [42.33830570280556, -71.02597849959035], [42.30547794112017, -71.07865159267162], [42.36126054958761, -71.07234876455976], [42.32145753150965, -71.05288379436742], [42.35763038008616, -71.15812775875405], [42.29646251752723, -71.05521158132078], [42.30060020284693, -71.0666787072528], [42.2956245162691, -71.06951308675032], [42.30024181847898, -71.06592369721648], [42.31286916264228, -71.05603540759972], [42.305206440686966, -71.06834366631654], [42.30488797582229, -71.06879762566805], [42.29606560878192, -71.06137146300547], [42.316591469624406, -71.05667967098508], [42.29860872082871, -71.06065166158162], [42.3597690765287, -71.06287075470344], [42.304910230523575, -71.0741607472882], [42.27868219325679, -71.06627359822677], [42.37015753026642, -71.06539450074932], [42.330684493027675, -71.0614268735668], [42.35812039579183, -71.05138669144392], [42.35476396429301, -71.05251530882981], [42.36666683349585, -71.01722242000461], [42.32855452471796, -71.04716414920756], [42.35812039579183, -71.05138669144392], [42.35653839377172, -71.11969621832164], [42.3315352226816, -71.06193151405901], [42.372347291764264, -71.1298995172597], [42.34859996026867, -71.04150969000058], [42.35600099942835, -71.07360244208823], [42.354418235599226, -71.07910124277763], [42.300220755164474, -71.10666050801399], [42.29627253790409, -71.0462142558897], [42.28374058013456, -71.04754352245739], [42.30983696140413, -71.08870334300421], [42.35974296664635, -71.1203112913386], [42.36634875229429, -71.06500371163041], [42.384593866973475, -71.07662750930383], [42.35706689190377, -71.05143391336672], [42.35848354557887, -71.05154570305636], [42.362100832249865, -71.07189897898205], [42.35135800712897, -71.0929092739777], [42.35900634969927, -71.15684352454508], [42.30766918398761, -71.04614191536515], [42.317872628291234, -71.05149280076235], [42.271270399087776, -71.07422561670577], [42.3178291121052, -71.0516860196022], [42.36027075251167, -71.14978899188245], [42.25889752132252, -71.13711034518533], [42.349157180355576, -71.09285213346955], [42.29627253790409, -71.0462142558897], [42.29627253790409, -71.0462142558897], [42.28540482649002, -71.0430975116557], [42.32152722078271, -71.05092305700931], [42.300411452205786, -71.10620899379676], [42.360923474043915, -71.11778327331814], [42.34865137097181, -71.10467739759441], [42.33525355503987, -71.06667810499212], [42.333784567452845, -71.06441139832316], [42.38279721920428, -71.07686589360966], [42.34150070126513, -71.06296297295361], [42.34777597612901, -71.10066235054549], [42.3665530454665, -71.06713806046568], [42.35218276798499, -71.08817623901342], [42.36460727374609, -71.06974667560316], [42.29046290417483, -71.04352692616803], [42.317872628291234, -71.05149280076235], [42.27941386655562, -71.08106984167871], [42.33579967574143, -71.06588187312508], [42.35706689190377, -71.05143391336672], [42.34771074791021, -71.04999830381716], [42.35049946355324, -71.04279183208158], [42.35181628579896, -71.06725170497374], [42.327360151422894, -71.05832024341815], [42.305126763662706, -71.12468238731363], [42.2999432412487, -71.048142454709], [42.34685911811223, -71.05483920340188], [42.348544080619746, -71.10497439783006], [42.34681397947953, -71.05822036697742], [42.35325739528544, -71.05496486297467], [42.364052672346794, -71.05807910178468], [42.356992005818256, -71.0730778326661], [42.350275068417815, -71.09164831714251], [42.366926085690466, -71.06753918721682], [42.35706689190377, -71.05143391336672], [42.29655808603861, -71.14518907016304], [42.32140983397426, -71.05136783321296], [42.27810897392611, -71.07223924791595], [42.33121754339762, -71.05599384745331], [42.340791360336894, -71.0539275184775], [42.38122904485033, -71.07666480661511], [42.357186870353345, -71.1221030017504], [42.324045877477076, -71.08285438270676], [42.31861750582039, -71.06357167595914], [42.378282624150145, -71.07557702107928], [42.38328544545459, -71.07678339117963], [42.356144476267055, -71.07341424278364], [42.36935165156505, -71.12601539396853], [42.36149629945588, -71.14587552653452], [42.27992750116708, -71.06592013482985], [42.32123183784144, -71.05586869919163], [42.36090609925879, -71.07236153606749], [42.35969432175625, -71.07207441949524], [42.35800451066121, -71.16189941409948], [42.296237039991375, -71.04646013819237], [42.30638215302383, -71.12414553638136], [42.30075590218155, -71.10630127316254], [42.33237234871763, -71.07142953382883], [42.36145936513739, -71.07232422655767], [42.34964942075116, -71.04072249746889], [42.2862577678588, -71.06413799839136], [42.32072180806247, -71.0567691737903], [42.30799901190137, -71.06938023983244], [42.36083640580399, -71.07234577644262], [42.362050174120235, -71.07199006637717], [42.349706973130694, -71.09161478557337], [42.32140983397426, -71.05136783321296], [42.28496122819677, -71.09280958560373], [42.292615707210594, -71.04800161102119], [42.38328544545459, -71.07678339117963], [42.33544138688296, -71.06480387452596], [42.33002211173913, -71.04474473682522], [42.33544139119806, -71.06480387571185], [42.35121320541917, -71.11575304883145], [42.360923474043915, -71.11778327331814], [42.36149629945588, -71.14587552653452], [42.32125306704284, -71.05190756229678], [42.30760492145382, -71.05923412649804], [42.35210153873003, -71.08853364435433], [42.278566810031336, -71.07889060033565], [42.30129293873248, -71.06401986581088], [42.309163436855826, -71.0662979106224], [42.35935894020885, -71.06288047237702], [42.30153848535474, -71.05979596513575], [42.28051469009474, -71.06576074760558], [42.33544138688296, -71.06480387452596], [42.272042468672325, -71.16142253156087], [42.34150070126513, -71.06296297295361], [42.35239360887408, -71.05549946375062], [42.351624539899305, -71.05593606853053], [42.384113551249506, -71.04822173542152], [42.368817795826274, -71.063480432006], [42.36153528638519, -71.07231138126267], [42.32414632157666, -71.05560514147624], [42.29623627797494, -71.1453611922088], [42.330684493027675, -71.0614268735668], [42.36401149512687, -71.01878734817595], [42.32414632157666, -71.05560514147624], [42.29627253790409, -71.0462142558897], [42.3739512965554, -71.03741383494572], [42.36117594056859, -71.06286325839251], [42.34707296980341, -71.05932801392493], [42.34735048083344, -71.0573065168941], [42.35812039579183, -71.05138669144392], [42.35812039579183, -71.05138669144392], [42.3336434137121, -71.06395889425559], [42.3336434137121, -71.06395889425559], [42.348568371893734, -71.05749709775202], [42.34868211566058, -71.05743685724369], [42.35534567868756, -71.05111188440364], [42.36355641395549, -71.07030847863192], [42.360309230194886, -71.15023018734021], [42.36149629945588, -71.14587552653452], [42.367123392704, -71.0180292659674], [42.34091904853979, -71.0773174474551], [42.2927959576692, -71.04590653306902], [42.34927973134095, -71.07693297558923], [42.34526386722166, -71.06983327720269], [42.329648284429695, -71.05221201183161], [42.32150196219366, -71.05422116972103], [42.282788118461525, -71.05414128213675], [42.34634622529007, -71.0632528818402], [42.336770308544196, -71.07659788526868], [42.370053996743366, -71.0652456501751], [42.339767658189714, -71.06390038635101], [42.35812039579183, -71.05138669144392], [42.32072180816924, -71.05676917338158], [42.34850845746621, -71.05884942017678], [42.34382268246165, -71.06109744396517], [42.37104286729849, -71.06200808759357], [42.3718240895097, -71.06801642036392], [42.346181295814134, -71.06001802555069], [42.36674269904474, -71.06822512333669], [42.373121313469774, -71.05942079563543], [42.31569068387398, -71.08949592278881], [42.30846936374687, -71.08325380310927], [42.319059290304196, -71.07775061372938], [42.31133291918821, -71.08303536198686], [42.35615147297478, -71.14908179137696], [42.333918101512545, -71.06377160525295], [42.29371750034847, -71.14602860663271], [42.29623627797494, -71.1453611922088], [42.300106239056355, -71.1278135132899], [42.25845592928733, -71.14019647720042], [42.32232565766605, -71.06306832496196], [42.35213881481782, -71.08856019650342], [42.31118024366227, -71.05279367636454], [42.28398829805166, -71.04387241546515], [42.29644703342898, -71.14518913080563], [42.350265873701694, -71.13093711489842], [42.34788616117894, -71.09893829884508], [42.30127447537537, -71.04940813236269], [42.28398829805166, -71.04387241546515], [42.33615598873737, -71.06574086540186], [42.35812039579183, -71.05138669144392], [42.341505372056034, -71.06296048386055], [42.38328544545459, -71.07678339117963], [42.33632487153543, -71.11004679379288], [42.32072180816924, -71.05676917338158], [42.32414632157666, -71.05560514147624], [42.371897007616454, -71.06710207684732], [42.35706689190377, -71.05143391336672], [42.28695009028109, -71.11056314488656], [42.34404183528866, -71.06205209277871], [42.30216700924876, -71.11444714357152], [42.35210645019443, -71.08741410058111], [42.364052672346794, -71.05807910178468], [42.356846291478874, -71.12696170742564], [42.36098808472911, -71.11742982060647], [42.35118320266884, -71.09354893551868], [42.36149629945588, -71.14587552653452], [42.35686939849464, -71.05889327694932], [42.369677878577306, -71.13034377127951], [42.35483334670031, -71.07763890664832], [42.3549502386352, -71.07764054361454], [42.35812039579183, -71.05138669144392], [42.34160859457168, -71.06292656269765], [42.330684493027675, -71.0614268735668], [42.34150070126513, -71.06296297295361], [42.31295953901037, -71.05720675777323], [42.28397880584762, -71.04669905249015], [42.28142641182731, -71.06085913318742], [42.319171148177865, -71.05248626527285], [42.34093681584149, -71.06283237875542], [42.354890114579206, -71.1182295930352], [42.37104202056526, -71.06223079815342], [42.34771617928143, -71.08824116472276], [42.35706689190377, -71.05143391336672], [42.36552306311644, -71.0690460099084], [42.34030456151963, -71.10993934068694], [42.300270698410564, -71.10466128609342], [42.29674263438621, -71.14584681688967], [42.35778613193448, -71.15824149907368], [42.37115574708666, -71.06200631526823], [42.349157180355576, -71.09285213346955], [42.28398829805166, -71.04387241546515], [42.28972565045732, -71.0481492055278], [42.34150070126513, -71.06296297295361], [42.371897007616454, -71.06710207684732], [42.35569945156968, -71.07324699632221], [42.36149629945588, -71.14587552653452], [42.31787566459963, -71.05149392092679], [42.347704420340335, -71.0783534281668], [42.356283621979486, -71.07327681933461], [42.30594323096128, -71.0576033900455], [42.305439632153735, -71.0805626160444], [42.29969918726156, -71.07264839911828], [42.29930431451847, -71.05810568887262], [42.305439632153735, -71.0805626160444], [42.30089756926131, -71.06564660726765], [42.305889369186396, -71.0683107858287], [42.30036920977507, -71.06988564155284], [42.368253294582054, -71.06351251378643], [42.378282624150145, -71.07557702107928], [42.34150070126513, -71.06296297295361], [42.37789380375648, -71.07544780943685], [42.36374339201134, -71.05814863793125], [42.36416905586243, -71.07016309525775], [42.36103002502703, -71.0727827183177], [42.35711522319198, -71.07281865739822], [42.28592176953788, -71.04302651039266], [42.3055128954808, -71.06993782315254], [42.295980935165645, -71.0536169132893], [42.2900582299186, -71.04841811813486], [42.2907456972993, -71.08648961134507], [42.2862577678588, -71.06413799839136], [42.30490631871577, -71.06709154868484], [42.27909166958972, -71.11677988231814], [42.29983444033193, -71.0783400424933], [42.3004118020307, -71.08282115773515], [42.28109804605004, -71.1042409388396], [42.27635239450571, -71.09339422846841], [42.33544138688296, -71.06480387452596], [42.30788874192343, -71.0538356813098], [42.350897730909935, -71.1006847782399], [42.32072180816924, -71.05676917338158], [42.298449808266994, -71.0869321782899], [42.35706689190377, -71.05143391336672], [42.34150070126513, -71.06296297295361], [42.35812039579183, -71.05138669144392], [42.32102126185686, -71.11656982439686], [42.360923474043915, -71.11778327331814], [42.28398829805166, -71.04387241546515], [42.27813282670846, -71.07472758185726], [42.32027072802938, -71.05774722018435], [42.36759154004268, -71.06294022069841], [42.351622295519356, -71.05593670198209], [42.36674269904474, -71.06822512333669], [42.34169272397764, -71.05015875630991], [42.315751805397134, -71.06285816097159], [42.37314239768632, -71.03800809372375], [42.3472621706644, -71.05721053552512], [42.356932936688274, -71.11992028179236], [42.348250203270965, -71.07829908508731], [42.35994851388969, -71.0720261607374], [42.354890114579206, -71.1182295930352], [42.32721816060883, -71.07331302449761], [42.31534895375939, -71.08330442073378], [42.326686912270475, -71.07147869086671], [42.32075566122313, -71.07405604235885], [42.258171994056866, -71.13545139431797], [42.362603313909325, -71.05505030142537], [42.23522732006656, -71.12486863678843], [42.38328544545459, -71.07678339117963], [42.357944280457495, -71.07254329795832], [42.35956902865999, -71.1174033815117], [42.35812039579183, -71.05138669144392], [42.35534567868756, -71.05111188440364], [42.35084183054829, -71.09978589687562], [42.36824504513786, -71.12380049978138], [42.35800219598826, -71.12082670595603], [42.34679086693905, -71.03771681974143], [42.346611002254086, -71.06459299598951], [42.28379356890487, -71.08952146543281], [42.3336434137121, -71.06395889425559], [42.349157180355576, -71.09285213346955], [42.295307359330906, -71.04597245145642], [42.28323077981875, -71.05106198350789], [42.34921806738653, -71.13003257650124], [42.36834716633214, -71.06263213447524], [42.34150070126513, -71.06296297295361], [42.29627253790409, -71.0462142558897], [42.28398829805166, -71.04387241546515], [42.290058229702005, -71.04841811795907], [42.35721356424085, -71.12255530692929], [42.38458594775761, -71.07662661915721], [42.33281235117614, -71.06371364334181], [42.347083444487126, -71.0568994269217], [42.349157180355576, -71.09285213346955], [42.36219749147247, -71.0716458760266], [42.28266872091142, -71.05576209934667], [42.32145992760622, -71.05232911931118], [42.28496122819677, -71.09280958560373], [42.29566124546845, -71.04777005148175], [42.28398829805166, -71.04387241546515], [42.28360927725402, -71.08920225468675], [42.36695808449993, -71.0679456745922], [42.34668100364944, -71.05843986469165], [42.36317063768247, -71.07116990355271], [42.36182640062909, -71.07221867088596], [42.36674269904474, -71.06822512333669], [42.36786365574643, -71.12111681494015], [42.28398829805166, -71.04387241546515], [42.35808865141228, -71.05137278674961], [42.28405474040701, -71.04621522371984], [42.38078866497806, -71.06159588129454], [42.367161685851066, -71.06310847113257], [42.3741150679295, -71.02956365576001], [42.37410355203073, -71.06788841967762], [42.362115133558746, -71.07187326402725], [42.30991859285757, -71.0634448299727], [42.28751725025281, -71.06153831923649], [42.30084798723898, -71.0637668596227], [42.30228376449115, -71.06952257885102], [42.299637847869164, -71.06647795536816], [42.287695279970805, -71.05703384769232], [42.30819697184393, -71.0750958942202], [42.304841647227505, -71.07983236281834], [42.36093228358502, -71.1179194778868], [42.34150070126513, -71.06296297295361], [42.36374339201134, -71.05814863793125], [42.38422897376858, -71.0765106109324], [42.34150070126513, -71.06296297295361], [42.34767430847918, -71.08715198871641], [42.347704420340335, -71.0783534281668], [42.35812039579183, -71.05138669144392], [42.33534303529045, -71.06500160333258], [42.35815489801869, -71.05140179852035], [42.359533739889784, -71.05200569306473], [42.36992328558542, -71.0657446129424], [42.36949936595402, -71.06393545811889], [42.364279931186516, -71.07011046473474], [42.364279931186516, -71.07011046473474], [42.363996066545106, -71.05802833314563], [42.347882005384626, -71.07702981272158], [42.3676001026348, -71.11905973521729], [42.28766829373578, -71.09388694950977], [42.33544138688296, -71.06480387452596], [42.364052672346794, -71.05807910178468], [42.32414632157666, -71.05560514147624], [42.318651046530746, -71.05882849252335], [42.27105926394853, -71.10332749765598], [42.378393042570025, -71.05604636307022], [42.30442290879521, -71.06947088811185], [42.35615147297478, -71.14908179137696], [42.35812039579183, -71.05138669144392], [42.364052672346794, -71.05807910178468], [42.37239237664325, -71.06882256779927], [42.33561875241734, -71.06611687794093], [42.36000531715128, -71.05260185605532], [42.362006074174936, -71.07249224943034], [42.33060293416384, -71.1129193289092], [42.3676001026348, -71.11905973521729], [42.27885234813555, -71.08014816647558], [42.28466930677008, -71.044770065987], [42.2352273185743, -71.12486863686271], [42.25845592928733, -71.14019647720042], [42.23625328053003, -71.12852112823342], [42.29292355233982, -71.09636243140133], [42.28766829373578, -71.09388694950977], [42.34150070126513, -71.06296297295361], [42.357944280457495, -71.07254329795832], [42.357944280457495, -71.07254329795832], [42.36374339201134, -71.05814863793125], [42.36372026059747, -71.07006790601835], [42.36977195504401, -71.12645037334678], [42.35795233093027, -71.05132139818893], [42.35706689190377, -71.05143391336672], [42.361311150675604, -71.07277313543914], [42.28262152905305, -71.05573073836237], [42.2833795313757, -71.05001778050973], [42.27885234813551, -71.08014816647558], [42.321046469218714, -71.05096271374987], [42.371897007616454, -71.06710207684732], [42.34185425309103, -71.10118561040933], [42.28051145189469, -71.05399212239024], [42.2999432412487, -71.048142454709], [42.317872628291234, -71.05149280076235], [42.30022271665827, -71.10674799663822], [42.3478309262181, -71.08916751610143], [42.35812039579183, -71.05138669144392], [42.33349816502588, -71.06414069919863], [42.38103797905168, -71.07752521468645], [42.37353584344994, -71.03811711935393], [42.335299943908666, -71.06475321634852], [42.36126581182468, -71.07234812306899], [42.295484322510504, -71.0460640319275], [42.38272407619617, -71.07661345160403], [42.31381396400451, -71.1211899725748], [42.35537693590917, -71.072806507044], [42.36115632790138, -71.0723614696382], [42.36104204783163, -71.07236896213898], [42.35706689190377, -71.05143391336672], [42.35602931781207, -71.0733027316937], [42.35121101926839, -71.09147396198088], [42.33483868277582, -71.0686419838279], [42.3686132926063, -71.06324899756564], [42.34794608615695, -71.04333026800609], [42.35184489001652, -71.11104385739935], [42.28646679657777, -71.0935246514548], [42.30022271665827, -71.10674799663822], [42.28496122821224, -71.09280958560832], [42.36078061223312, -71.07131497072447], [42.36742508004205, -71.06971905419478], [42.28398829805166, -71.04387241546515], [42.32934938227846, -71.05269632363374], [42.32951137137262, -71.05701732302686], [42.31937345284301, -71.08333722672278], [42.30604058770953, -71.0782583459414], [42.30125025388306, -71.11109170463385], [42.2918191025411, -71.16596551798564], [42.35186181619724, -71.09102734850552], [42.33568979686202, -71.08701955179404], [42.31868375552777, -71.08178291270517], [42.314961143966016, -71.09355032934195], [42.327360151422894, -71.05832024341815], [42.36078509810279, -71.07232983696943], [42.343313144073356, -71.10264848369889], [42.317872628291234, -71.05149280076235], [42.29006607399072, -71.04555620686753], [42.32164029208001, -71.05087924085831], [42.32147750514465, -71.05214689442978], [42.32414632157666, -71.05560514147624], [42.25889563056476, -71.13706354116087], [42.33374873150246, -71.06458309341943], [42.378282624150145, -71.07557702107928], [42.37204407513396, -71.06928686071532], [42.333789640855336, -71.0636725461457], [42.34861334148748, -71.05747328116789], [42.35706689190377, -71.05143391336672], [42.33481129753074, -71.06908829557312], [42.362225020941175, -71.07156784408129], [42.36114748586213, -71.07236254751946], [42.28199791963825, -71.05890386977387], [42.3466912837964, -71.06284124258316], [42.32414632157666, -71.05560514147624], [42.36651050588682, -71.06606433264666], [42.36063552675868, -71.07226429112497], [42.359878740401484, -71.072048193906], [42.3724229438471, -71.13160763794856], [42.31177071893812, -71.05444730033302], [42.27882573900619, -71.06950545114485], [42.36193907161743, -71.05495323648596], [42.365885673855026, -71.02256412483936], [42.36374339201134, -71.05814863793125], [42.37417410033881, -71.05813172211224], [42.369444160030035, -71.12614033579779], [42.357944280457495, -71.07254329795832], [42.374012756448714, -71.03718788900227], [42.36812286323821, -71.02469426176015], [42.36221278994032, -71.0716025127317], [42.32439435343961, -71.11465960449306], [42.35067447252075, -71.09598109531336], [42.320004774778425, -71.05979927995983], [42.284236569426504, -71.09138155277468], [42.34150070126513, -71.06296297295361], [42.357104939571265, -71.12144669753381], [42.33534448986025, -71.06497434669436], [42.345650192660514, -71.059603136784], [42.361675804034654, -71.07228402967384], [42.360795809774366, -71.0723331647014], [42.320004774778425, -71.05979927995983], [42.35563900444547, -71.06291242452994], [42.364337094023135, -71.0697669549521], [42.36801056883527, -71.06225245671136], [42.37239738192881, -71.06874792970315], [42.37104202056526, -71.06223079815342], [42.28398829805166, -71.04387241546515], [42.29006607399072, -71.04555620686753], [42.28398829805166, -71.04387241546515], [42.32414632157666, -71.05560514147624], [42.3017573337275, -71.1121382212697], [42.28423656901019, -71.09138155061062], [42.291121098924, -71.06280530730209], [42.38328544545459, -71.07678339117963], [42.350874272019915, -71.03033411185066], [42.35812039579183, -71.05138669144392], [42.35534567868756, -71.05111188440364], [42.378282624150145, -71.07557702107928], [42.368803359849665, -71.12331972423686], [42.330684493027675, -71.0614268735668], [42.37396751857458, -71.03737139633084], [42.35974801716892, -71.02577225513645], [42.31980238915645, -71.08138545151614], [42.29394933826504, -71.04725569811578], [42.2843740414192, -71.03944145990039], [42.2969011141665, -71.0468042571918], [42.28398829805166, -71.04387241546515], [42.30670045852015, -71.05405374986461], [42.3502360340458, -71.09218277504866], [42.37656657455378, -71.07480165341786], [42.36771624073234, -71.06377845810752], [42.357399048264355, -71.12115742828686], [42.34951777298385, -71.05699487531122], [42.305650393901054, -71.1195493632366], [42.258171994056866, -71.13545139431797], [42.33274794150828, -71.02586877801912], [42.34075490456634, -71.06293074232914], [42.28398829805166, -71.04387241546515], [42.36773400412408, -71.06369875533765], [42.31230875290001, -71.12224115165448], [42.312966091602725, -71.09259542987672], [42.3151524633279, -71.07725749799008], [42.32073223950643, -71.0816207933856], [42.306967667039494, -71.0822005102631], [42.314607874989726, -71.07882276173035], [42.32889871798259, -71.08509982367703], [42.33568979686202, -71.08701955179404], [42.332956493285636, -71.09240758635165], [42.365103102656704, -71.0202147228341], [42.33042176143375, -71.04728215520605], [42.3017471703347, -71.05105197608943], [42.36812286323821, -71.02469426176015], [42.337200772526906, -71.15231905617894], [42.32414632157666, -71.05560514147624], [42.315262813661235, -71.04814023933369], [42.311935220353774, -71.05268808115875], [42.37104202056526, -71.06223079815342], [42.25774983286223, -71.13004508362319], [42.31671759503621, -71.05936837170073], [42.30743842891348, -71.06864803968433], [42.35011308796177, -71.05973301828332], [42.29627253790409, -71.0462142558897], [42.31554967817367, -71.0478183413788], [42.29870644598054, -71.04934931280987], [42.30234163828367, -71.06368253235301], [42.304552991695196, -71.06575964569925], [42.32571045912859, -71.087889968499], [42.31404814202299, -71.07916803071619], [42.294996239047556, -71.04784291691684], [42.317872628291234, -71.05149280076235], [42.284154327958994, -71.06100724267687], [42.36265240422836, -71.07089596288559], [42.36037281095161, -71.072381299955], [42.306487307297154, -71.10746420945043], [42.34865137097181, -71.10467739759441], [42.34696521758399, -71.07095685933658], [42.38480916568398, -71.07381327862468], [42.34954551951834, -71.07220612384317], [42.337445117652194, -71.08379694158401], [42.314607874989726, -71.07882276173035], [42.304967883696264, -71.07478891904461], [42.31747813056132, -71.0620916139233], [42.31605791347789, -71.06433099734691], [42.2963702945831, -71.05645739060792], [42.313592840041814, -71.06301174441249], [42.312169842576964, -71.06614009306651], [42.29165546178991, -71.06684450575166], [42.30114259744108, -71.11267798950327], [42.3272997400754, -71.05851265170925], [42.33814296932424, -71.03550785416664], [42.350934686949074, -71.1151337768715], [42.308590603707536, -71.0656982186838], [42.33256320918083, -71.07208669986018], [42.31773006462412, -71.04196260527544], [42.328606046928805, -71.08274660074824], [42.31586391730401, -71.06635676363082], [42.32043053621127, -71.07774582689063], [42.32493041806547, -71.09841223892832], [42.323869571383455, -71.06802720696972], [42.36380879803089, -71.05767878098624], [42.31046334043583, -71.10699758568683], [42.328606046928805, -71.08274660074824], [42.349194109409545, -71.09159329526163], [42.31635626819737, -71.05712859479817], [42.30559910580585, -71.05747622577508], [42.31586391715384, -71.06635676350255], [42.35521636048899, -71.05206065691368], [42.314605765094164, -71.09948060984055], [42.35952086396247, -71.05240742536247], [42.33166447022161, -71.05311653413422], [42.34811881072084, -71.0881409978938], [42.27612018485938, -71.09340143463443], [42.28975974587057, -71.07687607537108], [42.30129605861137, -71.0857603049536], [42.28604319205704, -71.09610542550703], [42.28599675503407, -71.07760827004029], [42.35251264204395, -71.0593968520051], [42.328606046928805, -71.08274660074824], [42.333795434207026, -71.08252373939466], [42.350383679586145, -71.05658752282639], [42.36822712062038, -71.05664005965426], [42.26982624757486, -71.09379036076099], [42.32489598698764, -71.09819092961799], [42.304283647000794, -71.0765239897664], [42.28625081270892, -71.13742395018144], [42.277688504145864, -71.1377261558866], [42.28644359271146, -71.13172804093406], [42.26566152970939, -71.15242875864135], [42.292798773742135, -71.13047013917337], [42.269034282819455, -71.14863993678082], [42.26450879469611, -71.15811435302292], [42.29164308992334, -71.15629305762855], [42.31475730944157, -71.08354277165328], [42.31563245739235, -71.09826146139994], [42.326876732883164, -71.06693547345213], [42.385478016920885, -71.01039855978617], [42.36121970110135, -71.06202242153762], [42.2917387214215, -71.07718134962934], [42.27794290243606, -71.08541882095936], [42.352620496612865, -71.129302247968], [42.2654997830745, -71.15261272350988], [42.29606777578732, -71.1162155757718], [42.35154393952326, -71.1185203612732], [42.25839119985713, -71.16070789169052]],
+                {
+                    minOpacity: 0.5,
+                    maxZoom: 18,
+                    max: 1.0,
+                    radius: 20,
+                    blur: 15,
+                    gradient: null
+                    })
+                .addTo(map_794624009dc04395b8447514a905e778);
+        
+</script>

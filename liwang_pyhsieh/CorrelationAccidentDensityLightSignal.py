@@ -97,9 +97,9 @@ class CorrelationAccidentDensityLightSignal(dml.Algorithm):
             # For normal run, use library function to speed up
             # pearsonr provides two-tailed values, we're only interested in positive side
             # and the result shows the value on negative side is small enough to omit (<< 1e-10)
-            pval_accident_light = scipy.stats.pearsonr(accident_density, light_density)[0]
-            pval_accident_signal = scipy.stats.pearsonr(accident_density, signal_density)[0]
-            pval_light_signal = scipy.stats.pearsonr(light_density, signal_density)[0]
+            pval_accident_light = scipy.stats.pearsonr(accident_density, light_density)[1]
+            pval_accident_signal = scipy.stats.pearsonr(accident_density, signal_density)[1]
+            pval_light_signal = scipy.stats.pearsonr(light_density, signal_density)[1]
 
         accident_correlation = [
             {"_id": "0", "relation": "accident-light", "corr": corr_accident_light, "pval": pval_accident_light},

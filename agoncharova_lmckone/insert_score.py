@@ -117,4 +117,4 @@ class insert_score(dml.Algorithm):
 				  
 		return doc
 
-insert_score.execute()
+#insert_score.execute()

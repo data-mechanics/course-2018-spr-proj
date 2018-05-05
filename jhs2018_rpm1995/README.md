@@ -40,3 +40,8 @@ The "budget" field of this feature vector is assigned a value a little different
 This script takes in as input the feature vectors produced by the previous script, performs filtering, weighting, and scaling steps, and then runs the k- Means algorithm on the feature vectors.  This essentially grouped areas in Boston that have similar distributions of "green assets".  We then tried to check if these distributions correlated with certain socioeconomic indicators (budgets assigned to schools, crime rates, etc.), with the distributions of Open Spaces in Boston showing a slight correlation with number of crime incidents.  The Rand Measure of this similarity is written to the "observations" collection.
 
 Higher correlation values might be obtained by pruning the grid cells used in the clustering step.  This is because a lot of the point locations came from different data portals, with the range of each dataset limited to certain locations in and around Boston, skewing the shape of the clusters.
+
+### flask_app.py
+A flask webapp that visualizes the k means clustering of Open Spaces, Crime, Hubway Stations, and Charging Stations. Users can change the size of the initial scalar for transforming greenassets into a grid file as well as change the value of k for kmeans.
+
+To run the app, install all dependencies and enter "python flask_app.py" into the terminal.

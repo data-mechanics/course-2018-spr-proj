@@ -1,4 +1,4 @@
-# Project 2
+# Project 3
 
 ### Team:
 
@@ -54,3 +54,9 @@ One useful thing about hierarchal clustering is that you can see the dneundogram
 python execute.py bm181354_rikenm
 ```
 Our algorithm’s data would be saved as **“bm181354_rikenm.solutionLeastPopularStationsdb”** inside db **“repo”** and collection **“solutionLeastPopularStationsdb”**
+
+### Run Flask:
+```python
+python3 visualization/app.py
+```
+

@@ -12,8 +12,8 @@
 Hubway is a bicycle sharing company where guest and subscribed users can lend a bike for certain amount of time. Our main goal was motivated by the question what if Hubway would like to add more station in the city of Boston. To obtained this objective, the clustering algorithm like hierarchal and k-mean were used to place the new bike stations.
 
 
-## Programming language:
-Python and MongoDB
+## Programming language and Database:
+Python, JavaScript and MongoDB
 
 ## Dataset
 
@@ -51,6 +51,7 @@ The figure above shows how the algorithm choices points to accumulate.  Slowly t
  pip install scipy
  pip install numpy
 ```
+JavaScript Dependency are all included in visualization folder under root directory and all are taken care.
 
 ## To Run:
 
@@ -66,4 +67,6 @@ D3 and web services, which was created from flask/python were used. We stored al
 ```python
 python3 visualization/app.py
 ```
+
+Open *http://localhost:5000* on web browser to play around with the interface.
 

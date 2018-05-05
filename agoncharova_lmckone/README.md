@@ -1,10 +1,10 @@
-### Lubov McKone and Anna Goncharova: Project 2 Submission
+### Lubov McKone and Anna Goncharova: Final Report
 
 ## Purpose
 
 Boston is a growing city characterized by both rapid economic growth and, increasingly, housing instability. Our analysis takes a look at potential relationships between businesses and housing instability in the City of Boston. After retireving data on eviction, crime, businesses, and income and aggregating them by census tract, we were able to take a closer look at the relationships between our variables of interest. Using the insight gained from our analysis, we created a mock optimization that finds placements of businesses that minimize the overall increase in housing instability that they could potentially cause. We also built a web service that allows a user to interactively explore our data. 
 
-### Data Retreival
+### Data Retrieval
 
 1. **Businesses**
 
@@ -30,7 +30,7 @@ Boston is a growing city characterized by both rapid economic growth and, increa
 
 	We retrieved the census tract [shapefile for Massachusetts](https://www.census.gov/cgi-bin/geo/shapefiles/index.php) and filtered it for Boston. We used QGIS to convert it into a GeoJSON file which we retrieved from [datamechanics.io](http://datamechanics.io/data/boston_tracts_3.json).
 
-##Analysis
+## Analysis
 
 ### Aggregation and Scoring
 
@@ -87,7 +87,11 @@ We built a server that allows a user to explore the geography of stability and h
 ![Web Service Screen Capture](https://github.com/agoncharova/course-2018-spr-proj/blob/master/agoncharova_lmckone/screencapture.gif)
 
 
+## Future Work
 
+One thing that would have been extremely useful to us during this project is a data source of businesses by the year they opened. This would have allowed us to more robustly explore the relationship between evictions and businesses by allowing us to consider the timing of business entrances into certain areas rather than merely their presence. The FourSquare data set we retrieved gave us the location of businesses, but no information about when they got there. We think this would have made our correlations and optimization more meaningful and allowed us to better answer our question about the relationship between business activity and evictions.
+
+If we could continue to work on this project, we might also try to customize the instability metric to Boston - we could create a regression or other type of model that could allow us to formalize the factors that are associated with future evictions. The paper we used to help us decide what to include in the stability score was based on an analysis done in Milwaukee, so it might be interesting and more useful to investigate what is associated with evictions here in Boston. 
 
 
 * *note:* in order to run optimal_score.py, you will need to replace `sys.path.append("/Users/lubovmckone/course-2018-spr-proj/agoncharova_lmckone/z3/build/python/")` in with your own path to the z3/build/python folder

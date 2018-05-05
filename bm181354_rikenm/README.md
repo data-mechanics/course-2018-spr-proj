@@ -33,7 +33,7 @@ Hubway stations and Hubway Trip dataset
 2. We stored this value in an array as popularity for each station. User would select how many stations to add by sliding the slider in our webpage.
 3. We  then decided to put station on the cluster with the highest average popularity. After this we use k-mean to figure out the exact coordinates to put our stations.
 
-<img src="https://github.com/bm181354/course-2018-spr-proj/blob/master/bm181354_rikenm/img/20clusters.jpeg" width="350"/>
+<img src="https://github.com/bm181354/course-2018-spr-proj/bm181354_rikenm/img/dendogram.png" width="350"/>
 
 *Fig 1.0: Dendrogram of Hierarchical clustering
 The figure above shows how the algorithm choices points to accumulate.  Slowly the number of cluster decreases and at the end we would have one cluster. The algorithm was stopped before this point. 20 clusters seem decent point to stop.*

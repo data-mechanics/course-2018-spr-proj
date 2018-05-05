@@ -1,4 +1,4 @@
-## CS591-L1 Data Mechanics Term Project: Analysis on Crash Accidents at Night Time
+## CS591-L1 Data Mechanics Term Project: <br/>Analysis on Crash Accidents at Night Time
 Team members: Li Wang | Po-Yu Hsieh
 ***
 ### Introduction
@@ -9,15 +9,15 @@ According to national data, 49% of fatal crashes happen at night, with many fact
 ***
 Belows are dataset we used for our analysis:
 1. Traffic Signals in Boston. [Link](http://bostonopendata-boston.opendata.arcgis.com/datasets/de08c6fe69c942509089e6db98c716a3_0)
-Contains information of 839 traffic signals in Boston.
+<br/>Contains information of 839 traffic signals in Boston.
 2. Street Lights in Boston. [Link]( https://data.boston.gov/dataset/streetlight-locations/resource/c2fcc1e3-c38f-44ad-a0cf-e5ea2a6585b5)
-Contains information of 74,065 street lights in Boston
+<br/>Contains information of 74,065 street lights in Boston
 3. *Hospitals in Boston.* [Link]( https://data.boston.gov/dataset/hospital-locations/resource/6222085d-ee88-45c6-ae40-0c7464620d64)
-Contains information of 26 hospitals in Boston.
+<br/>Contains information of 26 hospitals in Boston.
 4. *Police Stations in Boston.* [Link]( https://data.boston.gov/dataset/boston-police-stations/resource/0b2be5cb-89c6-4328-93be-c54ba723f8db)
-Contains information of 13 police stations in Boston.
+<br/>Contains information of 13 police stations in Boston.
 5. *Crash accidents during 2015, Boston.* [Link]( http://datamechanics.io/data/liwang_pyhsieh/crash_2015.json)
-This dataset is retrieved from MassDot Portal, which contains 4,110 tuples of crash accident details.
+<br/>This dataset is retrieved from MassDot Portal, which contains 4,110 tuples of crash accident details.
 Source: MassDot Crash Portal. [Link](https://services.massdot.state.ma.us/crashportal/)
 
 ### Methodology
@@ -45,6 +45,7 @@ Most of the results from previous analysis are combined into visualization part.
 |---|---|---|---|
 |Accident Density||0.2265 / 3.036e-18|-0.12834 / 1e-5|
 |Surrounding Lights|||0.0097 / 0.7126|
+
 From the result we can conclude that there exist positive relationship between accident density and number of surrounding lights, while negative relationship between accident density and number of surrounding traffic signals. However, from our observation to the dataset, in most cases there's no street light or signal near to the crash position, so further and detailed analysis still required for finding out the actual relationship between these facilities and crash frequency.
 
 #### Visualization

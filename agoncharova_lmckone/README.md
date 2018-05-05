@@ -1,10 +1,10 @@
 ### Lubov McKone and Anna Goncharova: Project 2 Submission
 
-## General Purpose
+## Purpose
 
 Boston is a growing city characterized by both rapid economic growth and, increasingly, housing instability. Our analysis takes a look at potential relationships between businesses and housing instability in the City of Boston. After retireving data on eviction, crime, businesses, and income and aggregating them by census tract, we were able to take a closer look at the relationships between our variables of interest. Using the insight gained from our analysis, we created a mock optimization that finds placements of businesses that minimize the overall increase in housing instability that they could potentially cause. We also built a web service that allows a user to interactively explore our data. 
 
-# Data Retreival
+### Data Retreival
 
 1. **Businesses**
 
@@ -32,7 +32,7 @@ Boston is a growing city characterized by both rapid economic growth and, increa
 
 ##Analysis
 
-# Aggregation and Scoring
+### Aggregation and Scoring
 
 After gathering our data, we utlized the [Shapely](https://toblerity.org/shapely/manual.html) library to aggregate the lat-long data we retrieved for evictions, crimes, businesses, and income by the census tract polygons. The function we implemented essentially identifies whether a lat-long point (representing an eviction, a business, etc.) falls within the lat-long boundaries of a given census tract. We wrapped this shapely function into a MapReduce-style algorithm that appends a tuple containg the census tract FIPS code and a 1 when it identifies which tract the point falls within. We then aggregate these over the census tract FIPS code and use a combination of selections and projection to 'join' the counts of evictions, crimes, and businesses to the GeoJSON file, inserting them as fields within the 'properties' dictionary associated with each tract. 
 
@@ -46,7 +46,7 @@ To get a sense of the most housing-unstable areas of the city, we created a Leaf
 
 ![Score Map](scoretracts.png)
 
-# Statistical Analysis
+### Statistical Analysis
 
 We quickly visualized evictions, businesses, and crime on a map to get a sense of their distribution around the City:
 
@@ -66,9 +66,9 @@ This indicates that the interaction between businesses and evictions changes bas
 
 We ran these same "partitioned correlations" for businesses and instability and evictions and instability and visualized the differences on our web service.
 
-# Optimization
+### Optimization
 
-# K-means
+### K-means
 We ran k-means on the following combinations of data points: evictions and stability score, crime and stability score, crime and evictions and stability.
 We found that our data isn't highly segregated into particular pockets, so we learned that our data is evenly distributed. 
 
@@ -76,11 +76,11 @@ Here is a graph of a result of performing k-means on crime and eviction and stab
 
 ![K-Means Visualization](graph.png)
 
-# SMT 
+### SMT 
 In order to see whether it would be possible to gain insights into the relationships between the stability score and the number of businesses in a particular Boston-area census tract, we computed the correlation statistic on the "# of businesses" and "stability score". We found that the correlation was 0.1 (p=0.14). This correlation is small and not statistically significant at the 0.05 level, so the results of the optimization should be interpreted with caution since they assume that adding a business to a census tract increases its stabiity score by 0.1. 
 We implemented an SMT solver using the z3 library to compute the "optimal score". We invented an algorithm for computing the optimal score for a tract. The way it works is that we constrain the number of businesses it would be possible to add to the city. Then we assign a specific weight that a single businesses added might have on the stability score. Then we use the minimize function of the Optimize z3 object to find the minimized optimal score from the stability score.
 
-##Web Service
+## Web Service
 
 We built a server that allows a user to explore the geography of stability and how income mediates the correlation between business activity and housing stability through a d3 chart. We also included a d3 map that allows the user to view how the geography of evictions has changed over time.
 

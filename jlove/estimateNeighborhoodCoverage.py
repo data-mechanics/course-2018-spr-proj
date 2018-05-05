@@ -18,11 +18,19 @@ class estimateNeighborhoodCoverage(dml.Algorithm):
         repo = client.repo
         repo.authenticate('jlove', 'jlove')
         flood = repo['jlove.flood'].find_one({})
-        hydrantCounts = repo['jlove.hydrantCounts'].find_on({})
+        hydrantCounts = repo['jlove.hydrantCounts'].find_one({})
         hydrantGroups = repo['jlove.hydrantGroups'].find({})
-        
+
+        print(hydrantCounts)
+
         floodShape = shapely.geometry.shape(flood['features'][0]['geometry'])
         covered = {}
+        hgroups = []
+        for group in hydrantGroups:
+            hgroups += [group]
+
+        hydrantGroups = hgroups
+
         for group in tqdm(hydrantGroups):
             name = group['metadata']['neighborhood']
             count = 0
@@ -34,13 +42,16 @@ class estimateNeighborhoodCoverage(dml.Algorithm):
         print(covered)
         
         for neighborhood in hydrantCounts.keys():
-            covered = covered[neighborhood]
+            if neighborhood == '_id':
+                continue
+            print(neighborhood)
+            temp_covered = covered[neighborhood]
             try:
-                covered[neighborhood] = (covered/hydrantCounts[neighborhood]) * 100
+                covered[neighborhood] = (temp_covered/hydrantCounts[neighborhood]) * 100
             except ZeroDivisionError:
                 covered[neighborhood] = 0
         
-        repo.dropColection('percentCovered')
+        repo.dropCollection('percentCovered')
         repo.createCollection('percentCovered')
         
         repo['jlove.percentCovered'].insert_one(covered)

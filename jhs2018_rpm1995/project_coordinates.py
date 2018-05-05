@@ -1,14 +1,19 @@
+# ############################## Projecting Coordinates and leaving out the boring data ################################
+
 import dml
 import prov.model
 import datetime
+import json
 import uuid
 
 
 class project_coordinates(dml.Algorithm):
     contributor = 'jhs2018_rpm1995'
     reads = ['jhs2018_rpm1995.hubway',                  # We will combine 3 datasets into dataset greenobjects, which
-             'jhs2018_rpm1995.trees',                   # will have just the type of objects (tree, charging station, etc.) and
-             'jhs2018_rpm1995.charge']                  # its geographical coordinates
+             'jhs2018_rpm1995.trees',                   # will have the type of objects (tree, charging station...)
+             'jhs2018_rpm1995.charge',                  # and its geographical coordinates
+             'jhs2018_rpm1995.budget',
+             'jhs2018_rpm1995.crime']
     writes = ['jhs2018_rpm1995.greenobjects']
 
     @staticmethod
@@ -35,12 +40,29 @@ class project_coordinates(dml.Algorithm):
         hubway = repo.jhs2018_rpm1995.hubway.find()
         trees = repo.jhs2018_rpm1995.trees.find()
         charge = repo.jhs2018_rpm1995.charge.find()
-        # openspaces = repo.jhs2018_rpm1995.openspaces.find()
+        budget = repo.jhs2018_rpm1995.budget.find()
+        crime = repo.jhs2018_rpm1995.crime.find()
 
         objects = project_coordinates.extract(hubway, "hubway", objects)
-        objects = project_coordinates.extract(trees, "tree", objects)
+        if trial is False:
+            objects = project_coordinates.extract(trees, "tree", objects)
         objects = project_coordinates.extract(charge, "charge", objects)
 
+        for items in budget:                                                # Because budget has a different format
+            if items['City_Department'] == "School Department":
+                objects.append({"Type": "budget", "Location": [float(items['Longitude']), float(items['Latitude'])],
+                                "Budget": items['Total_Project_Budget']})
+
+        for items in crime:
+            try:
+                if items['Lat'] == None or items['Long'] == None:
+                    continue
+                elif float(items['Lat']) <= 30.0 or float(items['Long']) >= -60.0:
+                    continue
+                else:
+                    objects.append({"Type":"crime", "Location": [float(items['Long']), float(items['Lat'])]})
+            except:
+                continue
         repo.dropCollection("greenobjects")
         repo.createCollection("greenobjects")
         repo['jhs2018_rpm1995.greenobjects'].insert_many(objects)
@@ -85,17 +107,25 @@ class project_coordinates(dml.Algorithm):
                                                          prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension':
                                                          'json'})
 
+        resource_budget = doc.entity('bwod: budget', {'prov:label': 'Budget Facilities in Boston',
+                                                      prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension':
+                                                          'json'})
+
+        resource_crime = doc.entity('bwod: crime', {'prov:label': 'Crime Incidents in Boston',
+                                                    prov.model.PROV_TYPE: 'ont:DataResource', 'ont:Extension': 'json'})
+
         get_greenobjects = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime,
-                                          {
-                                                    prov.model.PROV_LABEL: "Locations of Hubway, Charging Stations "
-                                                                           "and Trees in Boston",
-                                                    prov.model.PROV_TYPE: 'ont:Computation'})
+                                        {prov.model.PROV_LABEL: "Locations of Hubway, Charging Stations, "
+                                                                "Budget Facilities and Trees in Boston",
+                                        prov.model.PROV_TYPE: 'ont:Computation'})
 
         doc.wasAssociatedWith(get_greenobjects, this_script)
 
         doc.usage(get_greenobjects, resource_hubway, startTime)
         doc.usage(get_greenobjects, resource_charges, startTime)
         doc.usage(get_greenobjects, resource_trees, startTime)
+        doc.usage(get_greenobjects, resource_budget, startTime)
+        doc.usage(get_greenobjects, resource_crime, startTime)
 
 # #######
         greenobjects = doc.entity('dat:jhs2018_rpm1995_greenobjects',
@@ -109,14 +139,18 @@ class project_coordinates(dml.Algorithm):
                            get_greenobjects)
         doc.wasDerivedFrom(greenobjects, resource_charges, get_greenobjects, get_greenobjects,
                            get_greenobjects)
+        doc.wasDerivedFrom(greenobjects, resource_budget, get_greenobjects, get_greenobjects,
+                           get_greenobjects)
+        doc.wasDerivedFrom(greenobjects, resource_crime, get_greenobjects, get_greenobjects,
+                           get_greenobjects)
 
         repo.logout()
 
         return doc
 
 
-# combineneighbourhood.execute()
-# doc = combineneighbourhood.provenance()
+# project_coordinates.execute()
+# doc = project_coordinates.provenance()
 # print(doc.get_provn())
 # print(json.dumps(json.loads(doc.serialize()), indent=4))
 

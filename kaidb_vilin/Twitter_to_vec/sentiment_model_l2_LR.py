@@ -1,10 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
+"""
+This is the primary file for building the logistic regression model 
+
+"""
+
 import pandas as pd
 import numpy as np
 import dill
-
+import json
 import time
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pickle
@@ -15,15 +21,15 @@ from sklearn.externals import joblib
 
 def main():
     start = time.time()
-
-    keras_model = "deep_nn_weights.h5"
-    model_name = 'tweet_word2vec.model'
+    # get pathing information 
+    config = eval(open( '../config.json').read())
+    model_name = config["tweetToVec model name"]
     # static names 
-    dataset_location = './Sentiment Analysis Dataset.csv'
+    dataset_name = config["dataset name"]
+    dataset_location = './{}'.format(dataset_name)
     model_location = './model/'
-    tokenized_corpus_name = "tokenized_tweet_corpus.dill"
-    groun_truth_name  = 'ground_truth_tokenized_tweet_corpus.dill'
-    model_name = 'tweet_word2vec.mode'
+    tokenized_corpus_name = config["tokenized corpus name"]
+    groun_truth_name  = config["ground truth labels"]
     data_loc = './Data/'
     
     csv = 'Sentiment Analysis Dataset.csv'
@@ -34,11 +40,11 @@ def main():
     my_df.reset_index(drop=True,inplace=True)
     x = my_df.SentimentText
     y = my_df.Sentiment
-    SEED = 6969
+    SEED = 6969  # for reproducability
     x_train, x_validation_and_test, y_train, y_validation_and_test = train_test_split(x, y, test_size=.02, random_state=SEED)
     x_validation, x_test, y_validation, y_test = train_test_split(x_validation_and_test, y_validation_and_test, test_size=.5, random_state=SEED)
     del x_validation_and_test
-    del y_validation_and_test
+    del y_validation_and_test # free up memory 
     print( "Train set has total {0} entries with {1:.2f}% negative, {2:.2f}% positive".format(len(x_train),
                                                                              (len(x_train[y_train == 0]) / (len(x_train)*1.))*100,
                                                                             (len(x_train[y_train == 1]) / (len(x_train)*1.))*100))
@@ -75,16 +81,21 @@ def main():
     np.save( data_loc + 'test_y.npy', y_test)
     print("all Datasets have been saved ")
 
-    joblib.dump(clf, model_location + 'l2_LR{}.pkl'.format(time_app)) 
-    print("Model saved")
-
-
-
-
-    with open(model_location + 'vectorizer{}.pk'.format(time_app), 'wb') as fin:
+    print("Saving model .......")
+    model_name = 'l2_LR{}.pkl'.format(time_app)
+    config["Model name"] = model_name
+    joblib.dump(clf, model_location + model_name) 
+    print("Model saved under {}".format(model_location + model_name))
+    print()
+    print("Saving Vectorizer")
+    vectorizer_name = 'vectorizer{}.pk'.format(time_app)
+    config["Vectorizer name"] = vectorizer_name
+    with open(model_location + vectorizer_name,vectorizer_name 'wb') as fin:
         pickle.dump(tvec1, fin)
-
-
+    print("Vectorizer saved under {}".format(model_location + vectorizer_name))
+    print("Updated config.json")
+    with open('../config.json', 'w') as f:
+        f.write(json.dumps(config))
 
     print("Finished in {}".format(time.time() - start))
 if __name__ == '__main__':

@@ -62,7 +62,7 @@ class kmeans(dml.Algorithm):
             P.append((x1, y1))
 
 #Generating the means
-        mean, labels = kmeans2(P,2)
+        mean, labels = kmeans2(P,5)
 #        print(mean)
         Kmeans = []
 

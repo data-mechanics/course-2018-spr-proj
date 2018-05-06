@@ -70,6 +70,6 @@ def get_all_tweets(screen_name, use_pandas = False):
     return alltweets
 
 def test():
-    # Prepare to get mad.
+    # Prepare to get mad. This man is a tool. 
     get_all_tweets("realDonaldTrump", use_pandas=True).to_csv("DJT.csv")
 test()

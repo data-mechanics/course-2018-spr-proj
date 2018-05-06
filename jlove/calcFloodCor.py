@@ -62,25 +62,31 @@ class calcFloodCor(dml.Algorithm):
         doc.add_namespace('log', 'http://datamechanics.io/log/')  # The event log.
         doc.add_namespace('bdp', 'https://data.cityofboston.gov/dataset/')
 
-        this_script = doc.agent('alg:jlove#findEvacLocations',
+        this_script = doc.agent('alg:jlove#calcFloodCor',
                                 {prov.model.PROV_TYPE: prov.model.PROV['SoftwareAgent'], 'ont:Extension': 'py'})
 
-        resource = doc.entity('dat:jlove#hydrants',
+        resource = doc.entity('dat:jlove#percentCovered',
                               {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
-                               'ont:Extension': 'geojson'})
-        evac_loc = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
-        doc.wasAssociatedWith(evac_loc, this_script)
+                               'ont:Extension': 'json'})
+
+        resource1 = doc.entity('dat:jlove#incomeNormalized',
+                              {'prov:label': '311, Service Requests', prov.model.PROV_TYPE: 'ont:DataResource',
+                               'ont:Extension': 'json'})
+        floodIncomeCor = doc.activity('log:uuid' + str(uuid.uuid4()), startTime, endTime)
+        doc.wasAssociatedWith(floodIncomeCor, this_script)
         doc.usage(this_script, resource, startTime, None,
                   {prov.model.PROV_TYPE: 'ont:Retrieval'
                    }
                   )
 
-        evacLoc = doc.entity('dat:jlove#evacloc',
+
+        flood_cor = doc.entity('dat:jlove#floodCor',
                              {prov.model.PROV_LABEL: 'Tentative Locations For Boston Flood Evacuation Centers',
                               prov.model.PROV_TYPE: 'ont:DataSet'})
-        doc.wasAttributedTo(evacLoc, this_script)
-        doc.wasGeneratedBy(evacLoc, evac_loc, endTime)
-        doc.wasDerivedFrom(evacLoc, resource, evac_loc, evac_loc, evac_loc)
+        doc.wasAttributedTo(floodIncomeCor, this_script)
+        doc.wasGeneratedBy(floodIncomeCor, floodIncomeCor, endTime)
+        doc.wasDerivedFrom(floodIncomeCor, resource, floodIncomeCor, floodIncomeCor, floodIncomeCor)
+        doc.wasDerivedFrom(floodIncomeCor, resource1, floodIncomeCor, floodIncomeCor, floodIncomeCor)
 
         repo.logout()
 

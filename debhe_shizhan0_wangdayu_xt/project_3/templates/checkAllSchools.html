@@ -1,0 +1,73 @@
+<html>
+	<head lang="en-us">
+		<meta charset="utf-8">
+		<title>Check All the Schools</title>
+
+		<link rel="stylesheet" href="/static/leaflet.css" />
+		<script type=text/javascript src="{{ url_for('static', filename='leaflet.js') }}"></script>
+
+		<style>
+<!--
+#map{
+width: 1200px; 
+height: 600px;
+margin: 35px 0px 10px 0px;
+}
+-->
+		</style>
+
+	</head>
+
+	<body>
+		<div id="content" align="center">
+		<h1>
+			Here is list for all the schools
+		</h1>
+
+		<p><a href='/schoolHubwayStation'>Find the closest hubway station for a certain school</a></p>
+		<div id='map'></div>
+
+		<ul style="list-style-type:none;" >
+			{% for school in schools %}
+				<li>School Name : {{school[0]}}</li>
+			{% endfor %}
+		</ul>
+
+		<a href='/'>Home</a>
+
+<script>
+
+	// initialize the map
+	var map = L.map('map').setView([42.35, -71.08], 12);
+
+	// load a tile layer
+	L.tileLayer('http://tiles.mapc.org/basemap/{z}/{x}/{y}.png',
+    {
+      attribution: 'Tiles by <a href="http://mapc.org">MAPC</a></a>',
+      maxZoom: 25,
+      minZoom: 9
+    }).addTo(map);
+
+  	var greenIcon = L.icon({
+    iconUrl: "{{ url_for('static', filename='leaf-green.png') }}",
+    shadowUrl: "{{ url_for('static', filename='leaf-shadow.png') }}",
+
+    iconSize:     [38, 95], // size of the icon
+    shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+	});
+
+	var school = [];
+	'{% for school in schools %}'
+	marker = new L.marker([parseFloat('{{school[2]}}'),parseFloat('{{school[1]}}')],{icon: greenIcon})
+			.bindPopup('SchoolName: '+'{{school[0]}}')
+			.addTo(map);
+	'{% endfor %}'
+
+</script>
+	</div>
+
+	</body>
+</html>

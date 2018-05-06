@@ -20,6 +20,7 @@ from nltk.stem.lancaster import LancasterStemmer
 from nltk.tokenize import RegexpTokenizer
 import re
 from tqdm import tqdm 
+import sys
 
 
 
@@ -129,8 +130,22 @@ def classify_tweet(tweet, likes):
 def main():
     # most current model 
     # load in
-    model_path = 'model/l2_LR1524414744.4756281.pkl'
-    vectorize_path =  'model/vectorizer1524414744.4756281.pk'
+    config = eval(open( '../config.json').read())
+    model_name = config['Model name'] 
+    vectorizer_name = config["Vectorizer name"]
+    # most current model 
+    model_path = 'model/{}'.format(model_name)
+    vectorize_path =  'model/{}'.format(vectorizer_name)
+    try:
+        data_path = sys.argv[1]
+        assert(".csv" in data_path)
+    except:
+        print("Error: please specify a data path")
+        print("For example: python classify_tweet_dataset.py  ~/Documents/mass_twitter.csv")
+        print("EXITING ")
+        return -1
+    df = pd.read_csv(data_path)
+
     data_loc = "./Data/"
     sent_tweets = data_loc + 'Sent_Tweets/'
     DataLog.save_path = sent_tweets
@@ -141,7 +156,7 @@ def main():
     Model.clf = clf
     Model.vect = tf_vect
     print("loading data")
-    df = pd.read_csv('~/Documents/mass_twitter.csv')
+    
     text = df.text.values
     fav = df.favorite_count.values
     preds = []

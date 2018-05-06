@@ -43,6 +43,11 @@ consumer_key = auth_df['consumer_key']
 consumer_secret = auth_df['consumer_secret']
 access_key = auth_df['access_key']
 access_secret = auth_df['access_secret']
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_key, access_secret)
+api = tweepy.API(auth)
+#print(auth_df)
+print("Authorizing")
 
 def get_all_tweets(screen_name, use_pandas = False):
     """Retrieve all tweets froma. particular users by their username
@@ -50,9 +55,7 @@ def get_all_tweets(screen_name, use_pandas = False):
     user using standard Dev creds. """
     
     # Authorization and initialization
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_key, access_secret)
-    api = tweepy.API(auth)
+   
     
     #initialize a  dumb-list to hold scraped tweets
     alltweets = []  
@@ -89,7 +92,6 @@ def get_all_tweets(screen_name, use_pandas = False):
         return data 
 
     return alltweets
-
 
 
 
@@ -259,22 +261,26 @@ if __name__ == '__main__':
     model_path = 'model/l2_LR1524414744.4756281.pkl'
     vectorize_path =  'model/vectorizer1524414744.4756281.pk'
     clf = joblib.load(model_path)
-    print("Loaded Model")
-    print("Crawl Begining")
     tf_vect = pickle.load(open(vectorize_path, "rb"))
     Model.clf = clf
     Model.vect = tf_vect
-    
-    for i in tqdm(range(len(sys.argv[1:]))):
+    print("Loaded Model: {}".format(sys.argv))
+    for i in tqdm(range(len(sys.argv))):
         user = sys.argv[i]
+        # bizzaire need to hack this. 
+        #HACK 
+        if '.py' in user:
+            continue
         print("Building sentiment dataset for user {}".format(user))
 
         try:
             if os.path.isdir('./user_tweets/{}'.format(user) ):
                 print("already retrieved history for {}".format(user))
+                continue
             df = get_all_tweets(user, use_pandas=True)
+            print("Built Data for {}".format(user))
         except Exception as e:
-            print("Error: please specify a twitter username {}".format(e))
+            print("Error: please specify a twitter username {}, {} given".format(e, user))
             continue
         print("Dataset built. Now  loading model ")
         main(df, user)

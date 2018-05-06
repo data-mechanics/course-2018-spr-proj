@@ -12,6 +12,7 @@ from nltk.tokenize import RegexpTokenizer
 import sys
 import urllib.request
 import gzip
+import json 
 
 import requests, zipfile, io
 
@@ -100,6 +101,7 @@ def tokenize_corpus(corpus):
     # ~2 seconds per 10,000 entires. 
     # with 1578627, it takes ~ 5 minutes on a macbook pro. 
     print("Go get a Coffee-- this will take ~ 5 minutes to stem/tokenize all inputs")
+    ##TODO: paralellize stemming 
     tokenized_corpus = []
     start = time.time()
     token_count = 0
@@ -176,7 +178,7 @@ def main(trial=False):
 if __name__ == "__main__":
     if len(sys.argv) ==2:
         if sys.argv[1] == 't':
-            print("Running in Trial Mode: Truncating stemming ")
+            print("Running in Trial Mode with Truncated stemming ")
             main(True)
         else:
             print("Invalid Argument. To run in trial mode, please use '$ python get_clean_twitter_sentiment.py t'")

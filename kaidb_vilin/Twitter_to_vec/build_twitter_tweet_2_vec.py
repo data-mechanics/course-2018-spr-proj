@@ -7,7 +7,7 @@ import numpy as np
 from gensim.models.word2vec import Word2Vec
 import time
 import sys
-
+import json
 
 
 def load_corpus(model_location, corp_filename):
@@ -31,8 +31,9 @@ def main(trial = False):
     # and that the files have been stemmed
     # If not, please run get_clean_twitter_sentiment.py
     start = time.time()
+    config = eval(open( '../config.json').read())
     model_location = './model/'
-    tokenized_corpus_name = "tokenized_tweet_corpus.dill"
+    tokenized_corpus_name = config["tokenized corpus name"]
     print("Loading Data....")
     tokenized_tweet_corpus = load_corpus( model_location, tokenized_corpus_name)
     print("Data loaded")
@@ -64,10 +65,15 @@ def main(trial = False):
                     workers=multiprocessing.cpu_count())
     elapsed_time = time.time() - start
     print("model completed  in {}".format( elapsed_time))
-    # just to prevent overwriting a new one 
-    word2vec.save(model_location +  str(time.time()) + '_tweet_word2vec.model')
-    print("Model succsesfully saved")
+    tweet2vec_model_name = str(time.time()) + '_tweet_word2vec.model'
+    config["tweetToVec model name"] = tweet2vec_model_name
 
+    # just to prevent overwriting a new one 
+    word2vec.save(model_location +  )
+    print("Model succsesfully saved")
+    print("Updating config file")
+    with open('../config.json', 'w') as f:
+        f.write(json.dumps(config))
 if __name__ == "__main__":
     if len(sys.argv) ==2:
         if sys.argv[1] == 't':

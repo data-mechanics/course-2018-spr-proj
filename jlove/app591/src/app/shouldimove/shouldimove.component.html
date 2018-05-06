@@ -1,17 +1,19 @@
+<div class="two" id="map">
+</div>
 <div class="one">
 	<div class="inner-one">
 		<div class="title">
-			<h1>Should I Move?</h1>
+			<h4>Find Potential Evacuation Hubs</h4>
 		</div>
 		<div *ngIf="!loading" class="content">
-			<p>To begin, select a location on the map, or search for a location below.</p>
+			<p>To begin, enter the number of hub locations you would like below.</p>
 			<div class="search">
-				<input><button class="search-button">Search</button>
+				<form #f="ngForm">
+					<input type="number" name="number" ngModel><button class="search-button" (click)="runkmeans(f.value)">Search</button>
+				</form>
 			</div>
 		</div>
 	</div>
 </div>
-<div class="two" id="map">
-	<!--  <img src="https://maps.googleapis.com/maps/api/staticmap?center=Boston,MA&zoom=12&size=500x400&key=AIzaSyCWWmdWBwZZnycsYdxbUPIPcj6cKtX3uU0"> -->
-</div>
+
 

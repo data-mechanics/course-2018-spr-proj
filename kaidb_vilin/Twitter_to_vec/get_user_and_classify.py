@@ -258,8 +258,12 @@ def main(df, user):
 
 
 if __name__ == '__main__':
-    model_path = 'model/l2_LR1524414744.4756281.pkl'
-    vectorize_path =  'model/vectorizer1524414744.4756281.pk'
+    config = eval(open( '../config.json').read())
+    model_name = config['Model name'] 
+    vectorizer_name = config["Vectorizer name"]
+    # most current model 
+    model_path = 'model/{}'.format(model_name)
+    vectorize_path =  'model/{}'.format(vectorizer_name)
     clf = joblib.load(model_path)
     tf_vect = pickle.load(open(vectorize_path, "rb"))
     Model.clf = clf

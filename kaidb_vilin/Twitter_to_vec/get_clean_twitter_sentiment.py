@@ -147,7 +147,9 @@ def load_corpus(corp_filename):
 
 def main(trial=False):
     # location of twitter data
+
     dataset_url = "http://thinknook.com/wp-content/uploads/2012/09/Sentiment-Analysis-Dataset.zip"
+    alternate_url = "http://datamechanics.io/data/Sentiment-Analysis-Dataset.zip"
     # local path to name 
     dataset_location = './Sentiment Analysis Dataset.csv'
     # where to save the model
@@ -159,7 +161,16 @@ def main(trial=False):
     np.random.seed(6969)
 
     # Start by retrieving the data
-    download_zip(dataset_url) 
+    try:
+        download_zip(dataset_url) 
+    except:
+        try:
+            print("error encountered in host: Using Datamechnics link")
+            download_zip(alternate_url)
+        except:
+            print("Critical Error Encountered, exiting now")
+            return -1
+
     corpus, ground_truth = build_corpus(dataset_location)
     # for quick debug 
     if trial:

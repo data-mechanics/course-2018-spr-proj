@@ -65,6 +65,7 @@ Please download this file to ./Twitter_to_vec/
 ## Building the Sentiment Classifier
 - execute the following to
 1) download and parse all data and 2) train and validate the sentiment Classifier
+Both scripts are located [here](https://github.com/kaidb/course-2018-spr-proj/tree/master/kaidb_vilin/Twitter_to_vec) and must be run from the correct directory.
 
 ```python
 bash build_model.sh
@@ -89,9 +90,9 @@ $ python Twitter_to_vec/get_clean_twitter_sentiment.py t
 - The word2vec model is incredibly effective at identifying useful embeddings for profanity, slang, and spelling associations and is not useful for word embeddings for arbitrary texts.
 - Full pipeline is
 ```bash
-Twitter_to_vec/get_clean_twitter_sentiment.py
-Twitter_to_vec/build_twitter_tweet_2_vec.py
-Twitter_to_vec/sentiment_model_l2_LR.py
+get_clean_twitter_sentiment.py
+build_twitter_tweet_2_vec.py
+sentiment_model_l2_LR.py
 ```
 
 - the first script will retrieve the data, save it, stem/tokenize it, and save it. This is available in trial mode

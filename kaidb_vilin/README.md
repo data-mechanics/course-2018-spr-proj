@@ -5,7 +5,19 @@
 
 ![logo](figs/MassGovernor_right_word_cloud.png)
 
-# Overview Project 2:
+# Overview:
+Sentiment analysis, aka opinion mining, is used to gauge opinions of the population or a subset of the population on a specific product or entity. For example, it is often used to see which brands people feel most positively about. Using a logistic regression trained on 1.6 million tweets with labeled sentiment we built a live classifier of tweets, which appends the sentiment of each incoming tweet to the metadata of the tweet. We then used the sentiment data in a few ways:
+For each politician with a public twitter account we calculated the average sentiment for each hashtag the politician used in the past 3000 tweets. This allows for claims like “Donald Trump feels more positively about making America great again then about fake news,” since Trump’s average sentiment for hashtag #MAGA is significantly higher than for #FakeNews
+For tweets in Massachusetts we plotted them on the map, filtering by a hashtag and changing the color of the point according to the sentiment of the tweet. This allows one to visually observe how people in Massachusetts feel about specific hashtags.
+
+
+In addition to analyzing politicians’ sentiment about specific hashtags, we constructed word clouds for each one, based on the hashtags they have used most frequently in the past 3000 tweets. This allows one to see what the politician cares more about at a glance.
+
+
+The same techniques can be extended to the whole US area. We have built a tool to make heatmaps of a specific topic on the national level using hashtags. Utilizing a word2vec model we built from the wikipedia corpus, we were able to find words that are similar to the specified hashtag and plot on the maps of United States all tweets that contain either the specified hashtag or any of the similar hashtags. This is a step in the direction of topic modeling, where the sentiment of a whole topic is gauged as opposed to just an individual hahstag. 
+
+
+
 Using tweepy, an open source python wrapper for Twitter's dev API, and an annotated tweet sentiment dataset, we
 construct a fully end to end Machine Learning pipeline for predicting aggregate sentiment by region.
 - There is functionality fo constructing twitter word clouds for arbitrary hashtag sentiment and specific user sentiment.
@@ -135,7 +147,8 @@ We can also use TSNE and reduce the number of dimension to 3.
 There is an interactive version [here](https://github.com/kaidb/course-2018-spr-proj/blob/master/kaidb_vilin/Twitter_to_vec/Tweet_2_vec_3d_visualization.ipynb)
 
 
-## Optimization:
+## Optimization and Statistical Analysis:
+
 - Word2Vec uses Gensim
 - Gradient Descent with Momentum written from scratch :
     - See Ipython Notebook in Tweet2Vec for this
@@ -154,14 +167,7 @@ There is an interactive version [here](https://github.com/kaidb/course-2018-spr-
 - Final statistical analysis is performed on the testing set.
 - A testing accuracy of 82% is achieved
 - An AUC score of .9 is achieved
-![logo](figs/)
-
-## Statistical Analysis:
-- Predictive accuracy
-- Sentiment Mapping
-- Model Construction using Keras with Tensorflow Backend.
-
-## Statistical Analysis
+![logo](figs/ROC.png)
 
 ## Visualization
 ## Visualizing Sentiment Data
@@ -169,8 +175,26 @@ Using the  [politician sentiment plotter](https://github.com/kaidb/course-2018-s
 ```python
 python Twitter_to_vec/get_user_and_classify.py BarackObama realDonaldTrump
 ```
-Note it will iterate over all sys args, so you can pass a large list in as an input.
+Note it will iterate over all sys args, so you can pass a large list in as an input. A full list of political accounts maintained by CSPAN is available [here](https://github.com/kaidb/course-2018-spr-proj/blob/master/kaidb_vilin/Twitter_to_vec/twitter_politician_CSPAN_group.ipynb)
+
+Example:
+
+```python
+python Twitter_to_vec/get_user_and_classify.py BarackObama realDonaldTrump
+```
+
+After, the code [here](python Twitter_to_vec/get_user_and_classify.py BarackObama realDonaldTrump) with users `BarackObama realDonaldTrump`
+and the following charts will be generated:
+
+#Trump Word Cloud and Sentiment Chart
+![logo](figs/realDonaldTrump_right_word_cloud.png)
+![logo](figs/trump.png)
+# Obama Word Cloud and Sentiment Chart
+![logo](figs/BarackObama_right_word_cloud.png)
+![logo](figs/obama_bar.png)
 
 
-
+# MA Tweet dataset
+As previously mentioned, around 400,000 tweets were scraped from the Boston area over the course of a few weeks. The tweets were all tokenized, stemmed, and classified. An interactive map with tweets is available [here](https://github.com/kaidb/course-2018-spr-proj/blob/master/kaidb_vilin/Tweet_Stream/sentiment_plotting.ipynb)
+A snapshot is included below.
 ![logo](figs/Boston_Sentiment.png)

@@ -5,7 +5,7 @@
 
 ![logo](figs/MassGovernor_right_word_cloud.png)
 
-# Overview:
+# Final Project Overview:
 Sentiment analysis, aka opinion mining, is used to gauge opinions of the population or a subset of the population on a specific product or entity. For example, it is often used to see which brands people feel most positively about. Using a logistic regression trained on 1.6 million tweets with labeled sentiment we built a live classifier of tweets, which appends the sentiment of each incoming tweet to the metadata of the tweet. We then used the sentiment data in a few ways:
 For each politician with a public twitter account we calculated the average sentiment for each hashtag the politician used in the past 3000 tweets. This allows for claims like “Donald Trump feels more positively about making America great again then about fake news,” since Trump’s average sentiment for hashtag #MAGA is significantly higher than for #FakeNews
 For tweets in Massachusetts we plotted them on the map, filtering by a hashtag and changing the color of the point according to the sentiment of the tweet. This allows one to visually observe how people in Massachusetts feel about specific hashtags.
@@ -14,7 +14,7 @@ For tweets in Massachusetts we plotted them on the map, filtering by a hashtag a
 In addition to analyzing politicians’ sentiment about specific hashtags, we constructed word clouds for each one, based on the hashtags they have used most frequently in the past 3000 tweets. This allows one to see what the politician cares more about at a glance.
 
 
-The same techniques can be extended to the whole US area. We have built a tool to make heatmaps of a specific topic on the national level using hashtags. Utilizing a word2vec model we built from the wikipedia corpus, we were able to find words that are similar to the specified hashtag and plot on the maps of United States all tweets that contain either the specified hashtag or any of the similar hashtags. This is a step in the direction of topic modeling, where the sentiment of a whole topic is gauged as opposed to just an individual hahstag. 
+The same techniques can be extended to the whole US area. We have built a tool to make heatmaps of a specific topic on the national level using hashtags. Utilizing a word2vec model we built from the wikipedia corpus, we were able to find words that are similar to the specified hashtag and plot on the maps of United States all tweets that contain either the specified hashtag or any of the similar hashtags. This is a step in the direction of topic modeling, where the sentiment of a whole topic is gauged as opposed to just an individual hahstag.
 
 
 

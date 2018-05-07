@@ -7,7 +7,7 @@
 echo "Downloading Labled Twitter Sentiment Data"
 echo "All data will be stemmed, and stored as a pickle object"
 
-cd Twitter_to_vec
+
 python  get_clean_twitter_sentiment.py
 echo "Building the Model "
 python sentiment_model_l2_LR.py

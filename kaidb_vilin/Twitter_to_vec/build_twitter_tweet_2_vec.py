@@ -69,7 +69,7 @@ def main(trial = False):
     config["tweetToVec model name"] = tweet2vec_model_name
 
     # just to prevent overwriting a new one 
-    word2vec.save(model_location +  )
+    word2vec.save(model_location +  tweet2vec_model_name )
     print("Model succsesfully saved")
     print("Updating config file")
     with open('../config.json', 'w') as f:

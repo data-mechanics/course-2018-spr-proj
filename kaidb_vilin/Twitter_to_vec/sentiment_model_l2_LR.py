@@ -23,7 +23,6 @@ def main():
     start = time.time()
     # get pathing information 
     config = eval(open( '../config.json').read())
-    model_name = config["tweetToVec model name"]
     # static names 
     dataset_name = config["dataset name"]
     dataset_location = './{}'.format(dataset_name)

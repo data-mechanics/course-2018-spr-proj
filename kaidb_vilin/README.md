@@ -3,7 +3,7 @@
 - Kai Bernardini
 - Vasily Ilin
 
-![logo](MassGovernor_right_word_cloud.png)
+![logo](figs/MassGovernor_right_word_cloud.png)
 
 # Overview Project 2:
 Using tweepy, an open source python wrapper for Twitter's dev API, and an annotated tweet sentiment dataset, we
@@ -27,6 +27,7 @@ pip install -r requirements.txt
 # Datasets and Authentication
 Before getting started, you must acquire several authentication tokens
 Please modify [auth.json](https://github.com/kaidb/course-2018-spr-proj/blob/master/auth.json)
+
 You will need the following
 - Twitter Consumer API key
 - Consumer Secret key
@@ -45,6 +46,10 @@ For all twitter access tokens, sign up [here](https://apps.twitter.com/)
 "mapbox_access_token":""
 }
 ```
+
+A preprocessed Dataset of scored tweets is located [here](https://drive.google.com/open?id=1Lp5N2vNMYqoPMQkCOExjS6CWCwWg3PSq)
+Please download this file to ./Twitter_to_vec/
+
 ## Building the Sentiment Classifier
 - execute the following to
 1) download and parse all data and 2) train and validate the sentiment Classifier
@@ -117,17 +122,55 @@ print(word2vec.wv.similar_by_word("dumb"))
         - Unzipped size is ~65GBs
     - Data is then unpacked from its xml format, tokenized, and a word2vec model is constructed from it.
         - This model is too large to fit in github. For a copy, please email me and I will share the drive containing the model.
-            - Useful for word embeddings for article titles (language tends to be gramatically correct)
+            - Useful for word embeddings for article titles (language tends to be grammatically correct)
+
+## Visualization of Word2Vec
+- Since every single word in the vocabulary has a representation as a vector in a vector space, we can apply traditional dimensionality reduction techniques. For example, with a small sample of words, we can take all vectors in our vocabulary that have a cosine similarity of at least .5  and stack those vectors into a datamatrix. From there, we can reduce the dimensionality using PCA and then run [T-SNE](http://www.jmlr.org/papers/v9/vandermaaten08a.html)
+![logo](figs/tsne_kmeans_plot.png) to reduce the number of dimensions to 2. Finally, we can run K-means on the embedded data to produce a Voroni Partition.
+Taking a random smaple of 10,000 words in the vocabulary, we can also visualize the topology of the space. Using PCA to reduce the number of dimensions to 3, and kmeans for coloring, we view the following.
+![logo](figs/PCA_vis.png)
+We can also use TSNE and reduce the number of dimension to 3.
+![logo](figs/TSNE_vis.png)
+
+There is an interactive version [here](https://github.com/kaidb/course-2018-spr-proj/blob/master/kaidb_vilin/Twitter_to_vec/Tweet_2_vec_3d_visualization.ipynb)
 
 
 ## Optimization:
-- Word2Vec using Gensim
+- Word2Vec uses Gensim
 - Gradient Descent with Momentum written from scratch :
     - See Ipython Notebook in Tweet2Vec for this
-- Unfortunetly, this model proved to be too simple, and failed in the long term.
+
+- Sadly, this implementation does not support sparse matrices
+- Tweets are turned into vectors using [TFIDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) weighting, and the top 160,000 dimension are kept.
+- This is an incredibly sparse matrix
+- If a dense matrix was used, it would require over 1 terabyte of RAM
+- With sparse matricies, not only can we fit it in memory, but we can also build models.
+- A Logistic Regression with L2 Regularization is used
+- L1 regularization produced poor classification results, since rare words were zeroed out due to the sparsity constraint on the parameters
+- The dataset is divided into training, testing, and validation.
+- The training set accounts for most of the data (over 1 million tweets)
+- A TFIDF vectorizer is built on this data.
+- The regularization parameters is selected via 5 fold cross validation, and the parameter that produced the best accuracy on the validation set is selected (turns out lambda=1 works best)
+- Final statistical analysis is performed on the testing set.
+- A testing accuracy of 82% is achieved
+- An AUC score of .9 is achieved
+![logo](figs/)
+
 ## Statistical Analysis:
 - Predictive accuracy
 - Sentiment Mapping
 - Model Construction using Keras with Tensorflow Backend.
 
 ## Statistical Analysis
+
+## Visualization
+## Visualizing Sentiment Data
+Using the  [politician sentiment plotter](https://github.com/kaidb/course-2018-spr-proj/blob/master/kaidb_vilin/Tweet_Stream/Politician_plot.ipynb), we can construct word clouds based around number of times a particular hashtag was used by a user. The class of users explored in this project is politicians. We use the CSPAN list of politicians to construct tweet histories, and sentiment scores for each politician. From there, we can observe average sentiment for a particular hashtag. While the data is included in the repo [here](https://github.com/kaidb/course-2018-spr-proj/tree/master/kaidb_vilin/Twitter_to_vec/user_tweets), you can generate your own dataset by running
+```python
+python Twitter_to_vec/get_user_and_classify.py BarackObama realDonaldTrump
+```
+Note it will iterate over all sys args, so you can pass a large list in as an input.
+
+
+
+![logo](figs/Boston_Sentiment.png)

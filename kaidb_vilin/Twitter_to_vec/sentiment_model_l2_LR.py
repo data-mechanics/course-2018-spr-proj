@@ -90,7 +90,7 @@ def main():
     print("Saving Vectorizer")
     vectorizer_name = 'vectorizer{}.pk'.format(time_app)
     config["Vectorizer name"] = vectorizer_name
-    with open(model_location + vectorizer_name,vectorizer_name 'wb') as fin:
+    with open(model_location + vectorizer_name,vectorizer_name ,'wb') as fin:
         pickle.dump(tvec1, fin)
     print("Vectorizer saved under {}".format(model_location + vectorizer_name))
     print("Updated config.json")

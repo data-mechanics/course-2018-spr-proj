@@ -33,7 +33,7 @@ def remove_urls (vTEXT):
 
 def build_corpus(dataset_location):
     """
-    Parse the Twitter Sentument analysis dataset.
+    Parse the Twitter Sentument analysisßßß dataset.
 
     Arguments:
     dataset_location -- local path to the dataset. 

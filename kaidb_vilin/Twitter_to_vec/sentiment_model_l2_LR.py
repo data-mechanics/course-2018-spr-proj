@@ -24,6 +24,7 @@ def main():
     # get pathing information 
     config = eval(open( '../config.json').read())
     # static names 
+    print(config.keys())
     dataset_name = config["dataset name"]
     dataset_location = './{}'.format(dataset_name)
     model_location = './model/'

@@ -69,7 +69,7 @@ def main():
     print(clf.score(x_train_tfidf, y_train))
     print(clf.score(x_validation_tfidf, y_validation))
     print(clf.score(x_test_tfidf, y_test))
-
+    print("Saving datasets ")
     time_app = str(time.time())
     np.save( data_loc + 'train_x.npy', x_train_tfidf)
     np.save( data_loc + 'train_y.npy', y_train)

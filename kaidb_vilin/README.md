@@ -86,7 +86,7 @@ $ python Twitter_to_vec/get_clean_twitter_sentiment.py t
 - Trial mode will only tokenize and stem the first few tweets for illustrative purposes, but I recommend just running the full pipeline and getting a coffee.
 
 
-- The word2vec model is incredibly effective at identifying useful embeddings for profaninty, slang, and spelling associations and is not useful for word embeddings for arbitrary texts.
+- The word2vec model is incredibly effective at identifying useful embeddings for profanity, slang, and spelling associations and is not useful for word embeddings for arbitrary texts.
 - Full pipeline is
 ```bash
 Twitter_to_vec/get_clean_twitter_sentiment.py

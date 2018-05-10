@@ -23,6 +23,10 @@ class crimerate(dml.Algorithm):
 
         url = 'http://datamechanics.io/data/ashleyyu_bzwtong/crime.json'
         response = urllib.request.urlopen(url).read().decode("utf-8")
+<<<<<<< HEAD:ashleyyu_bzwtong_xhug/crimerate.py
+        crime_json = json.loads(response)
+        #s = json.dumps(r, sort_keys=True, indent=2)
+=======
         # print(type(response))
         # print(response[:2000])
         # crimeData = []
@@ -34,6 +38,7 @@ class crimerate(dml.Algorithm):
         #s = json.dumps(r, sort_keys=True, indent=2)
         # print(type(crimeData))
         # print(crimeData[:10])
+>>>>>>> e908f49301ef2b4a9cbbb32cd06ca852718f1f58:ashleyyu_bzwtong_xhug/crimerate.py
         repo.dropCollection("crimerate")
         repo.createCollection("crimerate")
         repo['ashleyyu_bzwtong.crimerate'].insert_many(crime_json)

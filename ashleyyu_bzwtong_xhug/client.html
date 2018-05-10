@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<iframe src="https://www.google.com/maps/d/u/0/embed?mid=1wLpo7mRkrBukwoU3l8T0mv61CNviiIew" width="640" height="480"></iframe>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+	<canvas id="pie-chart" width="800" height="450"></canvas>
+	<script type="text/javascript">
+		new Chart(document.getElementById("pie-chart"), {
+		    type: 'pie',
+		    data: {
+		      labels: [0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5],
+		      datasets: [{
+		        label: "crime counts",
+		        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+		        data: [541,805,916,657,260,205,115,81,64,36,26]
+		      }]
+		    },
+		    options: {
+		      title: {
+		        display: true,
+		        text: 'crime incident counts vs distance to nearest police station (in km)'
+		      }
+		    }
+		});
+	</script>
+	<canvas id="line-chart" width="800" height="450"></canvas>
+	<script type="text/javascript">
+		// [[0.5, 541], [1, 805], [1.5, 916], [2, 657], [2.5, 260], [3, 205], [3.5, 115], [4, 81], [4.5, 64], [5, 36], [5.5, 26]]
+		new Chart(document.getElementById("line-chart"), {
+		  type: 'line',
+		  data: {
+		    labels: [0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5],
+		    datasets: [{ 
+		        data: [541,805,916,657,260,205,115,81,64,36,26],
+		        label: "crime incident counts",
+		        borderColor: "#3e95cd",
+		        fill: false
+		      }
+		    ]
+		  },
+		  options: {
+		    title: {
+		      display: true,
+		      text: 'crime incident counts vs distance to nearest police station (in km)'
+		    }
+		  }
+		});
+	</script>
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 import jsonschema
 from flask import Flask, jsonify, abort, make_response, request
-from flask.ext.httpauth import HTTPBasicAuth
+from flask_httpauth import HTTPBasicAuth
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
@@ -52,6 +52,24 @@ def create_user():
 	try:
 		jsonschema.validate(request.json, schema)
 		user = { 'id': users[-1]['id']+1, 'userename': request.json['username']}
+		users.append(user)
+		return jsonify({'user' : user}), 201
+	except:
+		print('Request does not follow schema')
+		abort(400)
+
+@auth.get_password
+def foo(username):
+	if username == 'xhug':
+		return 'xhug'
+	return None
+
+@auth.error_handler
+def unauthorized():
+	return make_response(jsonify({'error' : 'Unauthorized access.'}), 401)
+
+if __name__ == '__main__':
+	app.run(debug=True)
 
 
 

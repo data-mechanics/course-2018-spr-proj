@@ -9,11 +9,16 @@ import uuid
 
 import pymongo
 from bson.code import Code
+import pprint
 
-class get_all_counts(dml.Algorithm):
+###eventually just edit get_all_counts
+
+##inserts score and makes into a proper geojson
+
+class insert_score(dml.Algorithm):
 	contributor = 'agoncharova_lmckone'
-	reads = ['agoncharova_lmckone.income_tracts', 'agoncharova_lmckone.boston_tract_counts']
-	writes = ['agoncharova_lmckone.boston_tracts_all_counts']
+	reads = ['agoncharova_lmckone.stability_score', 'agoncharova_lmckone.boston_tracts_all_counts']
+	writes = ['agoncharova_lmckone.boston_tracts_scores']
 
 	@staticmethod
 	def execute(trial = False):
@@ -25,37 +30,41 @@ class get_all_counts(dml.Algorithm):
 		repo = client.repo
 		repo.authenticate('agoncharova_lmckone', 'agoncharova_lmckone')
 
-		repo.dropCollection("boston_tracts_all_counts")
-		repo.createCollection("boston_tracts_all_counts")
+		repo.dropCollection("boston_tracts_scores")
+		repo.createCollection("boston_tracts_scores")
 
-		boston_tract_counts = repo['agoncharova_lmckone.boston_tract_counts']
-		income_tracts = repo['agoncharova_lmckone.income_tracts']
-		#concatenate state county and tract codes into FIPS and associates with income
-		incomes = [{'GEOID': x['state']+x['county']+x['tract'],'income': x['B06011_001E']} for x in income_tracts.find()]
+		boston_tract_counts = repo['agoncharova_lmckone.boston_tracts_all_counts']
+		scores_list = repo['agoncharova_lmckone.stability_score']
+		scores = [{'GEOID': x['Tract'],'score': x['stability']} for x in scores_list.find()]
 
-		###eventually maybe include new construction permits here? could be interested but format is unreliable,
-		###also would need to filter by year probably.
 
 
 
 		#copy collection into a fresh list that we will manipulate and reinsert into the db
-		boston_tracts_all_counts = [x for x in boston_tract_counts.find()]
+		boston_tracts_scores = [x for x in boston_tract_counts.find()]
 
 		#insert incomes into the census tracts collection, in 'properties'
-		print("inserting income count...")
-		for feature in boston_tracts_all_counts:
-			matches = [income['income'] for income in incomes if income['GEOID'] == feature['properties']['GEOID'] and income['income'] is not None]
+		print("inserting scores")
+		for feature in boston_tracts_scores:
+			matches = [score['score'] for score in scores if score['GEOID'] == feature['properties']['GEOID'] and score['score'] is not None]
 			if matches:
-				feature['properties']['income'] = float(matches[0])
+				feature['properties']['score'] = float(matches[0])
 			else:
-				feature['properties']['income'] = 0
-		print("incomes inserted")
+				feature['properties']['score'] = 0
+
+		print("scores inserted")
+		#print(boston_tracts_scores.keys())
+		print(len(boston_tracts_scores))
+
+		for x in boston_tracts_scores:
+			del x['_id']
+
 
 
 		#write to the db
 
-		repo['agoncharova_lmckone.boston_tracts_all_counts'].insert_many(boston_tracts_all_counts)
-		repo['agoncharova_lmckone.boston_tracts_all_counts'].metadata({'complete':True})
+		repo['agoncharova_lmckone.boston_tracts_scores'].insert_many(boston_tracts_scores)
+		repo['agoncharova_lmckone.boston_tracts_scores'].metadata({'complete':True})
 
 		repo.logout()
 		endTime = datetime.datetime.now()
@@ -76,22 +85,22 @@ class get_all_counts(dml.Algorithm):
 		doc.add_namespace('ont', 'http://datamechanics.io/ontology#') # 'Extension', 'DataResource', 'DataSet', 'Retrieval', 'Query', or 'Computation'.
 		doc.add_namespace('log', 'http://datamechanics.io/log/') # The event log.
 
-		this_script = doc.agent('alg:agoncharova_lmckone#get_all_counts', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
+		this_script = doc.agent('alg:agoncharova_lmckone#insert_score', {prov.model.PROV_TYPE:prov.model.PROV['SoftwareAgent'], 'ont:Extension':'py'})
 		
 		get_all_counts = doc.activity('log:uuid'+str(uuid.uuid4()), startTime, endTime)
 		
-		income_input = doc.entity('dat:agoncharova_lmckone.income_tracts',
+		score_input = doc.entity('dat:agoncharova_lmckone.stability_score',
 			{prov.model.PROV_LABEL:'Income',prov.model.PROV_TYPE:'ont:DataSet', 'ont:Query': '.find()'})
 
 		tracts_input = doc.entity('dat:agoncharova_lmckone.boston_tract_counts',
 			{prov.model.PROV_LABEL:'Census Tract Information',prov.model.PROV_TYPE:'ont:DataSet', 'ont:Query': '.find()'})
 
-		output = doc.entity('dat:agoncharova_lmckone.boston_tracts_all_counts',
+		output = doc.entity('dat:agoncharova_lmckone.boston_tracts_scores',
 			{prov.model.PROV_LABEL:'Count of evictions, crimes, and income in each census tract', prov.model.PROV_TYPE:'ont:DataSet'})
 
-		doc.wasAssociatedWith(get_all_counts, this_script)
+		doc.wasAssociatedWith(insert_score, this_script)
 
-		doc.usage(get_all_counts, income_input, startTime, None,
+		doc.usage(insert_score, score_input, startTime, None,
 		          {prov.model.PROV_TYPE:'ont:Computation'}
 		          )
 
@@ -100,20 +109,12 @@ class get_all_counts(dml.Algorithm):
           )
 
 		doc.wasAttributedTo(output, this_script)
-		doc.wasGeneratedBy(output, get_all_counts, endTime)
-		doc.wasDerivedFrom(output, income_input, get_all_counts, get_all_counts, get_all_counts)
-		doc.wasDerivedFrom(output, tracts_input, get_all_counts, get_all_counts, get_all_counts)
+		doc.wasGeneratedBy(output, insert_score, endTime)
+		doc.wasDerivedFrom(output, income_input, insert_score, insert_score, insert_score)
+		doc.wasDerivedFrom(output, tracts_input, insert_score, insert_score, insert_score)
 		
 		repo.logout()
 				  
 		return doc
 
-
-#get_all_counts.execute()
-
-
-
-#url = 'http://www2.census.gov/geo/tiger/TIGER2010/TABBLOCK/2010/tl_2010_25025_tabblock10.zip'
-#response = ur.urlopen(url)
-#data = json.load(response)
-#print(data)
+#insert_score.execute()

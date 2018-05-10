@@ -91,9 +91,10 @@ class count_evictions_crimes(dml.Algorithm):
 		#utilize the shapely library to count the number of crimes in each census tract
 		crime_tracts = []
 		print("geocoding crimes...")
+		boston_crimes_cursor = boston_crimes.find({}, no_cursor_timeout = True)
 		for feature in boston_tracts.find():
 			polygon = shape(feature['geometry'])
-			for crime in boston_crimes.find():
+			for crime in boston_crimes_cursor:
 				point = Point(crime['Long'], crime['Lat'])
 				if polygon.contains(point):
 					geoid = feature['properties']['GEOID']
@@ -102,7 +103,7 @@ class count_evictions_crimes(dml.Algorithm):
 				if(count <= 0):
 					break
 				count += 1
-
+		boston_crimes_cursor.close()
 		print("crimes geocoded")
 
 		#aggregate count of crimes by summing the ones

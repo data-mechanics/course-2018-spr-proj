@@ -44,9 +44,7 @@ class boston_crimes(dml.Algorithm):
 		data = [x for x in data if re.match("^-7",x['Long'])]
 
 		#use only 2016 data for now bc of size
-		data = [x for x in data if x['YEAR']=="2016"]
-
-
+		# data = [x for x in data if x['YEAR']=="2016"]
 
 		for item in data:
 			item['Long'] = float(item['Long'])

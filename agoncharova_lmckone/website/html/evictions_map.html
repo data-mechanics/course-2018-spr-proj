@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Boston Evictions D3 Graph</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script>
+  <script src="./website/data/boston_neighborhoods.json"></script>
+  <script src="./website/data/evictions.json"></script>
+  
+  <link rel="stylesheet" type="text/css" href="./website/css/index.css" />
+</head>
+
+<body class="font">
+  <h1>Map of Boston Evictions By Year</h1>
+  <h2></h2>
+  <div id="evictions-graph-section">
+    <div id="evictions_map"></div>
+    <div id="sliderContainer">
+      <input id="timeslide" type="range" min="2013" max="2017" value="0" step="1" />
+      <br>
+      <span id="range">2013</span>
+    </div>
+    <div/>
+</body>
+<!--custom EVICTIONS MAP javascript  code -->
+<script src="./website/js/evictions_map.js"></script>
+</html>

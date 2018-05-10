@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>CS591 Final Project -- Visualizations</title>
+  <script src="//d3js.org/d3.v3.min.js"></script>
+  <!-- jquery cause its bomb -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <!-- LEAFLET code -->
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+  <!-- DATA -->
+  <script src="./website/data/tracts_scores.js"></script>
+  <script src="./website/data/boston_neighborhoods.json"></script>
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <link rel="stylesheet" type="text/css" href="./website/css/index.css" />
+</head>
+
+<body>
+  <div id="content" class="font">
+    <h1>Boston (In)Stability Score Heatmap</h1>
+    <br>
+    <div id="map"></div>
+    <div id="correlation-graph-section">
+      <h1>Correlation Graph by Income</h1>
+      <br>
+      <div class="buttons">
+        <button class="selected" value="low">Low Income</button>
+        <button value="lowmed">Low-Medium Income</button>
+        <button value="medhigh">Medium-High Income</button>
+        <button value="high">High Income</button>
+      </div>
+      <div id="correlation-graph"></div>
+    </div>
+    <!-- Put the evictions map into an iframe cause of clashing d3 lib versions lol-->
+    <div id="evictions_map_iframe">
+      <iframe src="evictions_map" height="750" width="700"></iframe>
+    </div>
+  </div>
+</body>
+<!-- custom LEAFLET javascript code -->
+<script src="./website/js/leaflet_map.js"></script>
+<!--custom CORRELATIONS javascript  code -->
+<script src="./website/js/correlations.js"></script>
+
+</html>

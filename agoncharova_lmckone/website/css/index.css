@@ -1,0 +1,103 @@
+#content {
+  margin: auto;
+  padding-top: 40px;
+  position: relative;
+  width: 1000px;
+}
+
+.font {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#map {
+  width: 600px;
+  height: 600px;
+  position: relative;
+  margin: 0 auto;
+}
+
+#correlation-graph-section {
+  margin: 50px 0 50px 0;
+}
+
+#evictions_map_iframe {
+  margin: 0 auto;
+  text-align: center;
+} 
+
+.bullet {
+  font: 10px sans-serif;
+}
+
+.bullet .marker {
+  stroke: #000;
+  stroke-width: 2px;
+}
+
+.bullet .tick line {
+  stroke: #666;
+  stroke-width: .5px;
+}
+
+.bullet .range.s0 {
+  fill: #eee;
+}
+
+.bullet .range.s1 {
+  fill: #ddd;
+}
+
+.bullet .range.s2 {
+  fill: #ccc;
+}
+
+.bullet .measure.s0 {
+  fill: lightsteelblue;
+}
+
+.bullet .measure.s1 {
+  fill: steelblue;
+}
+
+.bullet .title {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.bullet .subtitle {
+  fill: #999;
+}
+
+.buttons {
+  text-align: center;
+  margin: 0 0 15px 0;
+}
+
+.selected {
+  background-color: steelblue;
+  color: white;
+  border-radius: 3px;
+}
+
+h1,
+h2 {
+  left: 10px;
+  font-size: 1.3em;
+  font-weight: 100;
+  text-align: center;
+}
+
+h2 {
+  position: absolute;
+  top: 30px;
+  font-size: 1em;
+}
+
+.hover {
+  fill: yellow;
+}
+
+#sliderContainer {
+  text-align: center;
+  position: relative;
+}

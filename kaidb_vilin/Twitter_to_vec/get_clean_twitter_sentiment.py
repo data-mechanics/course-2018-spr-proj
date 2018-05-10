@@ -12,6 +12,7 @@ from nltk.tokenize import RegexpTokenizer
 import sys
 import urllib.request
 import gzip
+import json 
 
 import requests, zipfile, io
 
@@ -32,7 +33,7 @@ def remove_urls (vTEXT):
 
 def build_corpus(dataset_location):
     """
-    Parse the Twitter Sentument analysis dataset.
+    Parse the Twitter Sentument analysisßßß dataset.
 
     Arguments:
     dataset_location -- local path to the dataset. 
@@ -100,6 +101,7 @@ def tokenize_corpus(corpus):
     # ~2 seconds per 10,000 entires. 
     # with 1578627, it takes ~ 5 minutes on a macbook pro. 
     print("Go get a Coffee-- this will take ~ 5 minutes to stem/tokenize all inputs")
+    ##TODO: paralellize stemming 
     tokenized_corpus = []
     start = time.time()
     token_count = 0
@@ -145,7 +147,9 @@ def load_corpus(corp_filename):
 
 def main(trial=False):
     # location of twitter data
+
     dataset_url = "http://thinknook.com/wp-content/uploads/2012/09/Sentiment-Analysis-Dataset.zip"
+    alternate_url = "http://datamechanics.io/data/Sentiment-Analysis-Dataset.zip"
     # local path to name 
     dataset_location = './Sentiment Analysis Dataset.csv'
     # where to save the model
@@ -157,7 +161,16 @@ def main(trial=False):
     np.random.seed(6969)
 
     # Start by retrieving the data
-    download_zip(dataset_url) 
+    try:
+        download_zip(dataset_url) 
+    except:
+        try:
+            print("error encountered in host: Using Datamechnics link")
+            download_zip(alternate_url)
+        except:
+            print("Critical Error Encountered, exiting now")
+            return -1
+
     corpus, ground_truth = build_corpus(dataset_location)
     # for quick debug 
     if trial:
@@ -176,7 +189,7 @@ def main(trial=False):
 if __name__ == "__main__":
     if len(sys.argv) ==2:
         if sys.argv[1] == 't':
-            print("Running in Trial Mode: Truncating stemming ")
+            print("Running in Trial Mode with Truncated stemming ")
             main(True)
         else:
             print("Invalid Argument. To run in trial mode, please use '$ python get_clean_twitter_sentiment.py t'")

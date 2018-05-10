@@ -1,83 +1,121 @@
-## CS591 Project 
+## CS591: Urban Sentiment Analysis
 ## Members:  
 - Kai Bernardini
 - Vasily Ilin
 
-# Overview Project 2:
+![logo](figs/MassGovernor_right_word_cloud.png)
+
+# Final Project Overview:
+Sentiment analysis, aka opinion mining, is used to gauge opinions of the population or a subset of the population on a specific product or entity. For example, it is often used to see which brands people feel most positively about. Using a logistic regression trained on 1.6 million tweets with labeled sentiment we built a live classifier of tweets, which appends the sentiment of each incoming tweet to the metadata of the tweet. We then used the sentiment data in a few ways:
+For each politician with a public twitter account we calculated the average sentiment for each hashtag the politician used in the past 3000 tweets. This allows for claims like “Donald Trump feels more positively about making America great again then about fake news,” since Trump’s average sentiment for hashtag #MAGA is significantly higher than for #FakeNews
+For tweets in Massachusetts we plotted them on the map, filtering by a hashtag and changing the color of the point according to the sentiment of the tweet. This allows one to visually observe how people in Massachusetts feel about specific hashtags.
+
+
+In addition to analyzing politicians’ sentiment about specific hashtags, we constructed word clouds for each one, based on the hashtags they have used most frequently in the past 3000 tweets. This allows one to see what the politician cares more about at a glance.
+
+
+The same techniques can be extended to the whole US area. We have built a tool to make heatmaps of a specific topic on the national level using hashtags. Utilizing a word2vec model we built from the wikipedia corpus, we were able to find words that are similar to the specified hashtag and plot on the maps of United States all tweets that contain either the specified hashtag or any of the similar hashtags. This is a step in the direction of topic modeling, where the sentiment of a whole topic is gauged as opposed to just an individual hahstag.
+
+
+
 Using tweepy, an open source python wrapper for Twitter's dev API, and an annotated tweet sentiment dataset, we
-construct a fully end to end ML pipeline for predicting aggregate sentiment by region. Twitter has become a data
-- The long term goal is to predict reactions to current news using 
+construct a fully end to end Machine Learning pipeline for predicting aggregate sentiment by region.
+- There is functionality fo constructing twitter word clouds for arbitrary hashtag sentiment and specific user sentiment.
+  - e.g., you can construct word clouds for a region like MA or a specific user like @realDonaldTrump
+- note:  As this is predominantly exploratory,  technical short cuts were taken.
 
-- note:  As this is predominantly exploratory,  technical short cuts were taken. 
-
-## Technical Challenges
-- Size of Datasets -- they are large
-- Verry high dimensional feature space 
-- Difficult to fit entire dataset into memory, batch training is a must 
-- The dataset is highly non-linear 
-    - Logistic Regression was pretty poor at identifying and meaningul trends 
-- Insufficient computational Resources
-    - (Me complaining) The new Macbooks for god knows what reason don't use a Nvidia GPU and are therefore incompatible with Tensorflow GPU integration...buyer beware
-        - Training is prohibitively slow as a result  (30 minutes per epoch)
-        - As a result, we could only itterate through 5 epochs 
-- Bots, Bots, and more freaken bots
-    - Using a super crude methidology, we determined that at least 1/10 of all of our tweets are bot generated
-        - And even the true figure is likely much larger. 
-        - In the future, we should likely remove these tweets from the corpus. 
-    
 ## Future Work:
 - Sentiment analyzer for News API article headlines
-- Correlate Twitter Sentiment with Article Sentiment 
+- Correlate Twitter Sentiment with Article Sentiment
+- Political Research using Twitter text mining.
 
-
-
-
-# Datasets
-
-## Twitter Live stream using tweepy
-- We provide several high level  scripts to allow for easy retrieving of tweets
-    - Tweet streaming by Geographical Location : 
-    - Tweets by User
-- For either usecase, you are required to create a twitter app an input the following into ```auth.json```:
+## Dependencies
 
 ```python
-{ 
-    "consumer_key": "",
-    "consumer_secret": "",
-    "access_key": "",
-    "access_secret": "",
+pip install -r requirements.txt
+```
+
+
+# Datasets and Authentication
+Before getting started, you must acquire several authentication tokens
+Please modify [auth.json](https://github.com/kaidb/course-2018-spr-proj/blob/master/auth.json)
+
+You will need the following
+- Twitter Consumer API key
+- Consumer Secret key
+- Access Key
+- Access Secret Key
+- [Mapbox Access Token](https://www.mapbox.com/signin/?route-to=%22/account/access-tokens%22)
+
+For all twitter access tokens, sign up [here](https://apps.twitter.com/)
+
+```python
+{
+"consumer_key": "",
+"consumer_secret": "",
+"access_key": "",
+"access_secret": "",
+"mapbox_access_token":""
 }
 ```
 
-## Twitter Pre-labled Sentiment Dataset 
-- Prelabled Twitter Dataset complete with a sentiment Label 
-- To retrieve, save, and tokenize the data, execute </code> $ python get_clean_twitter_sentiment.py </code>
-    - to run in trial mode, </code> $ python get_clean_twitter_sentiment.py t </code>
-        - Trial mode will only tokenize and stem the first few tweets for illustrative purposes
-    - The model is incredibly effective at identifying useful embeddings for profaninty, slang, and spelling associations..etc and is not useful for word embeddings for arbitrary texts. 
-- Full pipeline is 
-```bash 
-get_clean_twitter_sentiment.py
-build_twitter_tweet_2_vec.py
-build_clf.py
+A preprocessed Dataset of scored tweets is located [here](https://drive.google.com/open?id=1Lp5N2vNMYqoPMQkCOExjS6CWCwWg3PSq)
+Please download this file to ./Twitter_to_vec/
+
+## Building the Sentiment Classifier
+- execute the following to
+1) download and parse all data and 2) train and validate the sentiment Classifier
+Both scripts are located [here](https://github.com/kaidb/course-2018-spr-proj/tree/master/kaidb_vilin/Twitter_to_vec) and must be run from the correct directory.
+
+```python
+bash build_model.sh
 ```
 
-- the first script will retrieve the data, save it, stem/tokenize it, and save it. This is avaiable in trial mode
-- The second wone will build a word2vec model using the saved data. This is also avaiable in trial mode
-- The final one will build a conv network from scratch from the full dataset. Trial mode is left out in lieu of loading a prebuild mode. 
-- If you do decide to from scratch, it is advised that you use a device with a GPU compatible with the tensorflow backend. 
-    - there is an initial memory explosion when building the training, testing and validation set. 
-    - TODO: partition all data into batches via data-stream 
-    - The W2vec model is combined with randomly subsampled tokens from the corpus conditioned on 1) the word being a vector, and 2) it being reasonably common (arbitrary)
-    - These are stacked into a tensor to construct the datasets. 
-    - ideally, 10-20 epochs should be run with a Nvidia GPU
-## Tweet Word Embedding Examples 
-** Disclaimer: These asosciations are constructed by the tweet. word2vec model. These associations are not reflective of our views. **
+
+- Optionally, to build the word2vec model
+
+```python
+bash build_word2vec.sh
+```
+
+- to run in trial mode,
+
+```python
+$ python Twitter_to_vec/get_clean_twitter_sentiment.py t
+```
+
+- Trial mode will only tokenize and stem the first few tweets for illustrative purposes, but I recommend just running the full pipeline and getting a coffee.
+
+
+- The word2vec model is incredibly effective at identifying useful embeddings for profanity, slang, and spelling associations and is not useful for word embeddings for arbitrary texts.
+- Full pipeline is
+```bash
+get_clean_twitter_sentiment.py
+build_twitter_tweet_2_vec.py
+sentiment_model_l2_LR.py
+```
+
+- the first script will retrieve the data, save it, stem/tokenize it, and save it. This is available in trial mode
+- The second one will build a word2vec model using the saved data. This is also available in trial mode
+- The final one will build a Logistic Regression model on the training set and validate it. Trial mode is left out in lieu of loading a prebuilt model.
+
+
+## Twitter Live stream using tweepy
+- We provide several high level  scripts to allow for easy retrieving of tweets
+    - Tweet streaming by Geographical Location :
+    - Tweets by User
+- For either usecase, you are required to create a twitter app an input the following into ```auth.json```:
+
+
+
+
+## Tweet Word Embedding Examples
+** Disclaimer: These associations are constructed by the tweet. word2vec model. These associations are not reflective of our views. **
 ** Trigger Warning: Profanity, slurs...etc **
 
-```python 
+```python
 print(word2vec.wv.similar_by_word("lol"))
-[('hah', 0.7501074075698853), ('lmao', 0.7403647899627686), ('hahah', 0.6293175220489502), ('hahahah', 0.4980482757091522), ('lmfao', 0.4653286337852478), ('heh', 0.46210041642189026), ('cuz', 0.4489451050758362), ('ha', 0.4350995123386383), ('jus', 0.4144180417060852), ('u', 0.41266563534736633)] 
+[('hah', 0.7501074075698853), ('lmao', 0.7403647899627686), ('hahah', 0.6293175220489502), ('hahahah', 0.4980482757091522), ('lmfao', 0.4653286337852478), ('heh', 0.46210041642189026), ('cuz', 0.4489451050758362), ('ha', 0.4350995123386383), ('jus', 0.4144180417060852), ('u', 0.41266563534736633)]
 ```
 
 ```python
@@ -95,74 +133,69 @@ print(word2vec.wv.similar_by_word("dumb"))
         - Note that the Mirror to download is prohibitively slow. Please email me at kaidb@bu.edu and I will share the google drive containing the data (way, way faster)
         - The zipped size is ~14GBs
         - Unzipped size is ~65GBs
-    - Data is then unpacked from its xml format, tokenized, and a word2vec model is constructed from it. 
-        - This model is too large to fit in github. For a copy, please email me and I will share the drive containing the model. 
-            - Useful for word embeddings for article titles (language tends to be gramatically correct)
-##
+    - Data is then unpacked from its xml format, tokenized, and a word2vec model is constructed from it.
+        - This model is too large to fit in github. For a copy, please email me and I will share the drive containing the model.
+            - Useful for word embeddings for article titles (language tends to be grammatically correct)
 
-# News API 
-- We created 4 api keys and cycle through them when throttled (only 1 is required. )
-```python
-{
-"news1": "",
-"news2": "",
-"news3": "",
-"news4": ""
-}
-```
-    - TODO: Aws lambda would be an awesome way to generate new keys. 
-- We crawled articles from multiple national and local news sources and tried to apply the twitter sentiment classifer to them (shocker of the day, it did not transfer well)
-- To remedy this, we constructed a W2vec model on the entire wikipedia corpus. 
-- Unfortunetly, due to computational and timming constraints, we were unabe to apply this directly to the transformed news data. As such, the news sentiment analysis is in need of improvement. 
-- 
+## Visualization of Word2Vec
+- Since every single word in the vocabulary has a representation as a vector in a vector space, we can apply traditional dimensionality reduction techniques. For example, with a small sample of words, we can take all vectors in our vocabulary that have a cosine similarity of at least .5  and stack those vectors into a datamatrix. From there, we can reduce the dimensionality using PCA and then run [T-SNE](http://www.jmlr.org/papers/v9/vandermaaten08a.html)
+![logo](figs/tsne_kmeans_plot.png) to reduce the number of dimensions to 2. Finally, we can run K-means on the embedded data to produce a Voroni Partition.
+Taking a random smaple of 10,000 words in the vocabulary, we can also visualize the topology of the space. Using PCA to reduce the number of dimensions to 3, and kmeans for coloring, we view the following.
+![logo](figs/PCA_vis.png)
+We can also use TSNE and reduce the number of dimension to 3.
+![logo](figs/TSNE_vis.png)
 
-## Optimization: 
-- Word2Vec using Gensim 
+There is an interactive version [here](https://github.com/kaidb/course-2018-spr-proj/blob/master/kaidb_vilin/Twitter_to_vec/Tweet_2_vec_3d_visualization.ipynb)
+
+
+## Optimization and Statistical Analysis:
+
+- Word2Vec uses Gensim
 - Gradient Descent with Momentum written from scratch :
-    - See Ipython Notebook in Tweet2Vec for this 
-- Unfortunetly, this model proved to be too simple, and failed in the long term. 
-## Statistical Analysis: 
-- Predictive accuracy
-- Sentiment Mapping 
-- Model Construction using Keras with Tensorflow Backend. 
+    - See Ipython Notebook in Tweet2Vec for this
 
-## Statistical Analysis 
+- Sadly, this implementation does not support sparse matrices
+- Tweets are turned into vectors using [TFIDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) weighting, and the top 160,000 dimension are kept.
+- This is an incredibly sparse matrix
+- If a dense matrix was used, it would require over 1 terabyte of RAM
+- With sparse matricies, not only can we fit it in memory, but we can also build models.
+- A Logistic Regression with L2 Regularization is used
+- L1 regularization produced poor classification results, since rare words were zeroed out due to the sparsity constraint on the parameters
+- The dataset is divided into training, testing, and validation.
+- The training set accounts for most of the data (over 1 million tweets)
+- A TFIDF vectorizer is built on this data.
+- The regularization parameters is selected via 5 fold cross validation, and the parameter that produced the best accuracy on the validation set is selected (turns out lambda=1 works best)
+- Final statistical analysis is performed on the testing set.
+- A testing accuracy of 82% is achieved
+- An AUC score of .9 is achieved
+![logo](figs/ROC.png)
+
+## Visualization
+## Visualizing Sentiment Data
+Using the  [politician sentiment plotter](https://github.com/kaidb/course-2018-spr-proj/blob/master/kaidb_vilin/Tweet_Stream/Politician_plot.ipynb), we can construct word clouds based around number of times a particular hashtag was used by a user. The class of users explored in this project is politicians. We use the CSPAN list of politicians to construct tweet histories, and sentiment scores for each politician. From there, we can observe average sentiment for a particular hashtag. While the data is included in the repo [here](https://github.com/kaidb/course-2018-spr-proj/tree/master/kaidb_vilin/Twitter_to_vec/user_tweets), you can generate your own dataset by running
+```python
+python Twitter_to_vec/get_user_and_classify.py BarackObama realDonaldTrump
+```
+Note it will iterate over all sys args, so you can pass a large list in as an input. A full list of political accounts maintained by CSPAN is available [here](https://github.com/kaidb/course-2018-spr-proj/blob/master/kaidb_vilin/Twitter_to_vec/twitter_politician_CSPAN_group.ipynb)
+
+Example:
+
+```python
+python Twitter_to_vec/get_user_and_classify.py BarackObama realDonaldTrump
+```
+
+After, the code [here](python Twitter_to_vec/get_user_and_classify.py BarackObama realDonaldTrump) with users `BarackObama realDonaldTrump`
+and the following charts will be generated:
+
+#Trump Word Cloud and Sentiment Chart
+![logo](figs/realDonaldTrump_right_word_cloud.png)
+![logo](figs/trump.png)
+# Obama Word Cloud and Sentiment Chart
+![logo](figs/BarackObama_right_word_cloud.png)
+![logo](figs/obama_bar.png)
 
 
-
-
-
-
-
-# Leftover from Project 1
- ## Overview Project 1:
-We compare the public employee earning report and the monthly utility bills from Analyze Boston by zip code to see if there
-is a correlation between the average income in a neighborhood (we approximated it using the income of public employees as a proxy)
-and how much the neighborhood pays per unit of electricity. No correlation was found.
-We also retrieved the CDC binge drinking dataset by state. So far we found ten census tracts in Boston with the worst binge drinking habits.
-This will likely prove useful in analyzing city life later on. For example, comparing binge drinking with the locations of colleges
-or the poorest neighborhoods in Boston in order to find what binge drinking correlates more with. From the 311 dataset, there are several complaints that have reason listed as mbta. We examine geospatial relationships between the mbta transportation data, payroll information by zipcode...etc
-
-## Transformations: 
-- Payrol: Convert dollar strings to floats
-- 311: Project Data to remove extraneous columns. Combine Submission time, estimated completion time  and actual completion time to compute
-    - Elapsed time 
-    - Estimated time till completion
-    - Extra Time used to complete task 
-- CDC: Various descriptive statistics, selection via boston rows...etc
-
-
-## MBTA Auth. 
-Please add you MBTA API_v3 key to auth.json. 
-
-<code> {"mbta_api_key": ""}
-</code>
-
-## Generate Prov. 
-In the top directory of this project, run
-
-<code>python execute.py kaidb_vilin --trial
- </code>
-This will take at 1-10 minutes depending on your connection. 
-## Python Reqs:
-pandas, sklearn, dml, prov, json,urlib, json, datetime, uuid
+# MA Tweet dataset
+As previously mentioned, around 400,000 tweets were scraped from the Boston area over the course of a few weeks. The tweets were all tokenized, stemmed, and classified. An interactive map with tweets is available [here](https://github.com/kaidb/course-2018-spr-proj/blob/master/kaidb_vilin/Tweet_Stream/sentiment_plotting.ipynb)
+A snapshot is included below.
+![logo](figs/Boston_Sentiment.png)

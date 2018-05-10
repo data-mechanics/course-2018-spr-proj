@@ -1,0 +1,15 @@
+{
+	"Model name": "l2_LR1524414744.4756281.pkl",
+	"Vectorizer name": "vectorizer1524414744.4756281.pk",
+	
+	"tweetToVec model name": "tweet_word2vec.model",
+	"dataset name": "Sentiment Analysis Dataset.csv",
+
+	"tokenized corpus name": "tokenized_tweet_corpus.dill", 
+	"ground truth labels": "ground_truth_tokenized_tweet_corpus.dill", 
+	
+
+	
+	
+
+}

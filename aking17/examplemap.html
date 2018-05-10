@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Hubway Maps</title>
+    <style>
+
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+      #floating-panel {
+        background-color: #fff;
+        border: 1px solid #999;
+        left: 25%;
+        padding: 5px;
+        position: absolute;
+        top: 10px;
+        z-index: 5;
+      }
+    </style>
+  </head>
+
+  <body>
+    <p> Select a day and hour range(1,168)</p>
+    <input type="text" id="input1" />
+    <div id="floating-panel">
+      <button onclick="goodLoc()">Good Locations</button>
+      <button onclick="badLoc()">Bad Locations</button>
+      <button onclick="allLoc()">All Locations</button>
+      <button onclick="clearAll()">Clear All</button>
+
+    </div>
+    <div id="map"></div>
+    <p id="demo"></p>
+    <script>
+
+      // This example requires the Visualization library. Include the libraries=visualization
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization">
+
+      var map, heatmap;
+      var alls = [];
+
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: {lat: 42.349046000000001, lng: -71.096831000000009},
+          mapTypeId: 'roadmap'
+        });
+    
+
+      }
+
+
+      function allLoc(){
+        alls = [new google.maps.Marker({position: new google.maps.LatLng(42.345392,-71.069616), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.341814,-71.090179), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.361285,-71.06514), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.353412,-71.044624), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.353334,-71.137313), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.351313,-71.116174), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.350075,-71.105884), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.338629,-71.1065), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.335911,-71.088496), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.334057,-71.07403), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.337171,-71.102797), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.361667,-71.13802), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.347433,-71.076163), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.365074,-71.119581), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.36337,-71.129791), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.347527,-71.105828), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.35977,-71.051601), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.345959,-71.082578), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.352175,-71.055547), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.359677,-71.059364), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.351821,-71.045461), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.341332,-71.076847), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.341522,-71.068922), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.331567,-71.094734), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.363732,-71.124565), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.334073,-71.105221), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.348833,-71.041747), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.343912,-71.102221), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.349046,-71.096831), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.346171,-71.099855), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.354594,-71.05896), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.349673,-71.077303), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.357247,-71.146452), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.366231,-71.060868), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.338623,-71.074182), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.363871,-71.050877), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.352261,-71.123831), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.352096,-71.070378), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.357143,-71.050699), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.360583,-71.056868), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.344763,-71.09788), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.343864,-71.085918), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.362811,-71.056067), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.356755,-71.055407), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.351146,-71.066289), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.350989,-71.073644), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.3348756,-71.0790969), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.348717,-71.085954), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.350851,-71.089886), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.354979,-71.063348), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.347265,-71.088088), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.3281898,-71.0833545), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.340799,-71.081572), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.355596,-71.07278), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.351356,-71.059367), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.360877,-71.07131), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.348323,-71.082674), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.340299,-71.109927), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.344023,-71.057054), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.3511,-71.0496), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.3475,-71.0441), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.348607,-71.13401), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.3581,-71.093198), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.36507,-71.1031), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.341598,-71.123338), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.372244,-71.121851), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.383405,-71.107593), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.362613,-71.084105), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.373231,-71.120886), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.373268,-71.118579), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.363562,-71.10042), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.366426,-71.105495), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.386428,-71.096413), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.379637,-71.095319), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.378551,-71.106541), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.362429,-71.090188), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.352409,-71.062679), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.333689,-71.120526), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.325941,-71.065928), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.366981,-71.076472), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.330825,-71.057007), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.332799,-71.116205), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.366621,-71.114214), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.374035,-71.101427), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.379011,-71.119945), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.3707,-71.07711), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.366277,-71.09169), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.311819,-71.035705), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.320494,-71.051122), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.375603,-71.064608), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.372969,-71.094445), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.373379,-71.111075), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.369182,-71.117152), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.371848,-71.060292), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.35892,-71.057629), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.328654,-71.084198), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.345733,-71.100694), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.336437,-71.073089), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.348762,-71.082383), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.330716,-71.057044), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.325333,-71.075354), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.335693,-71.045859), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.335741,-71.03877), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.320561,-71.06198), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.317225,-71.065421), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.356975,-71.145442), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.366222,-71.059914), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.355402,-71.058087), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.36069,-71.070884), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.365942,-71.060515), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.378338,-71.048927), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.356052,-71.069849), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.358508,-71.052984), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.377022,-71.056605), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.350413,-71.07655), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.309467,-71.115645), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.31309,-71.114175), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.320998,-71.110833), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.315692,-71.098634), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.310579,-71.107341), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.322913,-71.100164), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.339335,-71.13493), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.346563,-71.128374), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.362457,-71.08497), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.369832,-71.118201), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.376369,-71.114025), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.356954,-71.113687), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.377945,-71.116865), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.380287,-71.125107), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.397828,-71.130516), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.370803,-71.104412), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.366095,-71.086388), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.387995,-71.119084), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.385582,-71.113341), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.396969,-71.123024), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.400146,-71.112708), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.400877,-71.116772), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.40449,-71.123413), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.39082,-71.10942), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.402763,-71.126908), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+new google.maps.Marker({position: new google.maps.LatLng(42.394002,-71.120406), map: map, icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", title: "Average Station"}),
+
+];
+
+        console.log(alls.length)
+
+
+      }
+
+      var BADmarkersArray = [];
+      var GOODmarkersArray = [];
+      var hour = null
+
+      function badLoc(){
+        var text=document.getElementById('input1').value
+        if (text != hour){
+          deleteMarkers(BADmarkersArray)
+          deleteMarkers(GOODmarkersArray)
+          hour = text
+
+        }
+        var next = '/hour/' + text
+        fetch(next)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(initialData) {
+          var bad = initialData.bad;
+
+          bad = bad.slice(2,-2);
+          bad = bad.split('), (');
+          for(var i = 0; i<= bad.length; i++){
+            var point = bad[i].split(',')
+            var lat = parseFloat(point[0])
+            var lng = parseFloat(point[1])
+            var marker = new google.maps.Marker({position: new google.maps.LatLng(lat,lng), map: map, title: "Low Chance of Bike"});
+            BADmarkersArray.push(marker);
+          }
+        })
+      }
+
+      function goodLoc(){
+        var text=document.getElementById('input1').value
+        if (text != hour){
+          deleteMarkers(BADmarkersArray)
+          deleteMarkers(GOODmarkersArray)
+          hour = text
+
+        }
+        deleteMarkers(GOODmarkersArray)
+        var next = '/hour/' + text
+
+        fetch(next)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(initialData) {
+          var good = initialData.good;
+
+          good = good.slice(2,-2);
+          good = good.split('), (');
+          for(var i = 0; i<= good.length; i++){
+            var point = good[i].split(',')
+            var lat = parseFloat(point[0])
+            var lng = parseFloat(point[1])
+            var marker = new google.maps.Marker({position: new google.maps.LatLng(lat,lng), map: map, icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png', title: "High Chance of Bike"})
+            GOODmarkersArray.push(marker);
+
+          }
+
+        })
+      }
+
+            // Sets the map on all markers in the array.
+      function setMapOnAll(map,arr) {
+        for (var i = 0; i < arr.length; i++) {
+          arr[i].setMap(map);
+        }
+      }
+      // Removes the markers from the map, but keeps them in the array.
+      function clearMarkers(arr) {
+        setMapOnAll(null,arr);
+        console.log('cleared')
+      }
+
+      function deleteMarkers(arr) {
+        clearMarkers(arr);
+        arr = [];
+        console.log('deleted')
+      }
+
+      function clearAll(){
+        console.log('deleting good markers')
+        console.log(typeof GOODmarkersArray)
+        deleteMarkers(GOODmarkersArray);
+        console.log('deleting bad markers')
+        console.log(typeof GOODmarkersArray)
+
+        deleteMarkers(BADmarkersArray);
+        
+        console.log('deleting all markers')
+        console.log(typeof alls)
+
+        deleteMarkers(alls);
+        
+
+      }
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5JLYnGNH_LWiETzXAvN9ku2vzsCnSgCY&libraries=visualization&callback=initMap">
+    </script>
+  </body>
+</html>

@@ -12,7 +12,8 @@ class correlation(dml.Algorithm):
     contributor = 'alyu_sharontj_yuxiao_yzhang11'
     reads = ['alyu_sharontj_yuxiao_yzhang11.education_rent',
              'alyu_sharontj_yuxiao_yzhang11.garden_vs_rent',
-             'alyu_sharontj_yuxiao_yzhang11.Fire_Hospital_vs_Rent']
+             'alyu_sharontj_yuxiao_yzhang11.Fire_Hospital_vs_Rent',
+             'alyu_sharontj_yuxiao_yzhang11.education_trans_avg']
     writes = ['alyu_sharontj_yuxiao_yzhang11.correlation']
 
     @staticmethod
@@ -30,6 +31,7 @@ class correlation(dml.Algorithm):
         fire_hosp_rent = repo['alyu_sharontj_yuxiao_yzhang11.Fire_Hospital_vs_Rent'].find()
         garden_rent = repo['alyu_sharontj_yuxiao_yzhang11.garden_vs_rent'].find()
         edu_rent = repo['alyu_sharontj_yuxiao_yzhang11.education_rent'].find()
+        edu_trans = repo['alyu_sharontj_yuxiao_yzhang11.education_trans_avg'].find()
 
         def permute(x):
             shuffled = [xi for xi in x]
@@ -58,7 +60,6 @@ class correlation(dml.Algorithm):
             x1 += [i["fire/hospital"]]
             y1 += [i["average rent"]]
 
-
         corr_fire_hosp_rent = corr(x1, y1)
         # print("corr fire hosp rent", corr_fire_hosp_rent)
 
@@ -85,10 +86,24 @@ class correlation(dml.Algorithm):
         # print("corr edu rent ", corr_edu_rent)
         # print()
 
-        c_sum = -corr_fire_hosp_rent+corr_edu_rent+corr_garden_rent
+        x4 = []
+        y4 = []
+        corr_edu_trans = 0
+        for i in edu_trans:
+            x4 += [i["school_count"]]
+            y4 += [i["trans_avg"]]
+
+        corr_edu_trans = corr(x4, y4)
+        corr_rent_trans = corr_edu_rent * corr_edu_trans
+        # print("corr edu trans ", corr_edu_trans)
+        # print("corr rent trans ", corr_rent_trans)
+        # print()
+
+        c_sum = (-corr_fire_hosp_rent+corr_edu_rent+corr_garden_rent+corr_rent_trans)*2
         weight_fire_hosp_rent = -corr_fire_hosp_rent/c_sum
         weight_edu_rent = corr_edu_rent/c_sum
         weight_garden_rent = corr_garden_rent/c_sum
+        weight_trans_rent = corr_rent_trans/ c_sum
         # print()
 
         edu_rent = {}
@@ -114,6 +129,13 @@ class correlation(dml.Algorithm):
         gard_rent["weight"] = weight_garden_rent
 
         repo['alyu_sharontj_yuxiao_yzhang11.correlation'].insert(gard_rent)
+
+        trans_rent = {}
+        trans_rent["name"] = "trans_rent"
+        trans_rent["correlation"] = corr_rent_trans
+        trans_rent["weight"] = weight_trans_rent
+
+        repo['alyu_sharontj_yuxiao_yzhang11.correlation'].insert(trans_rent)
 
 
         endTime = datetime.datetime.now()

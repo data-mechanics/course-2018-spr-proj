@@ -110,8 +110,9 @@ class StatLibrary(dml.Algorithm):
 		repo['bemullen_crussack_dharmesh_vinwah.libraryStu'].metadata({'complete':True})
 		print(repo['bemullen_crussack_dharmesh_vinwah.libraryStu'].metadata())
 
-		jsondata = '{"correlation coefficient for students in session":'+str(stucor)+
+		jsondata = '{"correlation coefficient for students in session":'+str(stucor)+\
 		', "correlation coefficient for students not in session":'+str(noncor)+'}'
+		
 		jsonToPython = json.loads(jsondata)
 
 		cor = []

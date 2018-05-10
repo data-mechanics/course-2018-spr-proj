@@ -11,3 +11,9 @@ I then will attempt to complete fome preliminary work for the problem of find ef
 
 I plan to use the flooding data and hydrant data collected in project 1 and k-means clustering to find locations for 'evacuation stations' where people could go in order to be transported away from the flooded zone.
 
+Project 3:
+To run this project the angular cli is required.
+You can install the angular cli with npm using the command 'npm install -g @angular/cli'.
+After you have installed angular cli you can run the visualization by navigating to the app591 folder and executing the command 'ng serve'
+The vizualization depends on my api, which is a python app and can be run with 'python api.py'
+

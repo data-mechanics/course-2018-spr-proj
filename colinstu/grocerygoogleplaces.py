@@ -19,7 +19,7 @@ class grocerygoogleplaces(dml.Algorithm):
         repo = client.repo
         repo.authenticate('colinstu', 'colinstu')
 
-        json_data = open("/Users/colinstuart/Dropbox/CS591-Data-Mechanics/course-2018-spr-proj/auth.json")
+        json_data = open("/Users/colinstuart/Documents/course-2018-spr-proj/auth.json")
         jdata = json.load(json_data)
         url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=grocery+in+boston&key=' + jdata['googlekey']
         response = urllib.request.urlopen(url).read().decode("utf-8")

@@ -32,6 +32,7 @@ class bikeConstraintSatisfaction(dml.Algorithm):
         for c in Cbikepath:
             pathCoords = c["geometry"]["coordinates"]
             bikePathCoords.append(pathCoords)
+        
 
         #Get Cambridge bike rack locations
         bikeracks = repo['cwsonn_levyjr.bikerack'].find()
@@ -40,7 +41,7 @@ class bikeConstraintSatisfaction(dml.Algorithm):
         for c in bikeracks:
             coords = c["geometry"]["coordinates"]
             rackCoordData.append(coords)
-                
+        
         #Convert 2D Path Coord Array to 1D Array
         bikePathCoords.remove([[[-71.10018860972606, 42.373645069443846], [-71.10052894213501, 42.373689128835196], [-71.10083785435141, 42.37372911214897]], [[-71.10083740836019, 42.37372941244966], [-71.10123725248101, 42.37378068648357], [-71.10146445141548, 42.37381008939776]]])
         pathCoordData = []
@@ -49,6 +50,7 @@ class bikeConstraintSatisfaction(dml.Algorithm):
                 #Only get start and end points
                 if(j == 0 or j == len(bikePathCoords)-1):
                     pathCoordData.append(bikePathCoords[i][j])
+
 
         #For each bike path start and end coordinate compare to each bike rack coordinate using the distance formula
         weights = []
@@ -132,10 +134,10 @@ class bikeConstraintSatisfaction(dml.Algorithm):
         locations = []
         for i in range(len(index_lst)):
             locations.append(pathCoordData[i])
-        
+
         #Add new rack locations to the database
-        coordinatesToAddNewRacks = {'NewRackCoordinates': locations}
-        repo['cwsonn_levyjr.bikeComparisonCam'].insert_one(coordinatesToAddNewRacks)
+        #coordinatesToAddNewRacks = {'NewRackCoordinates': locations}
+        #repo['cwsonn_levyjr.bikeComparisonCam'].insert_one(coordinatesToAddNewRacks)
 
         #Add new locations to original list
         updatedRackList = []
@@ -180,6 +182,7 @@ class bikeConstraintSatisfaction(dml.Algorithm):
         stdUpdatedWeights = statistics.stdev(updatedWeights)
         
         #Plot orginal distance weights
+        '''
         plt.figure(1)
         plt.hist(weights, 20)
         plt.title("Distance Weights Between Racks and Paths. Standard Deviation = " + str(stdWeights))
@@ -194,6 +197,7 @@ class bikeConstraintSatisfaction(dml.Algorithm):
         plt.xlabel("Distances (meters)")
         plt.ylabel("Frequency")
         plt.show()
+        '''
         
         #Compute distance from one bike rack to every other bike rack
         if(trial == False):
@@ -252,7 +256,7 @@ class bikeConstraintSatisfaction(dml.Algorithm):
         #Calculate standard deviation of distances
         stdDistances = statistics.stdev(distances)
         stdUpdDistances = statistics.stdev(updDistances)
-        
+        '''
         plt.figure(3)
         plt.hist(distances, 20)
         plt.title("Distances Between Bike Racks. Standard Deviation = " + str(stdDistances))
@@ -266,6 +270,7 @@ class bikeConstraintSatisfaction(dml.Algorithm):
         plt.xlabel("Distances (meters)")
         plt.ylabel("Frequency")
         plt.show()
+        '''
         
     @staticmethod
     def provenance(doc = prov.model.ProvDocument(), startTime = None, endTime = None):

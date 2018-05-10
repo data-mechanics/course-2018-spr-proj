@@ -1,0 +1,61 @@
+body {
+    font-family: "Open Sans";
+}
+
+header {
+    background-image: url('../images/boston.jpg');
+    background-size: cover;
+    height: 200px;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom : 100px;
+}
+
+nav {
+	height: 75px;
+	line-height:75px; 
+	text-align: center;
+}
+
+h1{
+	color: white;
+
+}
+
+h2{
+	color: white;
+	font-size: 20px;
+
+	margin-top: 20px;
+}
+
+h3{
+	color:white;
+}
+
+h4{
+	color:black;
+	text-align: center;
+}
+.buy{
+	background-color: #e54321;
+	color: #fff000;
+	border-radius: 3px;
+	font-size: 16px;
+	padding: 10px 40px 10px 40px;
+	line-height: 80px;
+}
+
+p{
+	text-align: center;
+	max-width: 400px;
+	width = 90px;
+	margin: 0 auto;
+}
+
+.icon{
+	width = 40px;
+	height = 40px;
+	
+}

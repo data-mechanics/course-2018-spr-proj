@@ -16,6 +16,7 @@ from mpmath import mp, mpf
 
 def find_closest_centroids(samples, centroids):
     closest_centroids = []
+    print(centroids)
     for sample in samples:
         distances = []
         i = 0
@@ -23,6 +24,7 @@ def find_closest_centroids(samples, centroids):
             distance = np.sqrt(((sample[0]-centroid[0])**2) + ((sample[1]-centroid[1])**2))
             distances += [(distance, i)]
             i += 1
+        print(distances)
         closest_centroids += [min(distances)[1]]
 
     return np.array(closest_centroids)
@@ -87,7 +89,7 @@ class findEvacLocations(dml.Algorithm):
         
         json_centroids = []
         for centroid in centroids:
-            json_centroids += [{'x': centroid[0], 'y': centroid[1]}]
+            json_centroids += [{'x': float(centroid[0]), 'y': float(centroid[1])}]
         
         repo['jlove.evac_hubs'].insert_many(json_centroids)
         repo.logout()

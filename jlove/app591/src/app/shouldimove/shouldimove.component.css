@@ -1,35 +1,37 @@
 .two {
-	width: 66.75%;
-	height: 100vh;
+	width: 100%;
+	height: 80vh;
 	float: left;
 }
 
 .one {
-	width: 33%;
-	height: 100vh;
+	width: 100%;
+	height: 20vh;
 	background-color: whitesmoke;
 	float: left;
-	border-right: 1px solid black;
 }
 
 .inner-one {
 }
 
 .title {
-	width: 100%;
+	width: 20%;
 	padding: 0px 0px 0px 0px;
 	text-align: center;
-	border-bottom: solid 1px lightgrey;
+	border-right: solid 1px lightgrey;
 	color: darkslategrey;
+	float: left;
 }
 
 .content {
-	padding: 90px 20px;
+	/*padding: 90px 20px;*/
+	text-align: center;
 }
 
 .search {
-	width: 100%;
+	width: 78%;
 	text-align: center;
+	float: left;
 }
 
 .search-button {

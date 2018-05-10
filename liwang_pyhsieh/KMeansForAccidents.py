@@ -86,7 +86,7 @@ class KMeansForAccidents(dml.Algorithm):
         for idx, m in enumerate(kmeans.cluster_centers_):
             data_medians.append({
                 "_id": idx,
-                "coordinates": {"Lat": m[0], "Long": m[1]}
+                "coordinates": {"Long": m[0], "Lat": m[1]}
             })
         '''
         data_clustered = []

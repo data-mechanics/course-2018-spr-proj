@@ -54,7 +54,7 @@ class SafetyRating(dml.Algorithm):
             }
             rt_index_facilities.insert(tmp_obj["_id"], (tmp_obj["Long"], tmp_obj["Lat"], tmp_obj["Long"], tmp_obj["Lat"]), tmp_obj)
         
-        search_radius = 2.0
+        search_radius = 1.0
         search_radius_rad = kmToRadius(search_radius)
         safetyscore = []
 

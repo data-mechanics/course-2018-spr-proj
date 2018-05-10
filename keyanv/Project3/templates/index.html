@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Change Parameters</title>
+</head>
+<body> 
+    <h1>Changing Parameters for Binning</h1>
+    <h4>By Keyan Vakil</h4>
+    When deciding which parameters to use to determine the correlation between crime frequency and distance to public utilities, it was required that I bin the data in order to generate an accurate picture of the relationship. I decided to use a naive variant of equal width binning, which required that I (somewhat arbitrarily) determine the bin size and the number of bins for the relationship.
+    <br></br>
+    I found that I needed to play around with the two variables in order to see a discernable trend. If the bin size or number of bins were too high or too low, the relationship would not be easily seen. I made some modifications to my data retrieval and binning process allow for a chart to be generated much faster, using all the data points available, in order to generate a much more accurate picture.
+<br></br>
+<h2>Change the parameters using the forms below</h2>
+<fieldset>
+    <form action="{{ url_for('hello_world') }}" method="post">
+        <h3>Bin Size (in m)
+            <input type="number" name="skip" min="1" value={{skip}} step ="any" required pattern=".*\S+0.*">
+        <!-- ***tested in chrome*** -->
+        </h3>
+        <h3>Number of Bins (must be int)
+            <input type="number" name="bins" min="1" value={{bins}} required pattern=".*\S+.*">
+        </h3>
+        <input type="submit" value="Submit">
+    </form>
+    <h2>Bin Size: {{skip}} <br></br> Number of bins: {{bins}}</h2>
+</fieldset>
+<h2>
+    Charts
+    <h3>
+        
+        <img src="data:image/png;base64,{{image[0]}}">
+    </h3>
+    <h3>
+        
+        <img src="data:image/png;base64,{{image[1]}}">
+    </h3>
+    <h3>
+        
+        <img src="data:image/png;base64,{{image[2]}}">
+    </h3>
+</h2>
+
+</body>
+</html>

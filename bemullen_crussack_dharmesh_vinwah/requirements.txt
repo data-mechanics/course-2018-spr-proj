@@ -65,7 +65,7 @@ fastcache==1.0.2
 filelock==2.0.13
 Fiona==1.7.11.post1
 Flask==0.12.2
-Flask-Cors==3.0.3
+Flask-Cors==3.0.9
 future==0.16.0
 gast==0.2.0
 geocoder==1.38.1

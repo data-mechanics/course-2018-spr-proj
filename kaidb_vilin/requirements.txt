@@ -3,7 +3,7 @@ requests==2.18.4
 tqdm==4.20.0
 matplotlib==2.1.2
 dml==0.0.16.0
-numpy==1.14.2
+numpy==1.22.0
 scipy==0.19.1
 wordcloud==1.4.1
 bqplot==0.10.5

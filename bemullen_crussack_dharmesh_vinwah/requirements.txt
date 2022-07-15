@@ -53,7 +53,7 @@ decorator==4.2.1
 descartes==1.1.0
 DharmeshDataMechanics==1.0.6
 dharmSentiment==3.0.1
-distributed==1.20.2
+distributed==2021.10.0
 Django==2.0.4
 dml==0.0.16.0
 docutils==0.14
